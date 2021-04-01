@@ -8,31 +8,6 @@ const formItemLayout = {
   wrapperCol: { span: 20 },
 };
 
-// 名称验证
-const name_rules = {
-  rules: [
-    {
-      required: true,
-      whitespace: true,
-      message: '内容不可为空',
-    },
-    {
-      min: 2,
-      message: '输入内容长度不能小于2',
-    },
-  ],
-};
-
-// 电话验证
-const phone_rules = {
-  rules: [
-    {
-      pattern: /^1[3-9]\d{9}$/,
-      message: '请输入有效的联系电话',
-    },
-  ],
-};
-
 const styleBottom = {
   height: 50,
   padding: '0 22px',

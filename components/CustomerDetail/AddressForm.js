@@ -1,7 +1,7 @@
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
 import { Input, Button } from 'antd';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import AreaPicker from '@components/AreaPicker';
 import { getPlaceSearch } from '@components/Map';
 import { getAddressLabel, getAddressCode } from '@utils/common';

@@ -7,8 +7,7 @@ import { capital, getUserInfo } from '@api';
 import { Row, Col, DatePicker, Empty, Modal, message } from 'antd';
 import moment from 'moment';
 import styles from './finace.less';
-import { copyToClipboard } from '@utils/common';
-import { Format } from '@utils/common';
+import { Format, copyToClipboard } from '@utils/common';
 import { User } from '@store';
 import * as echarts from 'echarts';
 

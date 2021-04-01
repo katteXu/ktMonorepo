@@ -1,27 +1,12 @@
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
 import { Input, Button } from 'antd';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 // 表单布局
 const formItemLayout = {
   labelAlign: 'left',
   labelCol: { span: 5 },
   wrapperCol: { span: 18 },
-};
-
-// 名称验证
-const name_rules = {
-  rules: [
-    {
-      required: true,
-      whitespace: true,
-      message: '内容不可为空',
-    },
-    {
-      min: 2,
-      message: '输入内容长度不能小于2',
-    },
-  ],
 };
 
 const CompanyForm = ({ form, formData, onSubmit, onClose }) => {
