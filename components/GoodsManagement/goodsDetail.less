@@ -1,0 +1,87 @@
+.main {
+  position: relative;
+  background-color: #fff;
+  .title {
+    font-size: 14px;
+    color: #4a4a5a;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 600;
+
+    & + .row {
+      margin-top: 16px;
+    }
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 24px;
+    padding-left: 11px;
+    .col {
+      flex: 1;
+      font-size: 14px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      color: #848485;
+      & + .col {
+        margin-left: 19px;
+      }
+      .col-data {
+        color: #4a4a5a;
+      }
+    }
+  }
+
+  & + .title {
+    margin-top: 32px;
+  }
+
+  .table {
+    margin-top: 16px;
+  }
+}
+
+:global(.tab-header) {
+  color: #6a6a6a;
+  display: flex;
+  user-select: none;
+  align-items: center;
+  &:hover {
+    color: #3d86ef;
+  }
+  :global(.tab-item) {
+    color: #4a4a5a;
+    padding: 0 5px;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    line-height: 32px;
+    position: relative;
+    &:hover {
+      color: #3d86ef;
+    }
+    & + :global(.tab-item) {
+      margin-left: 38px;
+    }
+
+    &:global(.active) {
+      color: #3d86ef;
+      font-weight: 600;
+    }
+  }
+}
+.btn {
+  border: none;
+  outline: none;
+  color: #3d86ef;
+  box-shadow: none;
+  padding-right: 0;
+  padding-left: 12px;
+  &:hover {
+    color: #3d86ef;
+  }
+  &:focus {
+    color: #3d86ef;
+  }
+}

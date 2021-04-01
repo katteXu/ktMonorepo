@@ -1,0 +1,83 @@
+.main {
+  :global {
+    .ant-form-item-has-error {
+      margin: 0;
+    }
+
+    .ant-form-item {
+      margin: 0;
+    }
+
+    .ant-form-item-explain-error,
+    .ant-form-item-explain {
+      position: absolute;
+      white-space: nowrap;
+    }
+
+    .ant-form-item-label {
+      width: 139px;
+    }
+  }
+  .title {
+    font-size: 14px;
+    color: #4a4a5a;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 600;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 24px;
+    .col {
+      flex: 1;
+      font-size: 14px;
+      label {
+        color: #4a4a5a !important;
+      }
+      & + .col {
+        margin-left: 19px;
+      }
+
+      &.db-input {
+        display: flex;
+        align-items: center;
+        input {
+          width: 96px;
+        }
+
+        > span {
+          margin: 0 5px;
+          min-width: 51px;
+          text-align: center;
+          color: #4a4a5a;
+        }
+      }
+    }
+
+    & + .title {
+      margin-top: 30px;
+    }
+  }
+
+  .bottom {
+    width: 100%;
+    text-align: right;
+    margin-top: 24px;
+  }
+}
+.unitName {
+  position: absolute;
+  top: 1px;
+  right: 59px;
+  // border: 1px solid #d8d8d8;
+  background: #f6f7f9;
+  width: 54px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  color: #bfbfbf;
+  border-left: 0;
+}

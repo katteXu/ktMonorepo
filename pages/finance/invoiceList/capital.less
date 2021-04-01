@@ -1,0 +1,146 @@
+.wallet {
+  font-size: 36px;
+  font-weight: 600;
+  color: #4a4a5a;
+  align-items: baseline;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-bottom: 16px;
+
+  .money {
+    vertical-align: bottom;
+    white-space: nowrap;
+
+    @media screen and (max-width: 1400px) {
+      // line-height: 120px;
+      // margin-top:6px;
+    }
+
+    .unitName {
+      font-size: 12px;
+      margin-left: 10px;
+    }
+
+    .icon {
+      font-size: 18px;
+      color: #666;
+      margin-right: 4px;
+    }
+  }
+
+  .btn {
+    align-self: center;
+    margin-left: 17px;
+  }
+}
+
+.bank-card {
+  padding: 22px;
+  height: 120px;
+  max-width: 300px;
+  // background: url(http://test.saas2.kachexiongdi.com/assets/routes/financeCenter/img/nobank_bg.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: left;
+
+  .empty {
+    color: #6a6a6a;
+    padding: 5px 8px;
+
+    .title {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .help {
+      font-size: 12px;
+      font-weight: 300;
+    }
+  }
+
+  .bankName {
+    font-weight: 400;
+    font-size: 14px;
+    color: #6a6a6a;
+  }
+
+  .cardType {
+    margin-top: -6px;
+    margin-bottom: 0px;
+    font-size: 12px;
+  }
+
+  .cardNumber {
+    letter-spacing: 1.5px;
+    font-size: 16px;
+    color: black;
+  }
+}
+
+.root {
+  width: 550px;
+
+  :global(.ant-form-horizontal .ant-form-item-control) {
+    height: 80px;
+  }
+}
+
+.password-block {
+  text-align: center;
+
+  .confirm-msg {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #4a4a5a;
+    letter-spacing: 0.36px;
+    line-height: 18px;
+
+    .number {
+      font-family: PingFangSC-Medium;
+      font-size: 18px;
+      color: #3d86ef;
+    }
+  }
+
+  .pass-ipt {
+    // margin-top: 16px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .error-msg {
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    color: #e44040;
+    line-height: 12px;
+    width: 216px;
+    margin: 0 auto;
+    margin-top: 8px;
+    text-align: left;
+  }
+
+  .btn {
+    margin-top: 16px;
+    text-align: right;
+  }
+}
+
+.emptyBox {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  height: 100%;
+  margin: 0 auto;
+  width: 244px;
+  .emptyImg {
+    width: 244px;
+    height: 244px;
+    margin-bottom: 16px;
+  }
+  .emptytxt {
+    color: #848485;
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,54 @@
+.topbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 20px;
+  .news {
+    margin: 0 20px;
+  }
+
+  .count {
+    width: 8px;
+    height: 8px;
+    background: rgba(228, 64, 64, 1);
+    position: absolute;
+    top: 14px;
+    border-radius: 4px;
+    right: 0;
+  }
+
+  .personal {
+    cursor: pointer;
+    display: inline-block;
+    .name {
+      margin-left: 10px;
+      // width: 85px;
+      display: inline-block;
+    }
+  }
+}
+
+.menuList {
+  top: -10px;
+  .opt-icon {
+    font-size: 16px;
+    margin-right: 12px;
+  }
+}
+// :global {
+//   .ant-form-horizontal .ant-form-item-control {
+//     height: 54px;
+//   }
+// }
+
+.btn-bottom {
+  height: 50px;
+  padding: 0 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

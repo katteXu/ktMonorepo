@@ -1,0 +1,726 @@
+import { useState, useEffect } from 'react';
+import { Layout, Content, Ellipsis, AutoInputSelect, Image } from '@components';
+import { Table, Input, Modal, Form, message } from 'antd';
+import { QuestionCircleFilled } from '@ant-design/icons';
+import router from 'next/router';
+import s from './index.less';
+import styles from './equipmentManagement.less';
+import Arrow from '@components/ProductManagement/EquipmentManagement/arrow';
+import { useRTTask } from '@components/Hooks';
+import { Format } from '@utils/common';
+import { product } from '@api';
+
+const Index = props => {
+  const routeView = {
+    title: '设备管理',
+    pageKey: 'equipmentManagement',
+    longKey: 'productManagement.equipmentManagement',
+    breadNav: '智慧工厂.设备管理',
+    pageTitle: '设备管理',
+  };
+  // category: 设备类型
+  //   0: 磅机
+  //   1: 原煤皮带秤
+  //   2: 跳汰机
+  //   3: 旋流分选机
+  //   4: 浮选机
+  //   5: 精煤皮带秤
+  const columns = [
+    {
+      title: '设备名称',
+      dataIndex: 'name',
+      key: 'name',
+      width: 120,
+      render: value => value,
+    },
+    // {
+    //   title: '设备型号',
+    //   dataIndex: 'deviceType',
+    //   key: 'deviceType',
+    //   width: 120,
+    //   render: value => value,
+    // },
+    {
+      title: '运行状态',
+      dataIndex: 'runStatusZn',
+      key: 'runStatusZn',
+      width: 120,
+      render: value => value,
+    },
+    {
+      title: '连接状态',
+      dataIndex: 'connectionStatusZn',
+      key: 'connectionStatusZn',
+      width: 120,
+      render: value => value,
+    },
+    {
+      title: '设备接入时间',
+      dataIndex: 'connectionTime',
+      key: 'connectionTime',
+      width: 200,
+      render: value => <Ellipsis value={value} width={200} />,
+    },
+    {
+      title: '备注',
+      dataIndex: 'remark',
+      key: 'remark',
+      width: 120,
+      render: value => value,
+    },
+    {
+      title: '操作',
+      dataIndex: 'ctrl',
+      key: 'ctrl',
+      width: 120,
+      align: 'right',
+      render: (value, record) => {
+        return (
+          <>
+            <span
+              style={{ color: '#3d86ef', cursor: 'pointer', marginRight: 12 }}
+              onClick={() => {
+                router.push(`/productManagement/equipmentManagement/detail?id=${record.id}`);
+              }}>
+              详情
+            </span>
+            <span
+              style={{ color: '#3d86ef', cursor: 'pointer' }}
+              onClick={() => {
+                setDid(record.id);
+                form1.setFieldsValue({ name: record.name, remark: record.remark });
+                setVisible2(true);
+              }}>
+              编辑
+            </span>
+            {record.category != 0 && (
+              <span
+                style={{ color: record.runStatus ? '#3d86ef' : '#E44040', cursor: 'pointer', marginLeft: 12 }}
+                onClick={() => {
+                  // operateDeviceRunOrStop({ id: record.id });
+                  if (record.runStatus == 1) {
+                    onclickOpen(record.id);
+                  } else if (record.runStatus == 0) {
+                    onclickStop(record.id);
+                  } else {
+                    message.warn('设备此时不可进行操作');
+                  }
+                }}>
+                {!record.runStatus ? '停止' : '启动'}
+              </span>
+            )}
+          </>
+        );
+      },
+    },
+  ];
+  const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
+  const [form1] = Form.useForm();
+  const { start, destory } = useRTTask({ interval: 5000 });
+  const { start: start2, destory: destory2 } = useRTTask({ interval: 5000 });
+  const [visible, setVisible] = useState(false);
+  const [visible2, setVisible2] = useState(false);
+  const [dataList, setDataList] = useState({});
+  const [data, setData] = useState({});
+  const [did, setDid] = useState(0);
+  const [name, setName] = useState();
+  const [remark, setRemark] = useState();
+  const getData = async () => {
+    const res = await product.getDeviceTotalData();
+
+    return product.getDeviceTotalData();
+  };
+  const getDataList = async () => {
+    setLoading(true);
+    const res = await product.getIndustryDeviceList();
+
+    return product.getIndustryDeviceList();
+  };
+
+  useEffect(() => {
+    // getData()
+    destory();
+    destory2();
+    start({
+      api: () => {
+        return getData();
+      },
+      callback: res => {
+        if (res.status === 0) {
+          setData(res.result);
+        } else {
+          message.error(`${res.detail || res.description}`);
+        }
+      },
+    });
+    start2({
+      api: () => {
+        return getDataList();
+      },
+      callback: res => {
+        if (res.status === 0) {
+          setDataList(res.result);
+        } else {
+          message.error(`${res.detail || res.description}`);
+        }
+        setLoading(false);
+      },
+    });
+    return () => {
+      destory();
+      destory2();
+    };
+  }, []);
+
+  const confirmChangeName = async id => {
+    const { name, remark } = form1.getFieldValue();
+    const params = {
+      did: id,
+      name,
+      remark,
+    };
+    const res = await product.deviceEdit({ params });
+    if (res.status === 0) {
+      message.success('设置成功');
+    } else {
+      message.warn(`${res.detail || res.description}`);
+    }
+  };
+
+  const handleToPoundList = () => {
+    router.push('/poundManagement/poundReport?defaultDate=yesterday');
+  };
+
+  const handleChangeGoodsType = async () => {
+    const { inventoryIn, inventoryOut } = form.getFieldValue();
+    const params = { inventoryInId: inventoryIn, inventoryOutId: inventoryOut };
+    const res = await product.setBeltGoodsType({ params });
+    if (res.status === 0) {
+      message.success('设置成功');
+    } else {
+      message.warn(`${res.detail || res.description}`);
+    }
+  };
+
+  const onclickStop = did => {
+    Modal.confirm({
+      icon: <QuestionCircleFilled />,
+      title: '确认停止运行吗？',
+      onOk: async () => {
+        const params = {
+          did,
+          status: 1,
+        };
+        const res = await product.operateDeviceRunOrStop({ params });
+        if (res.status === 0) {
+          // refreshData();
+        } else {
+          message.error(res.detail || res.description);
+        }
+      },
+      okText: '确认',
+      cancelText: '取消',
+    });
+  };
+
+  const onclickOpen = did => {
+    Modal.confirm({
+      icon: <QuestionCircleFilled />,
+      title: '确认运行吗？',
+      onOk: async () => {
+        const params = {
+          did,
+          status: 0,
+        };
+        const res = await product.operateDeviceRunOrStop({ params });
+        if (res.status === 0) {
+          // refreshData();
+        } else {
+          message.error(res.detail || res.description);
+        }
+      },
+      okText: '确认',
+      cancelText: '取消',
+    });
+  };
+  return (
+    <Layout {...routeView}>
+      <Content>
+        <header
+        //  style={{ fontSize: 16, fontWeight: 600, marginTop: 8, marginBottom: 24 }}
+        >
+          {/* <ChildTitle></ChildTitle> */}
+          设备总览
+        </header>
+        <section className={styles.root}>
+          {/* 上面的三个card */}
+          <div style={{ display: 'flex', justifyContent: 'center', minWidth: 1136 }}>
+            <div className={styles.cardItem}>
+              <div className={styles.cardTitle}>磅机</div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>设备工作状态</div>
+                  <div className={styles.cardText}>{(data.poundData && data.poundData.connectionStatusZn) || '-'}</div>
+                </div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>昨日发货总量</div>
+                  <div className={`${styles.cardText} ${styles.fontcolorblue}`} onClick={handleToPoundList}>
+                    {(data.poundData && Format.weight(data.poundData.dataOut)) || '-'}
+                  </div>
+                  <div className={styles.unitName} style={{ marginLeft: 4 }}>
+                    吨
+                  </div>
+                </div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>昨日收货总量</div>
+                  <div className={`${styles.cardText} ${styles.fontcolorblue}`} onClick={handleToPoundList}>
+                    {(data.poundData && Format.weight(data.poundData.dataIn)) || '-'}
+                  </div>
+                  <div className={styles.unitName} style={{ marginLeft: 4 }}>
+                    吨
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.cardItem} style={{ marginLeft: 16 }}>
+              <div className={styles.cardTitle}>原煤皮带秤</div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>连接状态</div>
+                  <div className={styles.cardText}>
+                    {(data.beltInData && data.beltInData.connectionStatusZn) || '-'}
+                  </div>
+                </div>
+                <div className={styles.col} style={{ marginLeft: 56 }}>
+                  <div className={styles.cardLabel}>皮带速度</div>
+                  <div className={styles.cardText}>{(data.beltInData && data.beltInData.beltSpeed / 10) || '-'}</div>
+                  <div className={styles.unitName}>m/s</div>
+                </div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>本次运输总量</div>
+                  <div className={styles.cardText}>
+                    {(data.beltInData && Format.weight(data.beltInData.weight)) || '-'}
+                  </div>
+                  <div className={styles.unitName} style={{ marginLeft: 4 }}>
+                    吨
+                  </div>
+                </div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>当前运输货品</div>
+                  <div className={styles.cardText}>{(data.beltInData && data.beltInData.goodsType) || '-'}</div>
+                  <div
+                    className={styles.fontcolorblue}
+                    style={{ marginLeft: 12 }}
+                    onClick={() => {
+                      setVisible(true);
+                    }}>
+                    设置
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.cardItem} style={{ marginLeft: 16 }}>
+              <div className={styles.cardTitle}>跳汰机</div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>连接状态</div>
+                  <div className={styles.cardText}>
+                    {(data.jiggerData && data.jiggerData.connectionStatusZn) || '-'}
+                  </div>
+                </div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>床层厚度</div>
+                  <div className={styles.cardText}>
+                    {(data.jiggerData && data.jiggerData.thicknessFirstSetValue) || '-'}
+                  </div>
+                  <div>(一段)</div>
+                </div>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}></div>
+                  <div className={styles.cardText}>
+                    {(data.jiggerData && data.jiggerData.thicknessSecondSetValue) || '-'}
+                  </div>
+                  <div>(二段)</div>
+                </div>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}></div>
+                  <div className={styles.cardText}>
+                    {(data.jiggerData && data.jiggerData.thicknessThirdSetValue) || '-'}
+                  </div>
+                  <div>(三段)</div>
+                </div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>风阀速率</div>
+                  <div className={styles.cardText}>
+                    {(data.jiggerData && data.jiggerData.frequencyFirstValue) || '-'}
+                  </div>
+                  <div>(一段)</div>
+                </div>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}></div>
+                  <div className={styles.cardText}>
+                    {(data.jiggerData && data.jiggerData.frequencySecondValue) || '-'}
+                  </div>
+                  <div>(二段)</div>
+                </div>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}></div>
+                  <div className={styles.cardText}>
+                    {(data.jiggerData && data.jiggerData.frequencyThirdValue) || '-'}
+                  </div>
+                  <div></div>(三段)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 中间的图 */}
+          <div className={styles.mid}>
+            <div className={styles.row}>
+              <div
+                className={styles.img}
+                style={
+                  data.poundData && data.poundData.connectionStatusZn && data.poundData.connectionStatusZn != '未连接'
+                    ? {}
+                    : { cursor: 'unset' }
+                }
+                onClick={() => {
+                  if (
+                    data.poundData &&
+                    data.poundData.connectionStatusZn &&
+                    data.poundData.connectionStatusZn != '未连接'
+                  ) {
+                    let id = dataList.data.find(item => item.category == 0)['id'];
+                    router.push(`/productManagement/equipmentManagement/detail?id=${id}`);
+                  }
+                }}>
+                <img
+                  src={
+                    data.poundData && data.poundData.connectionStatusZn && data.poundData.connectionStatusZn != '未连接'
+                      ? Image.DiBang
+                      : Image.DiBangGray
+                  }
+                  style={{ height: 132, width: 272 }}></img>
+              </div>
+              <div
+                className={styles.img}
+                style={
+                  data.beltInData &&
+                  data.beltInData.connectionStatusZn &&
+                  data.beltInData.connectionStatusZn != '未连接'
+                    ? {}
+                    : { cursor: 'unset' }
+                }
+                onClick={() => {
+                  if (
+                    data.beltInData &&
+                    data.beltInData.connectionStatusZn &&
+                    data.beltInData.connectionStatusZn != '未连接'
+                  ) {
+                    let id = dataList.data.find(item => item.category == 1)['id'];
+                    router.push(`/productManagement/equipmentManagement/detail?id=${id}`);
+                  }
+                }}>
+                <img
+                  src={
+                    data.beltInData &&
+                    data.beltInData.connectionStatusZn &&
+                    data.beltInData.connectionStatusZn != '未连接'
+                      ? Image.ChuanSong
+                      : Image.ChuanSongGray
+                  }
+                  style={{ height: 132, width: 272 }}></img>
+              </div>
+              <div
+                className={styles.img}
+                style={
+                  data.jiggerData &&
+                  data.jiggerData.connectionStatusZn &&
+                  data.jiggerData.connectionStatusZn != '未连接'
+                    ? {}
+                    : { cursor: 'unset' }
+                }
+                onClick={() => {
+                  if (
+                    data.jiggerData &&
+                    data.jiggerData.connectionStatusZn &&
+                    data.jiggerData.connectionStatusZn != '未连接'
+                  ) {
+                    let id = dataList.data.find(item => item.category == 2)['id'];
+
+                    router.push(`/productManagement/equipmentManagement/detail?id=${id}`);
+                  }
+                }}>
+                <img
+                  src={
+                    data.jiggerData &&
+                    data.jiggerData.connectionStatusZn &&
+                    data.jiggerData.connectionStatusZn != '未连接'
+                      ? Image.TiaoTai
+                      : Image.TiaoTaiGray
+                  }
+                  style={{ height: 146, width: 302 }}></img>
+              </div>
+            </div>
+            <div className={styles.row} style={{ justifyContent: 'center' }}>
+              <div className={styles.img} style={{ cursor: 'unset' }}>
+                <img src={Image.HeZi} style={{ height: 126, width: 266 }}></img>
+              </div>
+            </div>
+            <div className={styles.row}>
+              <div
+                className={styles.img}
+                style={
+                  data.beltOutData &&
+                  data.beltOutData.connectionStatusZn &&
+                  data.beltOutData.connectionStatusZn != '未连接'
+                    ? {}
+                    : { cursor: 'unset' }
+                }
+                onClick={() => {
+                  if (
+                    data.beltOutData &&
+                    data.beltOutData.connectionStatusZn &&
+                    data.beltOutData.connectionStatusZn != '未连接'
+                  ) {
+                    let id = dataList.data.find(item => item.category == 5)['id'];
+                    router.push(`/productManagement/equipmentManagement/detail?id=${id}`);
+                  }
+                }}>
+                <img
+                  src={
+                    data.beltOutData &&
+                    data.beltOutData.connectionStatusZn &&
+                    data.beltOutData.connectionStatusZn != '未连接'
+                      ? Image.ChuanSong
+                      : Image.ChuanSongGray
+                  }
+                  style={{ height: 132, width: 272 }}></img>
+              </div>
+              <div
+                className={styles.img}
+                style={{ cursor: 'unset' }}
+                onClick={() => {
+                  // let id = dataList.data.find(item => item.category == 4)['id'];
+                  // router.push(`/productManagement/equipmentManagement/detail?id=${id}`);
+                }}>
+                <img src={Image.FuXuanGray} style={{ height: 146, width: 302 }}></img>
+              </div>
+              <div
+                className={styles.img}
+                style={{ cursor: 'unset' }}
+                onClick={() => {
+                  // let id = dataList.data.find(item => item.category == 3)['id'];
+                  // router.push(`/productManagement/equipmentManagement/detail?id=${id}`);
+                }}>
+                <img src={Image.FenXuanGray} style={{ height: 146, width: 302 }}></img>
+              </div>
+            </div>
+            <div className={styles.blocks}>
+              <div className={styles.row}>
+                <div className={styles.block}></div>
+                <div className={styles.block}></div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.block}></div>
+                <div className={styles.block}></div>
+              </div>
+            </div>
+            <div className={styles.arrays}>
+              <div className={styles.row}>
+                <div className={styles.item} style={{ position: 'relative', left: 80 }}>
+                  <Arrow title="进厂" direction="right" up={true}></Arrow>
+                </div>
+                <div className={styles.item} style={{ position: 'relative', right: 80 }}>
+                  <Arrow title="破碎给料" direction="right" up={true}></Arrow>
+                </div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.item} style={{ position: 'relative', right: 174 }}>
+                  <Arrow title="出厂" direction="top" up={false}></Arrow>
+                </div>
+                <div className={styles.item} style={{ position: 'relative', left: 174 }}>
+                  <Arrow title="二次筛选" direction="bottom" up={false}></Arrow>
+                </div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.item} style={{ position: 'relative', left: 80 }}>
+                  <Arrow title="成品" direction="left" up={true}></Arrow>
+                </div>
+                <div className={styles.item} style={{ position: 'relative', right: 80 }}>
+                  <Arrow title="泡沫剂" direction="left" up={true}></Arrow>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 下面的三个card */}
+          <div style={{ display: 'flex', justifyContent: 'center', minWidth: 1136 }}>
+            <div className={styles.cardItem}>
+              <div className={styles.cardTitle}>精煤皮带秤</div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>连接状态</div>
+                  <div className={styles.cardText}>
+                    {(data.beltOutData && data.beltOutData.connectionStatusZn) || '-'}
+                  </div>
+                </div>
+                <div className={styles.col} style={{ marginLeft: 56 }}>
+                  <div className={styles.cardLabel}>皮带速度</div>
+                  <div className={styles.cardText}>{(data.beltOutData && data.beltOutData.beltSpeed / 10) || '-'}</div>
+                  <div className={styles.unitName}>m/s</div>
+                </div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>本次运输总量</div>
+                  <div className={styles.cardText}>
+                    {(data.beltOutData && Format.weight(data.beltOutData.weight)) || '-'}
+                  </div>
+                  <div className={styles.unitName} style={{ marginLeft: 4 }}>
+                    吨
+                  </div>
+                </div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>当前运输货品</div>
+                  <div className={styles.cardText}>{(data.beltOutData && data.beltOutData.goodsType) || '-'}</div>
+                  <div
+                    className={styles.fontcolorblue}
+                    style={{ marginLeft: 12 }}
+                    onClick={() => {
+                      setVisible(true);
+                    }}>
+                    设置
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.cardItem} style={{ marginLeft: 16 }}>
+              <div className={styles.cardTitle}>浮选机</div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>设备工作状态</div>
+                  <div className={styles.cardText}>未连接</div>
+                </div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>当前水位</div>
+                  <div className={styles.cardText}>-</div>
+                  <div className={styles.unitName} style={{ marginLeft: 4 }}>
+                    m
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.cardItem} style={{ marginLeft: 16 }}>
+              <div className={styles.cardTitle}>螺旋分选机</div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>连接状态</div>
+                  <div className={styles.cardText}>未连接</div>
+                </div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.col}>
+                  <div className={styles.cardLabel}>当前旋流口直径</div>
+                  <div className={styles.cardText}>-</div>
+                  <div className={styles.unitName} style={{ marginLeft: 3 }}>
+                    cm
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </Content>
+      <Content style={{ marginTop: 16 }}>
+        <header>设备列表</header>
+        <section className={styles.root}>
+          <Table
+            loading={loading}
+            dataSource={dataList.data}
+            columns={columns}
+            scroll={{ x: 'auto' }}
+            pagination={
+              {
+                // onChange: onChangePage,
+                // pageSize: query.pageSize,
+                // current: query.page,
+                // total: count,
+                // onShowSizeChange: onChangePageSize,
+              }
+            }
+          />
+          <Modal
+            visible={visible}
+            title="修改传送货品"
+            destroyOnClose
+            onCancel={() => {
+              setVisible(false);
+            }}
+            onOk={() => {
+              handleChangeGoodsType();
+              setVisible(false);
+            }}>
+            <Form form={form}>
+              <Form.Item label="原煤名称" name="inventoryIn" style={{ marginLeft: 16, height: 32, marginTop: 8 }}>
+                <AutoInputSelect
+                  style={{ width: 264, marginLeft: 8 }}
+                  placeholder="请选择原煤名称"
+                  mode="goodsType"></AutoInputSelect>
+              </Form.Item>
+              <Form.Item
+                label="精煤名称"
+                name="inventoryOut"
+                style={{ marginLeft: 16, height: 32, marginTop: 24, marginBottom: 8 }}>
+                <AutoInputSelect
+                  style={{ width: 264, marginLeft: 8 }}
+                  placeholder="请选择精煤名称"
+                  mode="goodsType"></AutoInputSelect>
+              </Form.Item>
+            </Form>
+          </Modal>
+          <Modal
+            visible={visible2}
+            title="修改设备信息"
+            destroyOnClose
+            onCancel={() => {
+              setVisible2(false);
+            }}
+            onOk={() => {
+              confirmChangeName(did);
+              setVisible2(false);
+            }}>
+            <Form form={form1} className={s.editForm}>
+              <Form.Item style={{ height: 32, marginTop: 8 }} label="设备名称" name="name">
+                <Input style={{ width: 200, marginLeft: 8 }} placeholder="请输入设备名称" />
+              </Form.Item>
+              <Form.Item style={{ height: 32, marginTop: 24 }} label="备注" name="remark">
+                <Input style={{ marginLeft: 8 }} placeholder="请输入备注" />
+              </Form.Item>
+            </Form>
+          </Modal>
+        </section>
+      </Content>
+    </Layout>
+  );
+};
+
+export default Index;

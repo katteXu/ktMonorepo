@@ -1,0 +1,101 @@
+.scheme-form {
+  :global {
+    .ant-form-item-has-error {
+      margin: 0;
+    }
+
+    .ant-form-item {
+      margin: 0;
+    }
+
+    .ant-form-item-explain-error,
+    .ant-form-item-explain {
+      position: absolute;
+      white-space: nowrap;
+    }
+
+    .ant-form-item-label {
+      width: 139px;
+    }
+  }
+  .title {
+    font-size: 14px;
+    color: #4a4a5a;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 600;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 24px;
+    .col {
+      flex: 1;
+      font-size: 14px;
+      // margin-left: -20px;
+      color: #4a4a5a;
+      label {
+        color: #4a4a5a !important;
+      }
+
+      .label {
+        width: 139px;
+        line-height: 32px;
+        display: inline-block;
+        text-align: right;
+        font-size: 14px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #4a4a5a;
+      }
+
+      & + .col {
+        margin-left: 28px;
+      }
+    }
+
+    & + .title {
+      margin-top: 30px;
+    }
+  }
+
+  .bottom {
+    width: 100%;
+    text-align: right;
+    margin-top: 24px;
+  }
+}
+
+.raw-goods {
+  width: 100%;
+  margin-right: -20px;
+  .raw-col {
+    width: 50%;
+    margin-bottom: 24px;
+    box-sizing: border-box;
+    display: inline-block;
+    :global {
+      .ant-form-item-label {
+        width: 139px;
+      }
+    }
+  }
+
+  .raw-col:nth-child(odd) {
+    padding-right: 20px;
+  }
+
+  .raw-col:nth-child(even) {
+    :global {
+      .ant-form-item-label {
+        width: 139px;
+      }
+    }
+  }
+
+  .title + & {
+    margin-top: 24px;
+  }
+}
