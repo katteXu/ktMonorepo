@@ -25,5 +25,5 @@ app.use(function (err, req, res, next) {
 });
 
 app.listen(CONFIG.port, () => {
-  console.log(`http://127.0.0.1:${port}`);
+  console.log(`http://127.0.0.1:${CONFIG.port}`);
 });
