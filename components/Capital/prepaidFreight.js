@@ -50,7 +50,7 @@ const columns = [
   },
 ];
 
-const Index = props => {
+const Index = () => {
   const [loading, setLoading] = useState(false);
   const [lineData, setLineData] = useState({});
   const [lineX, setLineX] = useState([]);

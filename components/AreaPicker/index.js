@@ -8,7 +8,7 @@ import { getProvinceList, getCityList, getCountyList } from '@api';
  * @param {boolean} useCode 是否启用地区编码 若启用 则value 返回格式为 ['北京市-101010','北京市-202020','西城区-303030']
  * @param {*} ref
  */
-const AreaPicker = ({ dataSource, onChange, placeholder, className, value, useCode }, ref) => {
+const AreaPicker = ({ onChange, placeholder, className, value, useCode }, ref) => {
   useEffect(() => {
     (async () => {
       const res = await getProvinceList();

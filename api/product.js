@@ -19,7 +19,7 @@ const saveRawMaterial = ({ params } = {}) => {
 };
 
 // 目标货品数据
-const getGoodsList = ({ params } = {}) => {
+const getGoodsList = () => {
   return request({
     method: 'get',
     url: 'api/v1/inventory/listGoods',

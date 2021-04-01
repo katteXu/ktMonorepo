@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Button, Modal, Input, Row, Col, message } from 'antd';
+import { Button, Input, message } from 'antd';
 import agent from '@api/agent';
 // 表单布局
 const formItemLayout = {

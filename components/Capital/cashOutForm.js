@@ -3,9 +3,8 @@ import { InfoCircleTwoTone } from '@ant-design/icons';
 import { Input, Button, Select, Modal, message, Form } from 'antd';
 import styles from './styles.less';
 import PayPasswordInput from '@components/common/PayPasswordInput';
-import { capital } from '@api';
+import { capital, getUserInfo } from '@api';
 import router from 'next/router';
-import { getUserInfo } from '@api';
 const formItemLayout = {
   labelAlign: 'left',
   labelCol: { span: 6 },

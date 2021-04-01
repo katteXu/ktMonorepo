@@ -1,5 +1,4 @@
 import request from './request';
-import { setCookie } from '@utils/common';
 
 // 专线管理
 export { default as railWay } from './railWay';
