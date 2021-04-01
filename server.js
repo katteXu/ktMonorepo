@@ -24,6 +24,6 @@ app.use(function (err, req, res, next) {
   res.status(500).sendFile(path.join(__dirname, 'out/500/index.html'));
 });
 
-app.listen(9050, () => {
-  console.log('http://127.0.0.1:9050');
+app.listen(CONFIG.port, () => {
+  console.log(`http://127.0.0.1:${port}`);
 });
