@@ -2,6 +2,7 @@ const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
 const withLess = require('@zeit/next-less');
 const withCss = require('@zeit/next-css');
 const path = require('path');
+const CONFIG = require('./config');
 // 别名
 const alias = {
   '@components': './components',
@@ -24,7 +25,9 @@ let config = {
   ],
   trailingSlash: process.env.NODE_ENV !== 'development',
 
-  webpack: (config, { isServer, dev }) => {
+  assetPrefix: `${CONFIG.oss.path}/${CONFIG.oss.fold}`,
+
+  webpack: (config, { isServer }) => {
     if (isServer) {
       const antStyles = /antd\/.*?\/style\/css.*?/;
       const origExternals = [...config.externals];

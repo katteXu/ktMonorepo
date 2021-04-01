@@ -1,13 +1,12 @@
 const path = require('path');
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
-
 const app = express();
-
+const CONFIG = require('./config');
 app.use(
   '/api',
   createProxyMiddleware({
-    target: 'http://test.api.kachexiongdi.com',
+    target: `${CONFIG.base_url}`,
     changeOrigoin: true,
     pathRewrite: { '^/api': '' },
   })
