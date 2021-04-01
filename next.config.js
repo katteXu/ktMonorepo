@@ -19,13 +19,13 @@ let config = {
   rewrites: () => [
     {
       source: '/api/:path*',
-      destination: 'http://test.api.kachexiongdi.com/:path*',
+      destination: `${CONFIG.base_url}/:path*`,
       basePath: false,
     },
   ],
   trailingSlash: process.env.NODE_ENV !== 'development',
 
-  assetPrefix: `${CONFIG.oss.path}/${CONFIG.oss.fold}`,
+  // assetPrefix: `${CONFIG.oss.path}/${CONFIG.oss.fold}`,
 
   webpack: (config, { isServer }) => {
     if (isServer) {
