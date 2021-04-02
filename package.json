@@ -9,6 +9,9 @@
     "build": "next build",
     "export": "next export",
     "server": "node server",
+    "server:dev": "NEXT_ENV=dev yarn server",
+    "server:pro": "NEXT_ENV=pro yarn server",
+    "server:pre": "NEXT_ENV=pre yarn server",
     "eslint": "eslint --fix ./"
   },
   "dependencies": {
