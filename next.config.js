@@ -25,7 +25,7 @@ let config = {
   ],
   trailingSlash: process.env.NODE_ENV !== 'development',
 
-  // assetPrefix: `${CONFIG.oss.path}/${CONFIG.oss.fold}`,
+  assetPrefix: `${CONFIG.public_path}`,
 
   webpack: (config, { isServer }) => {
     if (isServer) {
