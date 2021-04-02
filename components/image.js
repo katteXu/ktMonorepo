@@ -1,61 +1,63 @@
+const CONFIG = require('../config');
 // 概览
 
 // 首页
-const Banner = '/image/banner.png';
-const Transport = '/image/transport.png';
-const Logistics = '/image/logistics.png';
-const Stock = '/image/stock.png';
-const Finance = '/image/finance.png';
+const Banner = `${CONFIG.public_path}/image/banner.png`;
+const Transport = `${CONFIG.public_path}/image/transport.png`;
+const Logistics = `${CONFIG.public_path}/image/logistics.png`;
+const Stock = `${CONFIG.public_path}/image/stock.png`;
+const Finance = `${CONFIG.public_path}/image/finance.png`;
 
 // 财务中心
-const BgCard = '/image/bgcard.png';
+const BgCard = `${CONFIG.public_path}/image/bgcard.png`;
 
 // 个人中心
-const QrCode = '/image/qrcode.png';
-const NoUrl = '/image/no-url.png';
+const QrCode = `${CONFIG.public_path}/image/qrcode.png`;
+const NoUrl = `${CONFIG.public_path}/image/no-url.png`;
 
 // 运单管理
-const EmptyPoundPic = '/image/empty_poundPic.jpg';
-const NoPoundPic = '/image/noPoundPic.png';
+const EmptyPoundPic = `${CONFIG.public_path}/image/empty_poundPic.jpg`;
+const NoPoundPic = `${CONFIG.public_path}/image/noPoundPic.png`;
 
 // 智慧工厂
-const Pic1 = '/image/pic1.png';
-const Pic2 = '/image/pic2.png';
-const Pic3 = '/image/pic3.png';
-const Pic4 = '/image/pic4.png';
-const FallingPic = '/image/falling.png';
+const Pic1 = `${CONFIG.public_path}/image/pic1.png`;
+const Pic2 = `${CONFIG.public_path}/image/pic2.png`;
+const Pic3 = `${CONFIG.public_path}/image/pic3.png`;
+const Pic4 = `${CONFIG.public_path}/image/pic4.png`;
+const FallingPic = `${CONFIG.public_path}/image/falling.png`;
 
-const ChuanSong = '/image/chuansong.png';
-const DiBang = '/image/dibang.png';
-const TiaoTai = '/image/tiaotai.png';
-const FuXuan = '/image/fuxuan.png';
-const FenXuan = '/image/fenxuan.png';
-const ChuanSongGray = '/image/chuansongGrey.png';
-const DiBangGray = '/image/dibangGrey.png';
-const TiaoTaiGray = '/image/tiaotaiGrey.png';
-const FuXuanGray = '/image/fuxuanGrey.png';
-const FenXuanGray = '/image/fenxuanGrey.png';
-const HeZi = '/image/hezi.png';
+const ChuanSong = `${CONFIG.public_path}/image/chuansong.png`;
+const DiBang = `${CONFIG.public_path}/image/dibang.png`;
+const TiaoTai = `${CONFIG.public_path}/image/tiaotai.png`;
+const FuXuan = `${CONFIG.public_path}/image/fuxuan.png`;
+const FenXuan = `${CONFIG.public_path}/image/fenxuan.png`;
+const ChuanSongGray = `${CONFIG.public_path}/image/chuansongGrey.png`;
+const DiBangGray = `${CONFIG.public_path}/image/dibangGrey.png`;
+const TiaoTaiGray = `${CONFIG.public_path}/image/tiaotaiGrey.png`;
+const FuXuanGray = `${CONFIG.public_path}/image/fuxuanGrey.png`;
+const FenXuanGray = `${CONFIG.public_path}/image/fenxuanGrey.png`;
+const HeZi = `${CONFIG.public_path}/image/hezi.png`;
 
-const BlueArr = '/image/blueArr.png';
-const GrewArr = '/image/grewArr.png';
-const GanShi = '/image/ganshi.png';
-const JingMei = '/image/jingmei.png';
-const ZhongMei = '/image/zhongmei.png';
-const TiaoTaiStatic = '/image/tiaotaiStatic.png';
-const TiaoTaiGif = '/image/tiaotai.gif';
-const ChuanSongStatic = '/image/chuansongStatic.png';
-const ChuanSongGif = '/image/chuansong.gif';
+const BlueArr = `${CONFIG.public_path}/image/blueArr.png`;
+const GrewArr = `${CONFIG.public_path}/image/grewArr.png`;
+const GanShi = `${CONFIG.public_path}/image/ganshi.png`;
+const JingMei = `${CONFIG.public_path}/image/jingmei.png`;
+const ZhongMei = `${CONFIG.public_path}/image/zhongmei.png`;
+const TiaoTaiStatic = `${CONFIG.public_path}/image/tiaotaiStatic.png`;
+const TiaoTaiGif = `${CONFIG.public_path}/image/tiaotai.gif`;
+const ChuanSongStatic = `${CONFIG.public_path}/image/chuansongStatic.png`;
+const ChuanSongGif = `${CONFIG.public_path}/image/chuansong.gif`;
 // 其他
-const Error404 = '/image/error-404.png';
-const Error500 = '/image/error-500.png';
+const Error404 = `${CONFIG.public_path}/image/error-404.png`;
+const Error500 = `${CONFIG.public_path}/image/error-500.png`;
 
 // 个人中心
-const InvoiceExample = '/image/invoice_example.jpg';
+const InvoiceExample = `${CONFIG.public_path}/image/invoice_example.jpg`;
 
-const lineFrom = '../static/img/line-from.png';
-const linePlace = '../static/img/line-place.png';
-const lineTo = '../static/img/line-to.png';
+// 车辆轨迹
+const lineFrom = `${CONFIG.public_path}/image/line-from.png`;
+const linePlace = `${CONFIG.public_path}/image/line-place.png`;
+const lineTo = `${CONFIG.public_path}/image/line-to.png`;
 
 export {
   Banner,

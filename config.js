@@ -17,8 +17,8 @@ const initConfig = () => {
   // oss前缀
   const PUBLIC_PATH = {
     pro: 'https://cdn.kachexiongdi.com/Online/saas3.0',
-    pre: 'https://cdn.kachexiongdi.com/Pre/saas3.0',
-    dev: 'https://cdn.kachexiongdi.com/Test/saas3.0',
+    pre: 'http://cdn.kachexiongdi.com/Pre/saas3.0',
+    dev: 'http://cdn.kachexiongdi.com/Test/saas3.0',
   };
   return {
     base_url: BASE_URL[_env] || DEFAULT.base_url,
