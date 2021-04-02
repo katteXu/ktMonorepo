@@ -1,7 +1,11 @@
 {
+  "name": "saas",
+  "version": "3.0.0",
+  "license": "ISC",
+  "private": true,
   "scripts": {
     "dev": "next",
-    "start": "next start",
+    "start": "yarn build && yarn export && yarn server",
     "build": "next build",
     "export": "next export",
     "server": "node server",
