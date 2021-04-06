@@ -4,7 +4,7 @@ echo --------------------------开始初始化\<$1\>--------------------------
 yarn install
 
 # 打包
-NEXT_ENV=$1 yarn build && yarn export
+NEXT_ENV=$1 yarn build && NEXT_ENV=$1 yarn export
 
 echo --------------------------结束初始化\<$1\>--------------------------
 
