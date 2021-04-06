@@ -7,4 +7,3 @@ yarn install
 NEXT_ENV=$1 yarn build && NEXT_ENV=$1 yarn export
 
 echo --------------------------结束初始化\<$1\>--------------------------
-
