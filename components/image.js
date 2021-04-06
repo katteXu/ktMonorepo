@@ -1,63 +1,64 @@
-const CONFIG = require('../config');
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 // 概览
-console.log('==image==>?', CONFIG.public_path || '没有');
+
 // 首页
-const Banner = `${CONFIG.public_path}/image/banner.png`;
-const Transport = `${CONFIG.public_path}/image/transport.png`;
-const Logistics = `${CONFIG.public_path}/image/logistics.png`;
-const Stock = `${CONFIG.public_path}/image/stock.png`;
-const Finance = `${CONFIG.public_path}/image/finance.png`;
+const Banner = `${publicRuntimeConfig.staticFolder}/image/banner.png`;
+const Transport = `${publicRuntimeConfig.staticFolder}/image/transport.png`;
+const Logistics = `${publicRuntimeConfig.staticFolder}/image/logistics.png`;
+const Stock = `${publicRuntimeConfig.staticFolder}/image/stock.png`;
+const Finance = `${publicRuntimeConfig.staticFolder}/image/finance.png`;
 
 // 财务中心
-const BgCard = `${CONFIG.public_path}/image/bgcard.png`;
+const BgCard = `${publicRuntimeConfig.staticFolder}/image/bgcard.png`;
 
 // 个人中心
-const QrCode = `${CONFIG.public_path}/image/qrcode.png`;
-const NoUrl = `${CONFIG.public_path}/image/no-url.png`;
+const QrCode = `${publicRuntimeConfig.staticFolder}/image/qrcode.png`;
+const NoUrl = `${publicRuntimeConfig.staticFolder}/image/no-url.png`;
 
 // 运单管理
-const EmptyPoundPic = `${CONFIG.public_path}/image/empty_poundPic.jpg`;
-const NoPoundPic = `${CONFIG.public_path}/image/noPoundPic.png`;
+const EmptyPoundPic = `${publicRuntimeConfig.staticFolder}/image/empty_poundPic.jpg`;
+const NoPoundPic = `${publicRuntimeConfig.staticFolder}/image/noPoundPic.png`;
 
 // 智慧工厂
-const Pic1 = `${CONFIG.public_path}/image/pic1.png`;
-const Pic2 = `${CONFIG.public_path}/image/pic2.png`;
-const Pic3 = `${CONFIG.public_path}/image/pic3.png`;
-const Pic4 = `${CONFIG.public_path}/image/pic4.png`;
-const FallingPic = `${CONFIG.public_path}/image/falling.png`;
+const Pic1 = `${publicRuntimeConfig.staticFolder}/image/pic1.png`;
+const Pic2 = `${publicRuntimeConfig.staticFolder}/image/pic2.png`;
+const Pic3 = `${publicRuntimeConfig.staticFolder}/image/pic3.png`;
+const Pic4 = `${publicRuntimeConfig.staticFolder}/image/pic4.png`;
+const FallingPic = `${publicRuntimeConfig.staticFolder}/image/falling.png`;
 
-const ChuanSong = `${CONFIG.public_path}/image/chuansong.png`;
-const DiBang = `${CONFIG.public_path}/image/dibang.png`;
-const TiaoTai = `${CONFIG.public_path}/image/tiaotai.png`;
-const FuXuan = `${CONFIG.public_path}/image/fuxuan.png`;
-const FenXuan = `${CONFIG.public_path}/image/fenxuan.png`;
-const ChuanSongGray = `${CONFIG.public_path}/image/chuansongGrey.png`;
-const DiBangGray = `${CONFIG.public_path}/image/dibangGrey.png`;
-const TiaoTaiGray = `${CONFIG.public_path}/image/tiaotaiGrey.png`;
-const FuXuanGray = `${CONFIG.public_path}/image/fuxuanGrey.png`;
-const FenXuanGray = `${CONFIG.public_path}/image/fenxuanGrey.png`;
-const HeZi = `${CONFIG.public_path}/image/hezi.png`;
+const ChuanSong = `${publicRuntimeConfig.staticFolder}/image/chuansong.png`;
+const DiBang = `${publicRuntimeConfig.staticFolder}/image/dibang.png`;
+const TiaoTai = `${publicRuntimeConfig.staticFolder}/image/tiaotai.png`;
+const FuXuan = `${publicRuntimeConfig.staticFolder}/image/fuxuan.png`;
+const FenXuan = `${publicRuntimeConfig.staticFolder}/image/fenxuan.png`;
+const ChuanSongGray = `${publicRuntimeConfig.staticFolder}/image/chuansongGrey.png`;
+const DiBangGray = `${publicRuntimeConfig.staticFolder}/image/dibangGrey.png`;
+const TiaoTaiGray = `${publicRuntimeConfig.staticFolder}/image/tiaotaiGrey.png`;
+const FuXuanGray = `${publicRuntimeConfig.staticFolder}/image/fuxuanGrey.png`;
+const FenXuanGray = `${publicRuntimeConfig.staticFolder}/image/fenxuanGrey.png`;
+const HeZi = `${publicRuntimeConfig.staticFolder}/image/hezi.png`;
 
-const BlueArr = `${CONFIG.public_path}/image/blueArr.png`;
-const GrewArr = `${CONFIG.public_path}/image/grewArr.png`;
-const GanShi = `${CONFIG.public_path}/image/ganshi.png`;
-const JingMei = `${CONFIG.public_path}/image/jingmei.png`;
-const ZhongMei = `${CONFIG.public_path}/image/zhongmei.png`;
-const TiaoTaiStatic = `${CONFIG.public_path}/image/tiaotaiStatic.png`;
-const TiaoTaiGif = `${CONFIG.public_path}/image/tiaotai.gif`;
-const ChuanSongStatic = `${CONFIG.public_path}/image/chuansongStatic.png`;
-const ChuanSongGif = `${CONFIG.public_path}/image/chuansong.gif`;
+const BlueArr = `${publicRuntimeConfig.staticFolder}/image/blueArr.png`;
+const GrewArr = `${publicRuntimeConfig.staticFolder}/image/grewArr.png`;
+const GanShi = `${publicRuntimeConfig.staticFolder}/image/ganshi.png`;
+const JingMei = `${publicRuntimeConfig.staticFolder}/image/jingmei.png`;
+const ZhongMei = `${publicRuntimeConfig.staticFolder}/image/zhongmei.png`;
+const TiaoTaiStatic = `${publicRuntimeConfig.staticFolder}/image/tiaotaiStatic.png`;
+const TiaoTaiGif = `${publicRuntimeConfig.staticFolder}/image/tiaotai.gif`;
+const ChuanSongStatic = `${publicRuntimeConfig.staticFolder}/image/chuansongStatic.png`;
+const ChuanSongGif = `${publicRuntimeConfig.staticFolder}/image/chuansong.gif`;
 // 其他
-const Error404 = `${CONFIG.public_path}/image/error-404.png`;
-const Error500 = `${CONFIG.public_path}/image/error-500.png`;
+const Error404 = `${publicRuntimeConfig.staticFolder}/image/error-404.png`;
+const Error500 = `${publicRuntimeConfig.staticFolder}/image/error-500.png`;
 
 // 个人中心
-const InvoiceExample = `${CONFIG.public_path}/image/invoice_example.jpg`;
+const InvoiceExample = `${publicRuntimeConfig.staticFolder}/image/invoice_example.jpg`;
 
 // 车辆轨迹
-const lineFrom = `${CONFIG.public_path}/image/line-from.png`;
-const linePlace = `${CONFIG.public_path}/image/line-place.png`;
-const lineTo = `${CONFIG.public_path}/image/line-to.png`;
+const lineFrom = `${publicRuntimeConfig.staticFolder}/image/line-from.png`;
+const linePlace = `${publicRuntimeConfig.staticFolder}/image/line-place.png`;
+const lineTo = `${publicRuntimeConfig.staticFolder}/image/line-to.png`;
 
 export {
   Banner,

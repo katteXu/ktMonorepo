@@ -26,7 +26,9 @@ let config = {
   trailingSlash: process.env.NODE_ENV !== 'development',
 
   assetPrefix: `${CONFIG.public_path}`,
-
+  publicRuntimeConfig: {
+    staticFolder: `${CONFIG.public_path}`,
+  },
   webpack: (config, { isServer }) => {
     if (isServer) {
       const antStyles = /antd\/.*?\/style\/css.*?/;

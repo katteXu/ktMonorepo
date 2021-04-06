@@ -1,38 +1,39 @@
-const CONFIG = require('../config');
-console.log('==icon==>?', CONFIG.public_path || '没有');
-const Logo = `${CONFIG.public_path}/icon/logo.svg`;
-const Transport = `${CONFIG.public_path}/icon/transport-icon.svg`;
-const Logistics = `${CONFIG.public_path}/icon/logistics-icon.svg`;
-const Stock = `${CONFIG.public_path}/icon/stock-icon.svg`;
-const Finance = `${CONFIG.public_path}/icon/finance-icon.svg`;
-const User = `${CONFIG.public_path}/icon/user-icon.svg`;
-const People = `${CONFIG.public_path}/icon/people.svg`;
-const Phone = `${CONFIG.public_path}/icon/phone.svg`;
-const LinkIcon = `${CONFIG.public_path}/fx.ico`;
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
+const Logo = `${publicRuntimeConfig.staticFolder}/icon/logo.svg`;
+const Transport = `${publicRuntimeConfig.staticFolder}/icon/transport-icon.svg`;
+const Logistics = `${publicRuntimeConfig.staticFolder}/icon/logistics-icon.svg`;
+const Stock = `${publicRuntimeConfig.staticFolder}/icon/stock-icon.svg`;
+const Finance = `${publicRuntimeConfig.staticFolder}/icon/finance-icon.svg`;
+const User = `${publicRuntimeConfig.staticFolder}/icon/user-icon.svg`;
+const People = `${publicRuntimeConfig.staticFolder}/icon/people.svg`;
+const Phone = `${publicRuntimeConfig.staticFolder}/icon/phone.svg`;
+const LinkIcon = `${publicRuntimeConfig.staticFolder}/fx.ico`;
 // 概览
-const Wallet = `${CONFIG.public_path}/icon/wallet.svg`;
-const Day = `${CONFIG.public_path}/icon/day.svg`;
-const Month = `${CONFIG.public_path}/icon/month.svg`;
-const Cumulative = `${CONFIG.public_path}/icon/cumulative.svg`;
-const Blue = `${CONFIG.public_path}/icon/icon-blue.svg`;
-const Red = `${CONFIG.public_path}/icon/icon-red.svg`;
-const Yellow = `${CONFIG.public_path}/icon/icon-yellow.svg`;
-const Green = `${CONFIG.public_path}/icon/icon-green.svg`;
+const Wallet = `${publicRuntimeConfig.staticFolder}/icon/wallet.svg`;
+const Day = `${publicRuntimeConfig.staticFolder}/icon/day.svg`;
+const Month = `${publicRuntimeConfig.staticFolder}/icon/month.svg`;
+const Cumulative = `${publicRuntimeConfig.staticFolder}/icon/cumulative.svg`;
+
+const Blue = `${publicRuntimeConfig.staticFolder}/icon/icon-blue.svg`;
+const Red = `${publicRuntimeConfig.staticFolder}/icon/icon-red.svg`;
+const Yellow = `${publicRuntimeConfig.staticFolder}/icon/icon-yellow.svg`;
+const Green = `${publicRuntimeConfig.staticFolder}/icon/icon-green.svg`;
 
 // 运单管理
-const TransportIcon = `${CONFIG.public_path}/icon/transportIcon.svg`;
-const RouteIcon = `${CONFIG.public_path}/icon/routeIcon.svg`;
-const SpeakerIcon = `${CONFIG.public_path}/icon/speakerIcon.svg`;
-const CarIcon = `${CONFIG.public_path}/icon/carIcon.svg`;
+const TransportIcon = `${publicRuntimeConfig.staticFolder}/icon/transportIcon.svg`;
+const RouteIcon = `${publicRuntimeConfig.staticFolder}/icon/routeIcon.svg`;
+const SpeakerIcon = `${publicRuntimeConfig.staticFolder}/icon/speakerIcon.svg`;
+const CarIcon = `${publicRuntimeConfig.staticFolder}/icon/carIcon.svg`;
 
 // 智慧工厂
-const ArrowIcon = `${CONFIG.public_path}/icon/blue-arrow.svg`;
-const TotalPic = `${CONFIG.public_path}/icon/total.svg`;
-const CleanCoalPic = `${CONFIG.public_path}/icon/cleanCoal.svg`;
+const ArrowIcon = `${publicRuntimeConfig.staticFolder}/icon/blue-arrow.svg`;
+const TotalPic = `${publicRuntimeConfig.staticFolder}/icon/total.svg`;
+const CleanCoalPic = `${publicRuntimeConfig.staticFolder}/icon/cleanCoal.svg`;
 
 // 个人中心
-const VerifyNone = `${CONFIG.public_path}/icon/verify_none.svg`;
-const VerifyIcon = `${CONFIG.public_path}/icon/verify.svg`;
+const VerifyNone = `${publicRuntimeConfig.staticFolder}/icon/verify_none.svg`;
+const VerifyIcon = `${publicRuntimeConfig.staticFolder}/icon/verify.svg`;
 
 export {
   LinkIcon,
