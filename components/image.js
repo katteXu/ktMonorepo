@@ -1,6 +1,6 @@
 const CONFIG = require('../config');
 // 概览
-
+console.log('==image==>?', CONFIG.public_path || '没有');
 // 首页
 const Banner = `${CONFIG.public_path}/image/banner.png`;
 const Transport = `${CONFIG.public_path}/image/transport.png`;

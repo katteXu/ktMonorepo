@@ -1,5 +1,5 @@
 const CONFIG = require('../config');
-
+console.log('==icon==>?', CONFIG.public_path || '没有');
 const Logo = `${CONFIG.public_path}/icon/logo.svg`;
 const Transport = `${CONFIG.public_path}/icon/transport-icon.svg`;
 const Logistics = `${CONFIG.public_path}/icon/logistics-icon.svg`;
