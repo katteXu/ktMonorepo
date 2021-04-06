@@ -7,7 +7,7 @@ import moment from 'moment';
 
 const PoundRecord = () => {
   const routeView = {
-    title: '过磅记录1',
+    title: '过磅记录',
     pageKey: 'poundRecord',
     longKey: 'poundManagement.poundRecord',
     breadNav: '过磅管理.过磅记录.',
