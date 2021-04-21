@@ -1,4 +1,3 @@
-/** @format */
 import React, { useState } from 'react';
 import router from 'next/router';
 import Layout from '@components/Layout';
@@ -7,7 +6,6 @@ import Content from '@components/Content';
 import railWay from '@api/railWay';
 import Link from 'next/link';
 import RailWayForm from '@components/RailDetail/railWayForm';
-import Map, { setTruckDriving, clear } from '@components/Map';
 import { clearState } from '@utils/common';
 
 const CreateRailWay = props => {
@@ -31,7 +29,7 @@ const CreateRailWay = props => {
   const [showConfirm, setShowConfirm] = useState(false);
 
   // 表单提交
-  const submit = async (data, viewData) => {
+  const submit = async data => {
     // setShowConfirm(true);
     // setConfirmData(viewData);
     // setSaveData(data);
@@ -58,14 +56,9 @@ const CreateRailWay = props => {
   // };
 
   // 地图加载完毕
-  const mapReady = map => {
-    // this.setState({
-    //   mapIntance: map,
-    // });
-  };
 
   // 画路线图
-  const drawTruck = path => {
+  const drawTruck = () => {
     // const { mapIntance } = this.state;
     // setTruckDriving(mapIntance, path);
   };
@@ -105,12 +98,6 @@ const CreateRailWay = props => {
       </Modal>
     </Layout>
   );
-};
-
-CreateRailWay.getInitialProps = async props => {
-  const { isServer } = props;
-  const serverTime = new Date();
-  return { isServer, serverTime };
 };
 
 export default CreateRailWay;

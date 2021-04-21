@@ -11,11 +11,11 @@ import AssociatedContract from '@components/contractManagement/associatedContrac
 
 import styles from './styles.less';
 // 表单格式
-const formItemLayout = {
-  labelAlign: 'left',
-  labelCol: { span: 4 },
-  wrapperCol: { span: 18 },
-};
+// const formItemLayout = {
+//   labelAlign: 'left',
+//   // labelCol: { span: 6 },
+//   // wrapperCol: { span: 18 },
+// };
 
 const tailFormItemLayout = {
   wrapperCol: { offset: 4 },
@@ -185,7 +185,7 @@ const Index = () => {
   return (
     <>
       <Form
-        {...formItemLayout}
+        // {...formItemLayout}
         onFinish={handleSubmit}
         onFinishFailed={onFinishFailed}
         autoComplete="off"

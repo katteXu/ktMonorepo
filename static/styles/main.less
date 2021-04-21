@@ -245,10 +245,6 @@
     margin-bottom: 20px;
   }
 
-  .ant-form-horizontal .ant-form-item-control {
-    height: 64px;
-  }
-
   .ant-affix {
     z-index: 99;
   }
@@ -475,6 +471,52 @@
       background-color: #f6f6f6 !important;
       border: 1px solid #d9d9d9;
       color: rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  // 表单
+  .ant-form {
+    // 表单项
+    .ant-form-item {
+      .ant-form-item-control {
+        padding-bottom: 24px;
+      }
+
+      // label 文案
+      .ant-form-item-label {
+        width: 110px;
+        margin-right: 8px;
+      }
+
+      // control组件
+      .ant-form-item-control {
+        // width: 480px;
+        // width: max-content;
+      }
+
+      // 错误信息
+      .ant-form-item-explain {
+        position: absolute;
+        bottom: 0;
+      }
+    }
+
+    // 不同表单尺寸
+    &.small {
+      .ant-form-item {
+        .ant-form-item-label {
+          width: 84px;
+        }
+      }
+    }
+
+    &.middle {
+    }
+
+    &.big {
+    }
+
+    &.large {
     }
   }
 }

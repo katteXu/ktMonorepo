@@ -4,21 +4,7 @@ import styles from './styles.less';
 // 表单布局
 const formItemLayout = {
   labelAlign: 'left',
-  labelCol: { span: 4 },
-  wrapperCol: { span: 20 },
-};
-
-const styleBottom = {
-  height: 50,
-  padding: '0 22px',
-  borderTop: '1px solid #f0f0f0',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  right: 0,
+  wrapperCol: { span: 19 },
 };
 
 const CompanyForm = ({ formData, onSubmit, onClose }) => {
@@ -41,13 +27,7 @@ const CompanyForm = ({ formData, onSubmit, onClose }) => {
   // 帮助文案
   const Help = () => {
     return (
-      <div
-        style={{
-          fontSize: 12,
-          lineHeight: '12px',
-          marginTop: 3,
-          color: '#a3a3a3',
-        }}>
+      <div style={{ fontSize: 12, lineHeight: '12px', marginTop: 8, color: '#a3a3a3' }}>
         <span>企业名称将用于发票等场景，请确保其正确</span>
       </div>
     );
@@ -63,85 +43,44 @@ const CompanyForm = ({ formData, onSubmit, onClose }) => {
   }, [formData]);
 
   return (
-    <div className={styles.companyForm}>
+    <div className={styles.form}>
       <Form
+        className="small"
         {...formItemLayout}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         hideRequiredMark={true}
-        form={form}
-        initialValues={
-          {
-            // companyName: formData && formData.companyName,
-            // companySimpleName: formData && formData.companySimpleName,
-            // companyContactName: formData && formData.companyContactName,
-            // companyContactMobile: formData && formData.companyContactMobile,
-          }
-        }>
-        <Form.Item label="企业名称">
-          <Form.Item
-            name="companyName"
-            validateFirst={true}
-            noStyle
-            rules={[
-              {
-                required: true,
-                message: '请输入企业名称',
-              },
-              {
-                max: 25,
-                message: '企业名称最多不超过25个字符',
-              },
-            ]}>
-            <Input placeholder="请输入企业名称" />
+        form={form}>
+        <div className={styles.companyForm}>
+          <Form.Item label="企业名称">
+            <Form.Item
+              name="companyName"
+              validateFirst={true}
+              noStyle
+              rules={[
+                {
+                  required: true,
+                  message: '请输入企业名称',
+                },
+                {
+                  max: 25,
+                  message: '企业名称最多不超过25个字符',
+                },
+              ]}>
+              <Input placeholder="请输入企业名称" style={{ width: 200 }} />
+            </Form.Item>
+            <Help />
           </Form.Item>
-          <Help />
+        </div>
+
+        <Form.Item label="企业联系人" name="companyContactName">
+          <Input placeholder="请输入企业联系人" style={{ width: 200 }} />
         </Form.Item>
-        <Form.Item
-          label="企业联系人"
-          name="companyContactName"
-          // validateFirst={true}
-          rules={
-            [
-              // {
-              //   required: true,
-              //   message: '请输入企业联系人',
-              // },
-              // {
-              //   min: 2,
-              //   message: '内容长度不能少于2',
-              // },
-              // {
-              //   pattern: /^(?:[\u4e00-\u9fa5·]{2,16})$/,
-              //   message: '联系人只能是汉字',
-              // },
-              // {
-              //   max: 10,
-              //   message: '内容长度不能超过10',
-              // },
-            ]
-          }>
-          <Input placeholder="请输入企业联系人" />
-        </Form.Item>
-        <Form.Item
-          label="联系人电话"
-          name="companyContactMobile"
-          rules={
-            [
-              // {
-              //   required: true,
-              //   message: '请输入联系人电话',
-              // },
-              // {
-              //   pattern: /^\d+$|^\d+[.]?\d+$/,
-              //   message: '电话只能输入数字',
-              // },
-            ]
-          }>
-          <Input placeholder="请输入联系人电话" />
+        <Form.Item label="联系人电话" name="companyContactMobile">
+          <Input placeholder="请输入联系人电话" style={{ width: 200 }} />
         </Form.Item>
 
-        <div style={{ textAlign: 'right', ...styleBottom }}>
+        <div style={{ textAlign: 'right' }}>
           <Button size="default" onClick={() => onClose()}>
             取消
           </Button>

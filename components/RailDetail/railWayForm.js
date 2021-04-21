@@ -1,101 +1,16 @@
-import { MinusCircleOutlined, QuestionCircleFilled } from '@ant-design/icons';
-import {
-  Button,
-  Input,
-  Select,
-  Modal,
-  Divider,
-  Checkbox,
-  DatePicker,
-  Tooltip,
-  Radio,
-  Switch,
-  Form,
-  Row,
-  Col,
-  message,
-} from 'antd';
+import { QuestionCircleFilled } from '@ant-design/icons';
+import { Button, Input, Select, Modal, DatePicker, Tooltip, Radio, Switch, Form, Row, Col, message } from 'antd';
 import styles from './styles.less';
 import moment from 'moment';
 import { railWay, customer, getCommon } from '@api';
-import SelectBtn from './selectBtn_new';
 import CreateGoods from './createGoods';
 import { useState, useEffect, useCallback } from 'react';
-import { AutoInputRoute, DrawerInfo } from '@components';
+import { AutoInputRoute } from '@components';
 import AddressForm from '@components/CustomerDetail/address/form';
 import CompanyForm from '@components/CustomerDetail/company/form';
 import router from 'next/router';
 const { Option } = Select;
 const { TextArea } = Input;
-// 危险品
-const DANGER_GOODS = [
-  '起爆药',
-  '爆破雷管',
-  '黑火药',
-  '导弹',
-  '演习手榴弹',
-  '安全导火索',
-  '礼花弹',
-  '烟火',
-  '爆竹',
-  '手操信号装置',
-  '导火索',
-  '燃烧弹药',
-  '烟幕弹药',
-  'C型烟火',
-  'E型或B型引爆器',
-  '铵油',
-  '铵沥蜡炸药',
-  '二氧化碳',
-  '氨',
-  '氯',
-  '液化石油气',
-  '液氧',
-  '液氮',
-  '液氩',
-  '黄磷',
-  '磷化氢',
-  '铝',
-  '钾',
-  '钠',
-  '钙',
-  '电石',
-  '氧',
-  '溴',
-  '浓硝酸',
-  '氯酸钾',
-  '硝酸钾',
-  '漂白粉',
-  '乙醇',
-  '白磷',
-  '氢过氧化物',
-  'ROOH',
-  '二烷基过氧化物',
-  'ROOR',
-  '二酰基过氧化物',
-  'RCOOOOCR',
-  '过氧酯',
-  'RCOOOR',
-  '过氧化碳酸酯',
-  'ROCOOOOCOR',
-  '及酮过氧化物',
-  'R2C(OOH)2',
-  'α射线',
-  'β射线',
-  'γ射线',
-  'x射线',
-  '中子流',
-  '放射',
-  '甲酸',
-  '冰醋酸',
-  '苯甲酰氯',
-  '丙烯酸',
-  '硝酸',
-  '硫酸',
-  '高氯酸',
-  '溴素',
-];
-
 // 货运方式
 const TransportType = {
   FTL: '整车运输',
@@ -104,15 +19,15 @@ const TransportType = {
 // 表单布局
 const formItemLayout = {
   labelAlign: 'left',
-  labelCol: { span: 5 },
+  // labelCol: { span: 5 },
   wrapperCol: { span: 19 },
 };
 
 const tailFormItemLayout = {
-  wrapperCol: {
-    offset: 5,
-    span: 14,
-  },
+  //   wrapperCol: {
+  //     offset: 5,
+  //     span: 14,
+  //   },
 };
 
 const oneformItemLayout = {
@@ -125,44 +40,12 @@ const oneformItemLayout = {
 // 校验规则
 const rules = [{ required: true, whitespace: true, message: '选项不可为空' }];
 // 输入框验证
-const input_rules = [{ required: true, whitespace: true, message: '内容不可为空' }];
 // 姓名验证
-const name_rules = [
-  {
-    required: true,
-    whitespace: true,
-    message: '内容不可为空',
-  },
-  {
-    pattern: /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/,
-    message: '内容长度不能小于2个汉字',
-  },
-];
 // 电话验证
-const phone_rules = [
-  {
-    required: true,
-    whitespace: true,
-    message: '内容不可为空',
-  },
-  {
-    pattern: /^[1][3,4,5,6,7,8,9][0-9]{9}$/,
-    message: '请输入有效的联系电话',
-  },
-];
 // 数字验证
-const num_rules = [
-  {
-    type: 'number',
-    message: '请输入有效的数字',
-    transform: value => parseInt(value),
-  },
-];
 
 // 对象验证
-const date_config = [{ type: 'object', required: true, whitespace: true, message: '内容不可为空' }];
 // 下拉对象验证
-const select_obj_config = [{ type: 'object', required: true, whitespace: true, message: '选项不可为空' }];
 
 // 必须是数字，只能大于0，只能输入两位小数
 const number_rules = [
@@ -186,12 +69,6 @@ const number_rules = [
 ];
 
 // 除了吨以外的单位校验
-const otherUnitNameCheckRules = [
-  {
-    pattern: /^\d+$/,
-    message: '只能是整数',
-  },
-];
 
 // 获取货物类型
 const getGoodsType = async () => {
@@ -207,9 +84,7 @@ const getGoodsType = async () => {
 
 // 获取地址列表
 const getAddressList = async ({ page = 1, limit = 1000 } = {}) => {
-  const res = await customer.getCustomerAddressList({
-    params: { page, limit },
-  });
+  const res = await customer.getCustomerAddressList({ params: { page, limit } });
   if (res.status === 0) {
     return res.result;
   }
@@ -222,7 +97,7 @@ const getGoodsUnitName = async () => {
 };
 
 // 表单组件
-const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
+const RailWayForm = ({ serverTime, onSubmit }) => {
   // 服务端时间和本地时间差
   const [diffTime, setDiffTime] = useState(() => {
     return moment(serverTime).diff(moment());
@@ -247,23 +122,6 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
   const [newCompany, setNewCompany] = useState(false);
 
   // 危险品提示
-  const goodWarn = value => {
-    const isDanger = DANGER_GOODS.includes(value);
-    if (isDanger) {
-      Modal.warning({
-        title: '危险品提示',
-        content: (
-          <p>
-            检测到您想要运输的货物为<span style={{ color: 'red' }}>危险品</span>
-            ，应国家规定，网络货运平台不允许承运危险品，对您造成的困扰深感抱歉，请您重新选择要承运的货物
-          </p>
-        ),
-        onOk: () => {
-          console.log('重新选择');
-        },
-      });
-    }
-  };
   // 货品单位
   const [unitNameList, setUnitNameList] = useState([]);
   const [unitName, setUnitName] = useState('吨');
@@ -332,23 +190,10 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
   };
 
   // 选择地址
-  const handleSelect = (type, address) => {
-    if (type === 'from') setFromCompany(address);
-    if (type === 'to') setToCompany(address);
-  };
 
   // 监听发货id
   useEffect(() => {
-    const fromAddress = addressList.find(({ id }) => id === fromAddressId);
     const toAddress = addressList.find(({ id }) => id === toAddressId);
-    // 绘制路线
-    // if (fromAddressId && toAddressId) {
-    //   const { longitude: fromlng, latitude: fromlat } = fromAddress;
-    //   const { longitude: tolng, latitude: tolat } = toAddress;
-    //   if (fromlng && tolng) {
-    //     renderMap([{ lnglat: [fromlng, fromlat] }, { lnglat: [tolng, tolat] }]);
-    //   }
-    // }
 
     // 绑定联系人
     if (toAddressId) {
@@ -403,12 +248,12 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
 
   // 提交
   const handleSubmit = values => {
-    // const [startLoadTime, lastLoadTime] = values.loadTime || [];
     const [startLoadTime, lastLoadTime] = [moment().add(diffTime), values.loadTime];
     const hiddenInfo = {};
     Object.keys(options).forEach(item => {
       hiddenInfo[item] = values.hiddenInfo && values.hiddenInfo.includes(item) ? 1 : 0;
     });
+    console.log(values.hiddenInfo);
     const fromAddress = addressList.find(({ id }) => id === fromAddressId);
     const toAddress = addressList.find(({ id }) => id === toAddressId);
 
@@ -480,10 +325,7 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
         value: data.startLoadTime && data.lastLoadTime ? `${data.startLoadTime}-${data.lastLoadTime}` : '-',
       },
       goodsType: { label: '货品名称：', value: values.goodsType || '-' },
-      transportType: {
-        label: '货运方式：',
-        value: TransportType[values.transportType],
-      },
+      transportType: { label: '货运方式：', value: TransportType[values.transportType] },
       totalAmount: {
         label: '货物总量：',
         value: values.totalAmount ? `${(values.totalAmount * 1).toFixed(2)}${values.unitName}` : '-',
@@ -497,22 +339,10 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
         value: values.unitPrice ? `${(values.unitPrice * 1).toFixed(2)}元/${values.unitName}` : '-',
       },
       consignor: { label: '托运人：', value: data.consignor },
-      receiver: {
-        label: '收货人：',
-        value: `${values.receiverName || '-'}  ${values.receiverMobilePhone || '-'}`,
-      },
-      send: {
-        label: '发货人：',
-        value: `${values.fromName || '-'} ${values.fromMobilePhone}`,
-      },
-      otherGoodsOwnerVisible: {
-        label: '其他货主可见：',
-        value: `${values.otherGoodsOwnerVisible ? '是' : '否'}`,
-      },
-      eraseZero: {
-        label: '运费个位抹零：',
-        value: `${values.eraseZero ? '是' : '否'}`,
-      },
+      receiver: { label: '收货人：', value: `${values.receiverName || '-'}  ${values.receiverMobilePhone || '-'}` },
+      send: { label: '发货人：', value: `${values.fromName || '-'} ${values.fromMobilePhone}` },
+      otherGoodsOwnerVisible: { label: '其他货主可见：', value: `${values.otherGoodsOwnerVisible ? '是' : '否'}` },
+      eraseZero: { label: '运费个位抹零：', value: `${values.eraseZero ? '是' : '否'}` },
       payMethod: {
         label: '结算方式：',
         value: `${
@@ -526,16 +356,10 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
     };
     // 其他收货人
     if (otherReceiver) {
-      dataView.receiver1 = {
-        label: '收货人1：',
-        value: `${values.receiver2Name}  ${values.receiver2MobilePhone}`,
-      };
+      dataView.receiver1 = { label: '收货人1：', value: `${values.receiver2Name}  ${values.receiver2MobilePhone}` };
     }
 
-    dataView.lossMark = {
-      label: '路损计算：',
-      value: values.lossMark ? '是' : '否',
-    };
+    dataView.lossMark = { label: '路损计算：', value: values.lossMark ? '是' : '否' };
     values.lossAmount &&
       (dataView.lossAmount = {
         label: '允许路损：',
@@ -549,20 +373,15 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
         value: values.remark,
       });
     // 余量提醒
-    dataView.isLeavingAmount = {
-      label: '余量提醒：',
-      value: isLeavingAmount === 1 ? '开启' : '关闭',
-    };
+    dataView.isLeavingAmount = { label: '余量提醒：', value: isLeavingAmount === 1 ? '开启' : '关闭' };
     if (isLeavingAmount === 1) {
       dataView.ruleLeavingAmount = {
         label: '限制进站余量：',
         value: `${(values.ruleLeavingAmount * 1).toFixed(2)} ${values.unitName}`,
       };
-      dataView.routeContactMobile = {
-        label: '专线负责人：',
-        value: values.routeContactMobile,
-      };
+      dataView.routeContactMobile = { label: '专线负责人：', value: values.routeContactMobile };
     }
+    console.log(data);
     onSubmit(data, dataView);
   };
 
@@ -571,6 +390,7 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
   };
 
   const settlementMethod = v => {
+    console.log(v);
     v === '1'
       ? form.setFieldsValue({
           payMethod: '0',
@@ -609,18 +429,6 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
         validateToAddress: undefined,
       });
     }
-  };
-
-  const removeContract = () => {
-    setContract({});
-    setFromCompany({});
-    setToCompany({});
-    form.setFieldsValue({
-      goodsType: '',
-      goodsUnitPrice: '',
-      validateFromAddress: '',
-      validateToAddress: '',
-    });
   };
 
   const onChangeFromCompany = (e, val) => {
@@ -794,112 +602,81 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
           <span className={styles.line}></span>路线填写
         </div>
 
-        <Row style={{ width: 600 }}>
-          <Col span={11}>
-            <Form.Item
-              label={
-                <div>
-                  <span className={styles.noStar}>*</span>选择合同
-                </div>
-              }
-              name="contract"
-              style={{ marginLeft: 32 }}>
-              <AutoInputRoute
-                style={{ width: 264 }}
-                mode="contract"
-                value={fromCompany.companyName}
-                allowClear
-                placeholder="请选择合同"
-                onChange={(e, val) => {
-                  onChangeContract(e, val);
-                }}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={4} style={{ position: 'relative', left: 156 }}>
-            <Button type="link" onClick={() => router.push('/contractManagement/addContract')}>
-              新增
-            </Button>
-          </Col>
-        </Row>
+        <Form.Item
+          label={
+            <div>
+              <span className={styles.noStar}>*</span>选择合同
+            </div>
+          }
+          name="contract"
+          style={{ marginLeft: 32 }}>
+          <AutoInputRoute
+            style={{ width: 264 }}
+            mode="contract"
+            value={fromCompany.companyName}
+            allowClear
+            placeholder="请选择合同"
+            onChange={(e, val) => {
+              onChangeContract(e, val);
+            }}
+          />
+          <Button
+            className={styles['btn-new']}
+            type="link"
+            onClick={() => router.push('/contractManagement/addContract')}>
+            新增
+          </Button>
+        </Form.Item>
 
-        <Row style={{ width: 600 }}>
-          <Col span={11}>
-            <Form.Item
-              label="发货企业"
-              name="validateFromAddress"
-              style={{ marginLeft: 32 }}
-              rules={[{ required: true, whitespace: true, message: '企业不可为空' }]}>
-              <AutoInputRoute
-                mode="company"
-                value={fromCompany.companyName}
-                allowClear
-                placeholder="请选择发货企业"
-                newCompany={newCompany}
-                onChange={(e, val) => {
-                  onChangeFromCompany(e, val), console.log(val);
-                }}
-                disContent={contract && Object.keys(contract).length > 0 ? true : false}
-              />
-            </Form.Item>
-          </Col>
-
-          <Col span={4} style={{ position: 'relative', left: 367 }}>
-            <Button type="link" onClick={() => setCompanyModal(true)}>
-              新增
-            </Button>
-          </Col>
-        </Row>
+        <Form.Item
+          label="发货企业"
+          name="validateFromAddress"
+          style={{ marginLeft: 32 }}
+          rules={[{ required: true, whitespace: true, message: '企业不可为空' }]}>
+          <AutoInputRoute
+            style={{ width: 480 }}
+            mode="company"
+            value={fromCompany.companyName}
+            allowClear
+            placeholder="请选择发货企业"
+            newCompany={newCompany}
+            onChange={(e, val) => {
+              onChangeFromCompany(e, val), console.log(val);
+            }}
+            disContent={contract && Object.keys(contract).length > 0 ? true : false}
+          />
+          <Button className={styles['btn-new']} type="link" onClick={() => setCompanyModal(true)}>
+            新增
+          </Button>
+        </Form.Item>
 
         {/* 发货地址 */}
-        {/* {fromAddress.id && ( */}
-        <Row style={{ width: 600 }}>
-          <Col span={11}>
-            <Form.Item
-              label="发货地址"
-              name="fromAddressId"
-              style={{ marginLeft: 32 }}
-              rules={[{ required: true, message: '选项不能为空' }]}>
-              <Select
-                // loading={fromAddressLoading}
-                placeholder="请选择发货地址"
-                onChange={value => setFromAddressId(value)}
-                showSearch
-                allowClear
-                optionFilterProp="children"
-                // onPopupScroll={async e => {
-                //   const { clientHeight, scrollHeight, scrollTop } = e.target;
-                //   if (clientHeight + scrollTop === scrollHeight && !fromAddressLoading && !fromAddressEmpty) {
-                //     setFromAddressLoading(true);
-                //     const addressList = await getAddressList({ page: fromAddressList.page + 1 });
-                //     // 当前页已经是最大页
-                //     setFromAddressEmpty(addressList.page === addressList.pages);
-                //     setFromAddressList(state => {
-                //       const { data, page } = state;
-                //       return { data: [...data, ...addressList.data], page: addressList.page };
-                //     });
-                //     setFromAddressLoading(false);
-                //   }
-                // }}
-              >
-                {addressList
-                  .filter(item => item.id !== toAddressId)
-                  .map(({ province, city, district, detailAddress, id, loadAddressName }) => (
-                    <Select.Option key={id} value={id}>
-                      {loadAddressName} {province}
-                      {city}
-                      {district} {detailAddress}
-                    </Select.Option>
-                  ))}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={4} style={{ position: 'relative', left: 367 }}>
-            <Button type="link" onClick={() => setAddressModal(true)}>
-              新增
-            </Button>
-          </Col>
-        </Row>
+        <Form.Item
+          label="发货地址"
+          name="fromAddressId"
+          style={{ marginLeft: 32 }}
+          rules={[{ required: true, message: '选项不能为空' }]}>
+          <Select
+            style={{ width: 480 }}
+            placeholder="请选择发货地址"
+            onChange={value => setFromAddressId(value)}
+            showSearch
+            allowClear
+            optionFilterProp="children">
+            {addressList
+              .filter(item => item.id !== toAddressId)
+              .map(({ province, city, district, detailAddress, id, loadAddressName }) => (
+                <Select.Option key={id} value={id}>
+                  {loadAddressName} {province}
+                  {city}
+                  {district} {detailAddress}
+                </Select.Option>
+              ))}
+          </Select>
+          <Button className={styles['btn-new']} type="link" onClick={() => setAddressModal(true)}>
+            新增
+          </Button>
+        </Form.Item>
 
         {/* 发货人 */}
         <Form.Item
@@ -908,7 +685,7 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
               <span className={styles.noStar}>*</span>发货人
             </div>
           }
-          style={{ marginLeft: 32, marginBottom: 0 }}
+          style={{ marginLeft: 32, marginBottom: 0, height: 56 }}
           wrapperCol={{ span: 19 }}>
           <Form.Item
             style={{ display: 'inline-block', width: 200 }}
@@ -943,65 +720,55 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
             <Input maxLength={11} placeholder="请输入发货人电话" style={{ width: 200 }} />
           </Form.Item>
         </Form.Item>
-        <Row style={{ width: 600 }}>
-          <Col span={11}>
-            <Form.Item
-              label="收货企业"
-              name="validateToAddress"
-              style={{ marginLeft: 32 }}
-              rules={[{ required: true, whitespace: true, message: '企业不可为空' }]}>
-              <AutoInputRoute
-                mode="company"
-                value={toCompany.companyName}
-                allowClear
-                newCompany={newCompany}
-                placeholder="请选择收货企业"
-                onChange={(e, val) => onChangeToCompany(e, val)}
-                disContent={contract && Object.keys(contract).length > 0 ? true : false}
-              />
-            </Form.Item>
-          </Col>
+        <Form.Item
+          label="收货企业"
+          name="validateToAddress"
+          style={{ marginLeft: 32 }}
+          rules={[{ required: true, whitespace: true, message: '企业不可为空' }]}>
+          <AutoInputRoute
+            style={{ width: 480 }}
+            mode="company"
+            value={toCompany.companyName}
+            allowClear
+            newCompany={newCompany}
+            placeholder="请选择收货企业"
+            onChange={(e, val) => onChangeToCompany(e, val)}
+            disContent={contract && Object.keys(contract).length > 0 ? true : false}
+          />
+          <Button className={styles['btn-new']} type="link" onClick={() => setCompanyModal(true)}>
+            新增
+          </Button>
+        </Form.Item>
 
-          <Col span={4} style={{ position: 'relative', left: 367 }}>
-            <Button type="link" onClick={() => setCompanyModal(true)}>
-              新增
-            </Button>
-          </Col>
-        </Row>
         {/* 收货地址 */}
-        <Row style={{ width: 600 }}>
-          <Col span={11}>
-            <Form.Item
-              label="收货地址"
-              name="toAddressId"
-              style={{ marginLeft: 32 }}
-              rules={[{ required: true, message: '选项不能为空' }]}>
-              <Select
-                // loading={toAddressList.loading}
-                placeholder="请选择收货地址"
-                showSearch
-                allowClear
-                optionFilterProp="children"
-                onChange={value => setToAddressId(value)}>
-                {addressList
-                  .filter(item => item.id !== fromAddressId)
-                  .map(({ province, city, district, detailAddress, id, loadAddressName }) => (
-                    <Select.Option key={id} value={id}>
-                      {loadAddressName} {province}
-                      {city}
-                      {district} {detailAddress}
-                    </Select.Option>
-                  ))}
-              </Select>
-            </Form.Item>
-          </Col>
 
-          <Col span={4} style={{ position: 'relative', left: 367 }}>
-            <Button type="link" onClick={() => setAddressModal(true)}>
-              新增
-            </Button>
-          </Col>
-        </Row>
+        <Form.Item
+          label="收货地址"
+          name="toAddressId"
+          style={{ marginLeft: 32 }}
+          rules={[{ required: true, message: '选项不能为空' }]}>
+          <Select
+            style={{ width: 480 }}
+            placeholder="请选择收货地址"
+            showSearch
+            allowClear
+            optionFilterProp="children"
+            onChange={value => setToAddressId(value)}>
+            {addressList
+              .filter(item => item.id !== fromAddressId)
+              .map(({ province, city, district, detailAddress, id, loadAddressName }) => (
+                <Select.Option key={id} value={id}>
+                  {loadAddressName} {province}
+                  {city}
+                  {district} {detailAddress}
+                </Select.Option>
+              ))}
+          </Select>
+          <Button className={styles['btn-new']} type="link" onClick={() => setAddressModal(true)}>
+            新增
+          </Button>
+        </Form.Item>
+
         {/* 收货人 */}
         <Form.Item
           label={
@@ -1044,59 +811,31 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
             <Input maxLength={11} placeholder="请输入收货人电话" style={{ width: 200 }} />
           </Form.Item>
         </Form.Item>
-        {/* 收货人1 */}
-        {/* {otherReceiver ? (
-          <Form.Item
-            required={otherReceiver}
-            colon={otherReceiver}
-            label={otherReceiver ? '收货人1' : ' '}
-            wrapperCol={{ span: 16 }}
-            style={{ marginBottom: 0 }}>
-            <Form.Item style={{ display: 'inline-block', width: '45%' }} name="receiver2Name" rules={name_rules}>
-              <Input placeholder="请输入收货人姓名" />
-            </Form.Item>
-            <Form.Item
-              style={{ display: 'inline-block', width: '52%', marginLeft: 10 }}
-              name="receiver2MobilePhone"
-              rules={phone_rules}>
-              <Input maxLength={11} placeholder="请输入收货人电话" />
-            </Form.Item>
-            <MinusCircleOutlined
-              className={styles['remove-button']}
-              onClick={() => setOther(false)}
-              style={{ right: -25, top: 15 }}
-            />
-          </Form.Item>
-        ) : null} */}
-        {/* <Divider dashed /> */}
+
         <div className={styles.title}>
           <span className={styles.line}></span>货物填写
         </div>
         {/* 货品名称 */}
-        <Row style={{ width: 600 }}>
-          <Col span={11}>
-            <Form.Item name="goodsType" style={{ marginLeft: 32 }} rules={rules} label="货品名称">
-              <Select
-                style={{ width: 264 }}
-                placeholder="请选择货品名称"
-                showSearch
-                allowClear
-                optionFilterProp="children"
-                disabled={contract && Object.keys(contract).length > 0 ? true : false}>
-                {goodList.map(item => (
-                  <Option key={`${item}`} value={item}>
-                    {item}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={4} style={{ position: 'relative', left: 156 }}>
-            <Button type="link" onClick={() => setGoodModal(true)}>
-              新增
-            </Button>
-          </Col>
-        </Row>
+
+        <Form.Item name="goodsType" style={{ marginLeft: 32 }} rules={rules} label="货品名称">
+          <Select
+            style={{ width: 264 }}
+            placeholder="请选择货品名称"
+            showSearch
+            allowClear
+            optionFilterProp="children"
+            disabled={contract && Object.keys(contract).length > 0 ? true : false}>
+            {goodList.map(item => (
+              <Option key={`${item}`} value={item}>
+                {item}
+              </Option>
+            ))}
+          </Select>
+          <Button className={styles['btn-new']} type="link" onClick={() => setGoodModal(true)}>
+            新增
+          </Button>
+        </Form.Item>
+
         {/* 货品方式 */}
         <Form.Item
           label={
@@ -1122,14 +861,7 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
               name="unitPrice"
               style={{ marginLeft: 32 }}
               validateFirst={true}
-              rules={[
-                {
-                  required: onlyPound === 0,
-                  whitespace: true,
-                  message: '内容不能为空',
-                },
-                ...number_rules,
-              ]}>
+              rules={[{ required: onlyPound === 0, whitespace: true, message: '内容不能为空' }, ...number_rules]}>
               <Input placeholder="请输入运费单价" addonAfter={<span>元</span>} style={{ width: 264 }} />
             </Form.Item>
           </Col>
@@ -1152,9 +884,13 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
         {/* 货物单价 */}
         <Form.Item
           label={
-            <div>
-              <span className={styles.noStar}>*</span>货物单价
-            </div>
+            allowLoss ? (
+              '货物单价'
+            ) : (
+              <div>
+                <span className={styles.noStar}>*</span>货物单价
+              </div>
+            )
           }
           name="goodsUnitPrice"
           style={{ marginLeft: 32 }}
@@ -1196,7 +932,7 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
           ]}>
           <Input placeholder="请输入货物总量" style={{ width: 264 }} addonAfter={<span>{unitName}</span>} />
         </Form.Item>
-        {/* <Divider dashed /> */}
+
         <div className={styles.title}>
           <span className={styles.line}></span>结算设置
         </div>
@@ -1250,15 +986,8 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
             validateFirst={true}
             rules={[
               { required: true, whitespace: true, message: '内容不能为空' },
-              {
-                type: 'number',
-                message: '请输入有效的数字',
-                transform: value => Number(value),
-              },
-              {
-                pattern: /^([1-9][0-9]*(\.\d*)?)|(0\.\d*)$/,
-                message: '内容必须大于0',
-              },
+              { type: 'number', message: '请输入有效的数字', transform: value => Number(value) },
+              { pattern: /^([1-9][0-9]*(\.\d*)?)|(0\.\d*)$/, message: '内容必须大于0' },
               {
                 pattern: /^(-?\d+)(\.\d{1,2})?$/,
                 message: '不可超过2位小数',
@@ -1277,7 +1006,7 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
           wrapperCol={{ span: 20 }}
           name="payMethod"
           style={{ marginLeft: 32, width: 700 }}>
-          <Radio.Group style={{ marginLeft: -20 }}>
+          <Radio.Group>
             <Radio value="1">按发货净重结算</Radio>
             <Radio value="0" style={{ marginLeft: 16 }}>
               按收货净重结算
@@ -1307,14 +1036,7 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
                   </div>
                 }
                 placement="right">
-                <QuestionCircleFilled
-                  style={{
-                    marginRight: 0,
-                    marginLeft: 5,
-                    cursor: 'pointer',
-                    color: '#D0D4DB',
-                  }}
-                />
+                <QuestionCircleFilled style={{ marginRight: 0, marginLeft: 5, cursor: 'pointer', color: '#D0D4DB' }} />
               </Tooltip>
             </div>
           }
@@ -1340,7 +1062,6 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
                   message: '限制余量只能是数字，最多两位小数',
                 },
               ]}>
-              {/* <Input placeholder="请输入限制进站余量" suffix={`${unitName}`} /> */}
               <Input placeholder="请输入限制进站余量" addonAfter={<span>{unitName}</span>} style={{ width: 264 }} />
             </Form.Item>
             <Form.Item
@@ -1362,14 +1083,7 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
             </Form.Item>
           </>
         )}
-        {/* 其他货主可见 */}
-        {/* <Form.Item label="其他货主可见" wrapperCol={{ span: 20 }} name="otherGoodsOwnerVisible">
-          <Switch size="small" />
-        </Form.Item> */}
-        {/* 托运人 */}
-        {/* <Form.Item label="托运人" name="consignor">
-          <Input placeholder={consignor} />
-        </Form.Item> */}
+
         {/* 隐藏数据 */}
         <Form.Item
           label={
@@ -1379,7 +1093,7 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
           }
           name={'hiddenInfo'}
           style={{ marginLeft: 32 }}>
-          <Select mode="tags" allowClear style={{ width: '100%' }} placeholder="请选择">
+          <Select mode="tags" allowClear style={{ width: 480 }} placeholder="请选择">
             {selectChildren}
           </Select>
         </Form.Item>
@@ -1405,35 +1119,38 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
               placeholder="请输入4~20以内备注"
               maxLength={20}
               rows={3}
-              style={{ resize: 'none', position: 'relative', top: 20 }}
+              style={{ resize: 'none', position: 'relative', width: 480 }}
             />
           </Form.Item>
         </div>
 
-        <Form.Item {...tailFormItemLayout} style={{ marginTop: 32, marginLeft: 32 }}>
+        <Form.Item {...tailFormItemLayout} style={{ margin: '24px 0 32px 32px', position: 'relative', left: 118 }}>
           <Button type="primary" htmlType="submit">
             发布专线
           </Button>
         </Form.Item>
       </Form>
       {/* 添加货品弹窗 */}
-      <DrawerInfo
-        title="新增"
-        onClose={() => {
+      <Modal
+        title="新增货品名称"
+        onCancel={() => {
           setGoodModal(false);
         }}
-        showDrawer={goodModal}
-        width={630}>
+        visible={goodModal}
+        destroyOnClose
+        footer={null}>
         <CreateGoods onCreated={createFinish} close={() => setGoodModal(false)} />
-      </DrawerInfo>
+      </Modal>
       {/* 添加地址弹窗 */}
-      <DrawerInfo
-        title="新增"
-        onClose={() => {
+      <Modal
+        title="新增地址"
+        onCancel={() => {
           setAddressModal(false);
         }}
-        showDrawer={addressModal}
-        width={630}>
+        visible={addressModal}
+        width={640}
+        destroyOnClose
+        footer={null}>
         <AddressForm
           formData={{}}
           onSubmit={submitAddress}
@@ -1441,15 +1158,16 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
             setAddressModal(false);
           }}
         />
-      </DrawerInfo>
+      </Modal>
       {/* 添加企业弹窗 */}
-      <DrawerInfo
-        title="新增"
-        onClose={() => {
+      <Modal
+        title="新增企业"
+        onCancel={() => {
           setCompanyModal(false);
         }}
-        showDrawer={companyModal}
-        width={630}>
+        visible={companyModal}
+        destroyOnClose
+        footer={null}>
         <CompanyForm
           onSubmit={submitCompany}
           formData={{}}
@@ -1457,7 +1175,7 @@ const RailWayForm = ({ serverTime, onSubmit, renderMap, clearMap }) => {
             setCompanyModal(false);
           }}
         />
-      </DrawerInfo>
+      </Modal>
     </div>
   );
 };

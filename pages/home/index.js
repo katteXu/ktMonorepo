@@ -166,12 +166,8 @@ const Home = () => {
                 <Button
                   style={{
                     float: 'right',
-                    fontSize: 14,
-                    color: '#3D86EF',
-                    fontWeight: 400,
-                    border: 'none',
-                    boxShadow: 'none',
                   }}
+                  type="link"
                   onClick={() => router.push('/railWay/mine/create')}>
                   创建专线
                 </Button>
@@ -189,9 +185,13 @@ const Home = () => {
               <Radio.Group
                 defaultValue="week"
                 onChange={statisticalChange}
-                style={{ float: 'right', fontSize: 10, userSelect: 'none' }}>
-                <Radio.Button value="week">过去一周</Radio.Button>
-                <Radio.Button value="month">过去一个月</Radio.Button>
+                style={{ float: 'right', userSelect: 'none', color: 'rgba(0,0,0,.65)' }}>
+                <Radio.Button value="week" style={{ fontSize: 10 }}>
+                  过去一周
+                </Radio.Button>
+                <Radio.Button value="month" style={{ fontSize: 10 }}>
+                  过去一个月
+                </Radio.Button>
               </Radio.Group>
             </header>
             <section>

@@ -63,12 +63,7 @@ const addCustomerForm = () => {
 
   return (
     <div style={{ marginLeft: 32 }}>
-      <Form
-        {...formItemLayout}
-        // style={{ paddingLeft: 12 }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        initialValues={{}}>
+      <Form {...formItemLayout} onFinish={onFinish} onFinishFailed={onFinishFailed} initialValues={{}}>
         <Form.Item
           label="客户名称"
           name="companyName"
