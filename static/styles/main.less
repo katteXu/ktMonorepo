@@ -1,5 +1,5 @@
 // g2 charts
-@import "./charts.less";
+@import './charts.less';
 
 // 清楚antd 样式闪动
 :global(*) {
@@ -8,17 +8,15 @@
 
 :global(body) {
   background-color: #f3f5f7;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   color: #4a4a5a;
 }
 
 :global {
   .ant-form-item-label > label.ant-form-item-required::before {
-    font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica,
-      Roboto, Arial, PingFang SC, Hiragino Sans GB, Microsoft Yahei, SimSun,
-      sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Roboto, Arial, PingFang SC,
+      Hiragino Sans GB, Microsoft Yahei, SimSun, sans-serif;
   }
   .ant-input[disabled] {
     background-color: #f6f7f9 !important;
@@ -52,6 +50,7 @@
     height: 50px !important;
     line-height: 50px !important;
   }
+
   .ant-modal-close-x {
     height: 48px;
     width: 48px;
@@ -65,33 +64,21 @@
   .ant-breadcrumb a {
     color: #848485 !important;
   }
-  .ant-steps-item-finish
-    > .ant-steps-item-container
-    > .ant-steps-item-content
-    > .ant-steps-item-title {
+  .ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title {
     color: #4a4a5a !important;
     font-size: 16px;
   }
   .ant-modal-confirm-body .ant-modal-confirm-title {
     color: #4a4a5a !important;
   }
-  .ant-steps-item-process
-    > .ant-steps-item-container
-    > .ant-steps-item-content
-    > .ant-steps-item-title {
+  .ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title {
     color: #4a4a5a !important;
     font-size: 16px;
   }
-  .ant-steps-horizontal:not(.ant-steps-label-vertical)
-    .ant-steps-item:last-child
-    .ant-steps-item-title {
-    // color: #bfbfbf !important;
+  .ant-steps-horizontal:not(.ant-steps-label-vertical) .ant-steps-item:last-child .ant-steps-item-title {
     font-size: 16px;
   }
-  .ant-steps-item-wait
-    > .ant-steps-item-container
-    > .ant-steps-item-content
-    > .ant-steps-item-title {
+  .ant-steps-item-wait > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title {
     font-size: 16px;
     color: #bfbfbf !important;
   }
@@ -99,7 +86,7 @@
     background-color: #e8f3ff !important;
   }
   .ant-modal-body {
-    padding: 16px;
+    padding: 24px 16px 16px 32px;
   }
   .ant-modal-confirm .ant-modal-body {
     padding: 32px 16px 16px 32px !important;
@@ -177,14 +164,6 @@
     background: #f6f7f9;
   }
 
-  .ant-btn-link {
-    padding: 0;
-
-    & + .ant-btn-link {
-      margin-left: 12px;
-    }
-  }
-
   .ant-calendar-range-picker-input:placeholder-shown {
     text-align: left;
   }
@@ -194,14 +173,12 @@
   }
 
   .ant-alert {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-      "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial,
-      sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+      'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   }
   .ant-input:focus,
   .ant-input:hover,
-  .ant-select-focused.ant-select-single:not(.ant-select-customize-input)
-    .ant-select-selector,
+  .ant-select-focused.ant-select-single:not(.ant-select-customize-input) .ant-select-selector,
   .ant-select-selector:hover,
   .ant-select-selector:focus,
   .ant-select-show-arrow:focus,
@@ -311,25 +288,6 @@
     width: 48px;
     padding: 16px !important;
   }
-
-  .ant-btn {
-    &.ant-btn-primary {
-      background-color: #3d86ef;
-      border: 1px solid #3d86ef;
-      color: #fff;
-      &:hover {
-        background-color: #3d86efe6;
-      }
-
-      &:active {
-        background-color: #3d86efe6;
-      }
-
-      &.ant-btn-background-ghost {
-        color: #3d86ef;
-      }
-    }
-  }
 }
 
 // 表单间距
@@ -340,12 +298,6 @@
 :global(.ant-form .ant-divider-horizontal) {
   margin: 20px 0;
 }
-
-// :global(.ant-form .ant-form-explain){
-//   position: absolute;
-//   font-size:10px;
-//   bottom:-15px;
-// }
 
 .main {
   padding-top: 20px;
@@ -363,16 +315,11 @@
   }
 }
 
-:global(.ant-btn-link) {
-  color: #3d86ef;
-}
-
 // 列表统计数字 蓝色字体突显
 :global(.total-number) {
   color: #3d86ef;
   font-size: 16px;
   line-height: 32px;
-  // vertical-align: baseline;
   margin-right: 5px;
   margin-left: 5px;
 }
@@ -473,5 +420,61 @@
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+// ================================ 全局样式 ================================
+:global {
+  // 按钮
+  .ant-btn {
+    box-shadow: none;
+    text-shadow: none;
+
+    // 危险按钮
+    &.ant-btn-dangerous {
+      color: #e44040;
+      border-color: #e44040;
+
+      &:hover {
+        color: #e44040;
+        border-color: #e44040;
+      }
+    }
+
+    // 常规按钮
+    &.ant-btn-primary {
+      background-color: #3d86ef;
+      color: #fff;
+      &:hover {
+        background-color: #3d86efe6;
+      }
+
+      &:active {
+        background-color: #3d86efe6;
+      }
+    }
+
+    // 链接按钮
+    &.ant-btn-link {
+      color: #3d86ef;
+      padding: 0;
+
+      &.ant-btn-dangerous {
+        border: none;
+        &:hover {
+          color: #e44040;
+        }
+      }
+    }
+
+    // 不可用按钮
+    &[disabled] {
+      &:hover {
+        background-color: #f6f6f6;
+      }
+      background-color: #f6f6f6 !important;
+      border: 1px solid #d9d9d9;
+      color: rgba(0, 0, 0, 0.25);
+    }
   }
 }

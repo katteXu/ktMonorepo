@@ -5,7 +5,6 @@ import { Table, Input, Button, Modal, message, Tooltip, Tag, Checkbox } from 'an
 import { Layout, Content, Search, Msg, DrawerInfo, DateRangePicker, LoadingBtn } from '@components';
 import styles from './styles.less';
 import Detail from '@components/Transport/detail';
-import router from 'next/router';
 import Link from 'next/link';
 import moment from 'moment';
 import { keepState, getState, Format } from '@utils/common';

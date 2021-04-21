@@ -18,7 +18,7 @@ const Ignore = ['ctrl', 'index'];
  * 6. 修改Table组件 columns属性过滤算法
  * 参见：pages/pound/detail.js
  */
-const HeaderConfig = ({ onChange, columns = [], showColumns, onRestore, type }) => {
+const HeaderConfig = ({ onChange, columns = [], showColumns, onRestore, type, heightDefault }) => {
   const [selectedColumns, setSelectedColumns] = useState([]);
   const [show, setShow] = useState();
   // 所有列
@@ -54,13 +54,11 @@ const HeaderConfig = ({ onChange, columns = [], showColumns, onRestore, type }) 
   // 菜单
   const menu = (
     <div className={styles['restoreRoot']}>
-      {type === 'transport' && (
-        <div className={styles['restore']} onClick={onRestore}>
-          恢复默认设置
-        </div>
-      )}
+      <div className={styles['restore']} onClick={onRestore}>
+        恢复默认设置
+      </div>
 
-      <Menu className={styles['header-menu']} onClick={handleSelectColumn}>
+      <Menu className={styles['header-menu']} onClick={handleSelectColumn} style={{ height: heightDefault || 167 }}>
         {columns
           .filter(col => !Ignore.includes(col.key))
           .map(col => {
@@ -78,17 +76,7 @@ const HeaderConfig = ({ onChange, columns = [], showColumns, onRestore, type }) 
   return (
     <Dropdown overlay={menu} trigger={['click']} visible={show} onVisibleChange={setShow}>
       <Button
-        type="text"
-        icon={
-          <SettingOutlined
-            style={{
-              color: '#3d86ef',
-              fontSize: 16,
-              position: 'relative',
-              top: 1,
-            }}
-          />
-        }
+        icon={<SettingOutlined style={{ color: '#3d86ef', fontSize: 16, position: 'relative', top: 1, right: 0 }} />}
         type="link"
         style={{ alignItems: 'center', position: 'relative' }}>
         自定义列表

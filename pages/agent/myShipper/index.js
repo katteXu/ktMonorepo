@@ -1,10 +1,10 @@
-/** @format */
-import { Row, Col, DatePicker, Input, Button, Table, Modal, message } from 'antd';
+import { DatePicker, Input, Button, Table, Modal, message, Popconfirm } from 'antd';
 import { PureComponent } from 'react';
-import { Layout, Content, Search } from '@components';
+import { Layout, Search } from '@components';
 import ShipperForm from '@components/Agent/shipperForm';
 import agent from '@api/agent';
 import moment from 'moment';
+
 import { QuestionCircleFilled } from '@ant-design/icons';
 const formatWeight = value => {
   return ((value || 0) / 1000).toFixed(2);
@@ -73,11 +73,19 @@ class MyShipper extends PureComponent {
           dataIndex: 'id',
           key: 'id',
           width: 60,
+          fixed: 'right',
+          align: 'right',
           render: (value, record) => {
             return (
-              <Button style={{ color: 'red' }} type="link" size="small" onClick={() => this.remove(record)}>
-                解绑
-              </Button>
+              <Popconfirm
+                title="确认解除绑定？"
+                placement="topRight"
+                icon={<QuestionCircleFilled />}
+                onConfirm={() => this.remove(record)}>
+                <Button type="link" danger size="small">
+                  解绑
+                </Button>
+              </Popconfirm>
             );
           },
         },
@@ -95,22 +103,16 @@ class MyShipper extends PureComponent {
 
   // 解绑
   remove = async ({ id }) => {
-    Modal.confirm({
-      title: '确认解除绑定？',
-      icon: <QuestionCircleFilled />,
-      onOk: async () => {
-        const params = {
-          id,
-        };
-        const res = await agent.removeGoodsOwner({ params });
-        if (res.status === 0) {
-          message.success('解绑成功');
-          this.setDataList();
-        } else {
-          message.error(`${res.detail ? res.detail : res.description}`);
-        }
-      },
-    });
+    const params = {
+      id,
+    };
+    const res = await agent.removeGoodsOwner({ params });
+    if (res.status === 0) {
+      message.success('解绑成功');
+      this.setDataList();
+    } else {
+      message.error(`${res.detail ? res.detail : res.description}`);
+    }
   };
 
   // 设置数据
@@ -179,56 +181,53 @@ class MyShipper extends PureComponent {
     const { routeView, columns, loading, dataList, page } = this.state;
     return (
       <Layout {...routeView}>
-        <Search onSearch={this.query}>
-          <Search.Item label="时间" br>
-            <DatePicker.RangePicker
-              showTime={{
-                defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')],
-              }}
-              onChange={(value, string) => {
-                this.setState({
-                  begin: string[0],
-                  end: string[1],
-                });
-              }}
-              style={{ width: 376 }}
-            />
-          </Search.Item>
-          <Search.Item label="企业名称">
-            <Input
-              allowClear
-              onChange={e =>
-                this.setState({
-                  companyName: e.target.value,
-                })
-              }
-              placeholder="请输入企业名称"
-            />
-          </Search.Item>
-        </Search>
+        <div style={{ background: '#fff', padding: 16 }}>
+          <Button type="primary" onClick={() => this.setState({ showModal: true })} style={{ marginBottom: 16 }}>
+            新增货主
+          </Button>
+          <Search onSearch={this.query}>
+            <Search.Item label="时间" br>
+              <DatePicker.RangePicker
+                showTime={{
+                  defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')],
+                }}
+                onChange={(value, string) => {
+                  this.setState({
+                    begin: string[0],
+                    end: string[1],
+                  });
+                }}
+                style={{ width: 376 }}
+              />
+            </Search.Item>
+            <Search.Item label="企业名称">
+              <Input
+                allowClear
+                onChange={e =>
+                  this.setState({
+                    companyName: e.target.value,
+                  })
+                }
+                placeholder="请输入企业名称"
+              />
+            </Search.Item>
+          </Search>
 
-        <Content style={{ marginTop: 24 }}>
-          <header>
-            <Button style={{ float: 'right' }} type="primary" onClick={() => this.setState({ showModal: true })}>
-              新增货主
-            </Button>
-          </header>
-          <section>
-            <Table
-              loading={loading}
-              dataSource={dataList.data}
-              columns={columns}
-              rowKey="id"
-              pagination={{
-                onChange: page => this.onChangePage(page),
-                showSizeChanger: false,
-                pageSize: 10,
-                current: page,
-                total: dataList.count,
-              }}
-            />
-          </section>
-        </Content>
+          <Table
+            loading={loading}
+            dataSource={dataList.data}
+            columns={columns}
+            style={{ marginTop: 16 }}
+            rowKey="id"
+            pagination={{
+              onChange: page => this.onChangePage(page),
+              showSizeChanger: false,
+              pageSize: 10,
+              current: page,
+              total: dataList.count,
+            }}
+          />
+        </div>
 
         <Modal
           destroyOnClose

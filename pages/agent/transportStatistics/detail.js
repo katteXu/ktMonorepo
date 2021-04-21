@@ -8,6 +8,8 @@ import { transportStatistics, getPrivateUrl } from '@api';
 import moment from 'moment';
 import styles from './styles.less';
 import Trace from '@components/Transport/trace';
+import { getQuery } from '@utils/common';
+
 const defaultImg = './empty.png';
 
 const payMethodStatus = {
@@ -23,7 +25,6 @@ class TransportDetail extends PureComponent {
         title: '运单详情',
         pageKey: 'agent/transportStatistics',
         longKey: 'agent/transportStatistics',
-        // breadNav: '运单明细.运单详情',
         breadNav: [
           <Link href="/agent/transportStatistics">
             <a>运单明细</a>
@@ -192,13 +193,6 @@ class TransportDetail extends PureComponent {
 
     return (
       <Layout {...routeView}>
-        {/* <Row>
-          <Col style={{ float: 'right' }}>
-            <Button type="primary" onClick={() => router.back()}>
-              返回
-            </Button>
-          </Col>
-        </Row> */}
         <Row gutter={12} style={{ marginTop: 12 }} type="flex">
           <Col span={8}>
             <Content>
