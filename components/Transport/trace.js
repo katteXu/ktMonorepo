@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Map, { setTruckDriving, converFrom } from '../Map';
+import { Icon } from '@components';
 import styles from '@styles/home.less';
 import { List, Avatar } from 'antd';
 
@@ -40,7 +41,7 @@ export default ({ trucker, mapData = [] }) => {
             dataSource={[trucker]}
             renderItem={(item, index) => (
               <List.Item className={styles.active}>
-                <Avatar size={50} src="../../static/img/icon-blue.svg"></Avatar>
+                <Avatar size={50} src={Icon.Blue}></Avatar>
                 <div className={styles.item}>
                   <div className={styles.name}>{item.name}</div>
                   <div className={styles.phone}>{item.mobilePhoneNumber}</div>

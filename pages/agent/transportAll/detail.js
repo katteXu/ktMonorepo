@@ -3,7 +3,7 @@ import router from 'next/router';
 import Link from 'next/link';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Select, Input, Button, Table, message } from 'antd';
-import { Layout, Content, Search, Status } from '@components';
+import { Layout, Content, Search, Status, Msg } from '@components';
 import s from './styles.less';
 import agent from '@api/agent';
 import { getQuery } from '@utils/common';
@@ -17,11 +17,7 @@ const formatWeight = (value, record) => {
   return ((value || 0) / 1000).toFixed(2) + (record.unitName || '吨');
 };
 
-class PageDemo extends PureComponent {
-  static async getInitialProps(props) {
-    const { isServer } = props;
-    return {};
-  }
+class Detail extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +25,7 @@ class PageDemo extends PureComponent {
         title: '汇总明细',
         pageKey: 'agent/transportAll',
         longKey: 'agent/transportAll',
-        breadNav: '运费汇总.企业详情.汇总明细',
+        // breadNav: '运费汇总.企业详情.汇总明细',
         breadNav: [
           <Link href="/agent/transportAll">
             <a>运费汇总</a>
@@ -211,85 +207,69 @@ class PageDemo extends PureComponent {
       dataList,
       columns,
       page,
-      exportLoading,
-      fromCompany,
-      toCompany,
-      goodsType,
-      unitPrice,
       totalWaitPayPrice,
       totalPayPrice,
       totalArrivalGoodsWeight,
       railWayInfo,
     } = this.state;
-    const { arrivalGoodsWeight, count, price, realTotalPrice } = dataList;
+    const { count } = dataList;
 
     return (
       <Layout {...routeView}>
-        <div className={s.routeInfo}>
-          <label>专线信息</label>：{railWayInfo}
-        </div>
-        <Search onSearch={this.handleQuery}>
-          <Search.Item label="运单状态">
-            <Select
-              style={{ width: '100%' }}
-              allowClear
-              placeholder="请选择"
-              className={s.selectLg}
-              onChange={status => this.setState({ status })}>
-              {/* {Object.keys(this.defaultStatus).map(item => (
-                <Option value={item} key={item}>
-                  {this.defaultStatus[item]}
-                </Option>
-              ))} */}
-              <Option value="DONE">已完成</Option>
-              {/* <Option value="PROCESS">运输中</Option> */}
-              <Option value="WAIT_PAY">待支付</Option>
-              {/* <Option value="REJECT">已驳回</Option>
-              <Option value="APPLY_CANCEL">待取消</Option> */}
-              <Option value="PAYING">支付中</Option>
-              {/* <Option value="WAIT_CONFIRMED">待装货</Option> */}
-            </Select>
-          </Search.Item>
-          <Search.Item label="车牌号">
-            <Input
-              allowClear
-              placeholder="请输入车牌号"
-              onChange={e => this.setState({ trailerPlateNumber: e.target.value })}
-            />
-          </Search.Item>
-        </Search>
-
-        <Content style={{ marginTop: 24 }}>
-          <header>
-            车次:
-            <span className="total-number">{!loading ? count || 0 : <LoadingOutlined style={{ fontSize: 20 }} />}</span>
-            <span style={{ marginRight: 32 }}>辆</span>
-            待支付运费:
-            <span className="total-number">
-              {!loading ? ((totalWaitPayPrice || 0) / 100).toFixed(2) : <LoadingOutlined style={{ fontSize: 20 }} />}
-            </span>
-            <span style={{ marginRight: 32 }}>元</span>
-            已支付运费:
-            <span className="total-number">
-              {!loading ? ((totalPayPrice || 0) / 100).toFixed(2) : <LoadingOutlined style={{ fontSize: 20 }} />}
-            </span>
-            <span style={{ marginRight: 32 }}>元</span>
-            收货净重:
-            <span className="total-number">
-              {!loading ? (
-                ((totalArrivalGoodsWeight || 0) / 1000).toFixed(2)
-              ) : (
-                <LoadingOutlined style={{ fontSize: 20 }} />
-              )}
-            </span>
-            <span style={{ marginRight: 32 }}>吨</span>
-          </header>
-          <section>
+        <div style={{ background: '#fff', padding: 16 }}>
+          <div className={s.routeInfo}>
+            <label>专线信息</label>：{railWayInfo}
+          </div>
+          <Search onSearch={this.handleQuery}>
+            <Search.Item label="运单状态">
+              <Select
+                style={{ width: '100%' }}
+                allowClear
+                placeholder="请选择"
+                className={s.selectLg}
+                onChange={status => this.setState({ status })}>
+                <Option value="DONE">已完成</Option>
+                <Option value="WAIT_PAY">待支付</Option>
+                <Option value="APPLY_CANCEL">待取消</Option>
+                <Option value="PAYING">支付中</Option>
+              </Select>
+            </Search.Item>
+            <Search.Item label="车牌号">
+              <Input
+                allowClear
+                placeholder="请输入车牌号"
+                onChange={e => this.setState({ trailerPlateNumber: e.target.value })}
+              />
+            </Search.Item>
+          </Search>
+          <Content style={{ marginTop: 16 }}>
+            <Msg>
+              <span>车次</span>
+              <span className={'total-num'}>
+                {!loading ? count || 0 : <LoadingOutlined style={{ fontSize: 20 }} />}
+              </span>
+              辆<span style={{ marginLeft: 32 }}>待支付运费</span>
+              <span className={'total-num'}>
+                {!loading ? ((totalWaitPayPrice || 0) / 100).toFixed(2) : <LoadingOutlined style={{ fontSize: 20 }} />}
+              </span>
+              元<span style={{ marginLeft: 32 }}>已支付运费</span>
+              <span className={'total-num'}>
+                {!loading ? ((totalPayPrice || 0) / 100).toFixed(2) : <LoadingOutlined style={{ fontSize: 20 }} />}
+              </span>
+              元<span style={{ marginLeft: 32 }}>收货净重</span>
+              <span className={'total-num'}>
+                {!loading ? (
+                  ((totalArrivalGoodsWeight || 0) / 1000).toFixed(2)
+                ) : (
+                  <LoadingOutlined style={{ fontSize: 20 }} />
+                )}
+              </span>
+              吨
+            </Msg>
             <Table
               loading={loading}
               dataSource={dataList.data}
               columns={columns}
-              rowKey={(record, index) => index}
               pagination={{
                 onChange: page => this.onChangePage(page),
                 showSizeChanger: false,
@@ -298,11 +278,11 @@ class PageDemo extends PureComponent {
                 total: dataList.count,
               }}
             />
-          </section>
-        </Content>
+          </Content>
+        </div>
       </Layout>
     );
   }
 }
 
-export default PageDemo;
+export default Detail;

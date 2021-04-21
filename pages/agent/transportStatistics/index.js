@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { Layout, Content, Search, TableHeaderConfig, Status, LoadingBtn } from '@components';
+import { Layout, Content, Search, TableHeaderConfig, Status, Msg } from '@components';
 import { LoadingOutlined } from '@ant-design/icons';
-import { Input, Row, Col, Button, Select, Table, DatePicker, message, Modal, Tag } from 'antd';
+import { Input, Button, Select, Table, DatePicker, message, Modal, Tag } from 'antd';
 import moment from 'moment';
 import { keepState, getState, clearState, Format } from '@utils/common';
 import agent from '@api/agent';
@@ -80,6 +80,7 @@ const TransportStatistics = props => {
       title: '承运时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
+      align: 'left',
     },
     {
       title: '发货企业',
@@ -445,132 +446,137 @@ const TransportStatistics = props => {
 
   return (
     <Layout {...routeView}>
-      <Search onSearch={handleSearch} onReset={handleReset}>
-        <Search.Item label="承运时间" br>
-          <DatePicker.RangePicker
-            style={{ width: 376 }}
-            value={query.begin && query.end ? [moment(query.begin), moment(query.end)] : null}
-            showTime={{
-              defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')],
-            }}
-            onChange={handleChangeDate}
-          />
-        </Search.Item>
-        <Search.Item label="车牌号">
-          <Input
-            value={query.trailerPlateNumber}
-            placeholder="请输入车牌号"
-            allowClear
-            onChange={handleChangeTrailerPlateNumber}
-          />
-        </Search.Item>
-        <Search.Item label="发货企业">
-          <Input value={query.fromCompany} placeholder="请输入发货企业" allowClear onChange={handleChangeFromCompany} />
-        </Search.Item>
-        <Search.Item label="收货企业">
-          <Input value={query.toCompany} placeholder="请输入收货企业" allowClear onChange={handleChangeToCompany} />
-        </Search.Item>
-        <Search.Item label="货品名称">
-          <Input value={query.goodsType} placeholder="请输入货品名称" allowClear onChange={handleChangeGoodsType} />
-        </Search.Item>
-        <Search.Item label="运单状态">
-          <Select
-            style={{ width: '100%' }}
-            value={query.status}
-            placeholder="请选择状态"
-            allowClear
-            onChange={handleChangeStatus}>
-            {Object.entries(Status.order).map(item => {
-              return (
-                <Select.Option label={item[0]} key={item[0]}>
-                  {item[1]}
-                </Select.Option>
-              );
-            })}
-          </Select>
-        </Search.Item>
-        <Search.Item label="运费单价">
-          <Input value={query.unitPrice} placeholder="请输入运费单价" allowClear onChange={handleChangeUnitPrice} />
-        </Search.Item>
-      </Search>
-      <Row style={{ marginTop: 12 }} type="flex" align="middle">
-        <Col style={{ width: 120 }}>
-          <Button type="primary" onClick={() => setShowModal(true)}>
-            选择企业
-          </Button>
-        </Col>
-        <Col>
-          {query.companyList.map(
-            (item, index) =>
-              index < 8 && (
-                <Tag
-                  color="#108ee9"
-                  closable
-                  onClose={() => removeTag(item.id)}
-                  style={{ fontSize: 14, padding: '0 10px' }}
-                  key={item.id}>
-                  {item.companyName}
-                </Tag>
-              )
-          )}
-          <span>
-            {query.companyList.length
-              ? `${query.companyList.length > 8 ? '等,' : ''}共${query.companyList.length}家`
-              : ''}
-          </span>
-        </Col>
-      </Row>
-      <Content style={{ marginTop: 12 }}>
-        <header>
-          已支付运费:
-          <span className="total-number">
-            {!loading ? ((total.totalPayPrice || 0) / 100).toFixed(2) : <LoadingOutlined style={{ fontSize: 20 }} />}
-          </span>
-          <span style={{ marginRight: 32 }}>元</span>
-          待支付运费:
-          <span className="total-number">
-            {!loading ? (
-              ((total.totalWaitPayPrice || 0) / 100).toFixed(2)
-            ) : (
-              <LoadingOutlined style={{ fontSize: 20 }} />
+      <div style={{ background: '#fff', padding: 16 }}>
+        <Button type="primary" onClick={() => setShowModal(true)} style={{ marginBottom: 16 }}>
+          选择企业
+        </Button>
+        {query.companyList.length > 0 && (
+          <div style={{ marginBottom: 16, background: '#f6f7f9ff', padding: '16px 12px' }} className={s.tagStyle}>
+            {query.companyList.map(
+              (item, index) =>
+                index < 8 && (
+                  <Tag
+                    color="#108ee9"
+                    closable
+                    onClose={() => removeTag(item.id)}
+                    style={{
+                      fontSize: 14,
+                      padding: '0 10px',
+                      border: '1px solid #3d86ef',
+                      background: '#f5f9ff',
+                      color: '#3d86ef',
+                      borderRadius: 2,
+                    }}
+                    key={item.id}>
+                    {item.companyName}
+                  </Tag>
+                )
             )}
-          </span>
-          <span style={{ marginRight: 32 }}>元</span>
-          发货净重:
-          <span className="total-number">
-            {!loading ? (
-              ((total.totalGoodsWeight || 0) / 1000).toFixed(2)
-            ) : (
-              <LoadingOutlined style={{ fontSize: 20 }} />
-            )}
-          </span>
-          <span style={{ marginRight: 32 }}>吨</span>
-          收货净重:
-          <span className="total-number">
-            {!loading ? (
-              ((total.totalArrivalGoodsWeight || 0) / 1000).toFixed(2)
-            ) : (
-              <LoadingOutlined style={{ fontSize: 20 }} />
-            )}
-          </span>
-          <span style={{ marginRight: 32 }}>吨</span>
-          运费车次:
-          <span className="total-number">
-            {!loading ? total.count || 0 : <LoadingOutlined style={{ fontSize: 20 }} />}
-          </span>
-          <span style={{ marginRight: 32 }}>单</span>
-          <div className={s.btnArea} style={{ float: 'right' }}>
-            <LoadingBtn onClick={handleExport} loading={exportLoading}>
-              导出
-            </LoadingBtn>
-            <TableHeaderConfig
-              columns={columns}
-              showColumns={showColumns.length > 0 ? showColumns : defaultColumns}
-              onChange={onChangeColumns}
-            />
+            <span>
+              {query.companyList.length
+                ? `${query.companyList.length > 8 ? '等,' : ''}共${query.companyList.length}家`
+                : ''}
+            </span>
           </div>
-        </header>
-        <section style={{ minHeight: 620 }}>
+        )}
+
+        <Search onSearch={handleSearch} onReset={handleReset} onExport={handleExport} exportLoading={exportLoading}>
+          <Search.Item label="承运时间" br>
+            <DatePicker.RangePicker
+              style={{ width: 376 }}
+              value={query.begin && query.end ? [moment(query.begin), moment(query.end)] : null}
+              showTime={{
+                defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')],
+              }}
+              onChange={handleChangeDate}
+            />
+          </Search.Item>
+          <Search.Item label="车牌号">
+            <Input
+              value={query.trailerPlateNumber}
+              placeholder="请输入车牌号"
+              allowClear
+              onChange={handleChangeTrailerPlateNumber}
+            />
+          </Search.Item>
+          <Search.Item label="发货企业">
+            <Input
+              value={query.fromCompany}
+              placeholder="请输入发货企业"
+              allowClear
+              onChange={handleChangeFromCompany}
+            />
+          </Search.Item>
+          <Search.Item label="收货企业">
+            <Input value={query.toCompany} placeholder="请输入收货企业" allowClear onChange={handleChangeToCompany} />
+          </Search.Item>
+          <Search.Item label="货品名称">
+            <Input value={query.goodsType} placeholder="请输入货品名称" allowClear onChange={handleChangeGoodsType} />
+          </Search.Item>
+          <Search.Item label="运单状态">
+            <Select
+              style={{ width: '100%' }}
+              value={query.status}
+              placeholder="请选择状态"
+              allowClear
+              onChange={handleChangeStatus}>
+              {Object.entries(Status.order).map(item => {
+                return (
+                  <Select.Option label={item[0]} key={item[0]}>
+                    {item[1]}
+                  </Select.Option>
+                );
+              })}
+            </Select>
+          </Search.Item>
+          <Search.Item label="运费单价">
+            <Input value={query.unitPrice} placeholder="请输入运费单价" allowClear onChange={handleChangeUnitPrice} />
+          </Search.Item>
+        </Search>
+
+        <Content style={{ marginTop: 16 }}>
+          <Msg>
+            <span>已支付运费</span>
+            <span className={'total-num'}>
+              {!loading ? ((total.totalPayPrice || 0) / 100).toFixed(2) : <LoadingOutlined style={{ fontSize: 20 }} />}
+            </span>
+            元<span style={{ marginLeft: 32 }}>待支付运费</span>
+            <span className={'total-num'}>
+              {!loading ? (
+                ((total.totalWaitPayPrice || 0) / 100).toFixed(2)
+              ) : (
+                <LoadingOutlined style={{ fontSize: 20 }} />
+              )}
+            </span>
+            元<span style={{ marginLeft: 32 }}>发货净重</span>
+            <span className={'total-num'}>
+              {!loading ? (
+                ((total.totalGoodsWeight || 0) / 1000).toFixed(2)
+              ) : (
+                <LoadingOutlined style={{ fontSize: 20 }} />
+              )}
+            </span>
+            吨<span style={{ marginLeft: 32 }}>收货净重</span>
+            <span className={'total-num'}>
+              {!loading ? (
+                ((total.totalArrivalGoodsWeight || 0) / 1000).toFixed(2)
+              ) : (
+                <LoadingOutlined style={{ fontSize: 20 }} />
+              )}
+            </span>
+            吨<span style={{ marginLeft: 32 }}>运费车次</span>
+            <span className={'total-num'}>
+              {!loading ? total.count || 0 : <LoadingOutlined style={{ fontSize: 20 }} />}
+            </span>
+            单
+            <div className={s.btnArea} style={{ float: 'right' }}>
+              <TableHeaderConfig
+                columns={columns}
+                showColumns={showColumns.length > 0 ? showColumns : defaultColumns}
+                onChange={onChangeColumns}
+              />
+            </div>
+          </Msg>
           <Table
             loading={loading}
             dataSource={dataList.data}
@@ -589,8 +595,8 @@ const TransportStatistics = props => {
             }}
             scroll={{ x: 'auto' }}
           />
-        </section>
-      </Content>
+        </Content>
+      </div>
 
       {/* 选择企业弹窗 */}
       <Modal destroyOnClose visible={showModal} footer={null} onCancel={() => setShowModal(false)} title="选择企业">
@@ -602,11 +608,6 @@ const TransportStatistics = props => {
       </Modal>
     </Layout>
   );
-};
-
-TransportStatistics.getInitialProps = async props => {
-  const { isServer } = props;
-  return { isServer };
 };
 
 export default TransportStatistics;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Button, Input, message } from 'antd';
+import { Button, Modal, Input, Row, Col, message } from 'antd';
 import agent from '@api/agent';
 // 表单布局
 const formItemLayout = {
@@ -111,7 +111,7 @@ const ShipperForm = ({ form, onSubmit, onClose }) => {
       </Form.Item>
       <Form.Item
         label={
-          <div>
+          <div style={{ display: 'inline-block' }}>
             <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>货主名称
           </div>
         }
@@ -131,9 +131,9 @@ const ShipperForm = ({ form, onSubmit, onClose }) => {
           {time === undefined ? '获取验证码' : time > 0 ? `${time}s` : '重新发送'}
         </Button>
       </Form.Item>
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'right' }}>
         <Button onClick={handleClose}>取消</Button>
-        <Button type="primary" style={{ marginLeft: 50 }} htmlType="submit">
+        <Button type="primary" style={{ marginLeft: 8 }} htmlType="submit">
           提交
         </Button>
       </div>

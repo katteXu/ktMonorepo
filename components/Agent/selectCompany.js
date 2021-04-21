@@ -60,9 +60,9 @@ const SelectCompany = ({ onClose, onChange, selectValue }) => {
         />
       </div>
 
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'right' }}>
         <Button onClick={handleClose}>取消</Button>
-        <Button type="primary" style={{ marginLeft: 50 }} onClick={handleSubmit}>
+        <Button type="primary" style={{ marginLeft: 8 }} onClick={handleSubmit}>
           确定
         </Button>
       </div>

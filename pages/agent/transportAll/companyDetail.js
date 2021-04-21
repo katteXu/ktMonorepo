@@ -4,11 +4,10 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { DatePicker, Input, Button, Table, Modal, message } from 'antd';
 import moment from 'moment';
 import SelectCompany from '@components/Agent/selectCompany';
-import { Layout, Content, Search } from '@components';
+import { Layout, Content, Search, Msg } from '@components';
 import Link from 'next/link';
 import agent from '@api/agent';
 import { getQuery } from '@utils/common';
-
 const formatPrice = value => {
   return ((value || 0) / 100).toFixed(2) + '元';
 };
@@ -210,61 +209,60 @@ class TransportAll extends PureComponent {
     const { totalWaitPayPrice, totalPayPrice, totalGoodsWeight, totalArrivalGoodsWeight } = dataList;
     return (
       <Layout {...routeView}>
-        <Search onSearch={this.query}>
-          <Search.Item label="选择时间" br>
-            <DatePicker.RangePicker
-              style={{ width: 376 }}
-              value={begin && end ? [moment(begin), moment(end)] : []}
-              showTime={{
-                defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')],
-              }}
-              onChange={(date, [begin, end]) => this.setState({ begin, end })}
-            />
-          </Search.Item>
-          <Search.Item label="发货企业">
-            <Input placeholder="请输入发货企业" onChange={e => this.setState({ fromCompany: e.target.value })}></Input>
-          </Search.Item>
-          <Search.Item label="收货企业">
-            <Input placeholder="请输入收货企业" onChange={e => this.setState({ toCompany: e.target.value })}></Input>
-          </Search.Item>
-          <Search.Item label="货物类型">
-            <Input placeholder="请输入货物类型" onChange={e => this.setState({ goodsType: e.target.value })}></Input>
-          </Search.Item>
-        </Search>
+        <div style={{ background: '#fff', padding: 16 }}>
+          <Search onSearch={this.query}>
+            <Search.Item label="选择时间" br>
+              <DatePicker.RangePicker
+                style={{ width: 376 }}
+                value={begin && end ? [moment(begin), moment(end)] : []}
+                showTime={{
+                  defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')],
+                }}
+                onChange={(date, [begin, end]) => this.setState({ begin, end })}
+              />
+            </Search.Item>
+            <Search.Item label="发货企业">
+              <Input
+                placeholder="请输入发货企业"
+                onChange={e => this.setState({ fromCompany: e.target.value })}></Input>
+            </Search.Item>
+            <Search.Item label="收货企业">
+              <Input placeholder="请输入收货企业" onChange={e => this.setState({ toCompany: e.target.value })}></Input>
+            </Search.Item>
+            <Search.Item label="货物类型">
+              <Input placeholder="请输入货物类型" onChange={e => this.setState({ goodsType: e.target.value })}></Input>
+            </Search.Item>
+          </Search>
 
-        <Content style={{ marginTop: 24 }}>
-          <header style={{ minWidth: 1000 }}>
-            待支付运费总额:
-            <span className="total-number">
-              {!loading ? ((totalWaitPayPrice || 0) / 100).toFixed(2) : <LoadingOutlined style={{ fontSize: 20 }} />}
-            </span>
-            <span style={{ marginRight: 32 }}>元</span>
-            已支付运费总额:
-            <span className="total-number">
-              {!loading ? ((totalPayPrice || 0) / 100).toFixed(2) : <LoadingOutlined style={{ fontSize: 20 }} />}
-            </span>
-            <span style={{ marginRight: 32 }}>元</span>
-            发货总量:
-            <span className="total-number">
-              {!loading ? ((totalGoodsWeight || 0) / 1000).toFixed(2) : <LoadingOutlined style={{ fontSize: 20 }} />}
-            </span>
-            <span style={{ marginRight: 32 }}>吨</span>
-            收货总量:
-            <span className="total-number">
-              {!loading ? (
-                ((totalArrivalGoodsWeight || 0) / 1000).toFixed(2)
-              ) : (
-                <LoadingOutlined style={{ fontSize: 20 }} />
-              )}
-            </span>
-            <span style={{ marginRight: 32 }}>吨</span>
-          </header>
-          <section>
+          <Content style={{ marginTop: 16 }}>
+            <Msg>
+              <span>待支付运费总额</span>
+              <span className={'total-num'}>
+                {!loading ? ((totalWaitPayPrice || 0) / 100).toFixed(2) : <LoadingOutlined style={{ fontSize: 20 }} />}
+              </span>
+              元<span style={{ marginLeft: 32 }}>已支付运费总额</span>
+              <span className={'total-num'}>
+                {!loading ? ((totalPayPrice || 0) / 100).toFixed(2) : <LoadingOutlined style={{ fontSize: 20 }} />}
+              </span>
+              元<span style={{ marginLeft: 32 }}>发货总量</span>
+              <span className={'total-num'}>
+                {!loading ? ((totalGoodsWeight || 0) / 1000).toFixed(2) : <LoadingOutlined style={{ fontSize: 20 }} />}
+              </span>
+              吨<span style={{ marginLeft: 32 }}> 收货总量</span>
+              <span className={'total-num'}>
+                {!loading ? (
+                  ((totalArrivalGoodsWeight || 0) / 1000).toFixed(2)
+                ) : (
+                  <LoadingOutlined style={{ fontSize: 20 }} />
+                )}
+              </span>
+              吨
+            </Msg>
             <Table
               loading={loading}
               dataSource={dataList.data}
               columns={columns}
-              rowKey={(record, index) => index}
+              rowKey="routeId"
               pagination={{
                 onChange: page => this.onChangePage(page),
                 showSizeChanger: false,
@@ -274,8 +272,8 @@ class TransportAll extends PureComponent {
               }}
               scroll={{ x: 'auto' }}
             />
-          </section>
-        </Content>
+          </Content>
+        </div>
 
         <Modal
           visible={this.state.showModal}
