@@ -1,7 +1,7 @@
 /** @format */
 
-import { useState, useCallback, useEffect } from 'react';
-import router, { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
+import router from 'next/router';
 import Link from 'next/link';
 import OrderTable from '@components/RailDetail/table';
 import styles from '../styles.less';
@@ -405,10 +405,8 @@ const RailWayDetail = props => {
               </div>
             </div>
           </Skeleton>
-          {/* <Divider></Divider> */}
           <Skeleton loading={!loading} paragraph={{ rows: 2 }}>
             <div className={styles.area}>
-              {/* <div className={styles.title}>货物信息</div> */}
               <ChildTitle
                 className="hei14"
                 style={{
@@ -501,7 +499,7 @@ const RailWayDetail = props => {
                           保存
                         </span>
                         <span
-                          style={{ marginLeft: 9, cursor: 'pointer' }}
+                          style={{ marginLeft: 9, cursor: 'pointer', color: '#3d86ef' }}
                           onClick={() => {
                             setShowUnitPrice(false);
                             setNewUnitPrice(0);
@@ -547,10 +545,8 @@ const RailWayDetail = props => {
               </div>
             </div>
           </Skeleton>
-          {/* <Divider></Divider> */}
           <Skeleton loading={!loading} paragraph={{ rows: 1 }}>
             <div className={styles.area}>
-              {/* <div className={styles.title}>结算信息</div> */}
               <ChildTitle
                 className="hei14"
                 style={{
@@ -581,10 +577,8 @@ const RailWayDetail = props => {
               </div>
             </div>
           </Skeleton>
-          {/* <Divider></Divider> */}
           <Skeleton loading={!loading} paragraph={{ rows: 2 }}>
             <div className={styles.area}>
-              {/* <div className={styles.title}>其他信息</div> */}
               <ChildTitle
                 className="hei14"
                 style={{
@@ -656,10 +650,11 @@ const RailWayDetail = props => {
 
       {/* 修改发货时间 */}
       <Modal
-        title="修改发货时间"
+        title="修改有效时间"
         visible={showSendDate}
         destroyOnClose
         onCancel={() => setShowSendDate(false)}
+        width={576}
         footer={null}>
         <UpdateSendDate
           initValue={loadTime}
@@ -669,16 +664,6 @@ const RailWayDetail = props => {
           onClose={() => setShowSendDate(false)}
         />
       </Modal>
-
-      {/* 修改运费单价 */}
-      {/* <Modal
-        title="修改运费单价"
-        visible={showUnitPrice}
-        destroyOnClose
-        onCancel={() => setShowUnitPrice(false)}
-        footer={null}>
-        <UpdateUnitPrice initValue={unitPrice} onSubmit={modifyUnitPrice} onClose={() => setShowUnitPrice(false)} />
-      </Modal> */}
 
       {/* 修改货物总量 */}
       <Modal
