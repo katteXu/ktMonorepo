@@ -12,7 +12,7 @@ import { railWay } from '@api';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { Format, getQuery } from '@utils/common';
 import { Permission } from '@store';
-import { Button, Modal, message, Tooltip, Table, Skeleton, DatePicker, Input, Select, Tag, Divider } from 'antd';
+import { Button, Modal, message, Tooltip, Table, Skeleton, DatePicker, Input, Select, Tag } from 'antd';
 const { RangePicker } = DatePicker;
 
 const RailWayDetail = () => {
@@ -598,7 +598,7 @@ const RailWayDetail = () => {
                           保存
                         </span>
                         <span
-                          style={{ marginLeft: 9, cursor: 'pointer' }}
+                          style={{ marginLeft: 9, cursor: 'pointer', color: '#3d86ef' }}
                           onClick={() => {
                             setShowUnitPrice(false);
                             setNewUnitPrice(0);
@@ -726,7 +726,7 @@ const RailWayDetail = () => {
                           保存
                         </span>
                         <span
-                          style={{ marginLeft: 9, cursor: 'pointer' }}
+                          style={{ marginLeft: 9, cursor: 'pointer', color: '#3d86ef' }}
                           onClick={() => {
                             setShowRemark(false);
                             setNewRemarkInfo('');
