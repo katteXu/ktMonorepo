@@ -675,7 +675,6 @@ const RailWaySettlement = props => {
             loading={loading}
             dataSource={dataList.data}
             columns={columns}
-            rowKey={(record, i) => record.id}
             pagination={{
               onChange: onChangePage,
               onShowSizeChange: onChangePageSize,

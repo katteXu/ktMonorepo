@@ -118,7 +118,7 @@ const BottomBtn = props => {
       okText: '确认取消',
     });
   };
-  console.log(props.userInfo);
+
   // 取消待装货运单
   const handleCancelWaitConfirmed = () => {
     Modal.confirm({

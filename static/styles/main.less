@@ -523,9 +523,15 @@
   // 复选框
   .ant-checkbox {
     &.ant-checkbox-checked {
-      & .ant-checkbox-inner {
+      .ant-checkbox-inner {
         background-color: #3d86ef;
         border-color: #3d86ef;
+      }
+    }
+
+    &.ant-checkbox-disabled {
+      .ant-checkbox-inner::after {
+        border-color: #fff;
       }
     }
   }

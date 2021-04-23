@@ -1,18 +1,15 @@
-/** @format */
 // 按专线结算列表
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Input, Button, Table, message, Select } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { DatePickerTime, DateRangePicker, Search, Msg, Ellipsis } from '@components';
+import { DateRangePicker, Search, Msg, Ellipsis } from '@components';
 import { keepState, getState, clearState, Format } from '@utils/common';
 import { transportStatistics } from '@api';
 import router from 'next/router';
 const { Option } = Select;
 
 const RailWaySettlementList = props => {
-  // const ref = useRef();
-  const { currentRef } = props;
   const columns = [
     {
       title: '专线类型',
@@ -66,7 +63,7 @@ const RailWaySettlementList = props => {
       dataIndex: 'payPath',
       key: 'payPath',
       width: 120,
-      render: (value, record, index) => <span>{record.fleetCaptionId ? (value ? '延时付' : '即时付') : '-'}</span>,
+      render: (value, record) => <span>{record.fleetCaptionId ? (value ? '延时付' : '即时付') : '-'}</span>,
     },
     {
       title: '车队长',
@@ -133,7 +130,7 @@ const RailWaySettlementList = props => {
     payPath: '',
     dateStatus: '',
   });
-  const [errRouteId, setRouteId] = useState('');
+
   const [disShowType, setDisShowType] = useState(false);
   const [disShowPay, setDisShowPay] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -297,7 +294,7 @@ const RailWaySettlementList = props => {
       isFleet,
       payPath,
     };
-    console.log(params);
+
     const res = await transportStatistics.getWaitPayFleetTransportList({ params });
 
     if (res.status === 0) {
@@ -336,12 +333,6 @@ const RailWaySettlementList = props => {
     <>
       <Search onSearch={handleSearch} onReset={handleReset} simple>
         <Search.Item label="创建时间" br>
-          {/* <DatePickerTime
-            onChange={handleChangeDate}
-            value={{ begin: query.begin, end: query.end }}
-            dateStatus={query.dateStatus}
-            style={{ width: 400 }}
-          /> */}
           <DateRangePicker
             quickBtn={true}
             onChange={handleChangeDate}
@@ -399,7 +390,7 @@ const RailWaySettlementList = props => {
           </Select>
         </Search.Item>
       </Search>
-      {/* <header style={{ padding: '12px 0', marginTop: 12, border: 0 }}>专线列表</header> */}
+
       <Msg style={{ marginTop: 16 }}>
         <span>
           专线数

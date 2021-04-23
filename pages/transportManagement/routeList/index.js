@@ -1,6 +1,6 @@
 /** 运单结算 */
 
-import React, { useCallback, useEffect, useState, useRef } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Layout, Content } from '@components';
 import RailWayList from '@components/TransportManagement/routeList/byRailWay';
 import RailWaySettlementList from '@components/TransportManagement/routeList/railWaySettlementList';
@@ -8,7 +8,6 @@ import TopMsg from '@components/TransportManagement/routeList/topMsg';
 import { clearState } from '@utils/common';
 import { getQuery } from '@utils/common';
 const RouteList = props => {
-  const ref = useRef();
   const [currentTab, setCurrentTab] = useState('railWaySettlement');
   // 改变tab
   const onChangeTab = useCallback(key => {
@@ -44,7 +43,7 @@ const RouteList = props => {
 
   return (
     <Layout {...routeView}>
-      <TopMsg ref={ref} style={{ marginBottom: 16 }}></TopMsg>
+      <TopMsg style={{ marginBottom: 16 }}></TopMsg>
       <Content
         style={{
           fontFamily:
@@ -63,17 +62,12 @@ const RouteList = props => {
           </div>
         </header>
         <section>
-          {currentTab === 'railWaySettlement' && <RailWaySettlementList isServer={props.isServer} currentRef={ref} />}
-          {currentTab === 'railWay' && <RailWayList isServer={props.isServer} currentRef={ref} />}
+          {currentTab === 'railWaySettlement' && <RailWaySettlementList />}
+          {currentTab === 'railWay' && <RailWayList />}
         </section>
       </Content>
     </Layout>
   );
-};
-
-RouteList.getInitialProps = async props => {
-  const { isServer, userInfo } = props;
-  return { isServer, userInfo };
 };
 
 export default RouteList;
