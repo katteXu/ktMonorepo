@@ -21,10 +21,10 @@
   .ant-input[disabled] {
     background-color: #f6f7f9 !important;
   }
-  .ant-checkbox-checked .ant-checkbox-inner {
-    background-color: #3d86ef;
-    border-color: #3d86ef;
-  }
+  // .ant-checkbox-checked .ant-checkbox-inner {
+  //   background-color: #3d86ef;
+  //   border-color: #3d86ef;
+  // }
   .ant-radio-inner::after {
     background-color: #3d86ef;
   }
@@ -517,6 +517,25 @@
     }
 
     &.large {
+    }
+  }
+
+  // 复选框
+  .ant-checkbox {
+    &.ant-checkbox-checked {
+      & .ant-checkbox-inner {
+        background-color: #3d86ef;
+        border-color: #3d86ef;
+      }
+    }
+  }
+
+  // tabs
+  .ant-tabs {
+    .ant-tabs-nav-list {
+      .ant-tabs-tab {
+        margin-left: 0 !important;
+      }
     }
   }
 }

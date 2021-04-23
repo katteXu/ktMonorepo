@@ -1,5 +1,3 @@
-/** @format */
-
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Layout } from '@components';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -374,9 +372,6 @@ const TransportList = props => {
 
   // 结算日期输入
   const handleChangePayDate = useCallback(({ begin, end }, string) => {
-    // const payBegin = value && value[0] && moment(value[0]).format('YYYY-MM-DD HH:mm:ss');
-    // const payEnd = value && value[1] && moment(value[1]).format('YYYY-MM-DD HH:mm:ss');
-
     const payBegin = begin ? moment(begin).format('YYYY-MM-DD HH:mm:ss') : undefined;
     const payEnd = end ? moment(end).format('YYYY-MM-DD HH:mm:ss') : undefined;
 
@@ -557,9 +552,6 @@ const TransportList = props => {
   };
 
   const onRestore = async () => {
-    console.log('sfdhshf');
-    // 设置展现表头
-    //  setShowColumns([...columns]);
     const params = {
       type: 'orderDetailTable',
       titleList: '',

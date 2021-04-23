@@ -8,14 +8,10 @@ import Route from './route';
 import Pay from './pay';
 import Transport from './transport';
 import PoundPhoto from './poundPhoto';
-import Other from './other';
 import BottomBtn from './bottomBtn';
 import Steps from './steps';
 import { message, Spin } from 'antd';
-// import { Steps } from 'antd';
-// import styles from './styles.less';
 
-// const { Step } = Steps;
 // 展示运输信息
 const showTransportInfo = [
   'PROCESS',
@@ -48,7 +44,6 @@ const showBottomBtn = [
   'WAIT_FLEET_CAPTAIN_PAY',
   'FLEET_CAPTAIN_PAYING',
   'APPLY_CANCEL',
-  // 'PAYING',
   'WAIT_CONFIRMED',
 ];
 
@@ -57,7 +52,6 @@ const showBottomBtn = [
  */
 const Detail = props => {
   const [dataInfo, setDataInfo] = useState({});
-  const [statusArr, setStatusArr] = useState([]);
   const [loading, setLoading] = useState(true);
   // 结算金额
   const [checkPrice, setCheckPrice] = useState();
@@ -76,9 +70,7 @@ const Detail = props => {
     const res = await transportStatistics.getSaaSTransportDetail({ params });
     if (res.status === 0) {
       setDataInfo(res.result);
-      setStatusArr(res.result.eachStatus);
     } else {
-      // message.error(`${res.detail || res.description}`);
       message.warn(`此运单状态为空`, 1.5, props.close);
     }
     setLoading(false);
@@ -111,8 +103,6 @@ const Detail = props => {
           {showTransportInfo.includes(dataInfo.status) && <Transport dataInfo={dataInfo} />}
           {/* 磅单照片 */}
           {dataInfo.status && dataInfo.status !== 'WAIT_CONFIRMED' && <PoundPhoto dataInfo={dataInfo} />}
-          {/* 其他信息 */}
-          {/* {dataInfo.status && <Other dataInfo={dataInfo} />} */}
           {/* 按钮 */}
           {showBottomBtn.includes(dataInfo.status) && (
             <BottomBtn

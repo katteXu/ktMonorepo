@@ -4,9 +4,6 @@ import router from 'next/router';
 import { transportStatistics } from '@api';
 import { Format } from '@utils/common';
 
-const speakerIcon = '../../../../static/img/transport/speakerIcon.svg';
-const routeIcon = '../../../../static/img/transport/routeIcon.svg';
-const transportIcon = '../../../../static/img/transport/transportIcon.svg';
 const TopMsg = (props, ref) => {
   const [type, setType] = useState(props.type);
   const [waitPayPrice, setWaitPayPrice] = useState(); //待支付费用
@@ -18,8 +15,10 @@ const TopMsg = (props, ref) => {
   // 获取数据
   const getData = async () => {
     const res = await transportStatistics.getSaaSTransportPriceData();
-    setWaitPayPrice(res.result.waitPayPrice);
-    setCheckingPrice(res.result.checkingPrice);
+    if (res.status === 0) {
+      setWaitPayPrice(res.result.waitPayPrice);
+      setCheckingPrice(res.result.checkingPrice);
+    }
   };
 
   useImperativeHandle(ref, () => ({

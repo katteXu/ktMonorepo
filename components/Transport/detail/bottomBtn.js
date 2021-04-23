@@ -135,7 +135,6 @@ const BottomBtn = props => {
           message.success(`取消成功`, 1.5, props.close && props.close());
         } else {
           message.error(`${res.detail || res.description}`);
-          // props.reload && props.reload();
         }
       },
       cancelText: '我再想想',
@@ -294,15 +293,7 @@ const BottomBtn = props => {
         Modal.confirm({
           title: '未填写结算运费，按预计运费结算?',
           icon: <ExclamationCircleFilled />,
-          content: (
-            <div>
-              <Checkbox
-                onChange={e => setSettlementChecked(e.target.checked)}
-                style={{ marginTop: 12, display: 'block' }}>
-                不再提示
-              </Checkbox>
-            </div>
-          ),
+          content: <Checkbox onChange={e => setSettlementChecked(e.target.checked)}>不再提示</Checkbox>,
           onOk: async () => {
             setIsModal(true);
             confirmSettlement();

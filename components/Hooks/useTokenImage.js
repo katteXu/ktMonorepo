@@ -10,7 +10,7 @@ const useTokenImage = num => {
       };
       const res = await getPrivateUrl({ params });
       if (res.status === 0) {
-        const _imgs = url.map(key => res.result[key]);
+        const _imgs = url.map(key => (res.result ? res.result[key] : []));
         setImages([..._imgs]);
       } else {
         console.error('加签url失败');
