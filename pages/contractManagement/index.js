@@ -125,7 +125,7 @@ const Index = props => {
       title: '操作',
       dataIndex: 'id',
       key: 'id',
-      width: 120,
+      width: '120px',
       fixed: 'right',
       align: 'right',
       render: (value, record, index) => (
@@ -146,7 +146,7 @@ const Index = props => {
               placement="topRight"
               icon={<QuestionCircleFilled />}
               onConfirm={() => deleteData(record.id)}>
-              <Button type="link" size="small" className={deleteBtn.delete}>
+              <Button danger type="link" size="small" className={deleteBtn.delete}>
                 删除
               </Button>
             </Popconfirm>

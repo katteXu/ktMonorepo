@@ -1,11 +1,11 @@
 import { useState, useEffect, forwardRef } from 'react';
-import { Button, Modal, List, Input, Row, Col, message } from 'antd';
+import { Button, Modal, List, Input, message } from 'antd';
 import { getList, customer } from '@api';
-// import CompanyForm from './companyForm';
 import CompanyForm from '@components/CustomerDetail/company/form';
 import styles from './styles.less';
 import router from 'next/router';
 import { QuestionCircleFilled, SearchOutlined, PlusOutlined } from '@ant-design/icons';
+
 const URL = {
   address: 'v1/user/customerAddressList',
   contract: 'v_sass/user/contract_list_exclude_used',

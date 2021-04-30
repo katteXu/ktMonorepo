@@ -11,14 +11,14 @@ import AssociatedContract from '@components/contractManagement/associatedContrac
 
 import styles from './styles.less';
 // 表单格式
-// const formItemLayout = {
-//   labelAlign: 'left',
-//   // labelCol: { span: 6 },
-//   // wrapperCol: { span: 18 },
-// };
+const formItemLayout = {
+  labelAlign: 'left',
+  // labelCol: { span: 6 },
+  // wrapperCol: { span: 18 },
+};
 
 const tailFormItemLayout = {
-  wrapperCol: { offset: 4 },
+  // wrapperCol: { offset: 4 },
 };
 // 获取货物类型
 const getGoodsType = async () => {
@@ -185,7 +185,7 @@ const Index = () => {
   return (
     <>
       <Form
-        // {...formItemLayout}
+        {...formItemLayout}
         onFinish={handleSubmit}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -476,7 +476,6 @@ const Index = () => {
             },
           ]}>
           <DatePicker
-            // style={{ width: '100%' }}
             placeholder="请选择有效时间"
             style={{ width: 264 }}
             disabled={!signDate}
@@ -517,7 +516,6 @@ const Index = () => {
               </Tooltip>
             </div>
           }
-          // label="合同金额"
           name="totalValue">
           <Input disabled placeholder="0.000" style={{ width: 264 }} suffix={'元'} />
         </Form.Item>
@@ -548,9 +546,7 @@ const Index = () => {
               </span>
               关联合同
             </div>
-          }
-          // label="关联合同"
-        >
+          }>
           <Button
             style={{ width: 121 }}
             block
@@ -562,11 +558,11 @@ const Index = () => {
         </Form.Item>
         {showAssociatedContract ? <AssociatedContract onSubmit={item => setSelectedRowKeysItem(item)} /> : ''}
 
-        <Form.Item {...tailFormItemLayout}>
+        <div style={{ paddingLeft: 118 }}>
           <Button htmlType="submit" type="primary">
             创 建
           </Button>
-        </Form.Item>
+        </div>
       </Form>
     </>
   );
