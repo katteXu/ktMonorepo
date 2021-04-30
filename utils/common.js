@@ -1,4 +1,5 @@
 import { getPrivateUrl } from '@api';
+import moment from 'moment';
 // 保存用户信息
 export const saveUserInfo = user => {
   const {
@@ -237,5 +238,26 @@ export const BuildUrl = async url => {
   } else {
     console.error('生成url失败');
     return {};
+  }
+};
+
+/**
+ *
+ * @param {*} diff 差异数
+ * @param {*} type 差异类型(天，月，周，年等)
+ * type 可选值 day,month
+ */
+export const getDateRange = (diff, type) => {
+  if (type === 'day') {
+    let day = moment().add(diff, 'days').format('YYYY-MM-DD');
+    let begin = day + ' ' + '00:00:00';
+    let end = day + ' ' + '23:59:59';
+    return [begin, end];
+  }
+
+  if (type === 'month') {
+    let begin = moment().add(diff, 'months').startOf('month').format('YYYY-MM-DD 00:00:00');
+    let end = moment().add(diff, 'months').endOf('month').format('YYYY-MM-DD 23:59:59');
+    return [begin, end];
   }
 };

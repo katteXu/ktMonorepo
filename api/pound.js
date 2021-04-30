@@ -318,6 +318,105 @@ const deleteGlobalPoundWeightDiff = ({ params }) => {
   });
 };
 
+// 人工结算磅单列表
+const getPoundBillList = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/man_pay_pound/manPayPoundBillList',
+    params,
+  });
+};
+
+// 修改重量
+const updateWeight = ({ params }) => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/man_pay_pound/updateManPayWeight',
+    data: params,
+  });
+};
+
+// 编辑单价
+const updatePrice = ({ params }) => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/man_pay_pound/updateManPayUnitPrice',
+    data: params,
+  });
+};
+
+// 更改状态
+const updateStatus = ({ params }) => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/man_pay_pound/updateManPayStatus',
+    data: params,
+  });
+};
+
+// 获取结算单
+const getPoundBillPayedList = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/man_pay_pound/manPayPoundBillPayedList',
+    params,
+  });
+};
+
+// 结算单列表(导出)
+const getPoundBillAccountList = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/man_pay_pound/manPayPoundBillAccountList',
+    params,
+  });
+};
+
+// 结算单明细导出
+const getPoundBillAccountDetailExport = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/man_pay_pound/manPayPoundBillAccountDetailExport',
+    params,
+  });
+};
+
+// 获取统计数据
+const getStatisticsData = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/man_pay_pound/manPayPoundBillData',
+    params,
+  });
+};
+
+// 更改打款状态
+const updateAccountListStatus = ({ params } = {}) => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/man_pay_pound/updateAccountListStatus',
+    data: params,
+  });
+};
+
+// 更改结算信息
+const updateAccountData = ({ params } = {}) => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/man_pay_pound/updateAccountData',
+    data: params,
+  });
+};
+
+// 导入excel
+const importPoundBillWeight = ({ params } = {}) => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/man_pay_pound/importPoundBillWeight',
+    data: params,
+  });
+};
+
 export default {
   getBillReport,
   getBillMonthReport,
@@ -357,4 +456,16 @@ export default {
   getGlobalPoundWeightDiff,
   setGlobalPoundWeightDiff,
   deleteGlobalPoundWeightDiff,
+
+  updateWeight,
+  updatePrice,
+  getPoundBillList,
+  updateStatus,
+  getPoundBillPayedList,
+  getPoundBillAccountList,
+  getPoundBillAccountDetailExport,
+  getStatisticsData,
+  updateAccountListStatus,
+  updateAccountData,
+  importPoundBillWeight,
 };

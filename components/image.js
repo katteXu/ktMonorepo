@@ -60,6 +60,10 @@ const lineFrom = `${publicRuntimeConfig.staticFolder}/image/line-from.png`;
 const linePlace = `${publicRuntimeConfig.staticFolder}/image/line-place.png`;
 const lineTo = `${publicRuntimeConfig.staticFolder}/image/line-to.png`;
 
+// 过磅管理
+const SettlmentEmpty = `${publicRuntimeConfig.staticFolder}/image/settlment-empty.png`;
+const SettlmentLeftBg = `${publicRuntimeConfig.staticFolder}/image/settlment-left.png`;
+const SettlmentRightBg = `${publicRuntimeConfig.staticFolder}/image/settlment-right.png`;
 export {
   Banner,
   Transport,
@@ -102,4 +106,7 @@ export {
   TiaoTaiGif,
   ChuanSongStatic,
   ChuanSongGif,
+  SettlmentEmpty,
+  SettlmentLeftBg,
+  SettlmentRightBg,
 };

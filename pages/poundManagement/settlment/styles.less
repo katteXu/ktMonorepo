@@ -1,0 +1,133 @@
+.panels {
+  display: flex;
+
+  .content-item {
+    flex: 1;
+    padding: 4px 0;
+
+    .status {
+      font-size: 14px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #4a4a5a;
+    }
+    .count {
+      margin-top: 3px;
+      font-size: 14px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #4a4a5a;
+      .num {
+        font-size: 20px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #4a4a5a;
+        margin: 0 4px;
+      }
+    }
+    .btn {
+      margin-top: 12px;
+    }
+
+    & + .content-item {
+      border-left: 1px solid #f0f0f0;
+      padding-left: 23px;
+    }
+  }
+}
+
+.loading-component {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 350px;
+}
+
+.ctrl {
+  margin-top: 12px;
+}
+
+.ctrl-bottom {
+  position: fixed;
+  display: flex;
+  bottom: 0;
+  left: 200px;
+  right: 0;
+  background-color: #fff;
+  padding: 12px 24px;
+  align-items: center;
+  box-shadow: 0px -1px 4px 0px rgba(174, 189, 210, 0.3);
+}
+
+.table-block {
+  border: 1px solid #d8d8d8;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding: 16px;
+  padding-bottom: 0;
+  .header {
+    padding-bottom: 12px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #4a4a5a;
+
+    display: flex;
+    justify-content: space-between;
+
+    span + span {
+      margin-left: 48px;
+    }
+  }
+
+  .footer {
+    color: #4a4a5a;
+    :global {
+      td {
+        border: none;
+      }
+    }
+
+    .item1,
+    .item2 {
+      padding: 12px 8px;
+      text-align: right;
+    }
+  }
+}
+
+.edit-input {
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 90px;
+  height: 26px;
+  line-height: 26px;
+  position: absolute;
+  text-align: right;
+
+  &.error {
+    border-color: #e44040 !important;
+    box-shadow: 0 1px 4px 0 rgba(228, 64, 64, 0.45);
+  }
+}
+.edit-cell {
+  cursor: pointer;
+  margin-left: 4px;
+  &:hover {
+    color: #3d86ef;
+  }
+}
+
+.modal {
+  :global {
+    .ant-modal-body {
+      padding: 16px;
+    }
+  }
+}
+.remark{
+  background: #F6F7F9;
+  margin: 16px 0;
+  padding:16px;
+}

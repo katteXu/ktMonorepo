@@ -35,6 +35,9 @@ const CleanCoalPic = `${publicRuntimeConfig.staticFolder}/icon/cleanCoal.svg`;
 const VerifyNone = `${publicRuntimeConfig.staticFolder}/icon/verify_none.svg`;
 const VerifyIcon = `${publicRuntimeConfig.staticFolder}/icon/verify.svg`;
 
+// 过磅管理
+const SettlmentLeftIcon = `${publicRuntimeConfig.staticFolder}/icon/settlment-left-icon.svg`;
+const SettlmentRightIcon = `${publicRuntimeConfig.staticFolder}/icon/settlment-right-icon.svg`;
 export {
   LinkIcon,
   Logo,
@@ -62,4 +65,6 @@ export {
   ArrowIcon,
   TotalPic,
   CleanCoalPic,
+  SettlmentLeftIcon,
+  SettlmentRightIcon,
 };

@@ -79,18 +79,17 @@ const MENU_LIST = [
     key: 'poundManagement',
     children: [
       {
-        name: '磅单报表',
+        name: '人工结算',
+        key: 'settlment',
+      },
+      {
+        name: '数据报表',
         key: 'poundReport',
         permission: ['POUND_MANAGEMENT'],
       },
       {
-        name: '过磅记录',
+        name: '磅单列表',
         key: 'poundRecord',
-        permission: ['POUND_MANAGEMENT'],
-      },
-      {
-        name: '车牌识别记录',
-        key: 'licenseRecord',
         permission: ['POUND_MANAGEMENT'],
       },
       {
@@ -99,12 +98,32 @@ const MENU_LIST = [
         permission: ['POUND_MANAGEMENT'],
       },
       {
-        name: '车辆装载登记表',
+        name: '磅单报表_old',
+        key: 'poundReport',
+        permission: ['POUND_MANAGEMENT'],
+      },
+      {
+        name: '过磅记录_old',
+        key: 'poundRecord',
+        permission: ['POUND_MANAGEMENT'],
+      },
+      {
+        name: '车牌识别记录_old',
+        key: 'licenseRecord',
+        permission: ['POUND_MANAGEMENT'],
+      },
+      {
+        name: '设置_old',
+        key: 'poundSetting',
+        permission: ['POUND_MANAGEMENT'],
+      },
+      {
+        name: '车辆装载登记表_old',
         key: 'register',
         permission: ['SMART_WEIGHING_ROOM'],
       },
       {
-        name: '车辆装载月报表',
+        name: '车辆装载月报表_old',
         key: 'monthReport',
         permission: ['SMART_WEIGHING_ROOM'],
       },

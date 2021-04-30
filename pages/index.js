@@ -6,7 +6,6 @@ import { OverPack } from 'rc-scroll-anim';
 import styles from '@styles/index.less';
 import { Button } from 'antd';
 import { logout } from '@api';
-// import { clearUserInfo, usePersonalize } from "@utils/common";
 import { Icon, Image } from '@components';
 // 文字动效
 import Texty from 'rc-texty';
