@@ -226,7 +226,7 @@ const Index = ({ formData, onSubmit }) => {
                     },
                   },
                 ]}>
-                <Input placeholder="" style={{ width: 80, margin: '0 4px' }} disabled={reduceCheck ? false : true} />
+                <Input placeholder="" style={{ width: 96, margin: '0 4px' }} disabled={reduceCheck ? false : true} />
               </Form.Item>
               吨时,不再执行减扣规则,否则以设置的值进行减扣
             </Checkbox>

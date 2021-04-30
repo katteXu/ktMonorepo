@@ -94,7 +94,7 @@ const PoundManagement = props => {
             placement="topRight"
             icon={<QuestionCircleFilled />}
             onConfirm={() => deletePound(record)}>
-            <Button size="small" type="link" className={deleteBtn.delete}>
+            <Button size="small" type="link" danger>
               删除
             </Button>
           </Popconfirm>
@@ -292,7 +292,7 @@ const PoundManagement = props => {
           setFormData({});
         }}
         showDrawer={visible}
-        width={630}>
+        width={664}>
         <PoundRulesFrom
           formData={type === 'add' ? {} : formData}
           onSubmit={type === 'add' ? addPoundRules : editPoundRules}

@@ -56,9 +56,4 @@ const PoundSetting = props => {
   );
 };
 
-PoundSetting.getInitialProps = async props => {
-  const { isServer, userInfo } = props;
-  return { isServer, userInfo };
-};
-
 export default PoundSetting;

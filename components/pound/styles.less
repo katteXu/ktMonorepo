@@ -1,32 +1,55 @@
 .title {
-  font-size: 16x;
   font-weight: 600;
   color: #4a4a5a;
-  padding: 12px 24px;
-  border: 1px solid #f4f4f4;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   .replace {
+    font-weight: 400;
     color: #3d86ef;
+    margin-left: 12px;
+    cursor: pointer;
   }
 }
 
 .topContent {
-  border-radius: 4px;
-  border: 1px solid #f0f0f0;
+  border-radius: 2px;
+  .btn-add {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: none;
+    border-right: none;
+    :global {
+      .ant-btn {
+        width: 400;
+        border: 1px dashed #d8d8d8;
+        color: #4a4a5a;
+        &:hover {
+          border-color: #3d86ef;
+          color: #3d86ef;
+          .anticon {
+            color: #3d86ef !important;
+          }
+        }
+      }
+    }
+  }
 }
 .routeInfo {
-  padding: 0 24px 16px;
+  padding: 0 11px;
   .rowBox {
     display: flex;
+    flex-direction: column;
   }
   .row {
     font-size: 14px;
     color: #4a4a5a;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
     .rowLable {
       width: 66px;
+      color: #848485;
       display: inline-block;
     }
   }
