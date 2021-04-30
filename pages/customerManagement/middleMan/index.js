@@ -1,8 +1,6 @@
-/** @format */
-
 import { useState, useEffect, useCallback } from 'react';
-import { Input, Button, Table, message, DatePicker, Tooltip, Popconfirm } from 'antd';
-import { Content, Search, DrawerInfo } from '@components';
+import { Input, Button, Table, Modal, message, DatePicker, Tooltip, Popconfirm } from 'antd';
+import { Content, Search } from '@components';
 import Layout from '@components/Layout';
 import moment from 'moment';
 import NewFrom from '@components/MiddleMan/newForm';
@@ -10,7 +8,6 @@ import SettingFrom from '@components/MiddleMan/settingForm';
 import { getState, clearState } from '@utils/common';
 import customer from '@api/customer';
 import { QuestionCircleFilled } from '@ant-design/icons';
-import deleteBtn from '../deleteBtn.less';
 
 const MiddleMan = props => {
   const routeView = {
@@ -120,7 +117,6 @@ const MiddleMan = props => {
             <Button
               size="small"
               type="link"
-              key="detail"
               onClick={() => {
                 setShowSetting(true), setId(id);
                 setType('edit');
@@ -139,7 +135,7 @@ const MiddleMan = props => {
               placement="topRight"
               icon={<QuestionCircleFilled />}
               onConfirm={() => delRow(record)}>
-              <Button size="small" type="link" className={deleteBtn.delete} style={{ marginLeft: 8 }} key="delete">
+              <Button size="small" type="link" danger>
                 删除
               </Button>
             </Popconfirm>
@@ -349,13 +345,15 @@ const MiddleMan = props => {
         </section>
       </Content>
 
-      <DrawerInfo
-        title={type === 'add' ? '新增' : '编辑'}
-        onClose={() => {
+      <Modal
+        title={type === 'add' ? '新增车队长' : '编辑车队长'}
+        onCancel={() => {
           type === 'add' ? setShowNew(false) : setShowSetting(false);
         }}
-        showDrawer={type === 'add' ? showNew : showSetting}
-        width={630}>
+        visible={type === 'add' ? showNew : showSetting}
+        width={640}
+        footer={null}
+        destroyOnClose>
         {type === 'add' ? (
           <NewFrom
             formData={{}}
@@ -375,7 +373,7 @@ const MiddleMan = props => {
             visible={showSetting}
           />
         )}
-      </DrawerInfo>
+      </Modal>
     </Layout>
   );
 };

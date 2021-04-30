@@ -1,15 +1,12 @@
-/** @format */
-
 import { useState, useEffect, useCallback } from 'react';
-import { Button, Table, message, Input, Popconfirm, DatePicker } from 'antd';
-import { Content, Search, Layout, Ellipsis, DrawerInfo } from '@components';
+import { Button, Table, Modal, message, Input, Popconfirm, DatePicker } from 'antd';
+import { Content, Search, Layout, Ellipsis } from '@components';
 import AddressForm from '@components/CustomerDetail/address/form';
 import { customer } from '@api';
-import router from 'next/router';
 import moment from 'moment';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { keepState, getState, clearState } from '@utils/common';
-import deleteBtn from '../deleteBtn.less';
+
 const address = props => {
   const routeView = {
     title: '地址管理',
@@ -120,7 +117,7 @@ const address = props => {
               placement="topRight"
               icon={<QuestionCircleFilled />}
               onConfirm={() => delData(record)}>
-              <Button type="link" size="small" className={deleteBtn.delete}>
+              <Button type="link" size="small" danger>
                 删除
               </Button>
             </Popconfirm>
@@ -133,11 +130,9 @@ const address = props => {
   const [loading, setLoading] = useState(true);
   const [dataList, setDataList] = useState({});
 
-  // const [showNew, setShowNew] = useState(false);
   const [id, setId] = useState('');
-  // const [showUpdate, setShowUpdate] = useState(false);
   const [editData, setEditData] = useState('');
-  const [errorText, setErrorText] = useState('');
+
   const [visible, setVisible] = useState(false);
   const [type, setType] = useState('');
   // 查询条件
@@ -162,6 +157,7 @@ const address = props => {
 
   // 绑定数据
   const getDataList = async ({ addressName, addressContact, page, pageSize, begin, end }) => {
+    console.log(page);
     setLoading(true);
     const params = {
       limit: pageSize,
@@ -189,7 +185,7 @@ const address = props => {
   };
 
   // 删除确认
-  const delData = async ({ loadAddressName, id }) => {
+  const delData = async ({ id }) => {
     const params = {
       loadAddressId: id,
     };
@@ -216,14 +212,8 @@ const address = props => {
   };
 
   // 编辑数据
-  const update = ({ id }) => {
-    router.push(`/customerManagement/detail?id=${id}`);
-  };
 
   // 详情
-  const toDetail = ({ id, addressName }) => {
-    router.push(`/customerManagement/addressList?addressName=${addressName}`);
-  };
 
   // 翻页
   const onChangePage = useCallback(
@@ -263,7 +253,6 @@ const address = props => {
       setQuery({ ...query, page: 1 });
       getDataList({ ...query, page: 1 });
     } else {
-      // setErrorText(`${res.detail || res.description}`);
       message.error(`地址新增失败，原因：${res.detail || res.description}`);
     }
   });
@@ -277,7 +266,6 @@ const address = props => {
       setVisible(false);
       getDataList({ ...query });
     } else {
-      // setErrorText(`${res.detail || res.description}`);
       message.error(`地址修改失败，原因：${res.detail || res.description}`);
     }
   });
@@ -304,11 +292,12 @@ const address = props => {
   });
 
   // 时间输入
-  const handleChangeDate = useCallback((value, string) => {
+  const handleChangeDate = useCallback(value => {
     const begin = value && value[0] && moment(value[0]).format('YYYY-MM-DD HH:mm:ss');
     const end = value && value[1] && moment(value[1]).format('YYYY-MM-DD HH:mm:ss');
     setQuery(() => ({ ...query, begin, end }));
   });
+  console.log(editData);
   return (
     <Layout {...routeView}>
       <Content>
@@ -362,14 +351,16 @@ const address = props => {
         </section>
       </Content>
 
-      <DrawerInfo
-        title={type === 'add' ? '新增' : '编辑'}
-        onClose={() => {
+      <Modal
+        title={type === 'add' ? '新增地址' : '编辑地址'}
+        onCancel={() => {
           setVisible(false);
           setEditData({});
         }}
-        showDrawer={visible}
-        width={630}>
+        visible={visible}
+        width={640}
+        footer={null}
+        destroyOnClose>
         <AddressForm
           formData={type === 'add' ? {} : editData}
           onSubmit={type === 'add' ? submit : modifySubmit}
@@ -377,7 +368,7 @@ const address = props => {
             setVisible(false);
           }}
         />
-      </DrawerInfo>
+      </Modal>
     </Layout>
   );
 };

@@ -8,7 +8,6 @@ import { getSms } from '@api';
 // 表单布局
 const formItemLayout = {
   labelAlign: 'left',
-  labelCol: { span: 5 },
   wrapperCol: { span: 19 },
 };
 
@@ -186,204 +185,226 @@ const NewForm = ({ onSubmit, onClose }) => {
   };
 
   return (
-    <Form
-      {...formItemLayout}
-      onFinish={onFinish}
-      initialValues={{
-        createRoute: 1,
-      }}
-      form={form}
-      onFinishFailed={onFinishFailed}>
-      <Form.Item
-        label="账号"
-        name="account"
-        rules={[
-          {
-            required: true,
-            message: '账号不可为空',
-          },
-          {
-            pattern: /^1[3-9]\d{9}$/,
-            message: '请输入有效的联系电话',
-          },
-        ]}>
-        <Input placeholder="请输入账号" maxLength={11} onChange={e => setAccount(e.target.value)} />
-      </Form.Item>
+    <div className={styles.form}>
+      <Form
+        {...formItemLayout}
+        onFinish={onFinish}
+        initialValues={{
+          createRoute: 1,
+        }}
+        form={form}
+        onFinishFailed={onFinishFailed}>
+        <Form.Item
+          label="账号"
+          name="account"
+          rules={[
+            {
+              required: true,
+              message: '账号不可为空',
+            },
+            {
+              pattern: /^1[3-9]\d{9}$/,
+              message: '请输入有效的联系电话',
+            },
+          ]}>
+          <Input
+            placeholder="请输入账号"
+            maxLength={11}
+            onChange={e => setAccount(e.target.value)}
+            style={{ width: 200 }}
+          />
+        </Form.Item>
 
-      <Form.Item
-        label={
-          <div>
-            <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>姓名
-          </div>
-        }
-        name="name"
-        rules={[
-          {
-            validator: async (rule, value, callback) => {
-              const username = form.getFieldValue('account');
-              if (/^1[3-9]\d{9}$/.test(username)) {
-                setLoading(true);
-                const res = await getMiddleByUserName(username);
-                if (res.status === 0) {
-                  form.setFieldsValue({ name: res.result.name });
-                  setMiddleId(res.result.id);
+        <Form.Item
+          label={
+            <div>
+              <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>姓名
+            </div>
+          }
+          name="name"
+          rules={[
+            {
+              validator: async (rule, value, callback) => {
+                const username = form.getFieldValue('account');
+                if (/^1[3-9]\d{9}$/.test(username)) {
+                  setLoading(true);
+                  const res = await getMiddleByUserName(username);
+                  if (res.status === 0) {
+                    form.setFieldsValue({ name: res.result.name });
+                    setMiddleId(res.result.id);
+                  } else {
+                    form.setFieldsValue({ name: '' });
+                    // callback(res.detail || res.description);
+                    throw new Error(res.detail || res.description);
+                  }
+                  setLoading(false);
                 } else {
                   form.setFieldsValue({ name: '' });
-                  // callback(res.detail || res.description);
-                  throw new Error(res.detail || res.description);
                 }
-                setLoading(false);
-              } else {
-                form.setFieldsValue({ name: '' });
-              }
+              },
             },
-          },
-        ]}>
-        <Input disabled placeholder="姓名" suffix={loading && <LoadingOutlined />} />
-      </Form.Item>
+          ]}>
+          <Input disabled placeholder="姓名" suffix={loading && <LoadingOutlined />} style={{ width: 200 }} />
+        </Form.Item>
 
-      <Form.Item
-        label={
-          <div>
-            <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>代建专线
-          </div>
-        }
-        // label="代建专线"
-        name="createRoute"
-        validateFirst={true}
-        rules={[]}>
-        <Radio.Group>
-          <Radio value={1}>能</Radio>
-          <Radio value={0}>不能</Radio>
-        </Radio.Group>
-      </Form.Item>
+        <Form.Item
+          label={
+            <div>
+              <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>代建专线
+            </div>
+          }
+          // label="代建专线"
+          name="createRoute"
+          validateFirst={true}
+          rules={[]}>
+          <Radio.Group>
+            <Radio value={1}>能</Radio>
+            <Radio value={0}>不能</Radio>
+          </Radio.Group>
+        </Form.Item>
 
-      <Form.Item
-        label={
-          <div>
-            <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>指定代收账号
-          </div>
-        }
-        // label="指定代收账号"
-      >
-        <Radio.Group value={receive} onChange={e => setReceive(e.target.value)}>
-          <Radio value={1}>指定</Radio>
-          <Radio value={0}>不指定</Radio>
-        </Radio.Group>
-        {/* )} */}
-      </Form.Item>
+        <Form.Item
+          label={
+            <div>
+              <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>指定代收账号
+            </div>
+          }
+          // label="指定代收账号"
+          style={{ marginBottom: 0 }}>
+          <Radio.Group value={receive} onChange={e => setReceive(e.target.value)}>
+            <Radio value={1}>指定</Radio>
+            <Radio value={0}>不指定</Radio>
+          </Radio.Group>
+          {/* )} */}
+        </Form.Item>
+        <div style={{ color: '#848485', margin: '0px 0px 24px 131px' }}>
+          注意：当指定代收人后、该车队长结算的运费将直接打到指定银行卡中
+        </div>
 
-      {receive === 1 ? (
-        <>
-          <Form.Item
-            label="代收银行卡"
-            name="cardNumber"
-            validateFirst={true}
-            rules={[
-              { required: true, message: '内容不可为空' },
-              { pattern: regBankCard, message: '银行卡号应为16-22位数字' },
-            ]}>
-            <Input
-              placeholder="请输入代收银行卡号"
-              maxLength={22}
-              onChange={e => geBankCardByCardNum(e.target.value)}
-              suffix={<LoadingOutlined style={{ display: `${cardLoading ? 'unset' : 'none'}` }} />}
-            />
-          </Form.Item>
-
-          {editReceive ? (
+        {receive === 1 ? (
+          <>
             <Form.Item
-              label="所属银行"
-              name="bankId"
-              validateFirst={true}
-              rules={[{ required: true, message: '内容不可为空' }]}>
-              <Select placeholder="请输入银行名称" allowClear showSearch onSearch={handleSearch} filterOption={false}>
-                {bankList.map(value => {
-                  return (
-                    <Select.Option key={value.id + ''} value={value.id}>
-                      {value.bankName}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          ) : (
-            <Form.Item label="所属银行" required>
-              <Input value={fromBank.bankName} disabled={true} />
-            </Form.Item>
-          )}
-
-          <Form.Item
-            label="持卡人姓名"
-            name="userName"
-            validateFirst={true}
-            rules={[{ required: true, message: '内容不可为空' }]}>
-            <Input disabled={!editReceive} placeholder="请输入持卡人姓名" />
-          </Form.Item>
-
-          <Form.Item
-            label="持卡人身份证号"
-            name="idCard"
-            validateFirst={true}
-            rules={[
-              { required: true, message: '内容不可为空' },
-              { pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '请输入有效的身份证号' },
-            ]}>
-            <Input disabled={!editReceive} placeholder="请输入持卡人身份证号" />
-          </Form.Item>
-
-          <Form.Item
-            label="持卡人手机号"
-            name="mobile"
-            validateFirst={true}
-            rules={[
-              {
-                required: true,
-                message: '持卡人手机不可为空',
-              },
-              {
-                pattern: /^1[3-9]\d{9}$/,
-                message: '请输入有效的手机号码',
-              },
-            ]}>
-            <Input disabled={!editReceive} maxLength={11} placeholder="请输入持卡人手机号" />
-          </Form.Item>
-
-          {editReceive ? (
-            <Form.Item
-              label="短信验证码"
-              name="sms"
+              label="代收银行卡"
+              name="cardNumber"
               validateFirst={true}
               rules={[
-                { required: true, message: '验证码不可为空' },
-                { pattern: /^\d{6}$/, message: '验证码必须为6位数字' },
+                { required: true, message: '内容不可为空' },
+                { pattern: regBankCard, message: '银行卡号应为16-22位数字' },
               ]}>
-              <Row gutter={8}>
-                <Col span={14}>
-                  <Input placeholder="请输入验证码" maxLength={6} />
-                </Col>
-                <Col span={10}>
-                  <Button type="primary" ghost disabled={time > 0} style={{ width: 103 }} onClick={() => getPhoneSms()}>
-                    {time === undefined ? '获取验证码' : time > 0 ? `${time}秒后重发` : '重新发送'}
-                  </Button>
-                </Col>
-              </Row>
+              <Input
+                placeholder="请输入代收银行卡号"
+                maxLength={22}
+                style={{ width: 264 }}
+                onChange={e => geBankCardByCardNum(e.target.value)}
+                suffix={<LoadingOutlined style={{ display: `${cardLoading ? 'unset' : 'none'}` }} />}
+              />
             </Form.Item>
-          ) : undefined}
-        </>
-      ) : undefined}
 
-      <div className={styles['help']}>注意：当指定代收人后、该车队长结算的运费将直接打到指定银行卡中</div>
+            {editReceive ? (
+              <Form.Item
+                label="所属银行"
+                name="bankId"
+                validateFirst={true}
+                rules={[{ required: true, message: '内容不可为空' }]}>
+                <Select
+                  placeholder="请输入银行名称"
+                  allowClear
+                  showSearch
+                  onSearch={handleSearch}
+                  filterOption={false}
+                  style={{ width: 264 }}>
+                  {bankList.map(value => {
+                    return (
+                      <Select.Option key={value.id + ''} value={value.id}>
+                        {value.bankName}
+                      </Select.Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            ) : (
+              <Form.Item label="所属银行" required>
+                <Input value={fromBank.bankName} disabled={true} style={{ width: 264 }} />
+              </Form.Item>
+            )}
 
-      <div style={{ textAlign: 'right' }} className={styles['btn-bottom']}>
-        <Button size="default" onClick={() => onClose()}>
-          取消
-        </Button>
-        <Button size="default" type="primary" style={{ marginLeft: 8 }} htmlType="submit" loading={btnLoading}>
-          提交
-        </Button>
-      </div>
-    </Form>
+            <Form.Item
+              label="持卡人姓名"
+              name="userName"
+              validateFirst={true}
+              rules={[{ required: true, message: '内容不可为空' }]}>
+              <Input disabled={!editReceive} placeholder="请输入持卡人姓名" style={{ width: 200 }} />
+            </Form.Item>
+
+            <Form.Item
+              label="持卡人身份证号"
+              name="idCard"
+              validateFirst={true}
+              rules={[
+                { required: true, message: '内容不可为空' },
+                { pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '请输入有效的身份证号' },
+              ]}>
+              <Input disabled={!editReceive} placeholder="请输入持卡人身份证号" style={{ width: 264 }} />
+            </Form.Item>
+
+            <Form.Item
+              label="持卡人手机号"
+              name="mobile"
+              validateFirst={true}
+              rules={[
+                {
+                  required: true,
+                  message: '持卡人手机不可为空',
+                },
+                {
+                  pattern: /^1[3-9]\d{9}$/,
+                  message: '请输入有效的手机号码',
+                },
+              ]}>
+              <Input disabled={!editReceive} maxLength={11} placeholder="请输入持卡人手机号" style={{ width: 200 }} />
+            </Form.Item>
+
+            {editReceive ? (
+              <div className={styles.sms}>
+                <Form.Item
+                  label="短信验证码"
+                  name="sms"
+                  validateFirst={true}
+                  rules={[
+                    { required: true, message: '验证码不可为空' },
+                    { pattern: /^\d{6}$/, message: '验证码必须为6位数字' },
+                  ]}>
+                  <Row>
+                    <Col span={11}>
+                      <Input placeholder="请输入验证码" maxLength={6} style={{ width: 200 }} />
+                    </Col>
+                    <Col span={10}>
+                      <Button
+                        type="primary"
+                        ghost
+                        disabled={time > 0}
+                        style={{ width: 88, padding: 0, marginLeft: -6 }}
+                        onClick={() => getPhoneSms()}>
+                        {time === undefined ? '获取验证码' : time > 0 ? `${time}秒后重发` : '重新发送'}
+                      </Button>
+                    </Col>
+                  </Row>
+                </Form.Item>
+              </div>
+            ) : undefined}
+          </>
+        ) : undefined}
+
+        <div style={{ textAlign: 'right' }}>
+          <Button size="default" onClick={() => onClose()}>
+            取消
+          </Button>
+          <Button size="default" type="primary" style={{ marginLeft: 8 }} htmlType="submit" loading={btnLoading}>
+            提交
+          </Button>
+        </div>
+      </Form>
+    </div>
   );
 };
 
