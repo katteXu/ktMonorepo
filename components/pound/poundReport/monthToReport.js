@@ -13,7 +13,7 @@ const { Option } = Select;
 const Index = props => {
   const columns = [
     {
-      title: '时间',
+      title: ' 出站时间',
       dataIndex: 'outDate',
       key: 'outDate',
       width: '10%',
@@ -122,6 +122,7 @@ const Index = props => {
   //   getRemoteData({ ...query });
   // }, []);
   useEffect(() => {
+    console.log(query.time_filter);
     if (query.time_filter && defaultCount <= 1) {
       setDefaultCount(defaultCount + 1);
       handleSearch();
@@ -254,8 +255,8 @@ const Index = props => {
   return (
     <>
       <Content>
-        <section>
-          <Search onSearch={handleSearch} onReset={handleReset}>
+        <section style={{ padding: 0 }}>
+          <Search onSearch={handleSearch} onReset={handleReset} onExport={handleExport} exportLoading={exportLoading}>
             <Search.Item br>
               <MonthPicker onChange={handleChangeDate} ref={monthpickerRef} />
             </Search.Item>
@@ -273,30 +274,20 @@ const Index = props => {
               <Input value={query.companyName} allowClear placeholder="请输入发货企业" onChange={handleChangeCompany} />
             </Search.Item>
           </Search>
-        </section>
-        <header styel={{ border: 0 }}>
-          磅单列表
-          <Button onClick={handleExport} style={{ float: 'right' }} loading={exportLoading}>
-            导出
-          </Button>
-        </header>
-        <section style={{ paddingTop: 0 }}>
-          <Msg>
+
+          <Msg style={{ marginTop: 16 }}>
             合计：
             <span style={{ marginRight: 32, marginLeft: 8 }}>
               运输车数<span className="total-num">{total.allCount}</span>辆
             </span>
             <span style={{ marginRight: 32, marginLeft: 8 }}>
-              原发净重
-              <span className="total-num">{Format.weight(total.allFromGoodsWeight)}</span>吨
+              原发净重<span className="total-num">{Format.weight(total.allFromGoodsWeight)}</span>吨
             </span>
             <span style={{ marginRight: 32, marginLeft: 8 }}>
-              实收净重
-              <span className="total-num">{Format.weight(total.allGoodsWeight)}</span>吨
+              实收净重<span className="total-num">{Format.weight(total.allGoodsWeight)}</span>吨
             </span>
             <span style={{ marginRight: 32, marginLeft: 8 }}>
-              路损
-              <span className="total-num">{Format.weight(total.allLoss)}</span>吨
+              路损<span className="total-num">{Format.weight(total.allLoss)}</span>吨
             </span>
           </Msg>
           <Table

@@ -1,10 +1,10 @@
 import styles from './styles.less';
-import { Button } from 'antd';
+import { Button, Row, Col } from 'antd';
 import { LoadingBtn } from '@components';
 import { useEffect, useState } from 'react';
 
 const Search = props => {
-  const { children, onSearch, onReset, color, simple, onExport } = props;
+  const { children, onSearch, onReset, color, simple, onExport, onExportTow } = props;
 
   const onPress = e => {
     if (e.which === 13) {
@@ -48,6 +48,17 @@ const Search = props => {
               导出
             </LoadingBtn>
           )}
+
+          {onExportTow && (
+            <div style={{ display: 'inline-block' }}>
+              <LoadingBtn style={{ marginLeft: 8 }} onClick={props.onExportTowClick1} loading={props.exportLoading}>
+                {onExportTow.name1}
+              </LoadingBtn>
+              <LoadingBtn style={{ marginLeft: 8 }} onClick={props.onExportTowClick2} loading={props.exportLoading2}>
+                {onExportTow.name2}
+              </LoadingBtn>
+            </div>
+          )}
           {onReset && (
             <Button onClick={onReset} style={{ padding: '4px 12px' }} type="link">
               重置筛选条件
@@ -85,18 +96,12 @@ Search.Item = ({ children, label, colSpan = 1, style, visible, br }) => {
   return (
     <>
       <div
-        style={(style, { display: br ? 'block' : 'inline-block' })}
+        style={{ ...style, display: br ? 'block' : 'inline-block' }}
         {...layout}
         className={`${styles.item} ${false ? styles.simple : ''}`}>
-        {label && (
-          <div className={styles.label}>
-            {/* {label}{visible !== false ? '：' : ''} */}
-            {`${label}${visible !== false ? '：' : ''}`}
-          </div>
-        )}
+        {label && <div className={styles.label}>{`${label}${visible !== false ? '：' : ''}`}</div>}
         <div className={styles.input}>{children}</div>
       </div>
-      {/* {br && <Col {...placeholder}></Col>} */}
     </>
   );
 };

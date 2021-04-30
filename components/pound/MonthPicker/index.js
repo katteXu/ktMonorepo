@@ -22,6 +22,7 @@ const Monthpicker = (props, ref) => {
   useImperativeHandle(ref, () => ({
     reset: async () => {
       const tadayMonth = moment().format('YYYY-MM');
+      console.log(tadayMonth);
       const toMonth = [
         moment({ hour: 0, minute: 0, second: 0 }).startOf('month'),
         moment({ hour: 23, minute: 59, second: 59 }).endOf('month'),
@@ -103,7 +104,7 @@ const Monthpicker = (props, ref) => {
   }, [date]);
 
   return (
-    <div className={styles.main}>
+    <div className={styles.main} style={{ marginBottom: type === 1 ? 24 : 0 }}>
       <span className={styles.txt}>出站时间：</span>
       {/* <DatePicker.RangePicker
         format={type === 0 ? 'YYYY-MM-DD HH:mm:ss' : undefined}

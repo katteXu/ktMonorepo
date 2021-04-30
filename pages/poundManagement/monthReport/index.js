@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import Layout from '@components/Layout';
 import { Table, DatePicker, message } from 'antd';
-import { Content, Search } from '@components';
+import { Search } from '@components';
 import moment from 'moment';
 import { vehicleRegister, downLoadFile } from '@api';
 import { getState, clearState } from '@utils/common';
@@ -20,14 +19,6 @@ const getCurrenyTime = () => {
 };
 
 const Month = props => {
-  const routeView = {
-    title: '车辆载装月报表',
-    pageKey: 'monthReport',
-    longKey: 'poundManagement.monthReport',
-    breadNav: '过磅管理.车辆载装月报表',
-    pageTitle: '车辆载装月报表',
-  };
-
   const columns = [
     {
       title: '时间',
@@ -81,6 +72,7 @@ const Month = props => {
         return (
           <div
             onClick={() => {
+              sessionStorage.setItem('defaultNum', '1');
               text > 0 ? router.push(`/poundManagement/register?date=${date}&violationType=1`) : '';
             }}>
             <span style={{ textDecoration: text > 0 ? 'underline' : '' }}>{text}</span>
@@ -99,7 +91,8 @@ const Month = props => {
         return (
           <div
             onClick={() => {
-              text > 0 ? router.push(`/poundManagement/register?date=${date}&violationType=2`) : '';
+              sessionStorage.setItem('defaultNum', '1');
+              router.push(`/poundManagement/poundReport?tab=register&date=${date}&violationType=2`);
             }}>
             <span style={{ textDecoration: text > 0 ? 'underline' : '' }}>{text}</span>
           </div>
@@ -141,14 +134,11 @@ const Month = props => {
     }
     // 获取持久化数据
     const state = getState().query;
-    setQuery({
-      filter: query.filter ? query.filter : getCurrenyTime(),
-      ...state,
-    });
+    setQuery({ filter: query.filter ? query.filter : getCurrenyTime(), ...state });
     getDataList(state);
   }, []);
 
-  const getDataList = async ({ pageSize, page, dateString }) => {
+  const getDataList = async ({ pageSize, page, filter, dateString }) => {
     let userId = localStorage.getItem('userId');
     setLoading(true);
     const params = {
@@ -156,14 +146,13 @@ const Month = props => {
       page,
       ownerId: userId,
     };
+
     if (dateString === '' || dateString === undefined) {
       params.filter = getCurrenyTime() + '-01';
     } else {
       params.filter = dateString + '-01';
     }
-    const res = await vehicleRegister.new_get_poundbill_month_report({
-      params,
-    });
+    const res = await vehicleRegister.new_get_poundbill_month_report({ params });
     if (res.status === 0) {
       setLoading(false);
       setDataList(res.result);
@@ -215,9 +204,7 @@ const Month = props => {
     } else {
       params.filter = query.filter + '-01';
     }
-    const res = await vehicleRegister.new_get_poundbill_month_report({
-      params,
-    });
+    const res = await vehicleRegister.new_get_poundbill_month_report({ params });
     if (res.status === 0) {
       await downLoadFile(res.result, '车辆装载逐日统计月报表');
     }
@@ -238,53 +225,46 @@ const Month = props => {
 
   // 修改月份
   const onChangeMonthPicker = useCallback((date, dateString) => {
+    console.log(dateString);
+    const filter = dateString && moment(dateString);
     setDateString(dateString);
     setQuery(() => ({ ...query, filter: dateString, dateString }));
   });
 
   return (
-    <Layout {...routeView}>
-      <Content>
-        <section>
-          <Search onSearch={handleSearch} onReset={resetFilter} onExport={exportDump} exportLoading={exportLoading}>
-            <Search.Item label="选择月份">
-              <MonthPicker
-                allowClear={false}
-                style={{ width: 376 }}
-                value={query.filter ? moment(query.filter) : moment(getCurrenyTime())}
-                defaultValue={moment(getCurrenyTime())}
-                placeholder="请选择"
-                disabledDate={disabledDate}
-                onChange={onChangeMonthPicker}
-              />
-            </Search.Item>
-          </Search>
-          <div className={styles.rootTable}>
-            <Table
-              loading={loading}
-              dataSource={dataList.data}
-              columns={columns}
-              style={{ marginTop: 16 }}
-              rowKey="day"
-              scroll={{ x: 'auto' }}
-              pagination={{
-                onChange: onChangePage,
-                onShowSizeChange: onChangePageSize,
-                pageSize: query.pageSize,
-                current: query.page,
-                total: dataList.count,
-              }}
-            />
-          </div>
-        </section>
-      </Content>
-    </Layout>
+    <>
+      <Search onSearch={handleSearch} onReset={resetFilter} onExport={exportDump} exportLoading={exportLoading}>
+        <Search.Item label="选择月份">
+          <MonthPicker
+            allowClear={false}
+            style={{ width: 376 }}
+            value={query.filter ? moment(query.filter) : moment(getCurrenyTime())}
+            defaultValue={moment(getCurrenyTime())}
+            placeholder="请选择"
+            disabledDate={disabledDate}
+            onChange={onChangeMonthPicker}
+          />
+        </Search.Item>
+      </Search>
+      <div className={styles.rootTable}>
+        <Table
+          loading={loading}
+          dataSource={dataList.data}
+          columns={columns}
+          style={{ marginTop: 16 }}
+          rowKey="day"
+          scroll={{ x: 'auto' }}
+          pagination={{
+            onChange: onChangePage,
+            onShowSizeChange: onChangePageSize,
+            pageSize: query.pageSize,
+            current: query.page,
+            total: dataList.count,
+          }}
+        />
+      </div>
+    </>
   );
-};
-
-Month.getInitialProps = async props => {
-  const { isServer } = props;
-  return { isServer };
 };
 
 export default Month;

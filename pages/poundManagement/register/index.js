@@ -1,26 +1,17 @@
-/** @format */
-
 import { useState, useEffect, useCallback } from 'react';
 import { Button, Select, Table, message, DatePicker, Input, Popconfirm } from 'antd';
-import { Content, Search, Layout } from '@components';
+import { Search } from '@components';
 import moment from 'moment';
 import { vehicleRegister, downLoadFile } from '@api';
 import router from 'next/router';
-import { keepState, getState, clearState, getQuery } from '@utils/common';
+import { keepState, getState, clearState } from '@utils/common';
 import { QuestionCircleFilled } from '@ant-design/icons';
-import deleteBtn from './deleteBtn.less';
 import { Permission } from '@store';
+
 const { RangePicker } = DatePicker;
 
 const Register = props => {
   const { permissions, isSuperUser } = Permission.useContainer();
-  const routeView = {
-    title: '车辆载装登记表',
-    pageKey: 'register',
-    longKey: 'poundManagement.register',
-    breadNav: '过磅管理.车辆载装登记表',
-    pageTitle: '车辆载装登记表',
-  };
 
   const columns = [
     {
@@ -126,7 +117,7 @@ const Register = props => {
                 placement="topRight"
                 icon={<QuestionCircleFilled />}
                 onConfirm={() => deleteLine(data)}>
-                <Button type="link" size="small" className={deleteBtn.delete}>
+                <Button type="link" size="small" danger>
                   删除
                 </Button>
               </Popconfirm>
@@ -157,7 +148,9 @@ const Register = props => {
     if (isServer) {
       clearState();
     }
-    const { date, violationType } = getQuery();
+    const { date, violationType } = router.query;
+    const { defaultNum } = sessionStorage;
+
     // 获取持久化数据
     const dataInfo =
       date !== undefined
@@ -171,8 +164,17 @@ const Register = props => {
       ...getState().query,
       ...dataInfo,
     };
-    setQuery(state);
+    const state1 = {
+      ...getState().query,
+    };
+    setQuery(defaultNum === '1' ? state : state1);
     getDataList(state);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      sessionStorage.setItem('defaultNum', '2'), clearState();
+    };
   }, []);
 
   const getDataList = async ({ violationType, pageSize, page, fromCompany, toCompany, begin, end }) => {
@@ -322,71 +324,57 @@ const Register = props => {
   }, []);
 
   return (
-    <Layout {...routeView}>
-      <Content>
-        <section>
-          <Search onSearch={handleSearch} onReset={resetFilter} onExport={exportByQuery} exportLoading={exportLoading}>
-            <Search.Item label="出站时间" br>
-              <RangePicker
-                style={{ width: 376 }}
-                value={query.begin && query.end ? [moment(query.begin), moment(query.end)] : null}
-                showTime={{
-                  format: 'HH:mm:ss',
-                  defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')],
-                }}
-                format="YYYY-MM-DD HH:mm:ss"
-                onChange={onChangeDatePicker}
-                size="default"
-              />
-            </Search.Item>
-            <Search.Item label="异常数据">
-              <Select
-                value={query.violationType}
-                style={{ width: '100%' }}
-                placeholder="请选择异常数据"
-                allowClear
-                onChange={onChangeViolationType}>
-                <Select.Option value="1">无牌无证或证照不全车辆</Select.Option>
-                <Select.Option value="2">超限超载车辆</Select.Option>
-                <Select.Option value="3">非法改装车辆</Select.Option>
-              </Select>
-            </Search.Item>
-            <Search.Item label="发货企业">
-              <Input
-                value={query.fromCompany}
-                placeholder="请输入发货企业"
-                allowClear
-                onChange={handleChangeFromCompany}
-              />
-            </Search.Item>
-            <Search.Item label="收货企业">
-              <Input value={query.toCompany} placeholder="请输入收货企业" allowClear onChange={handleChangeToCompany} />
-            </Search.Item>
-          </Search>
-          <Table
-            loading={loading}
-            dataSource={dataList.data}
-            columns={columns}
-            rowKey="id"
-            style={{ marginTop: 16 }}
-            pagination={{
-              onChange: onChangePage,
-              onShowSizeChange: onChangePageSize,
-              pageSize: query.pageSize,
-              current: query.page,
-              total: dataList.count,
+    <>
+      <Search onSearch={handleSearch} onReset={resetFilter} onExport={exportByQuery} exportLoading={exportLoading}>
+        <Search.Item label="出站时间" br>
+          <RangePicker
+            style={{ width: 376 }}
+            value={query.begin && query.end ? [moment(query.begin), moment(query.end)] : null}
+            showTime={{
+              format: 'HH:mm:ss',
+              defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')],
             }}
-            scroll={{ x: 'auto' }}
+            format="YYYY-MM-DD HH:mm:ss"
+            onChange={onChangeDatePicker}
+            size="default"
           />
-        </section>
-      </Content>
-    </Layout>
+        </Search.Item>
+        <Search.Item label="异常数据">
+          <Select
+            value={query.violationType}
+            style={{ width: '100%' }}
+            placeholder="请选择异常数据"
+            allowClear
+            onChange={onChangeViolationType}>
+            <Select.Option value="1">无牌无证或证照不全车辆</Select.Option>
+            <Select.Option value="2">超限超载车辆</Select.Option>
+            <Select.Option value="3">非法改装车辆</Select.Option>
+          </Select>
+        </Search.Item>
+        <Search.Item label="发货企业">
+          <Input value={query.fromCompany} placeholder="请输入发货企业" allowClear onChange={handleChangeFromCompany} />
+        </Search.Item>
+        <Search.Item label="收货企业">
+          <Input value={query.toCompany} placeholder="请输入收货企业" allowClear onChange={handleChangeToCompany} />
+        </Search.Item>
+      </Search>
+      <Table
+        loading={loading}
+        dataSource={dataList.data}
+        columns={columns}
+        rowKey="id"
+        style={{ marginTop: 16 }}
+        pagination={{
+          onChange: onChangePage,
+          onShowSizeChange: onChangePageSize,
+          pageSize: query.pageSize,
+          current: query.page,
+          total: dataList.count,
+        }}
+        scroll={{ x: 'auto' }}
+      />
+    </>
   );
-};
-
-Register.getInitialProps = async props => {
-  const { isServer } = props;
-  return { isServer };
 };
 
 export default Register;

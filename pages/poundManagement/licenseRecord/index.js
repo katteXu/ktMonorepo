@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import Layout from '@components/Layout';
 import { Input, Table, DatePicker, message, Select, Modal } from 'antd';
 import moment from 'moment';
 import router from 'next/router';
@@ -12,14 +11,6 @@ const Option = Select.Option;
 const { RangePicker } = DatePicker;
 
 const LicenseRecord = props => {
-  const routeView = {
-    title: '车牌识别记录',
-    pageKey: 'licenseRecord',
-    longKey: 'poundManagement.licenseRecord',
-    breadNav: '过磅管理.车牌识别记录',
-    pageTitle: '车牌识别记录',
-  };
-
   //查询条件
   const [query, setQuery] = useState({
     page: 1,
@@ -68,7 +59,7 @@ const LicenseRecord = props => {
       dataIndex: 'leaveFactoryScreenNum',
       key: 'leaveFactoryScreenNum',
       width: 200,
-      render: (text, data, index) => {
+      render: (text, data) => {
         return (
           <div
             onClick={async () => {
@@ -120,7 +111,7 @@ const LicenseRecord = props => {
       align: 'right',
       width: 200,
       fixed: 'right',
-      render: (text, data, index) => {
+      render: (text, data) => {
         return (
           <div
             onClick={() => {
@@ -150,7 +141,6 @@ const LicenseRecord = props => {
     const params = {
       recordId,
     };
-    console.log(params);
     const res = await pound.leaveScreenLog({ params });
     if (res.status === 0) {
       return res.result.data;
@@ -221,14 +211,14 @@ const LicenseRecord = props => {
   );
 
   // 进厂时间
-  const handleEnterTime = useCallback((value, string) => {
+  const handleEnterTime = useCallback(value => {
     const enterBegin = value && value[0] && moment(value[0]).format('YYYY-MM-DD HH:mm:ss');
     const enterEnd = value && value[1] && moment(value[1]).format('YYYY-MM-DD HH:mm:ss');
     console.log(query.enterBegin && query.enterEnd ? [moment(query.begin), moment(query.end)] : null);
     setQuery(() => ({ ...query, enterBegin, enterEnd }));
   });
   // 出厂时间
-  const handleLeaveTime = useCallback((value, string) => {
+  const handleLeaveTime = useCallback(value => {
     const leaveBegin = value && value[0] && moment(value[0]).format('YYYY-MM-DD HH:mm:ss');
     const leaveEnd = value && value[1] && moment(value[1]).format('YYYY-MM-DD HH:mm:ss');
     setQuery(() => ({ ...query, leaveBegin, leaveEnd }));
@@ -286,7 +276,7 @@ const LicenseRecord = props => {
     });
   }
   return (
-    <Layout {...routeView}>
+    <>
       <Content>
         <section style={{ minHeight: 620 }}>
           <Search onSearch={handleSearch} onReset={handleReset}>
@@ -346,13 +336,8 @@ const LicenseRecord = props => {
           </div>
         </section>
       </Content>
-    </Layout>
+    </>
   );
-};
-
-LicenseRecord.getInitialProps = async props => {
-  const { isServer } = props;
-  return { isServer };
 };
 
 export default LicenseRecord;

@@ -1,18 +1,44 @@
 /** @format */
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { DownOutlined } from '@ant-design/icons';
-import { Input, Select, Button, Table, message, Dropdown, Menu } from 'antd';
-import { Content, Search, Layout, Msg, Ellipsis } from '@components';
+import { Input, Button, Table, message, Menu } from 'antd';
+import { Content, Search, Msg, Ellipsis, TableHeaderConfig } from '@components';
 import moment from 'moment';
-import { pound, downLoadFile } from '@api';
+import { pound, downLoadFile, getColumnsByTable, setColumnsByTable } from '@api';
 import { keepState, getState, clearState, Format } from '@utils/common';
 import router from 'next/router';
 import DatePicker from '@components/pound/DatePicker/static';
-import LoadingBtn from '@components/LoadingBtn';
 
 const Index = props => {
+  const defaultColumns = [
+    'goodsType',
+    'count',
+    'customer',
+    'goodsWeight',
+    'totalWeight',
+    'carWeight',
+    'fromGoodsWeight',
+    'loss',
+    'ctrl',
+  ];
+  const [showColumns, setShowColumns] = useState(defaultColumns);
+  const showColumnsRef = useRef(showColumns);
+
+  useEffect(() => {
+    if (showColumns.length > 0) {
+      showColumnsRef.current = showColumns;
+    } else {
+      showColumnsRef.current = defaultColumns;
+    }
+  }, [showColumns]);
   const columns = [
+    {
+      title: '发货企业',
+      dataIndex: 'customer',
+      key: 'customer',
+      width: '180px',
+      render: value => <Ellipsis value={value} width={150} />,
+    },
     {
       title: '货品名称',
       dataIndex: 'goodsType',
@@ -23,7 +49,7 @@ const Index = props => {
       },
     },
     {
-      title: '运输车辆',
+      title: '运输车数(辆)',
       dataIndex: 'count',
       key: 'count',
       width: '160px',
@@ -33,23 +59,7 @@ const Index = props => {
       },
     },
     {
-      title: '发货企业',
-      dataIndex: 'customer',
-      key: 'customer',
-      width: '180px',
-      render: value => <Ellipsis value={value} width={150} />,
-    },
-
-    {
-      title: '原发净重（吨）',
-      dataIndex: 'fromGoodsWeight',
-      key: 'fromGoodsWeight',
-      width: '160px',
-      align: 'right',
-      render: Format.weight,
-    },
-    {
-      title: '毛重（吨）',
+      title: '毛重(吨)',
       dataIndex: 'totalWeight',
       key: 'totalWeight',
       width: '160px',
@@ -57,7 +67,7 @@ const Index = props => {
       render: Format.weight,
     },
     {
-      title: '皮重（吨）',
+      title: '皮重(吨)',
       dataIndex: 'carWeight',
       key: 'carWeight',
       width: '160px',
@@ -65,7 +75,7 @@ const Index = props => {
       render: Format.weight,
     },
     {
-      title: '实收净重（吨）',
+      title: '实收净重(吨)',
       dataIndex: 'goodsWeight',
       key: 'goodsWeight',
       width: '160px',
@@ -73,7 +83,15 @@ const Index = props => {
       render: Format.weight,
     },
     {
-      title: '路损（吨）',
+      title: '原发净重(吨)',
+      dataIndex: 'fromGoodsWeight',
+      key: 'fromGoodsWeight',
+      width: '160px',
+      align: 'right',
+      render: Format.weight,
+    },
+    {
+      title: '路损(吨)',
       dataIndex: 'loss',
       key: 'loss',
       width: '100px',
@@ -82,7 +100,7 @@ const Index = props => {
     },
     {
       title: '操作',
-      key: 'detail',
+      key: 'ctrl',
       width: '140px',
       align: 'right',
       fixed: 'right',
@@ -96,7 +114,6 @@ const Index = props => {
       },
     },
   ];
-
   const [query, setQuery] = useState({
     page: 1,
     pageSize: 10,
@@ -109,6 +126,7 @@ const Index = props => {
 
   const [loading, setLoading] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
+  const [exportLoading2, setExportLoading2] = useState(false);
   const [dataList, setDataList] = useState({});
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [total, setTotal] = useState({
@@ -130,10 +148,17 @@ const Index = props => {
     if (isServer) {
       clearState();
     }
+    // 设置表头
+    setColumns();
     // 获取持久化数据
     const state = getState().query;
-    setQuery({ ...query, ...state });
-    getRemoteData({ ...query, ...state });
+    if (Object.keys(state).length > 0) {
+      setQuery({ ...state });
+      getRemoteData({ ...state });
+    } else {
+      setQuery({ ...query, ...state });
+      getRemoteData({ ...query, ...state });
+    }
   }, []);
 
   // 跳转详情
@@ -143,8 +168,11 @@ const Index = props => {
       let queryString = '';
       if (begin) queryString += `&start=${begin}`;
       if (end) queryString += `&end=${end}`;
+
       router.push(
-        `/poundManagement/poundReport/totalToDetail?companyName=${customer}&goodsType=${goodsType}${queryString}`
+        `/poundManagement/poundReport/totalToDetail?companyName=${encodeURIComponent(
+          customer
+        )}&goodsType=${encodeURIComponent(goodsType)}${queryString}`
       );
     },
     [dataList]
@@ -229,7 +257,7 @@ const Index = props => {
       return;
     }
 
-    setExportLoading(true);
+    setExportLoading2(true);
 
     const res = await exportList('detail');
 
@@ -240,7 +268,7 @@ const Index = props => {
       message.error(`数据导出失败，原因：${res.detail || res.description}`);
     }
 
-    setExportLoading(false);
+    setExportLoading2(false);
   };
 
   const exportExcelAll = async () => {
@@ -265,7 +293,18 @@ const Index = props => {
   // 导出列表
   const exportList = type => {
     const { page, begin, end } = query;
+    // 导出表头key值
+    const keyList = [];
+    // 导出表头title值
+    const titleList = [];
 
+    columns.forEach(column => {
+      if (showColumnsRef.current.includes(column.key)) {
+        if (column.key === 'ctrl') return;
+        keyList.push(column.key);
+        titleList.push(column.title);
+      }
+    });
     const params = {
       receiveOrSend: true,
       startTime: begin || undefined,
@@ -275,6 +314,8 @@ const Index = props => {
       dump: true,
       bossId: dataList.bossId ? dataList.bossId : undefined,
       childId: dataList.childId ? dataList.childId : undefined,
+      keyList: keyList.join(' '),
+      titleList: titleList.join(' '),
     };
     if (type === 'detail') {
       return pound.getPoundBillDetailList({ params });
@@ -356,17 +397,67 @@ const Index = props => {
     }
     setLoading(false);
   };
+
+  // 改变表头
+  const onChangeColumns = async columns => {
+    // 设置展现表头
+    setShowColumns([...columns]);
+    const params = {
+      type: 'toTotalReportTable',
+      titleList: columns.join(' '),
+    };
+    const res = await setColumnsByTable({ params });
+  };
+
+  // 设置表头
+  const setColumns = async () => {
+    const params = {
+      type: 'toTotalReportTable',
+    };
+    const res = await getColumnsByTable({ params });
+    if (res.result !== '') {
+      setShowColumns(res.result.split(' '));
+    } else {
+      setShowColumns([]);
+    }
+  };
+  //恢复默认表头
+  const onRestore = async () => {
+    const params = {
+      type: 'toTotalReportTable',
+      titleList: '',
+    };
+    const res = await setColumnsByTable({ params });
+    if (!res.status) {
+      message.success('恢复默认设置成功');
+      setColumns();
+    } else {
+      message.error(`${res.detail || res.description}`);
+    }
+  };
+
   const menu = (
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="1">导出汇总表</Menu.Item>
       <Menu.Item key="2">导出明细</Menu.Item>
     </Menu>
   );
+  const onExportTow = {
+    name1: '导出汇总',
+    name2: '导出明细',
+  };
   return (
     <>
       <Content>
-        <section>
-          <Search onSearch={handleSearch} onReset={handleReset}>
+        <section style={{ padding: 0 }}>
+          <Search
+            onSearch={handleSearch}
+            onReset={handleReset}
+            onExportTow={onExportTow}
+            exportLoading={exportLoading}
+            exportLoading2={exportLoading2}
+            onExportTowClick1={exportExcelAll}
+            onExportTowClick2={exportExcel}>
             <Search.Item br>
               <DatePicker
                 onChange={handleChangeDate}
@@ -383,18 +474,17 @@ const Index = props => {
               <Input value={query.companyName} allowClear placeholder="请输入发货企业" onChange={handleChangeCompany} />
             </Search.Item>
           </Search>
-        </section>
-        <header style={{ border: 0 }}>
-          磅单列表
-          <Dropdown overlay={menu}>
-            <Button style={{ float: 'right' }} loading={exportLoading}>
-              导出
-              <DownOutlined />
-            </Button>
-          </Dropdown>
-        </header>
-        <section style={{ minHeight: 620, paddingTop: 0 }}>
-          <Msg>
+          <div style={{ textAlign: 'right', margin: '16px 0' }}>
+            {/* 表头设置 */}
+            <TableHeaderConfig
+              columns={columns}
+              showColumns={showColumns.length > 0 ? showColumns : defaultColumns}
+              onChange={onChangeColumns}
+              onRestore={onRestore}
+              heightDefault={80}
+            />
+          </div>
+          <Msg style={{ marginTop: 16 }}>
             合计：
             <span>
               运输车数
@@ -414,6 +504,12 @@ const Index = props => {
             </span>
           </Msg>
           <Table
+            columns={columns.filter(({ key }) => {
+              if (key === 'ctrl') {
+                return true;
+              }
+              return showColumns.length > 0 ? showColumns.includes(key) : defaultColumns.includes(key);
+            })}
             rowSelection={{
               selectedRowKeys: selectedRowKeys,
               onChange: (_selectedRowKeys, selectedRows) => {
@@ -431,7 +527,6 @@ const Index = props => {
             }}
             loading={loading}
             dataSource={dataList.data}
-            columns={columns}
             rowKey={(record, index) => `${record.customer}${record.goodsType}`}
             pagination={{
               onChange: onChangePage,
