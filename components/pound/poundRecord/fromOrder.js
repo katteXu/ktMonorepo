@@ -3,16 +3,15 @@ import router from 'next/router';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { Table, Button, Input, message, Popconfirm, Select } from 'antd';
 import { Search, Msg, Ellipsis, TableHeaderConfig, AutoInput, DrawerInfo } from '@components';
+import { Permission } from '@store';
 import moment from 'moment';
 import { keepState, getState, clearState, Format } from '@utils/common';
 import { pound, vehicleRegister, downLoadFile, getColumnsByTable, setColumnsByTable } from '@api';
 import Supplement from '@components/pound/poundRecord/supplement';
 import DatePicker from '@components/pound/DatePicker/static';
-import deleteBtn from '../deleteBtn.less';
-import LoadingBtn from '@components/LoadingBtn';
-import { Permission } from '@store';
 const Option = Select.Option;
 const PoundList = props => {
+  const { permissions, isSuperUser } = Permission.useContainer();
   /**
    * 表头设置
    * 应用组件中需要如下配置
@@ -24,18 +23,17 @@ const PoundList = props => {
    */
   const defaultColumns = [
     'trailerPlateNumber',
-    'name',
-    'fromCompany',
     'toCompany',
     'goodsType',
-    'goodsWeight',
+    'totalWeight',
+    'carWeight',
     'fromGoodsWeight',
     'createdAt',
     'ctrl',
   ];
   const [showColumns, setShowColumns] = useState(defaultColumns);
   const showColumnsRef = useRef(showColumns);
-  const { permissions, isSuperUser } = Permission.useContainer();
+
   useEffect(() => {
     if (showColumns.length > 0) {
       showColumnsRef.current = showColumns;
@@ -45,34 +43,10 @@ const PoundList = props => {
   }, [showColumns]);
   const columns = [
     {
-      title: '车牌号',
-      dataIndex: 'trailerPlateNumber',
-      key: 'trailerPlateNumber',
-      width: 120,
-      render: value => value || '-',
-    },
-    {
-      title: '司机姓名',
-      dataIndex: 'name',
-      key: 'name',
-      width: 120,
-      render: value => value || '-',
-    },
-    {
-      title: '司机电话',
-      dataIndex: 'mobilePhoneNumber',
-      key: 'mobilePhoneNumber',
-      width: 100,
-      render: value => value || '-',
-    },
-    {
-      title: '磅单类型',
-      dataIndex: 'receiveOrSend',
-      key: 'receiveOrSend',
-      width: 100,
-      render: value => {
-        return value ? '收货磅单' : '发货磅单';
-      },
+      title: '出站时间',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      width: 200,
     },
     {
       title: '发货企业',
@@ -96,13 +70,25 @@ const PoundList = props => {
       render: value => <Ellipsis value={value} width={120} />,
     },
     {
-      // 原发净重
-      title: '原发净重(吨)',
-      dataIndex: 'fromGoodsWeight',
-      key: 'fromGoodsWeight',
+      title: '车牌号',
+      dataIndex: 'trailerPlateNumber',
+      key: 'trailerPlateNumber',
+      width: 120,
+      render: value => value || '-',
+    },
+    {
+      title: '司机姓名',
+      dataIndex: 'name',
+      key: 'name',
+      width: 120,
+      render: value => value || '-',
+    },
+    {
+      title: '司机电话',
+      dataIndex: 'mobilePhoneNumber',
+      key: 'mobilePhoneNumber',
       width: 100,
-      align: 'right',
-      render: Format.weight,
+      render: value => value || '-',
     },
     {
       title: '毛重(吨)',
@@ -121,19 +107,10 @@ const PoundList = props => {
       render: Format.weight,
     },
     {
-      // 实收净重
-      title: '实收净重(吨)',
+      // 原发净重
+      title: '发货净重(吨)',
       dataIndex: 'goodsWeight',
       key: 'goodsWeight',
-      width: 100,
-      align: 'right',
-      render: Format.weight,
-    },
-
-    {
-      title: '路损(吨)',
-      dataIndex: 'loss',
-      key: 'loss',
       width: 100,
       align: 'right',
       render: Format.weight,
@@ -162,12 +139,7 @@ const PoundList = props => {
       width: 100,
       render: value => value || '-',
     },
-    {
-      title: '出站时间',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      width: 200,
-    },
+
     {
       title: '操作',
       dataIndex: 'ctrl',
@@ -176,9 +148,9 @@ const PoundList = props => {
       fixed: 'right',
       align: 'right',
       render: (value, record) => {
-        const { id, isDelete, deleteUser } = record;
+        const { id, isDelete } = record;
         return (
-          <div style={{ display: 'flex' }}>
+          <div>
             <Button
               size="small"
               type="link"
@@ -193,7 +165,7 @@ const PoundList = props => {
                 placement="topRight"
                 icon={<QuestionCircleFilled />}
                 onConfirm={() => handleChangeStatus(id, isDelete)}>
-                <Button size="small" type="link" className={deleteBtn.delete}>
+                <Button size="small" type="link" danger={!isDelete}>
                   {!isDelete ? '删除' : '恢复'}
                 </Button>
               </Popconfirm>
@@ -243,9 +215,13 @@ const PoundList = props => {
     }
     // 获取持久化数据
     const state = getState().query;
-    setQuery({ ...query, ...state });
-    getRemoteData({ ...query, ...state });
-
+    if (Object.keys(state).length > 0) {
+      setQuery({ ...state });
+      getRemoteData({ ...state });
+    } else {
+      setQuery({ ...query, ...state });
+      getRemoteData({ ...query, ...state });
+    }
     // 设置表头
     setColumns();
   }, []);
@@ -291,12 +267,7 @@ const PoundList = props => {
   // 同步外层日期
   const syncDateTime = query => {
     props.setDateTime &&
-      props.setDateTime({
-        begin: query.begin,
-        end: query.end,
-        dateStatus: query.dateStatus,
-        ...query,
-      });
+      props.setDateTime({ begin: query.begin, end: query.end, dateStatus: query.dateStatus, ...query });
   };
   //  查询
   const handleSearch = useCallback(() => {
@@ -502,11 +473,29 @@ const PoundList = props => {
 
   const handleSupplement = () => {
     setShowDrawer(true);
-    // router.push('/pound/supplement');
+  };
+
+  const onRestore = async () => {
+    const params = {
+      type: 'fromPoundDetailTable',
+      titleList: '',
+    };
+    const res = await setColumnsByTable({ params });
+    if (!res.status) {
+      message.success('恢复默认设置成功');
+      setColumns();
+    } else {
+      message.error(`${res.detail || res.description}`);
+    }
   };
   return (
     <>
-      <Search onSearch={handleSearch} onReset={handleReset} simple>
+      <Search
+        onSearch={handleSearch}
+        onReset={handleReset}
+        simple
+        onExport={handleExport}
+        exportLoading={exportLoading}>
         <Search.Item br>
           <DatePicker
             onChange={handleChangeDate}
@@ -518,7 +507,13 @@ const PoundList = props => {
         </Search.Item>
 
         <Search.Item label="车牌号">
-          <Input allowClear value={query.plate} placeholder="请输入车牌号" onChange={handleChangePlate} />
+          <Input
+            allowClear
+            value={query.plate}
+            placeholder="请输入车牌号"
+            onChange={handleChangePlate}
+            exportLoading={exportLoading}
+          />
         </Search.Item>
 
         <Search.Item label="收货企业">
@@ -565,26 +560,22 @@ const PoundList = props => {
           </Select>
         </Search.Item>
       </Search>
-      <header style={{ padding: '12px 0', marginTop: 12, border: 0 }}>
-        磅单列表
+      <div style={{ margin: '16px 0' }}>
+        {(isSuperUser || permissions.includes('POUND_STATISTICS_MANAGEMENT')) && (
+          <Button type="primary" onClick={handleSupplement}>
+            磅单补录
+          </Button>
+        )}
         <div style={{ float: 'right' }}>
-          {(isSuperUser || permissions.includes('POUND_STATISTICS_MANAGEMENT')) && (
-            <Button type="primary" onClick={handleSupplement}>
-              磅单补录
-            </Button>
-          )}
-
-          <LoadingBtn style={{ marginLeft: 12, marginRight: 5 }} onClick={handleExport} loading={exportLoading}>
-            导出
-          </LoadingBtn>
           {/* 表头设置 */}
           <TableHeaderConfig
             columns={columns}
             showColumns={showColumns.length > 0 ? showColumns : defaultColumns}
             onChange={onChangeColumns}
+            onRestore={onRestore}
           />
         </div>
-      </header>
+      </div>
       <Msg>
         合计：
         <span style={{ marginRight: 32, marginLeft: 8 }}>
@@ -593,13 +584,11 @@ const PoundList = props => {
         </span>
         <span style={{ marginRight: 32, marginLeft: 8 }}>
           {/* 实收净重总和 */}
-          发货净重
-          <span className="total-num">{Format.weight(total.sum_goodsWeight)}</span>吨
+          发货净重<span className="total-num">{Format.weight(total.sum_goodsWeight)}</span>吨
         </span>
         <span>
           {/* 原发净重总和 */}
-          实际重量
-          <span className="total-num">{Format.weight(total.sum_modify_goods_weight)}</span>吨
+          实际重量<span className="total-num">{Format.weight(total.sum_modify_goods_weight)}</span>吨
         </span>
       </Msg>
 

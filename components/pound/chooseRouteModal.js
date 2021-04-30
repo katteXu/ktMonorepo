@@ -1,6 +1,11 @@
+// import { User } from '@store';
+// const Index = ({ handleSureChooseRoute }) => {
+//   const { userInfo } = User.useContainer();
+
 import { useState, useCallback, useEffect } from 'react';
 import { Modal, Spin, Input, Button, Pagination } from 'antd';
 import s from './supplement.less';
+import { Search } from '@components';
 import { getRoute } from '@api';
 import { User } from '@store';
 const Index = ({ handleSureChooseRoute }) => {
@@ -99,44 +104,33 @@ const Index = ({ handleSureChooseRoute }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <div className={s['modal-filter']}>
-        <div className={s['filter-area']}>
-          <span>发货企业：</span>
+      <Search onSearch={handleSearch} onReset={handleReset}>
+        <Search.Item label="发货企业">
           <Input
             placeholder="请输入发货企业"
             style={{ flex: 1 }}
             value={query.fromCompany}
             onChange={handleChangeFromCompany}
           />
-        </div>
-        <div className={s['filter-area']}>
-          <span>收货企业：</span>
+        </Search.Item>
+        <Search.Item label="收货企业" style={{ marginRight: 0, paddingRight: 0 }}>
           <Input
             style={{ flex: 1 }}
             placeholder="请输入收货企业"
             value={query.toCompany}
             onChange={handleChangeToCompany}
           />
-        </div>
-        <div className={s['filter-area']}>
-          <span>货品名称：</span>
+        </Search.Item>
+        <Search.Item label="货品名称">
           <Input
             style={{ flex: 1 }}
             placeholder="请输入货品名称"
             value={query.goodsName}
             onChange={handleChangeGoodsType}
           />
-        </div>
-        <div className={s['filter-area-btn']} style={{ marginLeft: 8 }}>
-          <Button type="primary" onClick={handleSearch}>
-            查询
-          </Button>
-        </div>
-        <div className={s['filter-area-btn']} style={{ marginLeft: -8 }}>
-          <Button onClick={handleReset}>重置</Button>
-        </div>
-      </div>
-      <div className={s['modal-content']} style={{ flex: 1 }}>
+        </Search.Item>
+      </Search>
+      <div className={s['modal-content']} style={{ flex: 1, marginTop: 16 }}>
         <Spin spinning={loading}>
           <ul>
             {routes.map(item => {
@@ -146,6 +140,8 @@ const Index = ({ handleSureChooseRoute }) => {
                 toAddress,
                 fromAddressCompany,
                 toAddressCompany,
+                // fromCompany,
+                // toCompany,
                 goodsType,
                 unitPrice,
                 remark,
@@ -166,10 +162,7 @@ const Index = ({ handleSureChooseRoute }) => {
                   </div>
                   <div>
                     <span>货品名称：{goodsType}</span>
-                    <span>
-                      运费单价：
-                      {unitPrice ? `${(unitPrice / 100).toFixed(2)} 元` : '-'}
-                    </span>
+                    <span>运费单价：{unitPrice ? `${(unitPrice / 100).toFixed(2)} 元` : '-'}</span>
                     {remark && <span style={{ display: 'inline-block', height: 21 }}></span>}
                   </div>
                 </li>

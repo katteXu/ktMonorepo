@@ -1,14 +1,17 @@
-import { useState } from 'react';
-import { Button, message, Drawer, Modal } from 'antd';
+import { useState, useEffect, useRef } from 'react';
+import { Table, Form, DatePicker, Button, Input, message, Popconfirm, Checkbox, Drawer, Modal } from 'antd';
 import { PlusOutlined, QuestionCircleFilled } from '@ant-design/icons';
 import ChooseRouteModal from '../chooseRouteModal';
+import moment from 'moment';
 import styles from '../supplement.less';
 import TableForm from '../SupplementForm';
 import { pound } from '@api';
+import { ChildTitle } from '@components';
 const Supplement = ({ poundType, onClose, onSubmit }) => {
   const [visible, setVisible] = useState(false);
   const [railInfo, setRailInfo] = useState({});
 
+  const [dataList, setDataList] = useState([]);
   const handleShowChooseRail = () => {
     setVisible(true);
   };
@@ -143,8 +146,9 @@ const Supplement = ({ poundType, onClose, onSubmit }) => {
     <>
       <div className={styles['rail-info']}>
         <div className={styles.header}>
-          {/* ({railInfo.id}) */}
-          <div className={styles.title}>专线信息 </div>
+          <div className={styles.title}>
+            <ChildTitle className="hei14">专线信息</ChildTitle>
+          </div>
           {railInfo.id && (
             <Button className={styles['btn-change']} onClick={handleShowChooseRail}>
               更换专线
@@ -154,18 +158,32 @@ const Supplement = ({ poundType, onClose, onSubmit }) => {
         <div className={styles.body}>
           {railInfo.id ? (
             <>
-              <div className={styles.item}>发货企业：{railInfo.fromCompany}</div>
-              <div className={styles.item}>收货企业：{railInfo.toCompany}</div>
-              <div className={styles.item}>货品名称：{railInfo.goodsType}</div>
+              <div className={styles.item}>
+                <span>发货企业：</span>
+                {railInfo.fromCompany}
+              </div>
+              <div className={styles.item}>
+                <span>收货企业：</span>
+                {railInfo.toCompany}
+              </div>
+              <div className={styles.item}>
+                <span>货品名称：</span>
+                {railInfo.goodsType}
+              </div>
             </>
           ) : (
             <>
-              <div></div>
-              <Button onClick={handleShowChooseRail} block style={{ width: 400 }} type="primary" ghost>
-                <PlusOutlined />
-                选择专线
-              </Button>
-              <div></div>
+              <div
+                className={styles['btn-add']}
+                style={{
+                  marginTop: 58,
+                  marginBottom: 86,
+                }}>
+                <Button onClick={handleShowChooseRail} block style={{ width: 400 }} ghost>
+                  <PlusOutlined />
+                  选择专线
+                </Button>
+              </div>
             </>
           )}
         </div>
@@ -173,7 +191,7 @@ const Supplement = ({ poundType, onClose, onSubmit }) => {
 
       <TableForm submit={handleSubmit} poundType={poundType} onClose={onClose} />
 
-      <Drawer title="选择专线" width={933} onClose={() => setVisible(false)} visible={visible}>
+      <Drawer title="选择专线" width={664} onClose={() => setVisible(false)} visible={visible}>
         <ChooseRouteModal handleSureChooseRoute={handleRailChange} userId={userId} />
       </Drawer>
     </>

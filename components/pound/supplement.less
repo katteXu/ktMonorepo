@@ -159,36 +159,108 @@
 
 .rail-info,
 .table-info {
-  border: 1px solid #f0f0f0;
+  // border: 1px solid #f0f0f0;
   border-radius: 4px;
 
   .header {
-    height: 50px;
-    padding: 0px 24px;
-    border-bottom: 1px solid #f0f0f0;
+    // height: 50px;
+    // padding: 16px;
+    // border-bottom: 1px solid #f0f0f0;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    .title {
+      font-weight: 600;
+    }
+    .btn-change {
+      color: #3d86ef;
+      padding: 0;
+      margin-left: 12px;
+      height: 22px;
+      border: none;
+      outline: none;
+      box-shadow: none;
+    }
   }
 
   .body {
-    padding: 24px;
-    display: flex;
     justify-content: space-between;
+    .btn-add {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-left: none;
+      border-right: none;
+      :global {
+        .ant-btn {
+          width: 400;
+          border: 1px dashed #d8d8d8;
+          color: #4a4a5a;
+          &:hover {
+            border-color: #3d86ef;
+            color: #3d86ef;
+            .anticon {
+              color: #3d86ef !important;
+            }
+          }
+        }
+      }
+    }
+    .item {
+      margin-top: 16px;
+      padding-left: 11px;
+      span {
+        color: #848485;
+      }
+    }
+  }
+  :global {
+    .ant-legacy-form-item-control {
+      line-height: 32px;
+    }
   }
 }
 
 .table-info {
   margin-top: 24px;
   padding-bottom: 24px;
+  :global {
+    .ant-legacy-form-explain {
+      margin-top: 4px;
+      font-size: 14px;
+    }
+  }
   .btn-add {
-    width: max-content;
-    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // width: max-content;
+    // margin: 8px auto;
+    border: 1px solid #f0f0f0;
+    border-left: none;
+    border-right: none;
+    padding: 11px 0;
+    :global {
+      .ant-btn {
+        width: 400px;
+        border: 1px dashed #d8d8d8;
+        color: #4a4a5a;
+        &:hover {
+          border-color: #3d86ef;
+          color: #3d86ef;
+          .anticon {
+            color: #3d86ef !important;
+          }
+        }
+      }
+    }
   }
 
   .btn-bottom {
     height: 50px;
-    padding: 0 22px;
+    padding: 0 16px;
     border-top: 1px solid #f0f0f0;
     display: flex;
     align-items: center;
@@ -200,8 +272,13 @@
   }
 
   :global(.ant-legacy-form-explain) {
-    font-size: 12px;
+    font-size: 14px;
     line-height: 13px;
     white-space: normal;
+  }
+  :global {
+    .ant-legacy-form-item-control {
+      line-height: 32px;
+    }
   }
 }

@@ -4,8 +4,8 @@ import '@ant-design/compatible/assets/index.css';
 import { Table, Input, Popconfirm, Button, Modal, DatePicker, message } from 'antd';
 import moment from 'moment';
 import styles from './supplement.less';
+import { ChildTitle } from '@components';
 import { QuestionCircleFilled, PlusOutlined } from '@ant-design/icons';
-import deleteBtn from './deleteBtn.less';
 const EditableContext = React.createContext();
 
 const EditableCell = props => {
@@ -29,7 +29,7 @@ const EditableCell = props => {
                     message: '车牌号格式输入有误',
                   },
                 ],
-              })(<Input size="small" placeholder="请输入车牌号" />)}
+              })(<Input placeholder="请输入车牌号" />)}
             </Form.Item>
           );
 
@@ -44,7 +44,7 @@ const EditableCell = props => {
                     message: '请选择时间',
                   },
                 ],
-              })(<DatePicker size="small" placeholder="请选择时间" showTime style={{ width: '100%' }} />)}
+              })(<DatePicker placeholder="请选择时间" showTime style={{ width: '100%' }} />)}
             </Form.Item>
           );
 
@@ -63,7 +63,7 @@ const EditableCell = props => {
                     message: '手机号格式输入有误',
                   },
                 ],
-              })(<Input size="small" placeholder="请输入司机手机号" />)}
+              })(<Input placeholder="请输入司机手机号" />)}
             </Form.Item>
           );
 
@@ -129,7 +129,6 @@ const EditableCell = props => {
                 ],
               })(
                 <Input
-                  size="small"
                   placeholder="请输入毛重"
                   onChange={() => {
                     record.isSetting = false;
@@ -200,7 +199,6 @@ const EditableCell = props => {
                 ],
               })(
                 <Input
-                  size="small"
                   placeholder="请输入皮重"
                   onChange={() => {
                     record.isSetting = false;
@@ -251,7 +249,6 @@ const EditableCell = props => {
                 ],
               })(
                 <Input
-                  size="small"
                   placeholder="请输入净重"
                   onChange={e => handleGoodsWeightChange(e.target.value, getFieldValue, setFieldsValue, record)}
                 />
@@ -309,16 +306,12 @@ const EditableCell = props => {
                     },
                   },
                 ],
-              })(<Input size="small" placeholder="请输入原发净重" />)}
+              })(<Input placeholder="请输入原发净重" />)}
             </Form.Item>
           );
 
         case 'loss':
-          return (
-            <Form.Item style={{ margin: 0 }}>
-              {getFieldDecorator('loss')(<Input size="small" disabled={true} />)}
-            </Form.Item>
-          );
+          return <Form.Item style={{ margin: 0 }}>{getFieldDecorator('loss')(<Input disabled={true} />)}</Form.Item>;
       }
 
       return jsx;
@@ -362,52 +355,52 @@ const EditableTable = props => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const columns = [
     {
-      title: '时间',
+      title: '日期',
       dataIndex: 'time',
-      width: '200px',
+      width: '232px',
       editable: true,
     },
     {
       title: '车牌号',
       dataIndex: 'trailerPlateNumber',
       editable: true,
-      width: '150px',
+      width: '152px',
     },
     {
       title: '司机手机号',
       dataIndex: 'mobilePhoneNumber',
       editable: true,
-      width: '150px',
+      width: '152px',
     },
     {
-      title: '毛重',
+      title: '毛重(吨)',
       dataIndex: 'totalWeight',
       editable: true,
-      width: '150px',
+      width: '128px',
     },
     {
-      title: '皮重',
+      title: '皮重(吨)',
       dataIndex: 'carWeight',
       editable: true,
-      width: '150px',
+      width: '128px',
     },
     {
-      title: '净重',
+      title: '净重(吨)',
       dataIndex: 'goodsWeight',
       editable: true,
-      width: '150px',
+      width: '128px',
     },
     {
-      title: '原发净重',
+      title: '原发净重(吨)',
       dataIndex: 'fromGoodsWeight',
       editable: true,
-      width: '150px',
+      width: '128px',
     },
     {
       title: '路损',
       dataIndex: 'loss',
       editable: true,
-      width: '150px',
+      width: '128px',
     },
     {
       title: '操作',
@@ -418,27 +411,23 @@ const EditableTable = props => {
       render: (text, record) => {
         const editable = isEditing(record);
         return editable ? (
-          <span
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              paddingLeft: 8,
-              paddingRight: 8,
-            }}>
+          <span style={{ lineHeight: '32px' }}>
             <EditableContext.Consumer>
               {form => (
-                <a onClick={() => save(form, record)} style={{ marginRight: 8 }}>
+                <Button type="link" size="small" onClick={() => save(form, record)}>
                   保存
-                </a>
+                </Button>
               )}
             </EditableContext.Consumer>
             {!record.trailerPlateNumber ? (
-              <a className={deleteBtn.delete} onClick={() => handleRemove(record.key)}>
+              <Button danger type="link" size="small" onClick={() => handleRemove(record.key)}>
                 取消
-              </a>
+              </Button>
             ) : (
               <Popconfirm title="取消修改?" onConfirm={() => cancel(record)}>
-                <a>取消</a>
+                <Button danger type="link" size="small">
+                  取消
+                </Button>
               </Popconfirm>
             )}
           </span>
@@ -452,11 +441,7 @@ const EditableTable = props => {
               placement="topRight"
               icon={<QuestionCircleFilled />}
               onConfirm={() => handleRemove(record.key)}>
-              <Button
-                type="link"
-                size="small"
-                className={deleteBtn.delete}
-                style={{ padding: 0, border: 'none', margin: 0 }}>
+              <Button type="link" className={deleteBtn.delete} style={{ padding: 0, border: 'none', margin: 0 }}>
                 删除
               </Button>
             </Popconfirm>
@@ -684,6 +669,7 @@ const EditableTable = props => {
 
   const rowSelection = {
     selectedRowKeys,
+    // onChange: selectedRowKeys => this.setState({ selectedRowKeys }, console.log(selectedRowKeys)),
     onChange: selectedRowKeys => setSelectedRowKeys(selectedRowKeys),
     fixed: 'left',
   };
@@ -691,26 +677,27 @@ const EditableTable = props => {
   return (
     <div className={styles['table-info']}>
       <div className={styles.header}>
-        <div className={styles.title}>磅单列表 </div>
+        <div className={styles.title} style={{ marginBottom: 16 }}>
+          <ChildTitle className="hei14">磅单列表</ChildTitle>
+        </div>
       </div>
       <div className={styles.body}>
         <EditableContext.Provider value={form}>
           <Table
-            size="small"
             components={components}
             columns={_columns}
             dataSource={data}
-            rowKey={(record, index) => index}
+            // rowKey={(record, index) => index}
             rowClassName="editable-row"
-            rowSelection={rowSelection}
+            // rowSelection={rowSelection}
             pagination={false}
             scroll={{ x: 900 }}
           />
         </EditableContext.Provider>
       </div>
       <div className={styles['btn-add']}>
-        <Button onClick={handleAddBefore} block style={{ width: 400 }} type="primary" ghost>
-          <PlusOutlined />
+        <Button onClick={handleAddBefore} style={{ width: 400 }} block ghost>
+          <PlusOutlined style={{ color: '#4A4A5A' }} />
           新增
         </Button>
       </div>
