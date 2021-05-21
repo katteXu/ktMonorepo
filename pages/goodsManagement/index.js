@@ -3,8 +3,6 @@ import { Layout, Content, Search, Ellipsis } from '@components';
 import { Input, Button, Table, Modal, Popconfirm, message, Select } from 'antd';
 import { keepState, getState, clearState, Format } from '@utils/common';
 import { QuestionCircleFilled } from '@ant-design/icons';
-import GoodsForm from '@components/GoodsManagement/GoodsForm';
-import GoodsDetail from '@components/GoodsManagement/GoodsDetail';
 import { stock, getGoodsType } from '@api';
 import router from 'next/router';
 
@@ -206,7 +204,11 @@ const GoodsManagement = props => {
             }}>
             详情
           </Button>
-          <Button size="small" type="link" key="update" onClick={() => handleUpdate(record)}>
+          <Button
+            size="small"
+            type="link"
+            key="update"
+            onClick={() => router.push(`/goodsManagement/edit?id=${record.id}`)}>
             编辑
           </Button>
           <Popconfirm
@@ -232,17 +234,11 @@ const GoodsManagement = props => {
   });
 
   const [GoodsType, setGoodsType] = useState({});
-  // 弹窗
-  const [showNew, setShowNew] = useState(false);
-  const [showUpdate, setShowUpdate] = useState(false);
-  const [showDetail, setShowDetail] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [dataList, setDataList] = useState({});
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const [updateForm, setUpdateForm] = useState({});
-  const [rowData, setRowData] = useState({});
   // 初始化
   useEffect(() => {
     const { isServer } = props;
@@ -470,137 +466,12 @@ const GoodsManagement = props => {
     const res = id ? await stock.modifyGoods({ params }) : await stock.addGoods({ params });
     if (res.status === 0) {
       message.success('提交成功');
-      // 关闭弹窗
-      setShowNew(false);
-      setShowUpdate(false);
       handleSearch();
     } else {
       message.error(`${res.detail || res.description}`);
     }
   };
 
-  // 编辑复制
-  const handleUpdate = record => {
-    // 设置数据
-    const { goodsComponent, goodsType, goodsName } = record;
-    // 格式化表单数据
-    const _form = {
-      id: record.id,
-      goodsType,
-      goodsName,
-      unitPrice: goodsComponent.unitPrice ? goodsComponent.unitPrice / 100 : '',
-      materials: goodsComponent.rawMaterial,
-      standard_mad: {
-        min: goodsComponent.waterContentMin ? (goodsComponent.waterContentMin / 100).toFixed(2) : 0,
-        max: goodsComponent.waterContentMax ? (goodsComponent.waterContentMax / 100).toFixed(2) : 0,
-      },
-      standard_ad: {
-        min: goodsComponent.ashContentMin ? (goodsComponent.ashContentMin / 100).toFixed(2) : 0,
-        max: goodsComponent.ashContentMax ? (goodsComponent.ashContentMax / 100).toFixed(2) : 0,
-      },
-      standard_vdaf: {
-        min: goodsComponent.volatilizationMin ? (goodsComponent.volatilizationMin / 100).toFixed(2) : 0,
-        max: goodsComponent.volatilizationMax ? (goodsComponent.volatilizationMax / 100).toFixed(2) : 0,
-      },
-      standard_crc: goodsComponent.cinder ? (goodsComponent.cinder / 100).toFixed(0) : 0,
-      standard_std: {
-        min: goodsComponent.sulfurMin ? (goodsComponent.sulfurMin / 100).toFixed(2) : 0,
-        max: goodsComponent.sulfurMax ? (goodsComponent.sulfurMax / 100).toFixed(2) : 0,
-      },
-      standard_fcd: {
-        min: goodsComponent.carbonMin ? (goodsComponent.carbonMin / 100).toFixed(2) : 0,
-        max: goodsComponent.carbonMax ? (goodsComponent.carbonMax / 100).toFixed(2) : 0,
-      },
-      standard_r: {
-        min: goodsComponent.recoveryMin ? (goodsComponent.recoveryMin / 100).toFixed(2) : 0,
-        max: goodsComponent.recoveryMax ? (goodsComponent.recoveryMax / 100).toFixed(2) : 0,
-      },
-      standard_mt: {
-        min: goodsComponent.totalWaterContentMin ? (goodsComponent.totalWaterContentMin / 100).toFixed(2) : 0,
-        max: goodsComponent.totalWaterContentMax ? (goodsComponent.totalWaterContentMax / 100).toFixed(2) : 0,
-      },
-      standard_gri: {
-        min: goodsComponent.bondMin ? (goodsComponent.bondMin / 100).toFixed(2) : 0,
-        max: goodsComponent.bondMax ? (goodsComponent.bondMax / 100).toFixed(2) : 0,
-      },
-      standard_y: {
-        min: goodsComponent.colloidMin ? (goodsComponent.colloidMin / 100).toFixed(2) : 0,
-        max: goodsComponent.colloidMax ? (goodsComponent.colloidMax / 100).toFixed(2) : 0,
-      },
-      standard_gangue: {
-        min: goodsComponent.stoneMin ? (goodsComponent.stoneMin / 100).toFixed(2) : 0,
-        max: goodsComponent.stoneMax ? (goodsComponent.stoneMax / 100).toFixed(2) : 0,
-      },
-      standard_middle: {
-        min: goodsComponent.midCoalMin ? (goodsComponent.midCoalMin / 100).toFixed(2) : 0,
-        max: goodsComponent.midCoalMax ? (goodsComponent.midCoalMax / 100).toFixed(2) : 0,
-      },
-      standard_coal: {
-        min: goodsComponent.cleanCoalMin ? (goodsComponent.cleanCoalMin / 100).toFixed(2) : 0,
-        max: goodsComponent.cleanCoalMax ? (goodsComponent.cleanCoalMax / 100).toFixed(2) : 0,
-      },
-    };
-    setUpdateForm(_form);
-    setShowUpdate(true);
-  };
-
-  // 设置详情
-  const handleShowDetail = record => {
-    const { goodsType, goodsName, id, goodsComponent } = record;
-    const {
-      waterContentMin,
-      waterContentMax,
-      ashContentMin,
-      ashContentMax,
-      volatilizationMin,
-      volatilizationMax,
-      cinder,
-      sulfurMin,
-      sulfurMax,
-      carbonMin,
-      carbonMax,
-      recoveryMin,
-      recoveryMax,
-      totalWaterContentMin,
-      totalWaterContentMax,
-      bondMin,
-      bondMax,
-      colloidMin,
-      colloidMax,
-      stoneMin,
-      stoneMax,
-      midCoalMin,
-      midCoalMax,
-      cleanCoalMin,
-      cleanCoalMax,
-      rawMaterial,
-      unitPrice,
-    } = goodsComponent;
-
-    const data = {
-      id,
-      goodsType: GoodsType[goodsType] || '-',
-      goodsName: goodsName,
-      unitPrice: unitPrice ? (unitPrice / 100).toFixed(2) : '-',
-      materials: rawMaterial === 1 ? '是' : '否',
-      standard_mad: Format.range(waterContentMin, waterContentMax),
-      standard_ad: Format.range(ashContentMin, ashContentMax),
-      standard_vdaf: Format.range(volatilizationMin, volatilizationMax),
-      standard_crc: cinder ? (cinder / 100).toFixed(0) : '-',
-      standard_std: Format.range(sulfurMin, sulfurMax),
-      standard_fcd: Format.range(carbonMin, carbonMax),
-      standard_r: Format.range(recoveryMin, recoveryMax),
-      standard_mt: Format.range(totalWaterContentMin, totalWaterContentMax),
-      standard_gri: Format.range(bondMin, bondMax),
-      standard_y: Format.range(colloidMin, colloidMax),
-      standard_gangue: Format.range(stoneMin, stoneMax),
-      standard_middle: Format.range(midCoalMin, midCoalMax),
-      standard_coal: Format.range(cleanCoalMin, cleanCoalMax),
-    };
-
-    setRowData(data);
-    setShowDetail(true);
-  };
   return (
     <Layout {...routeView}>
       <Content>
@@ -611,14 +482,6 @@ const GoodsManagement = props => {
           <Search onSearch={handleSearch} onReset={handleReset}>
             <Search.Item label="货品名称">
               <Input allowClear value={query.goodsName} placeholder="请输入货品名称" onChange={handleChangeGoodsName} />
-              {/* <AutoInputSelect
-            mode="goodsType"
-            allowClear
-            placeholder="请输入货品名称"
-            onChange={onChangeGoodsType}
-            newGoodsType={newGoodsType}
-            style={{ width: 200 }}
-          /> */}
             </Search.Item>
 
             <Search.Item label="货物类型">
@@ -663,43 +526,6 @@ const GoodsManagement = props => {
           />
         </section>
       </Content>
-
-      {/* 新增弹窗 */}
-      {/* <Modal
-        width={860}
-        visible={showNew}
-        title="新增货品"
-        footer={null}
-        destroyOnClose
-        onCancel={() => setShowNew(false)}>
-        <GoodsForm onClose={() => setShowNew(false)} onSubmit={submit} />
-      </Modal> */}
-
-      {/* 编辑弹窗 */}
-      <Modal
-        width={860}
-        visible={showUpdate}
-        title="编辑货品"
-        footer={null}
-        destroyOnClose
-        onCancel={() => setShowUpdate(false)}>
-        <GoodsForm onClose={() => setShowUpdate(false)} formData={updateForm} onSubmit={submit} />
-      </Modal>
-
-      {/* 质检信息 */}
-      {/* <DrawerInfo title="货品质检信息" onClose={() => setShowDetail(false)} showDrawer={showDetail} width="664">
-        <GoodsDetail rowData={rowData} />
-      </DrawerInfo> */}
-      <Modal
-        width={860}
-        visible={showDetail}
-        title="货品质检信息"
-        footer={null}
-        destroyOnClose
-        onCancel={() => setShowDetail(false)}>
-        {/* <GoodsForm onClose={() => setShowUpdate(false)} formData={updateForm} onSubmit={submit} /> */}
-        <GoodsDetail rowData={rowData} />
-      </Modal>
     </Layout>
   );
 };
