@@ -99,6 +99,7 @@ const GoodsManagement = props => {
         setShowInModal={setShowInModal}
         setShowOutModal={setShowOutModal}
       />
+
       <Modal
         title="新增入库"
         visible={showInModal}

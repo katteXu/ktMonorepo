@@ -155,7 +155,6 @@ const Index = props => {
       style={{ width: '100%', ...props.style }}
       onChange={onChange}
       showSearch={true}
-      // onSearch={mode === 'company' ? () => {} : handleChange}
       onSearch={handleChange}
       value={value}
       optionFilterProp="children"

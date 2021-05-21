@@ -6,7 +6,6 @@ import { QuestionCircleFilled } from '@ant-design/icons';
 import GoodsForm from '@components/GoodsManagement/GoodsForm';
 import GoodsDetail from '@components/GoodsManagement/GoodsDetail';
 import { stock, getGoodsType } from '@api';
-import deleteBtn from './deleteBtn.less';
 import router from 'next/router';
 
 const routeView = {
@@ -203,10 +202,9 @@ const GoodsManagement = props => {
             type="link"
             key="detail"
             onClick={() => {
-              // handleShowDetail(record);
               router.push(`/goodsManagement/detail?id=${record.id}`);
             }}>
-            详细信息
+            详情
           </Button>
           <Button size="small" type="link" key="update" onClick={() => handleUpdate(record)}>
             编辑
@@ -216,7 +214,7 @@ const GoodsManagement = props => {
             placement="topRight"
             icon={<QuestionCircleFilled />}
             onConfirm={() => handleRemove(record.id)}>
-            <Button type="link" size="small" className={deleteBtn.delete}>
+            <Button type="link" size="small" danger>
               删除
             </Button>
           </Popconfirm>
@@ -607,7 +605,7 @@ const GoodsManagement = props => {
     <Layout {...routeView}>
       <Content>
         <section>
-          <Button type="primary" style={{ marginBottom: 16 }} onClick={() => setShowNew(true)}>
+          <Button type="primary" style={{ marginBottom: 16 }} onClick={() => router.push(`/goodsManagement/create`)}>
             新增货品
           </Button>
           <Search onSearch={handleSearch} onReset={handleReset}>
@@ -667,7 +665,7 @@ const GoodsManagement = props => {
       </Content>
 
       {/* 新增弹窗 */}
-      <Modal
+      {/* <Modal
         width={860}
         visible={showNew}
         title="新增货品"
@@ -675,7 +673,7 @@ const GoodsManagement = props => {
         destroyOnClose
         onCancel={() => setShowNew(false)}>
         <GoodsForm onClose={() => setShowNew(false)} onSubmit={submit} />
-      </Modal>
+      </Modal> */}
 
       {/* 编辑弹窗 */}
       <Modal

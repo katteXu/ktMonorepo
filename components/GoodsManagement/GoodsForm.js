@@ -55,23 +55,84 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
     }
   };
 
+  useEffect(() => {
+    if (formData.id) {
+      form.setFieldsValue({
+        id: formData.id,
+        goodsType: formData.goodsType,
+        goodsName: formData.goodsName,
+        rawMaterial: formData.rawMaterial,
+        unitPrice: formData.unitPrice,
+        standard_mad: {
+          min: formData.waterContentMin && formData.waterContentMin / 100,
+          max: formData.waterContentMax && formData.waterContentMax / 100,
+        },
+        standard_ad: {
+          min: formData.ashContentMin && formData.ashContentMin / 100,
+          max: formData.ashContentMax && formData.ashContentMax / 100,
+        },
+        standard_vdaf: {
+          min: formData.volatilizationMin && formData.volatilizationMin / 100,
+          max: formData.volatilizationMax && formData.volatilizationMax / 100,
+        },
+        standard_crc: formData.cinder && formData.cinder / 100,
+        standard_std: {
+          min: formData.sulfurMin && formData.sulfurMin / 100,
+          max: formData.sulfurMax && formData.sulfurMax / 100,
+        },
+        standard_fcd: {
+          min: formData.carbonMin && formData.carbonMin / 100,
+          max: formData.carbonMax && formData.carbonMax / 100,
+        },
+        standard_r: {
+          min: formData.recoveryMin && formData.recoveryMin / 100,
+          max: formData.recoveryMax && formData.recoveryMax / 100,
+        },
+        standard_mt: {
+          min: formData.totalWaterContentMin && formData.totalWaterContentMin / 100,
+          max: formData.totalWaterContentMax && formData.totalWaterContentMax / 100,
+        },
+        standard_gri: {
+          min: formData.bondMin && formData.bondMin / 100,
+          max: formData.bondMax && formData.bondMax / 100,
+        },
+        standard_y: {
+          min: formData.colloidMin && formData.colloidMin / 100,
+          max: formData.colloidMax && formData.colloidMax / 100,
+        },
+        standard_gangue: {
+          min: formData.stoneMin && formData.stoneMin / 100,
+          max: formData.stoneMax && formData.stoneMax / 100,
+        },
+        standard_middle: {
+          min: formData.midCoalMin && formData.midCoalMin / 100,
+          max: formData.midCoalMax && formData.midCoalMax / 100,
+        },
+        standard_coal: {
+          min: formData.cleanCoalMin && formData.cleanCoalMin / 100,
+          max: formData.cleanCoalMax && formData.cleanCoalMax / 100,
+        },
+      });
+    }
+    console.log(formData);
+  }, [formData]);
+
   return (
     <Form
       className={styles.main}
       {...formItemLayout}
-      initialValues={formData}
       autoComplete="off"
       layout="inline"
       form={form}
       onFinish={handleSubmit}
       onFinishFailed={onFinishFailed}>
-      <ChildTitle>
-        <div className={styles.title}>基础信息</div>
-      </ChildTitle>
+      <div className={styles.title}>
+        <ChildTitle style={{ height: 26 }}>基础信息</ChildTitle>
+      </div>
       <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item label="货物类型" name="goodsType" rules={[{ required: true, message: '请选择货物类型' }]}>
-            <Select placeholder="请选择货物类型" style={{ marginLeft: 8, width: 200 }}>
+            <Select placeholder="请选择货物类型" style={{ width: 264 }}>
               {GoodsType.map(({ name, key }) => (
                 <Select.Option value={key} key={key}>
                   {name}
@@ -80,9 +141,11 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
             </Select>
           </Form.Item>
         </div>
+      </div>
+      <div className={styles.row}>
         <div className={styles.col}>
-          <Form.Item label="货品名称" name="goodsName" rules={[{ required: true, message: '请选择货品名称' }]}>
-            <Input style={{ marginLeft: 8, width: 200 }} disabled={formData.id} placeholder="请输入货品名称" />
+          <Form.Item label="货品名称" name="goodsName" rules={[{ required: true, message: '请输入货品名称' }]}>
+            <Input style={{ width: 264 }} disabled={formData.id} placeholder="请输入货品名称" />
           </Form.Item>
         </div>
       </div>
@@ -98,25 +161,28 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
               { pattern: /^([1-9][0-9]*(\.\d*)?)|(0\.\d*)$/, message: '内容必须是数字且大于0' },
               { pattern: /^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/, message: '最多输入2位小数' },
             ]}>
-            <Input style={{ marginLeft: 8, width: 200 }} placeholder="请输入成本单价" addonAfter="元/吨" />
-            {/* <span className={styles.unitName}>元/吨</span> */}
+            <Input style={{ width: 264 }} placeholder="请输入成本单价" addonAfter="元/吨" />
           </Form.Item>
         </div>
+      </div>
+      <div className={styles.row}>
         <div className={styles.col}>
-          <Form.Item label="配煤原料" name="materials" rules={[{ required: true, message: '请选择配煤原料' }]}>
-            <Radio.Group style={{ marginLeft: 8, width: 200 }}>
+          <Form.Item label="配煤原料" name="rawMaterial" rules={[{ required: true, message: '请选择配煤原料' }]}>
+            <Radio.Group style={{ width: 264 }}>
               <Radio value={1}>是</Radio>
-              <Radio value={0}>否</Radio>
+              <Radio value={0} style={{ marginLeft: 24 }}>
+                否
+              </Radio>
             </Radio.Group>
           </Form.Item>
         </div>
       </div>
 
-      <ChildTitle style={{ marginTop: 24 }}>
-        <div className={styles.title}>指标标准</div>
-      </ChildTitle>
+      <div className={styles.title} style={{ marginTop: 24 }}>
+        <ChildTitle style={{ height: 26 }}>指标标准</ChildTitle>
+      </div>
+
       <div className={styles.row}>
-        {/* 水分 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
             label={
@@ -124,7 +190,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>水分(% Mad)
               </div>
             }
-            // label="水分(% Mad)"
             name={['standard_mad', 'min']}
             validateFirst={true}
             rules={[
@@ -143,7 +208,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 validator: () => validateMin('mad'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input placeholder="请输入" />
           </Form.Item>
           <span>≤Mad≤</span>
           <Form.Item
@@ -163,14 +228,11 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 max: 100,
                 message: '内容不可超过100',
               },
-              {
-                validator: () => validateMax('mad'),
-              },
-            ]}>
+            ]}
+            onChange={() => validateMax('mad')}>
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
-        {/* 灰分 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
             label={
@@ -178,7 +240,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>灰分(% Ad)
               </div>
             }
-            // label="灰分(% Ad)"
             name={['standard_ad', 'min']}
             validateFirst={true}
             rules={[
@@ -197,7 +258,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 validator: () => validateMin('ad'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{}} placeholder="请输入" />
           </Form.Item>
           <span>≤Ad≤</span>
           <Form.Item
@@ -217,24 +278,20 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 max: 100,
                 message: '内容不可超过100',
               },
-              {
-                validator: () => validateMax('ad'),
-              },
-            ]}>
+            ]}
+            onChange={() => validateMax('ad')}>
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
       </div>
       <div className={styles.row}>
         <div className={`${styles.col} ${styles['db-input']}`}>
-          {/* 挥发 */}
           <Form.Item
             label={
               <div>
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>挥发(% Vdaf)
               </div>
             }
-            // label="挥发(% Vdaf)"
             name={['standard_vdaf', 'min']}
             validateFirst={true}
             rules={[
@@ -253,7 +310,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 validator: () => validateMin('vdaf'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{}} placeholder="请输入" />
           </Form.Item>
           <span>≤Vdaf≤</span>
           <Form.Item
@@ -273,14 +330,11 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 max: 100,
                 message: '内容不可超过100',
               },
-              {
-                validator: () => validateMax('vdaf'),
-              },
-            ]}>
+            ]}
+            onChange={() => validateMax('vdaf')}>
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
-        {/* 焦渣特征 */}
         <div className={styles.col}>
           <Form.Item
             label={
@@ -289,7 +343,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 CRC)
               </div>
             }
-            // label="焦渣特征(1-8 CRC)"
             name="standard_crc"
             validateFirst={true}
             rules={[
@@ -305,7 +358,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 message: '请输入正确的数值:1-8',
               },
             ]}>
-            <Input style={{ marginLeft: 8, width: 96 }} placeholder="请输入" />
+            <Input style={{ width: 96 }} placeholder="请输入" />
           </Form.Item>
         </div>
       </div>
@@ -318,7 +371,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>全硫(% Std)
               </div>
             }
-            // label="全硫(% Std)"
             name={['standard_std', 'min']}
             validateFirst={true}
             rules={[
@@ -337,7 +389,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 validator: () => validateMin('std'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{}} placeholder="请输入" />
           </Form.Item>
           <span>≤Std≤</span>
           <Form.Item
@@ -357,14 +409,11 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 max: 100,
                 message: '内容不可超过100',
               },
-              {
-                validator: () => validateMax('std'),
-              },
-            ]}>
+            ]}
+            onChange={() => validateMax('std')}>
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
-        {/* 固定碳 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
             label={
@@ -372,7 +421,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>固定碳(% Fcd)
               </div>
             }
-            // label="固定碳(% Fcd)"
             name={['standard_fcd', 'min']}
             validateFirst={true}
             rules={[
@@ -391,7 +439,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 validator: () => validateMin('fcd'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{}} placeholder="请输入" />
           </Form.Item>
           <span>≤Fcd≤</span>
           <Form.Item
@@ -411,15 +459,12 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 max: 100,
                 message: '内容不可超过100',
               },
-              {
-                validator: () => validateMax('fcd'),
-              },
-            ]}>
+            ]}
+            onChange={() => validateMax('fcd')}>
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
       </div>
-      {/* 回收 */}
       <div className={styles.row}>
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
@@ -428,7 +473,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>回收(% r)
               </div>
             }
-            // label="回收(% r)"
             name={['standard_r', 'min']}
             validateFirst={true}
             rules={[
@@ -447,7 +491,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 validator: () => validateMin('r'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{}} placeholder="请输入" />
           </Form.Item>
           <span>≤r≤</span>
           <Form.Item
@@ -467,14 +511,11 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 max: 100,
                 message: '内容不可超过100',
               },
-              {
-                validator: () => validateMax('r'),
-              },
-            ]}>
+            ]}
+            onChange={() => validateMax('r')}>
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
-        {/* 全水分 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
             label={
@@ -482,7 +523,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>全水分(% Mt)
               </div>
             }
-            // label="全水分(% Mt)"
             name={['standard_mt', 'min']}
             validateFirst={true}
             rules={[
@@ -501,7 +541,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 validator: () => validateMin('mt'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{}} placeholder="请输入" />
           </Form.Item>
           <span>≤Mt≤</span>
           <Form.Item
@@ -521,16 +561,13 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 max: 100,
                 message: '内容不可超过100',
               },
-              {
-                validator: () => validateMax('mt'),
-              },
-            ]}>
+            ]}
+            onChange={() => validateMax('mt')}>
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
       </div>
       <div className={styles.row}>
-        {/* 粘结指数 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
             label={
@@ -538,7 +575,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>粘结指数(GRI)
               </div>
             }
-            // label="粘结指数(GRI)"
             name={['standard_gri', 'min']}
             validateFirst={true}
             rules={[
@@ -557,7 +593,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 validator: () => validateMin('gri'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{}} placeholder="请输入" />
           </Form.Item>
           <span>≤GRI≤</span>
           <Form.Item
@@ -577,14 +613,11 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 max: 100,
                 message: '内容不可超过100',
               },
-              {
-                validator: () => validateMax('gri'),
-              },
-            ]}>
+            ]}
+            onChange={() => validateMax('gri')}>
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
-        {/* 胶质层 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
             label={
@@ -592,7 +625,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>胶质层(Y)
               </div>
             }
-            // label="胶质层(Y)"
             name={['standard_y', 'min']}
             validateFirst={true}
             rules={[
@@ -611,7 +643,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 validator: () => validateMin('y'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{}} placeholder="请输入" />
           </Form.Item>
           <span>≤Y≤</span>
           <Form.Item
@@ -631,16 +663,13 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 max: 100,
                 message: '内容不可超过100',
               },
-              {
-                validator: () => validateMax('y'),
-              },
-            ]}>
+            ]}
+            onChange={() => validateMax('y')}>
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
       </div>
       <div className={styles.row}>
-        {/* 含矸石 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
             label={
@@ -648,7 +677,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>含矸石(%)
               </div>
             }
-            // label="含矸石(%)"
             name={['standard_gangue', 'min']}
             validateFirst={true}
             rules={[
@@ -667,7 +695,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 validator: () => validateMin('gangue'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{}} placeholder="请输入" />
           </Form.Item>
           <span>≤%≤</span>
           <Form.Item
@@ -687,14 +715,11 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 max: 100,
                 message: '内容不可超过100',
               },
-              {
-                validator: () => validateMax('gangue'),
-              },
-            ]}>
+            ]}
+            onChange={() => validateMax('gangue')}>
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
-        {/* 含中煤 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
             label={
@@ -702,7 +727,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>含中煤(%)
               </div>
             }
-            // label="含中煤(%)"
             name={['standard_middle', 'min']}
             validateFirst={true}
             rules={[
@@ -721,7 +745,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 validator: () => validateMin('middle'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input placeholder="请输入" />
           </Form.Item>
           <span>≤%≤</span>
           <Form.Item
@@ -741,16 +765,14 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 max: 100,
                 message: '内容不可超过100',
               },
-              {
-                validator: () => validateMax('middle'),
-              },
-            ]}>
+            ]}
+            onChange={() => validateMax('middle')}>
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
       </div>
+
       <div className={styles.row}>
-        {/* 含精煤 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
             label={
@@ -758,7 +780,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>含精煤(%)
               </div>
             }
-            // label="含精煤(%)"
             name={['standard_coal', 'min']}
             validateFirst={true}
             rules={[
@@ -777,7 +798,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 validator: () => validateMin('coal'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{}} placeholder="请输入" />
           </Form.Item>
           <span>≤%≤</span>
           <Form.Item
@@ -797,20 +818,16 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 max: 100,
                 message: '内容不可超过100',
               },
-              {
-                validator: () => validateMax('coal'),
-              },
-            ]}>
+            ]}
+            onChange={() => validateMax('coal')}>
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
         <div className={`${styles.col} ${styles['db-input']}`}></div>
       </div>
+
       <div className={styles.bottom}>
-        <Button size="default" onClick={() => onClose && onClose()}>
-          取消
-        </Button>
-        <Button size="default" type="primary" style={{ marginLeft: 8 }} htmlType="submit" loading={loading}>
+        <Button size="default" type="primary" htmlType="submit" loading={loading}>
           提交
         </Button>
       </div>

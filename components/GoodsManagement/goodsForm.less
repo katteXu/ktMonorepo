@@ -4,37 +4,42 @@
       margin: 0;
     }
 
+    .ant-form-item {
+      margin: 0;
+    }
+
     .ant-form-item-explain-error,
     .ant-form-item-explain {
       position: absolute;
       white-space: nowrap;
     }
-
-    .ant-form-item-label {
-      width: 139px;
+    .ant-radio-group.ant-radio-group-outline > label.ant-radio-wrapper {
+      width: unset;
+      margin: unset;
     }
   }
   .title {
-    font-size: 14px;
+    font-size: 16px;
     color: #4a4a5a;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 600;
+    margin-bottom: 24px;
   }
 
   .row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 100%;
-    margin-top: 24px;
+    padding-left: 32px;
     .col {
-      flex: 1;
+      // flex: 1;
+      margin-right: 40px;
       font-size: 14px;
       label {
         color: #4a4a5a !important;
-      }
-      & + .col {
-        margin-left: 19px;
+        width: 143px;
+        margin-right: 8px;
       }
 
       &.db-input {
@@ -49,6 +54,7 @@
           min-width: 51px;
           text-align: center;
           color: #4a4a5a;
+          padding-bottom: 24px;
         }
       }
     }
@@ -60,15 +66,13 @@
 
   .bottom {
     width: 100%;
-    text-align: right;
-    margin-top: 24px;
+    padding-left: 190px;
   }
 }
 .unitName {
   position: absolute;
   top: 1px;
   right: 59px;
-  // border: 1px solid #d8d8d8;
   background: #f6f7f9;
   width: 54px;
   height: 30px;
