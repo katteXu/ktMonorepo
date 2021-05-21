@@ -38,6 +38,14 @@ const VerifyIcon = `${publicRuntimeConfig.staticFolder}/icon/verify.svg`;
 // 过磅管理
 const SettlmentLeftIcon = `${publicRuntimeConfig.staticFolder}/icon/settlment-left-icon.svg`;
 const SettlmentRightIcon = `${publicRuntimeConfig.staticFolder}/icon/settlment-right-icon.svg`;
+
+// 库存管理
+const WareHousing = `${publicRuntimeConfig.staticFolder}/icon/warehousing.svg`;
+const Weighting = `${publicRuntimeConfig.staticFolder}/icon/weighing.svg`;
+const Washing = `${publicRuntimeConfig.staticFolder}/icon/washing.svg`;
+const Blending = `${publicRuntimeConfig.staticFolder}/icon/blending.svg`;
+
+
 export {
   LinkIcon,
   Logo,
@@ -67,4 +75,8 @@ export {
   CleanCoalPic,
   SettlmentLeftIcon,
   SettlmentRightIcon,
+  WareHousing,
+  Weighting,
+  Washing,
+  Blending,
 };

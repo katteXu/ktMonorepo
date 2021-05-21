@@ -1,9 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
-// import Layout from '@components/Layout';
-import { Layout, Content, Search, AutoInputSelect } from '@components';
+import { Layout, Content, AutoInputSelect } from '@components';
 import { Input, Table, Button, Form, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { clearState, Format } from '@utils/common';
+import { Format } from '@utils/common';
 import { inventory } from '@api';
 import router from 'next/router';
 import Link from 'next/link';
@@ -181,14 +180,7 @@ const Index = props => {
     },
     [dataList]
   );
-  // 切页码
-  // const onChangePageSize = useCallback(
-  //   (current, pageSize) => {
-  //     setQuery({ ...query, page: 1, pageSize });
-  //     getQualidyByGoods({ ...query, page: 1, pageSize });
-  //   },
-  //   [dataList]
-  // );
+
   // 创建
   const createStock = async () => {
     const order = dataList.data.map(item => {
@@ -262,7 +254,6 @@ const Index = props => {
             <div className={styles.row}>
               <div className={styles.col}>
                 <Form.Item label="货品名称" rules={[{ required: true, message: '请选择货品名称' }]} name="goodsName">
-                  {/* <AutoInputSelect placeholder="请选择货品名称" style={{ width: 200 }} /> */}
                   <AutoInputSelect
                     mode="goodsType"
                     allowClear
@@ -276,6 +267,7 @@ const Index = props => {
               <div className={styles.col}>
                 <Form.Item
                   label="盘点数量"
+                  validateFirst={true}
                   rules={[
                     { required: true, message: '请输入正确的盘点数量' },
                     {

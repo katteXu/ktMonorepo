@@ -113,6 +113,11 @@ const MENU_LIST = [
     key: 'inventory',
     children: [
       {
+        name: '实时库存',
+        key: 'inventoryStatistical',
+        permission: ['INVENTORY_DATA_READ'],
+      },
+      {
         name: '库存流水',
         key: 'inventoryWater',
         permission: ['INVENTORY_READ'],

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Select, DatePicker, message, Input, Button, Table, Modal } from 'antd';
 import { inventory } from '@api';
-import { keepState, getState, clearState, Format } from '@utils/common';
+import { keepState, getState, clearState, Format, getQuery } from '@utils/common';
 import { Search, Msg } from '@components';
 import AddStockForm from '@components/Inventory/inventoryWater/addStockForm';
 import router from 'next/router';
@@ -81,11 +81,12 @@ const Index = props => {
     if (isServer) {
       clearState();
     }
+
+    const { startTime, nowTime, type: typeStatus, goodsName } = getQuery();
     // 获取持久化数据
     const state = getState().query;
-
-    setQuery({ ...query, ...state });
-    getDataInfo({ ...query, ...state });
+    setQuery({ ...query, begin: startTime, end: nowTime, type: typeStatus, goodsName });
+    getDataInfo({ ...query, begin: startTime, end: nowTime, type: typeStatus, goodsName });
   }, []);
 
   const getDataInfo = async ({ page, pageSize, begin, end, type, goodsName }) => {
@@ -146,34 +147,6 @@ const Index = props => {
     getDataInfo(query);
   }, []);
 
-  // 导出
-  const handleExport = useCallback(async () => {
-    if (dataList.count === 0) {
-      message.warning('数据导出失败，原因：没有数据可以导出');
-      return;
-    }
-    setExportLoading(true);
-    const params = {
-      goodsName,
-      limit: pageSize,
-      page,
-      changeTimeBegin: begin,
-      changeTimeEnd: end,
-      type,
-      dump: true,
-    };
-
-    const res = await inventory.inventoryInList({ params });
-
-    if (res.status === 0) {
-      downLoadFile(res.result, '入库数据');
-      message.success('数据导出成功');
-    } else {
-      message.error(`数据导出失败，原因：${res.detail || res.description}`);
-    }
-    setExportLoading(false);
-  }, [dataList]);
-
   // 分页
   const onChangePage = useCallback(
     page => {
@@ -219,7 +192,6 @@ const Index = props => {
         </Button>
       )}
 
-      {/* onExport={handleExport}exportLoading={exportLoading} */}
       <Search onSearch={handleSearch} onReset={handleReset}>
         <Search.Item label="入库时间" br>
           <DatePicker.RangePicker

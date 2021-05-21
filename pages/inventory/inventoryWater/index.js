@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Layout, Content } from '@components';
 import Storage from '@components/Inventory/inventoryWater/storage';
 import Outbound from '@components/Inventory/inventoryWater/outbound';
-import { clearState } from '@utils/common';
+import { clearState, getQuery } from '@utils/common';
 const InventoryWater = props => {
   // 改变tab
   const onChangeTab = useCallback(key => {
@@ -20,8 +20,13 @@ const InventoryWater = props => {
   };
   const [currentTab, setCurrentTab] = useState('storage');
   useEffect(() => {
-    const { orderTab } = sessionStorage;
-    setCurrentTab(orderTab || 'storage');
+    const { waterTab } = getQuery();
+    if (waterTab) {
+      setCurrentTab(waterTab || 'storage');
+    } else {
+      const { orderTab } = sessionStorage;
+      setCurrentTab(orderTab || 'storage');
+    }
   }, []);
   return (
     <Layout {...routeView}>
@@ -39,8 +44,8 @@ const InventoryWater = props => {
           </div>
         </header>
 
-        {currentTab === 'storage' && <Storage isServer={props.isServer} />}
-        {currentTab === 'outbound' && <Outbound isServer={props.isServer} />}
+        {currentTab === 'storage' && <Storage />}
+        {currentTab === 'outbound' && <Outbound />}
       </Content>
     </Layout>
   );

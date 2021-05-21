@@ -8,6 +8,10 @@ import Link from 'next/link';
 import { Format, keepState, getState, getQuery } from '@utils/common';
 import { inventory } from '@api';
 import router from 'next/router';
+import AssociatedPound from '@components/Inventory/inventoryWater/associatedPound';
+import AssociatedInventory from '@components/Inventory/inventoryWater/associatedInventory';
+import AssociatedWashing from '@components/Inventory/inventoryWater/associatedWashing';
+import AssociatedBlending from '@components/Inventory/inventoryWater/associatedBlending';
 import { Permission } from '@store';
 const Index = props => {
   const routeView = {
@@ -72,12 +76,14 @@ const Index = props => {
     data: [],
     count: 0,
   });
+  const [dataInfo, setDataInfo] = useState({});
 
   const [query, setQuery] = useState({
     page: 1,
     pageSize: 10,
   });
-  const [dataInfo, setDataInfo] = useState({});
+
+  const [allDataInfo, setAllDataInfo] = useState({});
 
   useEffect(() => {
     getDetail();
@@ -92,6 +98,7 @@ const Index = props => {
 
     if (res.status === 0) {
       setDataInfo(res.result);
+      setAllDataInfo(res.result.eachData);
     } else {
       message.error(`${res.detail || res.description}`);
     }
@@ -207,8 +214,18 @@ const Index = props => {
             </div>
           </div>
 
-          <ChildTitle style={{ margin: '16px 0' }}>已关联质检单</ChildTitle>
+          <ChildTitle className="hei14" style={{ margin: '16px 0', fontWeight: 'bold' }}>
+            已关联质检单
+          </ChildTitle>
           <Table loading={loading} dataSource={[]} columns={columns} pagination={null} />
+          {/* 磅单 */}
+          {dataInfo.dataType === 3 && <AssociatedPound allDataInfo={allDataInfo} />}
+          {/* 盘点单 */}
+          {dataInfo.dataType === 4 && <AssociatedInventory allDataInfo={allDataInfo} />}
+          {/* 洗煤记录 */}
+          {(dataInfo.dataType === 5 || dataInfo.dataType === 6) && <AssociatedWashing allDataInfo={allDataInfo} />}
+          {/* 配煤记录 */}
+          {dataInfo.dataType === 1 && <AssociatedBlending allDataInfo={allDataInfo} />}
         </section>
       </Content>
     </Layout>

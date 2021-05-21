@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Select, DatePicker, message, Input, Button, Table, Modal } from 'antd';
 import { inventory } from '@api';
-import { keepState, getState, clearState, Format } from '@utils/common';
+import { keepState, getState, clearState, Format, getQuery } from '@utils/common';
 import { Search, Msg } from '@components';
 import AddStockOutForm from '@components/Inventory/inventoryWater/addStockOutForm';
 import router from 'next/router';
@@ -81,10 +81,13 @@ const Index = props => {
     if (isServer) {
       clearState();
     }
+
+    const { startTime, nowTime, type: typeStatus, goodsName } = getQuery();
     // 获取持久化数据
     const state = getState().query;
-    setQuery({ ...query, ...state });
-    getDataInfo({ ...query, ...state });
+
+    setQuery({ ...query, begin: startTime, end: nowTime, type: typeStatus, goodsName });
+    getDataInfo({ ...query, begin: startTime, end: nowTime, type: typeStatus, goodsName });
   }, []);
 
   const getDataInfo = async ({ page, pageSize, begin, end, type, goodsName }) => {

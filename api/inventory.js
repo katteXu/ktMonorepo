@@ -121,6 +121,15 @@ const getInventoryCheckDetail = ({ params }) => {
   });
 };
 
+// 统计接口
+const inventoryListTotalSum = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/inventoryListTotalSum',
+    params,
+  });
+};
+
 export default {
   getInventoryCheckList,
   inventoryInList,
@@ -136,4 +145,5 @@ export default {
   inventoryLogDetail,
   inventoryLogDel,
   inventoryCheckDetailDel,
+  inventoryListTotalSum,
 };

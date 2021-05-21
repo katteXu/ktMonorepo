@@ -32,7 +32,7 @@ const StockTaking = props => {
       render: value => <span>{value || '-'}</span>,
     },
     {
-      title: '盘盈数量',
+      title: '盘盈数量(吨)',
       dataIndex: 'diffInNum',
       key: 'diffInNum',
       width: 120,
@@ -40,7 +40,7 @@ const StockTaking = props => {
       render: value => <span>{Format.weight(value) || '-'}</span>,
     },
     {
-      title: '盘亏数量',
+      title: '盘亏数量(吨)',
       dataIndex: 'diffOutNum',
       key: 'diffOutNum',
       width: 120,
@@ -68,7 +68,6 @@ const StockTaking = props => {
           key="detail"
           onClick={() => {
             router.push(`/inventory/stockTaking/detail?id=${record.id}`);
-            // router.push(`/inventory/stockTaking/detail`);
           }}>
           详情
         </Button>
@@ -167,7 +166,7 @@ const StockTaking = props => {
           fontFamily:
             '-apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,Roboto,Arial,PingFang SC,Hiragino Sans GB,Microsoft Yahei,SimSun,sans-serif',
         }}>
-        <div style={{ padding: '16px' }}>
+        <section>
           {(isSuperUser || permissions.includes('INVENTORY_CHECK_OPERATE')) && (
             <Button
               type="primary"
@@ -198,10 +197,9 @@ const StockTaking = props => {
               />
             </Search.Item>
           </Search>
-        </div>
 
-        <section>
           <Table
+            style={{ marginTop: 16 }}
             loading={loading}
             dataSource={dataList.data}
             // dataSource={[1, 2, 3, 4, 5]}

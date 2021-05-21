@@ -64,7 +64,11 @@ const lineTo = `${publicRuntimeConfig.staticFolder}/image/line-to.png`;
 const SettlmentEmpty = `${publicRuntimeConfig.staticFolder}/image/settlment-empty.png`;
 const SettlmentLeftBg = `${publicRuntimeConfig.staticFolder}/image/settlment-left.png`;
 const SettlmentRightBg = `${publicRuntimeConfig.staticFolder}/image/settlment-right.png`;
+
+// 库存管理
+const InventoryBg = `${publicRuntimeConfig.staticFolder}/image/bgInventory.png`;
 export {
+  InventoryBg,
   Banner,
   Transport,
   Logistics,
