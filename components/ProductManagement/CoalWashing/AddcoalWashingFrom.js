@@ -1,7 +1,7 @@
-import { Input, Button, Form, Row, Col, Select, message, DatePicker } from 'antd';
-import { useState, useEffect } from 'react';
+import { Input, Button, Form, message, DatePicker } from 'antd';
+import { useState } from 'react';
 import { product } from '@api';
-
+import styles from './styles.less';
 import moment from 'moment';
 import { AutoInputSelect } from '@components';
 
@@ -9,33 +9,17 @@ const { RangePicker } = DatePicker;
 // 表单布局
 const formItemLayout = {
   labelAlign: 'left',
-  labelCol: { span: 5 },
-  wrapperCol: { span: 19 },
-};
-
-const formItemLayout1 = {
-  labelAlign: 'left',
-  labelCol: { span: 3 },
-  wrapperCol: { span: 21 },
-};
-const tailFormItemLayout = {
-  wrapperCol: { offset: 22 },
 };
 
 const AddcoalWashingFrom = ({ onClose, onSubmit }) => {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [fromCompany, setFromCompany] = useState({});
   const [newGoodsType, setNewGoodsType] = useState(false);
-  // const [newGoodsType1, setNewGoodsType1] = useState(false);
   const [inventoryOutId, setInventoryOutId] = useState({});
 
-  const [newCompany, setNewCompany] = useState(false);
   const [inventoryInId, setInventoryInId] = useState({});
   // 提交数据
   const onFinish = async values => {
-    // setLoading(true);
-    console.log(values);
     const params = {
       begin: values.changeTime ? moment(values.changeTime[0]).format('YYYY-MM-DD HH:mm:ss') : undefined,
       end: values.changeTime ? moment(values.changeTime[1]).format('YYYY-MM-DD HH:mm:ss') : undefined,
@@ -121,7 +105,7 @@ const AddcoalWashingFrom = ({ onClose, onSubmit }) => {
   };
 
   return (
-    <div>
+    <div className={styles.root}>
       <Form
         {...formItemLayout}
         onFinish={onFinish}
@@ -129,7 +113,10 @@ const AddcoalWashingFrom = ({ onClose, onSubmit }) => {
         form={form}
         initialValues={{}}
         hideRequiredMark={true}>
-        <Form.Item label="时间" name="changeTime" rules={[{ type: 'array', required: true, message: '请选择时间' }]}>
+        <Form.Item
+          label="选洗时间"
+          name="changeTime"
+          rules={[{ type: 'array', required: true, message: '请选择时间' }]}>
           <RangePicker showTime format="YYYY-MM-DD HH:mm:ss" />
         </Form.Item>
 
@@ -144,8 +131,10 @@ const AddcoalWashingFrom = ({ onClose, onSubmit }) => {
           ]}
           validateFirst={true}>
           <AutoInputSelect
+            style={{ width: 264 }}
             mode="goodsType"
             allowClear
+            style={{ width: 200 }}
             placeholder="请选择原煤名称"
             onChange={onChangeGoodsType}
             newGoodsType={newGoodsType}
@@ -184,6 +173,7 @@ const AddcoalWashingFrom = ({ onClose, onSubmit }) => {
             },
           ]}>
           <Input
+            style={{ width: 264 }}
             placeholder="请输入原煤选洗量"
             type="number"
             onKeyDown={handleKeyPress}
@@ -203,7 +193,7 @@ const AddcoalWashingFrom = ({ onClose, onSubmit }) => {
           <AutoInputSelect
             mode="goodsType"
             allowClear
-            style={{ width: '100%' }}
+            style={{ width: 264 }}
             placeholder="请选择精煤名称"
             onChange={onChangeGoodsType1}
             newGoodsType={newGoodsType}
@@ -245,6 +235,7 @@ const AddcoalWashingFrom = ({ onClose, onSubmit }) => {
             placeholder="请输入精煤产出量"
             type="number"
             onKeyDown={handleKeyPress}
+            style={{ width: 264 }}
             addonAfter={<span style={{ color: '#BFBFBF' }}>吨</span>}
           />
         </Form.Item>

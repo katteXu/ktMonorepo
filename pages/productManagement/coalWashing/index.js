@@ -6,7 +6,6 @@ import { keepState, Format } from '@utils/common';
 import { product } from '@api';
 import AddcoalWashingFrom from '@components/ProductManagement/CoalWashing/AddcoalWashingFrom';
 import { QuestionCircleFilled } from '@ant-design/icons';
-import deleteBtn from './deleteBtn.less';
 const Index = props => {
   const routeView = {
     title: '洗煤列表',
@@ -56,7 +55,7 @@ const Index = props => {
       render: Format.weight,
     },
     {
-      title: '回收率',
+      title: '回收率%',
       dataIndex: 'recoverRate',
       key: 'recoverRate',
       width: 120,
@@ -65,7 +64,7 @@ const Index = props => {
       },
     },
     {
-      title: '时间',
+      title: '洗选时间',
       dataIndex: 'createAt',
       key: 'createAt',
       width: 200,
@@ -85,7 +84,7 @@ const Index = props => {
           placement="topRight"
           icon={<QuestionCircleFilled />}
           onConfirm={() => deleteRecord(record.id)}>
-          <Button className={deleteBtn.delete} size="small" type="link">
+          <Button danger size="small" type="link">
             删除
           </Button>
         </Popconfirm>
@@ -251,7 +250,7 @@ const Index = props => {
             </Button>
           </div>
           <Search onSearch={handleSearch} onReset={handleReset}>
-            <Search.Item label="时间" br>
+            <Search.Item label="洗选时间" br>
               <DatePicker.RangePicker
                 style={{ width: 376 }}
                 value={query.begin && query.end ? [moment(query.begin), moment(query.end)] : null}
@@ -302,7 +301,13 @@ const Index = props => {
           />
         </section>
       </Content>
-      <Modal title="新增洗煤记录" destroyOnClose visible={visible} onCancel={() => setVisible(false)} footer={null}>
+      <Modal
+        title="新增洗煤记录"
+        destroyOnClose
+        visible={visible}
+        onCancel={() => setVisible(false)}
+        footer={null}
+        width={576}>
         <AddcoalWashingFrom
           onClose={() => setVisible(false)}
           onSubmit={() => {
