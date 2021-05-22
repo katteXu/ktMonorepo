@@ -30,7 +30,8 @@ const CarIcon = `${publicRuntimeConfig.staticFolder}/icon/carIcon.svg`;
 const ArrowIcon = `${publicRuntimeConfig.staticFolder}/icon/blue-arrow.svg`;
 const TotalPic = `${publicRuntimeConfig.staticFolder}/icon/total.svg`;
 const CleanCoalPic = `${publicRuntimeConfig.staticFolder}/icon/cleanCoal.svg`;
-
+const ConnectionIcon = `${publicRuntimeConfig.staticFolder}/icon/connection.svg`;
+const NoConnectionIcon = `${publicRuntimeConfig.staticFolder}/icon/notConnected.svg`;
 // 个人中心
 const VerifyNone = `${publicRuntimeConfig.staticFolder}/icon/verify_none.svg`;
 const VerifyIcon = `${publicRuntimeConfig.staticFolder}/icon/verify.svg`;
@@ -44,7 +45,6 @@ const WareHousing = `${publicRuntimeConfig.staticFolder}/icon/warehousing.svg`;
 const Weighting = `${publicRuntimeConfig.staticFolder}/icon/weighing.svg`;
 const Washing = `${publicRuntimeConfig.staticFolder}/icon/washing.svg`;
 const Blending = `${publicRuntimeConfig.staticFolder}/icon/blending.svg`;
-
 
 export {
   LinkIcon,
@@ -79,4 +79,6 @@ export {
   Weighting,
   Washing,
   Blending,
+  ConnectionIcon,
+  NoConnectionIcon,
 };

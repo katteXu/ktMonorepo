@@ -2,15 +2,15 @@ import { useState, useEffect, useCallback } from 'react';
 import { Layout, Content, Ellipsis, ChildTitle } from '@components';
 import styles from './equipmentManagement.less';
 import Link from 'next/link';
-import { getQuery } from '@utils/common';
 import { Table, message } from 'antd';
 import PoundDetail from '@components/ProductManagement/EquipmentManagement/poundDetail';
 import WashboxDetail from '@components/ProductManagement/EquipmentManagement/washboxDetail';
 import Separator from '@components/ProductManagement/EquipmentManagement/separator';
 import BeltScale from '@components/ProductManagement/EquipmentManagement/beltScale';
 import { useRTTask } from '@components/Hooks';
+import { getQuery } from '@utils/common';
 import { product } from '@api';
-const Index = () => {
+const Index = props => {
   const routeView = {
     title: '设备详情',
     pageKey: 'equipmentManagement',
@@ -61,7 +61,7 @@ const Index = () => {
       dataIndex: 'operatorName',
       key: 'operatorName',
       width: 120,
-      // align: 'right',
+      align: 'right',
       render: value => value,
     },
   ];
@@ -74,7 +74,7 @@ const Index = () => {
   });
   const [data, setData] = useState({});
   const { start, destory } = useRTTask({ interval: 5000 });
-  const { id: did } = getQuery();
+  const { id: did, type } = getQuery();
 
   useEffect(() => {
     getDataList(query);
@@ -100,7 +100,7 @@ const Index = () => {
 
   const setDetail = async () => {
     const params = { did: did };
-    // const res = await product.getDeviceDetail({ params });
+
     return product.getDeviceDetail({ params });
 
     // setLoading(false);
@@ -153,9 +153,7 @@ const Index = () => {
         <section className={styles.root}>
           <div className={styles.area}>
             <div className={styles.title}>
-              <ChildTitle style={{ color: '#4A4A5A', fontSize: '14px', fontWeight: 600, marginBottom: '8px' }}>
-                基本信息
-              </ChildTitle>
+              <ChildTitle style={{ color: '#4A4A5A', fontWeight: 600, marginBottom: '8px' }}>基本信息</ChildTitle>
             </div>
             <div className={styles.row}>
               <div className={styles.col}>
@@ -174,9 +172,7 @@ const Index = () => {
           </div>
           <div className={styles.area}>
             <div className={styles.title}>
-              <ChildTitle style={{ color: '#4A4A5A', fontSize: '14px', fontWeight: 600, marginBottom: '8px' }}>
-                运行数据
-              </ChildTitle>
+              <ChildTitle style={{ color: '#4A4A5A', fontWeight: 600, marginBottom: '8px' }}>运行数据</ChildTitle>
             </div>
             {/* 磅机 */}
             {data.category === 0 && <PoundDetail data={data} refreshData={refreshData} did={did} />}
@@ -191,9 +187,7 @@ const Index = () => {
           </div>
           <div className={styles.area}>
             <div className={styles.title}>
-              <ChildTitle style={{ color: '#4A4A5A', fontSize: '14px', fontWeight: 600, marginBottom: '8px' }}>
-                动态记录
-              </ChildTitle>
+              <ChildTitle style={{ color: '#4A4A5A', fontWeight: 600, marginBottom: '8px' }}>动态记录</ChildTitle>
             </div>
             <Table
               style={{ marginTop: 16 }}

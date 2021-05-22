@@ -1,11 +1,12 @@
 .area {
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   .title {
     margin-bottom: 8px;
+    font-size: 16px;
   }
   .row {
     display: flex;
-    padding-left: 32px;
+    padding-left: 10px;
     .col {
       margin-top: 16px;
       flex: 1;
@@ -38,14 +39,21 @@
 }
 
 .cardItem {
-  height: 186px;
-  width: 368px;
+  height: 356px;
+  min-width: 340px;
   background-color: #f6f7f9;
-  padding: 24px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  // justify-content: space-between;
   .cardTitle {
     margin-bottom: 16px;
     font-size: 16px;
     font-weight: 600;
+    display: flex;
+    .connection {
+      margin-left: 12px;
+    }
   }
   .row {
     display: flex;
@@ -55,7 +63,7 @@
       flex: unset;
       .cardLabel {
         color: #4a4a5a;
-        margin-right: 24px;
+        margin-right: 16px;
       }
       .cardText {
         color: #4a4a5a;
@@ -66,30 +74,15 @@
 
 .mid {
   z-index: 2;
-  width: 1136px;
-  height: 590px;
-  margin: 16px auto;
+  height: 282px;
+  margin: 0 auto;
   display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  position: relative;
-  // align-items:;
-  flex-wrap: wrap;
-  background-color: #f6f7f9;
+  justify-content: center;
+
   .row {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    .img {
-      z-index: 10;
-      cursor: pointer;
-      width: 320px;
-      height: 170px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f6f7f9;
-    }
   }
   .arrays {
     height: 100%;
@@ -101,16 +94,6 @@
     .row {
       display: flex;
       justify-content: space-around;
-      .item {
-        // width: 56px;
-        // height: 47px;
-        // background-color: red;
-        color: #3d86ef;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
     }
   }
   .blocks {
@@ -168,6 +151,9 @@
     flex: 1;
     display: flex;
     :global {
+      .ant-form-item {
+        margin-bottom: 0;
+      }
       .ant-input-group > .ant-input:last-child,
       .ant-input-group-addon:last-child {
         width: 24px;
@@ -177,4 +163,74 @@
       }
     }
   }
+}
+
+.imgBox {
+  z-index: 10;
+  cursor: pointer;
+  height: 154px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  .img {
+    width: 100%;
+  }
+}
+.imgstyle1 {
+  padding: 0 18px;
+}
+
+.item {
+  color: #3d86ef;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0 12px;
+  bottom: 80px;
+}
+
+.contentData {
+  display: flex;
+  padding-left: 10px;
+}
+.dataTableOne {
+  margin-top: 16px;
+  .dataTableOneTitle {
+    font-weight: 400;
+    color: #4a4a5a;
+    margin-bottom: 12px;
+  }
+  table {
+    border-collapse: collapse;
+
+    text-align: center;
+    .subTitle {
+      background: #f6f7f9;
+    }
+    th,
+    td {
+      border: 1px solid #d8d8d8;
+      color: #4a4a5a;
+      height: 32px;
+      width: 74px;
+      line-height: 32px;
+    }
+    .set {
+      vertical-align: middle;
+      color: #3d86ef;
+      cursor: pointer;
+    }
+  }
+}
+
+.out {
+  width: 68px;
+  height: 1px;
+  position: absolute;
+  top: 11px;
+  right: -2px;
+  background: #d8d8d8;
+  transform: rotate(19deg);
 }

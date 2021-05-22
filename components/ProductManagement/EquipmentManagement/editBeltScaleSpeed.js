@@ -78,7 +78,7 @@ const Index = ({ onClose, onSubmit, speed, did }) => {
         </span>
       </div>
       {errorMessage && <div className={styles.errorMessage}>皮带秤速度不能为空</div>}
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 24 }}>
         <Button size="default" onClick={onClose}>
           取消
         </Button>

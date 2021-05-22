@@ -7,9 +7,9 @@ import EditConveyorSpeed from './editConveyorSpeed';
 import EditBedThinkness from './editBedThinkness';
 import { product } from '@api';
 
-const Index = props => {
+const Index = ({ onSubmit, did, refreshData, data }) => {
   const [form] = Form.useForm();
-  const { onSubmit, did, refreshData, data } = props;
+
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [visible3, setVisible3] = useState(false);
@@ -80,10 +80,12 @@ const Index = props => {
     const res = await product.updateJiggerParams({ params });
     if (res.status === 0) {
       message.success('设置成功');
+      setTimeout(() => {
+        refreshData();
+      }, 100);
     } else {
       message.error(`${res.detail || res.description}`);
     }
-    refreshData();
   };
   // 排矸速度
   const updateSpeed = async () => {
@@ -96,14 +98,15 @@ const Index = props => {
     const res = await product.updateJiggerParams({ params });
     if (res.status === 0) {
       message.success('设置成功');
+      setTimeout(() => {
+        refreshData();
+      }, 100);
     } else {
       message.error(`${res.detail || res.description}`);
     }
-    refreshData();
   };
   // 风阀数据
   const handleSubmit = async () => {
-    console.log(form.getFieldValue());
     const {
       intakeFirstValue,
       inflateFirstValue,
@@ -140,8 +143,10 @@ const Index = props => {
       frequencyThirdValue: frequencyThirdValue * 1 || undefined,
     };
     const res = await product.updateJiggerParams({ params });
-    console.log(res);
-    refreshData();
+
+    setTimeout(() => {
+      refreshData();
+    }, 100);
   };
 
   const setFormInit = async () => {
@@ -178,7 +183,7 @@ const Index = props => {
 
   useEffect(() => {
     setFormInit();
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     if (!(visible || visible2 || visible3)) {
@@ -189,7 +194,7 @@ const Index = props => {
   return (
     <>
       <div className={styles.row}>
-        <div className={styles.col} style={{ minWidth: 390 }}>
+        <div className={styles.col} style={{ minWidth: 430 }}>
           <div className={styles.label}>运行状态：</div>
           <div className={styles.text} style={{ color: '#66BD7E' }}>
             {/* 运行中 */}
@@ -211,177 +216,120 @@ const Index = props => {
         </div>
         <div className={styles.col}></div>
       </div>
-      <div className={styles.row}>
-        <div className={styles.col} style={{ marginBottom: 8, minWidth: 390 }}>
-          <div className={styles.label}>床层数据：</div>
-          <div className={styles.text}>
-            <div className={styles.th}>第一段</div>
-            <div className={styles.th}>第二段</div>
-            <div className={styles.th}>第三段</div>
-          </div>
+      <div className={styles.contentData}>
+        <div className={styles.dataTableOne} style={{ minWidth: 430, flex: 1 }}>
+          <div className={styles.dataTableOneTitle}>床层数据：</div>
+          <table>
+            <tr>
+              <td style={{ position: 'relative' }}>
+                <div className={styles.out}></div>
+              </td>
+              <td>第一段</td>
+              <td>第二段</td>
+              <td>第三段</td>
+              <td>操作</td>
+            </tr>
+            <tr className={styles.subTitle}>
+              <td colSpan={5}>床层厚度</td>
+            </tr>
+            <tr>
+              <td>设定值</td>
+              <td>{data.thicknessFirstSetValue || '-'}</td>
+              <td>{data.thicknessSecondSetValue || '-'}</td>
+              <td>{data.thicknessThirdSetValue || '-'}</td>
+              <td
+                rowSpan={2}
+                className={styles.set}
+                onClick={() => {
+                  setVisible2(true);
+                }}>
+                设置
+              </td>
+            </tr>
+            <tr>
+              <td>显示值</td>
+              <td>{data.thicknessFirstShowValue || '-'}</td>
+              <td>{data.thicknessSecondShowValue || '-'}</td>
+              <td>{data.thicknessThirdShowValue || '-'}</td>
+            </tr>
+            <tr className={styles.subTitle}>
+              <td colSpan={5}>排矸速度</td>
+            </tr>
+            <tr>
+              <td>设定值</td>
+              <td>{data.speedFirstSetValue || '-'}</td>
+              <td>{data.speedSecondSetValue || '-'}</td>
+              <td>{data.speedThirdSetValue || '-'}</td>
+              <td
+                rowSpan={2}
+                className={styles.set}
+                onClick={() => {
+                  setVisible3(true);
+                }}>
+                设置
+              </td>
+            </tr>
+            <tr>
+              <td>显示值</td>
+              <td>{data.speedFirstShowValue || '-'}</td>
+              <td>{data.speedSecondShowValue || '-'}</td>
+              <td>{data.speedThirdShowValue || '-'}</td>
+            </tr>
+          </table>
         </div>
-        <div className={styles.col} style={{ minWidth: 445 }}>
-          <div className={styles.label} style={{ minWidth: 70 }}>
-            风阀数据：
-          </div>
-          <div className={styles.text}>
-            <div className={styles.th}>进气期</div>
-            <div className={styles.th}>膨胀期</div>
-            <div className={styles.th}>排气期</div>
-            <div className={styles.th}>休止期</div>
-            <div className={styles.th}>工作频率</div>
-          </div>
+        <div className={styles.dataTableOne} style={{ minWidth: 500, flex: 1 }}>
+          <div className={styles.dataTableOneTitle}>风阀数据：</div>
+          <table>
+            <tr>
+              <td style={{ position: 'relative' }}>
+                <div className={styles.out}></div>
+              </td>
+              <td>进气期</td>
+              <td>膨胀期</td>
+              <td>排气期</td>
+              <td>休止期</td>
+              <td>工作频率</td>
+              <td>操作</td>
+            </tr>
+            <tr>
+              <td>第一段</td>
+              <td>{data.intakeFirstValue / 100}%</td>
+              <td>{data.inflateFirstValue / 100}%</td>
+              <td>{data.exhaustFirstValue / 100}%</td>
+              <td>{data.restFirstValue / 100}%</td>
+              <td>{data.frequencyFirstValue || '-'}Hz</td>
+              <td
+                rowSpan={3}
+                className={styles.set}
+                onClick={() => {
+                  setVisible(true);
+                }}>
+                设置
+              </td>
+            </tr>
+            <tr>
+              <td>第二段</td>
+              <td>{data.intakeSecondValue / 100}%</td>
+              <td>{data.inflateSecondValue / 100}%</td>
+              <td>{data.exhaustSecondValue / 100}%</td>
+              <td>{data.restSecondValue / 100}%</td>
+              <td>{data.frequencySecondValue || '-'}Hz</td>
+            </tr>
+
+            <tr>
+              <td>第三段</td>
+
+              <td>{data.intakeThirdValue / 100 || '-'}%</td>
+              <td>{data.inflateThirdValue / 100 || '-'}%</td>
+              <td>{data.exhaustThirdValue / 100 || '-'}%</td>
+              <td>{data.restThirdValue / 100 || '-'}%</td>
+              <td>{data.frequencyThirdValue || '-'}Hz</td>
+            </tr>
+          </table>
         </div>
-        <div className={styles.col}></div>
+        <div style={{ flex: 1 }}></div>
       </div>
-      <div className={styles.row}>
-        <div className={styles.col} style={{ minWidth: 390 }}>
-          <div className={styles.label} style={{ minWidth: 70 }}></div>
-          <div className={styles.text}>
-            <div className={styles.th}></div>
-            <div className={styles.th}>床层厚度</div>
-            <div className={styles.th}></div>
-          </div>
-        </div>
-        <div className={styles.col} style={{ minWidth: 445 }}>
-          <div className={styles.label} style={{ color: '#4A4A5A', minWidth: 70 }}>
-            第一段
-          </div>
-          <div className={styles.text}>
-            <div className={styles.th}>{data.intakeFirstValue / 100}%</div>
-            <div className={styles.th}>{data.inflateFirstValue / 100}%</div>
-            <div className={styles.th}>{data.exhaustFirstValue / 100}%</div>
-            <div className={styles.th}>{data.restFirstValue / 100}%</div>
-            <div className={styles.th}>{data.frequencyFirstValue || '-'}Hz</div>
-            <div
-              className={`${styles.th} ${styles.fontcolorblue}`}
-              onClick={() => {
-                setVisible(true);
-              }}>
-              设置
-            </div>
-          </div>
-        </div>
-        <div className={styles.col}></div>
-      </div>
-      <div className={styles.row}>
-        <div className={styles.col} style={{ minWidth: 390 }}>
-          <div className={styles.label} style={{ color: '#4A4A5A', minWidth: 70 }}>
-            设定值
-          </div>
-          <div className={styles.text}>
-            <div className={styles.th}>{data.thicknessFirstSetValue || '-'}</div>
-            <div className={styles.th}>{data.thicknessSecondSetValue || '-'}</div>
-            <div className={styles.th}>{data.thicknessThirdSetValue || '-'}</div>
-            <div
-              className={`${styles.th} ${styles.fontcolorblue}`}
-              onClick={() => {
-                setVisible2(true);
-              }}>
-              设置
-            </div>
-          </div>
-        </div>
-        <div className={styles.col} style={{ minWidth: 445 }}>
-          <div className={styles.label} style={{ color: '#4A4A5A', minWidth: 70 }}>
-            第二段
-          </div>
-          <div className={styles.text}>
-            <div className={styles.th}>{data.intakeSecondValue / 100}%</div>
-            <div className={styles.th}>{data.inflateSecondValue / 100}%</div>
-            <div className={styles.th}>{data.exhaustSecondValue / 100}%</div>
-            <div className={styles.th}>{data.restSecondValue / 100}%</div>
-            <div className={styles.th}>{data.frequencySecondValue || '-'}Hz</div>
-            {/* <div className={`${styles.th} ${styles.fontcolorblue}`}>设置</div> */}
-          </div>
-        </div>
-        <div className={styles.col}></div>
-      </div>
-      <div className={styles.row}>
-        <div className={styles.col} style={{ minWidth: 390 }}>
-          <div className={styles.label} style={{ color: '#4A4A5A', minWidth: 70 }}>
-            显示值
-          </div>
-          <div className={styles.text}>
-            <div className={styles.th}>{data.thicknessFirstShowValue || '-'}</div>
-            <div className={styles.th}>{data.thicknessSecondShowValue || '-'}</div>
-            <div className={styles.th}>{data.thicknessThirdShowValue || '-'}</div>
-          </div>
-        </div>
-        <div className={styles.col} style={{ minWidth: 445 }}>
-          <div className={styles.label} style={{ color: '#4A4A5A', minWidth: 70 }}>
-            第三段
-          </div>
-          <div className={styles.text}>
-            <div className={styles.th}>{data.intakeThirdValue / 100 || '-'}%</div>
-            <div className={styles.th}>{data.inflateThirdValue / 100 || '-'}%</div>
-            <div className={styles.th}>{data.exhaustThirdValue / 100 || '-'}%</div>
-            <div className={styles.th}>{data.restThirdValue / 100 || '-'}%</div>
-            <div className={styles.th}>{data.frequencyThirdValue || '-'}Hz</div>
-            {/* <div className={`${styles.th} ${styles.fontcolorblue}`}>设置</div> */}
-          </div>
-        </div>
-        <div className={styles.col}></div>
-      </div>
-      <div className={styles.row}>
-        <div className={styles.col} style={{ minWidth: 390 }}>
-          <div className={styles.label} style={{ minWidth: 70 }}></div>
-          <div className={styles.text}>
-            <div className={styles.th}></div>
-            <div className={styles.th}>排矸速度</div>
-            <div className={styles.th}></div>
-          </div>
-        </div>
-        <div className={styles.col}></div>
-      </div>
-      <div className={styles.row} style={{ minWidth: 390 }}>
-        <div className={styles.col}>
-          <div className={styles.label} style={{ color: '#4A4A5A', minWidth: 70 }}>
-            设定值
-          </div>
-          <div className={styles.text}>
-            <div className={styles.th}>{data.speedFirstSetValue || '-'}</div>
-            <div className={styles.th}>{data.speedSecondSetValue || '-'}</div>
-            <div className={styles.th}>{data.speedThirdSetValue || '-'}</div>
-            <div
-              className={`${styles.th} ${styles.fontcolorblue}`}
-              onClick={() => {
-                setVisible3(true);
-              }}>
-              设置
-            </div>
-          </div>
-        </div>
-        <div className={styles.col}></div>
-        <div className={styles.col}></div>
-      </div>
-      <div className={styles.row} style={{ minWidth: 390 }}>
-        <div className={styles.col}>
-          <div className={styles.label} style={{ color: '#4A4A5A', minWidth: 70 }}>
-            显示值
-          </div>
-          <div className={styles.text}>
-            <div className={styles.th}>{data.speedFirstShowValue || '-'}</div>
-            <div className={styles.th}>{data.speedSecondShowValue || '-'}</div>
-            <div className={styles.th}>{data.speedThirdShowValue || '-'}</div>
-          </div>
-        </div>
-        <div className={styles.col}></div>
-        <div className={styles.col}></div>
-      </div>
-      <div className={styles.row} style={{ minWidth: 390 }}>
-        <div className={styles.col}>
-          <div className={styles.label} style={{ color: '#4A4A5A', minWidth: 70 }}></div>
-          <div className={styles.text}>
-            <div className={styles.th}></div>
-            <div className={styles.th}></div>
-            <div className={styles.th}></div>
-            <div className={styles.th}></div>
-          </div>
-        </div>
-        <div className={styles.col}></div>
-        <div className={styles.col}></div>
-      </div>
+
       <Form form={form} onSubmit={handleSubmit}>
         <Modal
           title="修改风阀控制"

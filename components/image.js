@@ -29,6 +29,7 @@ const FallingPic = `${publicRuntimeConfig.staticFolder}/image/falling.png`;
 
 const ChuanSong = `${publicRuntimeConfig.staticFolder}/image/chuansong.png`;
 const DiBang = `${publicRuntimeConfig.staticFolder}/image/dibang.png`;
+const DiBangGif = `${publicRuntimeConfig.staticFolder}/image/dibang.gif`;
 const TiaoTai = `${publicRuntimeConfig.staticFolder}/image/tiaotai.png`;
 const FuXuan = `${publicRuntimeConfig.staticFolder}/image/fuxuan.png`;
 const FenXuan = `${publicRuntimeConfig.staticFolder}/image/fenxuan.png`;
@@ -92,6 +93,7 @@ export {
   FallingPic,
   ChuanSong,
   DiBang,
+  DiBangGif,
   TiaoTai,
   FuXuan,
   FenXuan,

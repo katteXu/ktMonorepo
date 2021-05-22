@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Layout, Content, Ellipsis, AutoInputSelect, Image } from '@components';
+import { Layout, Content, Ellipsis, AutoInputSelect, Icon, Image } from '@components';
 import { Table, Input, Modal, Form, message } from 'antd';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import router from 'next/router';
@@ -9,6 +9,18 @@ import Arrow from '@components/ProductManagement/EquipmentManagement/arrow';
 import { useRTTask } from '@components/Hooks';
 import { Format } from '@utils/common';
 import { product } from '@api';
+
+const chuansong = Image.ChuanSongGif;
+const dibang = Image.DiBangGif;
+const hezi = Image.HeZi;
+const tiaotai = Image.TiaoTaiGif;
+const chuansongGrey = Image.ChuanSongGray;
+const dibangGrey = Image.DiBangGray;
+const fenxuanGrey = Image.FenXuanGray;
+const fuxuanGrey = Image.FuXuanGray;
+const tiaotaiGrey = Image.TiaoTaiGray;
+const connection = Icon.ConnectionIcon;
+const notConnected = Icon.NoConnectionIcon;
 
 const Index = props => {
   const routeView = {
@@ -127,19 +139,14 @@ const Index = props => {
   const [name, setName] = useState();
   const [remark, setRemark] = useState();
   const getData = async () => {
-    const res = await product.getDeviceTotalData();
-
     return product.getDeviceTotalData();
   };
   const getDataList = async () => {
     setLoading(true);
-    const res = await product.getIndustryDeviceList();
-
     return product.getIndustryDeviceList();
   };
 
   useEffect(() => {
-    // getData()
     destory();
     destory2();
     start({
@@ -255,9 +262,19 @@ const Index = props => {
         </header>
         <section className={styles.root}>
           {/* 上面的三个card */}
-          <div style={{ display: 'flex', justifyContent: 'center', minWidth: 1136 }}>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
             <div className={styles.cardItem}>
-              <div className={styles.cardTitle}>磅机</div>
+              <div className={styles.cardTitle}>
+                磅机
+                <img
+                  src={
+                    data.poundData && data.poundData.connectionStatusZn && data.poundData.connectionStatusZn != '未连接'
+                      ? connection
+                      : notConnected
+                  }
+                  className={styles.connection}
+                />
+              </div>
               <div className={styles.row}>
                 <div className={styles.col}>
                   <div className={styles.cardLabel}>设备工作状态</div>
@@ -267,7 +284,9 @@ const Index = props => {
               <div className={styles.row}>
                 <div className={styles.col}>
                   <div className={styles.cardLabel}>昨日发货总量</div>
-                  <div className={`${styles.cardText} ${styles.fontcolorblue}`} onClick={handleToPoundList}>
+                  <div
+                    className={`${styles.cardText} ${styles.fontcolorblue}`}
+                    onClick={() => router.push('/poundManagement/poundReport?subTab=from')}>
                     {(data.poundData && Format.weight(data.poundData.dataOut)) || '-'}
                   </div>
                   <div className={styles.unitName} style={{ marginLeft: 4 }}>
@@ -278,7 +297,9 @@ const Index = props => {
               <div className={styles.row}>
                 <div className={styles.col}>
                   <div className={styles.cardLabel}>昨日收货总量</div>
-                  <div className={`${styles.cardText} ${styles.fontcolorblue}`} onClick={handleToPoundList}>
+                  <div
+                    className={`${styles.cardText} ${styles.fontcolorblue}`}
+                    onClick={() => router.push('/poundManagement/poundReport?subTab=to')}>
                     {(data.poundData && Format.weight(data.poundData.dataIn)) || '-'}
                   </div>
                   <div className={styles.unitName} style={{ marginLeft: 4 }}>
@@ -286,9 +307,51 @@ const Index = props => {
                   </div>
                 </div>
               </div>
+              <div
+                className={`${styles.imgBox} ${styles.imgstyle1}`}
+                style={
+                  data.poundData && data.poundData.connectionStatusZn && data.poundData.connectionStatusZn != '未连接'
+                    ? {}
+                    : { cursor: 'unset' }
+                }
+                onClick={() => {
+                  if (
+                    data.poundData &&
+                    data.poundData.connectionStatusZn &&
+                    data.poundData.connectionStatusZn != '未连接'
+                  ) {
+                    let id = dataList.data.find(item => item.category == 0)['id'];
+                    router.push(`/productManagement/equipmentManagement/detail?id=${id}`);
+                  }
+                }}>
+                <img
+                  src={
+                    data.poundData && data.poundData.connectionStatusZn && data.poundData.connectionStatusZn != '未连接'
+                      ? dibang
+                      : dibangGrey
+                  }
+                  className={styles.img}
+                  style={{ width: 273 }}
+                />
+              </div>
             </div>
-            <div className={styles.cardItem} style={{ marginLeft: 16 }}>
-              <div className={styles.cardTitle}>原煤皮带秤</div>
+            <div className={styles.item} style={{ position: 'relative' }}>
+              <Arrow title="进厂" direction="right" up={true}></Arrow>
+            </div>
+            <div className={styles.cardItem}>
+              <div className={styles.cardTitle}>
+                原煤皮带秤
+                <img
+                  src={
+                    data.beltInData &&
+                    data.beltInData.connectionStatusZn &&
+                    data.beltInData.connectionStatusZn != '未连接'
+                      ? connection
+                      : notConnected
+                  }
+                  className={styles.connection}
+                />
+              </div>
               <div className={styles.row}>
                 <div className={styles.col}>
                   <div className={styles.cardLabel}>连接状态</div>
@@ -327,9 +390,53 @@ const Index = props => {
                   </div>
                 </div>
               </div>
+              <div
+                className={`${styles.imgBox} ${styles.imgstyle1}`}
+                style={
+                  data.beltInData &&
+                  data.beltInData.connectionStatusZn &&
+                  data.beltInData.connectionStatusZn != '未连接'
+                    ? {}
+                    : { cursor: 'unset' }
+                }
+                onClick={() => {
+                  if (
+                    data.beltInData &&
+                    data.beltInData.connectionStatusZn &&
+                    data.beltInData.connectionStatusZn != '未连接'
+                  ) {
+                    let id = dataList.data.find(item => item.category == 1)['id'];
+                    router.push(`/productManagement/equipmentManagement/detail?id=${id}`);
+                  }
+                }}>
+                <img
+                  src={
+                    data.beltInData &&
+                    data.beltInData.connectionStatusZn &&
+                    data.beltInData.connectionStatusZn != '未连接'
+                      ? chuansong
+                      : chuansongGrey
+                  }
+                  style={{ width: 272 }}></img>
+              </div>
             </div>
-            <div className={styles.cardItem} style={{ marginLeft: 16 }}>
-              <div className={styles.cardTitle}>跳汰机</div>
+            <div className={styles.item} style={{ position: 'relative' }}>
+              <Arrow title="破碎给料" direction="right" up={true}></Arrow>
+            </div>
+            <div className={styles.cardItem}>
+              <div className={styles.cardTitle}>
+                跳汰机
+                <img
+                  src={
+                    data.jiggerData &&
+                    data.jiggerData.connectionStatusZn &&
+                    data.jiggerData.connectionStatusZn != '未连接'
+                      ? connection
+                      : notConnected
+                  }
+                  className={styles.connection}
+                />
+              </div>
               <div className={styles.row}>
                 <div className={styles.col}>
                   <div className={styles.cardLabel}>连接状态</div>
@@ -381,71 +488,11 @@ const Index = props => {
                   <div className={styles.cardText}>
                     {(data.jiggerData && data.jiggerData.frequencyThirdValue) || '-'}
                   </div>
-                  <div></div>(三段)
+                  <div>(三段)</div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* 中间的图 */}
-          <div className={styles.mid}>
-            <div className={styles.row}>
               <div
-                className={styles.img}
-                style={
-                  data.poundData && data.poundData.connectionStatusZn && data.poundData.connectionStatusZn != '未连接'
-                    ? {}
-                    : { cursor: 'unset' }
-                }
-                onClick={() => {
-                  if (
-                    data.poundData &&
-                    data.poundData.connectionStatusZn &&
-                    data.poundData.connectionStatusZn != '未连接'
-                  ) {
-                    let id = dataList.data.find(item => item.category == 0)['id'];
-                    router.push(`/productManagement/equipmentManagement/detail?id=${id}`);
-                  }
-                }}>
-                <img
-                  src={
-                    data.poundData && data.poundData.connectionStatusZn && data.poundData.connectionStatusZn != '未连接'
-                      ? Image.DiBang
-                      : Image.DiBangGray
-                  }
-                  style={{ height: 132, width: 272 }}></img>
-              </div>
-              <div
-                className={styles.img}
-                style={
-                  data.beltInData &&
-                  data.beltInData.connectionStatusZn &&
-                  data.beltInData.connectionStatusZn != '未连接'
-                    ? {}
-                    : { cursor: 'unset' }
-                }
-                onClick={() => {
-                  if (
-                    data.beltInData &&
-                    data.beltInData.connectionStatusZn &&
-                    data.beltInData.connectionStatusZn != '未连接'
-                  ) {
-                    let id = dataList.data.find(item => item.category == 1)['id'];
-                    router.push(`/productManagement/equipmentManagement/detail?id=${id}`);
-                  }
-                }}>
-                <img
-                  src={
-                    data.beltInData &&
-                    data.beltInData.connectionStatusZn &&
-                    data.beltInData.connectionStatusZn != '未连接'
-                      ? Image.ChuanSong
-                      : Image.ChuanSongGray
-                  }
-                  style={{ height: 132, width: 272 }}></img>
-              </div>
-              <div
-                className={styles.img}
+                className={`${styles.imgBox} ${styles.imgstyle1}`}
                 style={
                   data.jiggerData &&
                   data.jiggerData.connectionStatusZn &&
@@ -469,20 +516,34 @@ const Index = props => {
                     data.jiggerData &&
                     data.jiggerData.connectionStatusZn &&
                     data.jiggerData.connectionStatusZn != '未连接'
-                      ? Image.TiaoTai
-                      : Image.TiaoTaiGray
+                      ? tiaotai
+                      : tiaotaiGrey
                   }
-                  style={{ height: 146, width: 302 }}></img>
+                  style={{ width: 243 }}></img>
               </div>
+            </div>
+          </div>
+
+          {/* 中间的图 */}
+          <div className={styles.mid}>
+            <div className={styles.item} style={{ position: 'relative', right: 115, bottom: 98 }}>
+              <Arrow title="出厂" direction="top" up={false}></Arrow>
             </div>
             <div className={styles.row} style={{ justifyContent: 'center' }}>
               <div className={styles.img} style={{ cursor: 'unset' }}>
-                <img src={Image.HeZi} style={{ height: 126, width: 266 }}></img>
+                <img src={hezi} style={{ height: 222, width: 532 }} />
               </div>
             </div>
-            <div className={styles.row}>
+            <div className={styles.item} style={{ position: 'relative', left: 115, bottom: 98 }}>
+              <Arrow title="二次筛选" direction="bottom" up={false}></Arrow>
+            </div>
+          </div>
+
+          {/* 下面的三个card */}
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div className={styles.cardItem}>
               <div
-                className={styles.img}
+                className={`${styles.imgBox} ${styles.imgstyle1}`}
                 style={
                   data.beltOutData &&
                   data.beltOutData.connectionStatusZn &&
@@ -505,72 +566,24 @@ const Index = props => {
                     data.beltOutData &&
                     data.beltOutData.connectionStatusZn &&
                     data.beltOutData.connectionStatusZn != '未连接'
-                      ? Image.ChuanSong
-                      : Image.ChuanSongGray
+                      ? chuansong
+                      : chuansongGrey
                   }
-                  style={{ height: 132, width: 272 }}></img>
+                  style={{ width: 272 }}></img>
               </div>
-              <div
-                className={styles.img}
-                style={{ cursor: 'unset' }}
-                onClick={() => {
-                  // let id = dataList.data.find(item => item.category == 4)['id'];
-                  // router.push(`/productManagement/equipmentManagement/detail?id=${id}`);
-                }}>
-                <img src={Image.FuXuanGray} style={{ height: 146, width: 302 }}></img>
+              <div className={styles.cardTitle} style={{ marginTop: 16 }}>
+                精煤皮带秤
+                <img
+                  src={
+                    data.beltOutData &&
+                    data.beltOutData.connectionStatusZn &&
+                    data.beltOutData.connectionStatusZn != '未连接'
+                      ? connection
+                      : notConnected
+                  }
+                  className={styles.connection}
+                />
               </div>
-              <div
-                className={styles.img}
-                style={{ cursor: 'unset' }}
-                onClick={() => {
-                  // let id = dataList.data.find(item => item.category == 3)['id'];
-                  // router.push(`/productManagement/equipmentManagement/detail?id=${id}`);
-                }}>
-                <img src={Image.FenXuanGray} style={{ height: 146, width: 302 }}></img>
-              </div>
-            </div>
-            <div className={styles.blocks}>
-              <div className={styles.row}>
-                <div className={styles.block}></div>
-                <div className={styles.block}></div>
-              </div>
-              <div className={styles.row}>
-                <div className={styles.block}></div>
-                <div className={styles.block}></div>
-              </div>
-            </div>
-            <div className={styles.arrays}>
-              <div className={styles.row}>
-                <div className={styles.item} style={{ position: 'relative', left: 80 }}>
-                  <Arrow title="进厂" direction="right" up={true}></Arrow>
-                </div>
-                <div className={styles.item} style={{ position: 'relative', right: 80 }}>
-                  <Arrow title="破碎给料" direction="right" up={true}></Arrow>
-                </div>
-              </div>
-              <div className={styles.row}>
-                <div className={styles.item} style={{ position: 'relative', right: 174 }}>
-                  <Arrow title="出厂" direction="top" up={false}></Arrow>
-                </div>
-                <div className={styles.item} style={{ position: 'relative', left: 174 }}>
-                  <Arrow title="二次筛选" direction="bottom" up={false}></Arrow>
-                </div>
-              </div>
-              <div className={styles.row}>
-                <div className={styles.item} style={{ position: 'relative', left: 80 }}>
-                  <Arrow title="成品" direction="left" up={true}></Arrow>
-                </div>
-                <div className={styles.item} style={{ position: 'relative', right: 80 }}>
-                  <Arrow title="泡沫剂" direction="left" up={true}></Arrow>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* 下面的三个card */}
-          <div style={{ display: 'flex', justifyContent: 'center', minWidth: 1136 }}>
-            <div className={styles.cardItem}>
-              <div className={styles.cardTitle}>精煤皮带秤</div>
               <div className={styles.row}>
                 <div className={styles.col}>
                   <div className={styles.cardLabel}>连接状态</div>
@@ -610,8 +623,23 @@ const Index = props => {
                 </div>
               </div>
             </div>
-            <div className={styles.cardItem} style={{ marginLeft: 16 }}>
-              <div className={styles.cardTitle}>浮选机</div>
+            <div className={styles.item} style={{ position: 'relative', justifyContent: 'center' }}>
+              <Arrow title="成品" direction="left" up={true}></Arrow>
+            </div>
+            <div className={styles.cardItem}>
+              <div
+                className={`${styles.imgBox} ${styles.imgstyle1}`}
+                style={{ cursor: 'unset' }}
+                onClick={() => {
+                  // let id = dataList.data.find(item => item.category == 4)['id'];
+                  // router.push(`/productManagement/equipmentManagement/detail?id=${id}`);
+                }}>
+                <img src={fuxuanGrey} style={{ width: 268 }}></img>
+              </div>
+              <div className={styles.cardTitle} style={{ marginTop: 16 }}>
+                浮选机
+                <img src={notConnected} className={styles.connection} />
+              </div>
               <div className={styles.row}>
                 <div className={styles.col}>
                   <div className={styles.cardLabel}>设备工作状态</div>
@@ -628,9 +656,23 @@ const Index = props => {
                 </div>
               </div>
             </div>
-
-            <div className={styles.cardItem} style={{ marginLeft: 16 }}>
-              <div className={styles.cardTitle}>螺旋分选机</div>
+            <div className={styles.item} style={{ position: 'relative', justifyContent: 'center' }}>
+              <Arrow title="泡沫剂" direction="left" up={true}></Arrow>
+            </div>
+            <div className={styles.cardItem}>
+              <div
+                className={`${styles.imgBox} ${styles.imgstyle1}`}
+                style={{ cursor: 'unset' }}
+                onClick={() => {
+                  // let id = dataList.data.find(item => item.category == 3)['id'];
+                  // router.push(`/productManagement/equipmentManagement/detail?id=${id}`);
+                }}>
+                <img src={fenxuanGrey} style={{ width: 209 }}></img>
+              </div>
+              <div className={styles.cardTitle} style={{ marginTop: 16 }}>
+                螺旋分选机
+                <img src={notConnected} className={styles.connection} />
+              </div>
               <div className={styles.row}>
                 <div className={styles.col}>
                   <div className={styles.cardLabel}>连接状态</div>
@@ -680,7 +722,7 @@ const Index = props => {
               setVisible(false);
             }}>
             <Form form={form}>
-              <Form.Item label="原煤名称" name="inventoryIn" style={{ marginLeft: 16, height: 32, marginTop: 8 }}>
+              <Form.Item label="原煤名称" name="inventoryIn" style={{ marginLeft: 16, height: 32 }}>
                 <AutoInputSelect
                   style={{ width: 264, marginLeft: 8 }}
                   placeholder="请选择原煤名称"
@@ -701,6 +743,7 @@ const Index = props => {
             visible={visible2}
             title="修改设备信息"
             destroyOnClose
+            width={640}
             onCancel={() => {
               setVisible2(false);
             }}
@@ -709,11 +752,11 @@ const Index = props => {
               setVisible2(false);
             }}>
             <Form form={form1} className={s.editForm}>
-              <Form.Item style={{ height: 32, marginTop: 8 }} label="设备名称" name="name">
+              <Form.Item style={{ height: 32 }} label="设备名称" name="name">
                 <Input style={{ width: 200, marginLeft: 8 }} placeholder="请输入设备名称" />
               </Form.Item>
-              <Form.Item style={{ height: 32, marginTop: 24 }} label="备注" name="remark">
-                <Input style={{ marginLeft: 8 }} placeholder="请输入备注" />
+              <Form.Item style={{ marginTop: 24 }} label="备注" name="remark">
+                <Input.TextArea style={{ marginLeft: 8, height: 80, width: 450 }} placeholder="请输入备注" />
               </Form.Item>
             </Form>
           </Modal>
