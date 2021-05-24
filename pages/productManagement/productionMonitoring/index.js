@@ -342,7 +342,7 @@ const Index = props => {
                 <div style={{ height: 216, width: 384, position: 'relative', fontSize: 14 }}>
                   <img
                     style={{ height: 216, width: 384, backgroundColor: '#f6f7f9' }}
-                    src={isPaused ? Image.ChuanSongStatic : Image.ChuanSongGif}
+                    src={isPaused ? Image.ChuanSongStatic : Image.ChuanSongOldGif}
                   />
                 </div>
                 <div style={{ marginTop: 16 }}>
@@ -506,7 +506,7 @@ const Index = props => {
                 <div style={{ height: 216, width: 384, position: 'relative', fontSize: 12 }}>
                   <img
                     style={{ height: 216, width: 384, backgroundColor: '#f6f7f9' }}
-                    src={isPaused2 ? Image.TiaoTaiStatic : Image.TiaoTaiGif}
+                    src={isPaused2 ? Image.TiaoTaiStatic : Image.TiaoTaiOldGif}
                   />
                   <div style={{ position: 'absolute', right: 46, top: 38 }}>
                     <div style={{ display: 'flex', alignItems: 'center', height: 14 }}>

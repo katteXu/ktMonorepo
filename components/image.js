@@ -50,6 +50,8 @@ const TiaoTaiGif = `${publicRuntimeConfig.staticFolder}/image/tiaotai.gif`;
 const ChuanSongStatic = `${publicRuntimeConfig.staticFolder}/image/chuansongStatic.png`;
 const ChuanSongGif = `${publicRuntimeConfig.staticFolder}/image/chuansong.gif`;
 
+const ChuanSongOldGif = `${publicRuntimeConfig.staticFolder}/image/chuansong_old.gif`;
+const TiaoTaiOldGif = `${publicRuntimeConfig.staticFolder}/image/tiaotai_old.gif`;
 const LoadingScheme = `${publicRuntimeConfig.staticFolder}/image/loading.gif`;
 
 // 其他
@@ -119,4 +121,6 @@ export {
   SettlmentLeftBg,
   SettlmentRightBg,
   LoadingScheme,
+  ChuanSongOldGif,
+  TiaoTaiOldGif,
 };
