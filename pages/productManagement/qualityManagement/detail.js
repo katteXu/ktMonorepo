@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Layout, Content } from '@components';
-import { Skeleton, Divider } from 'antd';
+import { Layout, Content, ChildTitle } from '@components';
+import { Skeleton } from 'antd';
 import { Format, getQuery } from '@utils/common';
 import styles from './styles.less';
 import Link from 'next/link';
@@ -54,7 +54,9 @@ const QualityDetail = props => {
         <section className={styles['quailty-detail']}>
           <Skeleton loading={loading} paragraph={{ rows: 1 }}>
             <div className={styles.area}>
-              <div className={styles.title}>合同信息</div>
+              <div className={styles.title}>
+                <ChildTitle className="hei14">合同信息</ChildTitle>
+              </div>
               <div className={styles.row}>
                 <div className={styles.item}>
                   <span className={styles.label}>合作方：</span>
@@ -68,10 +70,12 @@ const QualityDetail = props => {
               </div>
             </div>
           </Skeleton>
-          <Divider></Divider>
+          {/* <Divider></Divider> */}
           <Skeleton loading={loading} paragraph={{ rows: 2 }}>
             <div className={styles.area}>
-              <div className={styles.title}>采样信息</div>
+              <div className={styles.title}>
+                <ChildTitle className="hei14">采样信息</ChildTitle>
+              </div>
               <div className={styles.row}>
                 <div className={styles.item}>
                   <span className={styles.label}>采样编号：</span>
@@ -103,10 +107,12 @@ const QualityDetail = props => {
               </div>
             </div>
           </Skeleton>
-          <Divider></Divider>
+          {/* <Divider></Divider> */}
           <Skeleton loading={loading} paragraph={{ rows: 5 }}>
             <div className={styles.area}>
-              <div className={styles.title}>化验结果</div>
+              <div className={styles.title}>
+                <ChildTitle className="hei14">化验结果</ChildTitle>
+              </div>
               <div className={styles.row}>
                 <div className={styles.item}>
                   <span className={styles.label}>水分(% Mad)：</span>

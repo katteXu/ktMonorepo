@@ -115,7 +115,7 @@ const QualityManagement = props => {
       title: '合作方',
       dataIndex: 'cooperation',
       key: 'cooperation',
-      align: 'right',
+      align: 'left',
       width: 150,
     },
     {
@@ -375,10 +375,8 @@ const QualityManagement = props => {
               />
             </Search.Item>
           </Search>
-        </section>
-        <header className="tab-header">化验单列表</header>
-        <section>
           <Table
+            style={{ marginTop: 16 }}
             loading={loading}
             dataSource={dataList.data}
             columns={columns}
@@ -396,11 +394,6 @@ const QualityManagement = props => {
       </Content>
     </Layout>
   );
-};
-
-QualityManagement.getInitialProps = async props => {
-  const { isServer } = props;
-  return { isServer };
 };
 
 export default QualityManagement;
