@@ -106,14 +106,14 @@ const CurrentForm = ({ onSubmit, onClose }) => {
         scrollToFirstError
         onFinish={handleSubmit}
         onFinishFailed={onFinishFailed}>
-        <div className={styles.row}>
+        <div className={styles.row} style={{ marginTop: 8 }}>
           <div className={styles.col}>
             <Form.Item
               label="目标货品"
               name="targetGoodId"
               validateFirst={true}
               rules={[{ required: true, message: '内容不可为空' }]}>
-              <Select allowClear placeholder="请选择目标货品" style={{ marginLeft: 8 }}>
+              <Select allowClear placeholder="请选择目标货品">
                 {GoodsType.map(v => (
                   <Select.Option key={v.id} value={v.id}>
                     {v.goodsName}

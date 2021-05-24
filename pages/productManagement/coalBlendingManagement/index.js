@@ -8,7 +8,6 @@ import { QuestionCircleFilled } from '@ant-design/icons';
 import router from 'next/router';
 import { product } from '@api';
 import styles from './styles.less';
-import deleteBtn from './deleteBtn.less';
 const routeView = {
   title: '配煤管理',
   pageKey: 'coalBlendingManagement',
@@ -22,9 +21,9 @@ const multipleRender = data => {
   let value = '-';
   let style = {};
   if (data.length === 1) {
-    value = <div>{data[0] || '-'}</div>;
+    value = <div>{data[0]}</div>;
   } else {
-    value = data.map(item => <div className={styles.row}>{item || '-'}</div>);
+    value = data.map(item => <div className={styles.row}>{item}</div>);
     style = { padding: 0 };
   }
   const render = {
@@ -125,7 +124,7 @@ const CoalBlendingManagement = props => {
               placement="topRight"
               icon={<QuestionCircleFilled />}
               onConfirm={() => handleRemove(record.id)}>
-              <Button type="link" size="small" className={deleteBtn.delete}>
+              <Button type="link" size="small" danger>
                 删除
               </Button>
             </Popconfirm>
@@ -242,10 +241,7 @@ const CoalBlendingManagement = props => {
 
   // 实际产出录入
   const handleSchemeSubmit = async data => {
-    const res = await product.insertActualOutPut({
-      params: { ...data, id: targetGood.schemeId },
-    });
-
+    const res = await product.insertActualOutPut({ params: { ...data, id: targetGood.schemeId } });
     if (res.status === 0) {
       message.success('录入成功');
       setShowScheme(false);
@@ -257,16 +253,8 @@ const CoalBlendingManagement = props => {
 
   // 录入实际产出
   const handleShowInput = record => {
-    const { goodsName, inventoryId, unitPrice, rawMaterial, id } = record;
-    const good = {
-      goodsName,
-      inventoryId,
-      unitPrice,
-      schemeId: id,
-    };
-    setTargetGood(good);
-    setRawGoods(rawMaterial);
-    setShowScheme(true);
+    const { id } = record;
+    router.push(`/productManagement/coalBlendingManagement/inputScheme?id=${id}`);
   };
 
   // 删除
@@ -320,7 +308,7 @@ const CoalBlendingManagement = props => {
   return (
     <Layout {...routeView}>
       <Content>
-        <section>
+        <section style={{ paddingBottom: 48 }}>
           <Search onSearch={handleSearch} onReset={handleReset}>
             <Search.Item label="目标货品名称">
               <Input
@@ -350,14 +338,9 @@ const CoalBlendingManagement = props => {
               </Select>
             </Search.Item>
           </Search>
-        </section>
-        <header>
-          配煤列表
-          <Button type="primary" style={{ float: 'right' }} onClick={handleInsert}>
+          <Button type="primary" style={{ margin: '16px 0' }} onClick={handleInsert}>
             方案录入
           </Button>
-        </header>
-        <section>
           <Table
             bordered
             columns={columns}
@@ -377,21 +360,7 @@ const CoalBlendingManagement = props => {
       </Content>
 
       {/* 方案录入 */}
-      {/* <Modal
-        width={860}
-        destroyOnClose
-        maskClosable={false}
-        visible={showCurr}
-        footer={null}
-        onCancel={() => {
-          setShowCurr(false);
-        }}
-        title="现有配比方案录入">
-        <CurrForm onClose={() => setShowCurr(false)} onSubmit={handleSubmit} />
-      </Modal> */}
-
-      {/* 方案录入 */}
-      <DrawerInfo title="现有配比方案录入" onClose={() => setShowCurr(false)} showDrawer={showCurr} width="860">
+      <DrawerInfo title="现有配比方案录入" onClose={() => setShowCurr(false)} showDrawer={showCurr} width="760">
         {showCurr && <CurrForm onClose={() => setShowCurr(false)} onSubmit={handleSubmit} />}
       </DrawerInfo>
 

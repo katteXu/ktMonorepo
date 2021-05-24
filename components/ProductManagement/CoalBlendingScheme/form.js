@@ -1,7 +1,8 @@
 import { Input, Button, Form } from 'antd';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styles from './styles.less';
-import { product } from '@api';
+import { ChildTitle } from '@components';
+import router from 'next/router';
 // 表单布局
 const formItemLayout = {
   labelAlign: 'left',
@@ -24,7 +25,7 @@ const RawGoods = ({ goods }) => {
                   message: '最多输入两位小数',
                 },
               ]}>
-              <Input placeholder="请输入实际投产吨数"></Input>
+              <Input placeholder="请输入实际投产吨数" addonAfter="吨" style={{ width: 264 }}></Input>
             </Form.Item>
           </div>
         );
@@ -65,6 +66,7 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
     setLoading(true);
     onSubmit && onSubmit(params);
     setLoading(false);
+    router.push('/productManagement/coalBlendingManagement');
   };
 
   const onFinishFailed = errorInfo => {
@@ -81,11 +83,15 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
       form={form}
       onFinish={handleSubmit}
       onFinishFailed={onFinishFailed}>
-      <div className={styles.title}>原料煤投入量</div>
+      <div className={styles.title}>
+        <ChildTitle style={{ height: 26 }}>原料煤投入量</ChildTitle>
+      </div>
       <RawGoods goods={rawGoods} />
 
-      <div className={styles.title}>实际产出指标</div>
-      <div className={styles.row}>
+      <div className={styles.title}>
+        <ChildTitle style={{ height: 26 }}>实际产出指标</ChildTitle>
+      </div>
+      <div className={styles.row} style={{ marginTop: 24 }}>
         <div className={styles.col}>
           <Form.Item
             label={targetGood.goodsName}
@@ -98,13 +104,12 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 message: '最多输入两位小数',
               },
             ]}>
-            <Input placeholder={`请输入实际产出吨数`} />
+            <Input placeholder={`请输入实际产出吨数`} addonAfter="吨" style={{ width: 264 }} />
           </Form.Item>
         </div>
         <div className={styles.col}></div>
       </div>
       <div className={styles.row}>
-        {/* 水分 */}
         <div className={styles.col}>
           <Form.Item
             label={
@@ -112,7 +117,6 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>水分(% Mad)
               </div>
             }
-            // label="水分(% Mad)"
             name="waterContent"
             validateFirst={true}
             rules={[
@@ -128,10 +132,9 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 message: '内容不可超过100',
               },
             ]}>
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
-        {/* 灰分 */}
         <div className={styles.col}>
           <Form.Item
             label="灰分(% Ad)"
@@ -151,13 +154,12 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 message: '内容不可超过100',
               },
             ]}>
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
       </div>
       <div className={styles.row}>
         <div className={styles.col}>
-          {/* 挥发 */}
           <Form.Item
             label="挥发(% Vdaf)"
             name="volatilization"
@@ -176,10 +178,9 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 message: '内容不可超过100',
               },
             ]}>
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
-        {/* 焦渣特征 */}
         <div className={styles.col}>
           <Form.Item
             label={
@@ -188,7 +189,6 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 CRC)
               </div>
             }
-            // label="焦渣特征(1-8 CRC)"
             name="cinder"
             rules={[
               {
@@ -203,12 +203,11 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 message: '请输入正确的数值:1-8',
               },
             ]}>
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
       </div>
       <div className={styles.row}>
-        {/* 全硫 */}
         <div className={styles.col}>
           <Form.Item
             label="全硫(% Std)"
@@ -228,17 +227,20 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 message: '内容不可超过100',
               },
             ]}>
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
-        {/* 固定碳 */}
         <div className={styles.col}>
           <Form.Item
-            label="固定碳(% Fcd)"
+            label={
+              <div>
+                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>固定碳(% Fcd)
+              </div>
+            }
             name="carbon"
             validateFirst={true}
             rules={[
-              { required: true, message: `内容不可为空` },
+              { required: false, message: `内容不可为空` },
               {
                 pattern: /^[0-9]+(.?[0-9]{1,2})?$/,
                 message: '最多输入两位小数',
@@ -251,11 +253,10 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 message: '内容不可超过100',
               },
             ]}>
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
       </div>
-      {/* 回收 */}
       <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
@@ -264,7 +265,6 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>回收(% r)
               </div>
             }
-            // label="回收(% r)"
             name="recovery"
             validateFirst={true}
             rules={[
@@ -280,10 +280,9 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 message: '内容不可超过100',
               },
             ]}>
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
-        {/* 全水分 */}
         <div className={styles.col}>
           <Form.Item
             label={
@@ -291,7 +290,6 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>全水分(% Mt)
               </div>
             }
-            // label="全水分(% Mt)"
             name="totalWaterContent"
             validateFirst={true}
             rules={[
@@ -307,12 +305,11 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 message: '内容不可超过100',
               },
             ]}>
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
       </div>
       <div className={styles.row}>
-        {/* 粘结指数 */}
         <div className={styles.col}>
           <Form.Item
             label="粘结指数(GRI)"
@@ -332,10 +329,9 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 message: '内容不可超过100',
               },
             ]}>
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
-        {/* 胶质层 */}
         <div className={styles.col}>
           <Form.Item
             label={
@@ -343,7 +339,6 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>胶质层(Y)
               </div>
             }
-            // label="胶质层(Y)"
             name="colloid"
             validateFirst={true}
             rules={[
@@ -359,12 +354,11 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 message: '内容不可超过100',
               },
             ]}>
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
       </div>
       <div className={styles.row}>
-        {/* 含矸石 */}
         <div className={styles.col}>
           <Form.Item
             label={
@@ -372,7 +366,6 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>含矸石(%)
               </div>
             }
-            // label="含矸石(%)"
             name="stone"
             validateFirst={true}
             rules={[
@@ -388,10 +381,9 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 message: '内容不可超过100',
               },
             ]}>
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
-        {/* 含中煤 */}
         <div className={styles.col}>
           <Form.Item
             label={
@@ -399,7 +391,6 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>含中煤(%)
               </div>
             }
-            // label="含中煤(%)"
             name="midCoal"
             validateFirst={true}
             rules={[
@@ -415,7 +406,7 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 message: '内容不可超过100',
               },
             ]}>
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
       </div>
@@ -428,7 +419,6 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>含精煤(%)
               </div>
             }
-            // label="含精煤(%)"
             name="cleanCoal"
             validateFirst={true}
             rules={[
@@ -444,15 +434,12 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
                 message: '内容不可超过100',
               },
             ]}>
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
         <div className={styles.col}></div>
       </div>
       <div className={styles.bottom}>
-        <Button size="default" onClick={() => onClose && onClose()}>
-          取消
-        </Button>
         <Button size="default" type="primary" htmlType="submit" loading={loading}>
           提交
         </Button>

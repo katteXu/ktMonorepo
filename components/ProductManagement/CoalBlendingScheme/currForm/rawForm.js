@@ -1,5 +1,4 @@
-import { Input, Button, Form, Radio, Select } from 'antd';
-import { useState, useEffect, useCallback } from 'react';
+import { Input, Button, Form, Select } from 'antd';
 import styles from './styles.less';
 
 const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
@@ -48,7 +47,7 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
 
   return (
     <>
-      <div className={styles.title}>
+      <div className={styles.title} style={{ paddingLeft: 16 }}>
         原料煤{index + 1}
         {name > 2 && (
           <Button type="link" size="small" onClick={() => handleRemove(name)} className={styles['btn-remove']}>
@@ -56,7 +55,7 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
           </Button>
         )}
       </div>
-      <div className={styles.row}>
+      <div className={styles.row} style={{ marginTop: 24 }}>
         <div className={styles.col}>
           <Form.Item
             label="原料煤名称"
@@ -67,7 +66,7 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
               allowClear
               placeholder="请选择原料煤名称"
               onChange={value => handleChangeRawGoods(value, name)}
-              style={{ marginLeft: 8 }}>
+              style={{ width: 264 }}>
               {rawGoods.map(v => (
                 <Select.Option key={v.inventoryId} value={v.inventoryId}>
                   {v.goodsName}
@@ -76,7 +75,26 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
             </Select>
           </Form.Item>
         </div>
+      </div>
 
+      <div className={styles.row}>
+        <div className={styles.col}>
+          <Form.Item
+            label="成本单价"
+            name={[name, 'unitPrice']}
+            validateFirst={true}
+            rules={[
+              { required: true, message: '成本单价不可为空' },
+              { pattern: /^([1-9][0-9]*(\.\d*)?)|(0\.\d*)$/, message: '内容必须是数字且大于0' },
+              { pattern: /^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/, message: '最多输入2位小数' },
+            ]}>
+            <Input style={{ width: 264 }} addonAfter="元/吨" placeholder="请输入成本单价" />
+          </Form.Item>
+        </div>
+        <div className={styles.col}></div>
+      </div>
+
+      <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
             label="占比(%)"
@@ -99,30 +117,9 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 message: '最多输入两位小数',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入占比" />
+            <Input style={{ width: 200 }} placeholder="请输入占比" />
           </Form.Item>
         </div>
-      </div>
-
-      <div className={styles.row}>
-        <div className={styles.col}>
-          <Form.Item
-            label="成本单价(元/吨)"
-            name={[name, 'unitPrice']}
-            validateFirst={true}
-            rules={[
-              { required: true, message: '成本单价不可为空' },
-              { pattern: /^([1-9][0-9]*(\.\d*)?)|(0\.\d*)$/, message: '内容必须是数字且大于0' },
-              { pattern: /^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/, message: '最多输入2位小数' },
-            ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入成本单价" />
-          </Form.Item>
-        </div>
-        <div className={styles.col}></div>
-      </div>
-
-      <div className={styles.row}>
-        {/* 水分 */}
         <div className={styles.col}>
           <Form.Item
             label={
@@ -130,7 +127,6 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>水分(% Mad)
               </div>
             }
-            // label="水分(% Mad)"
             name={[name, 'waterContent']}
             validateFirst={true}
             rules={[
@@ -146,10 +142,11 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 message: '内容不可超过100',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
-        {/* 灰分 */}
+      </div>
+      <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
             label={
@@ -157,7 +154,6 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>灰分(% Ad)
               </div>
             }
-            // label="灰分(% Ad)"
             name={[name, 'ashContent']}
             validateFirst={true}
             rules={[
@@ -173,20 +169,16 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 message: '内容不可超过100',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
-      </div>
-      <div className={styles.row}>
         <div className={styles.col}>
-          {/* 挥发 */}
           <Form.Item
             label={
               <div>
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>挥发(% Vdaf)
               </div>
             }
-            // label="挥发(% Vdaf)"
             name={[name, 'volatilization']}
             validateFirst={true}
             rules={[
@@ -202,10 +194,11 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 message: '内容不可超过100',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
-        {/* 焦渣特征 */}
+      </div>
+      <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
             label={
@@ -214,7 +207,6 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 CRC)
               </div>
             }
-            // label="焦渣特征(1-8 CRC)"
             name={[name, 'cinder']}
             rules={[
               {
@@ -229,12 +221,9 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 message: '请输入正确的数值:1-8',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
-      </div>
-      <div className={styles.row}>
-        {/* 全硫 */}
         <div className={styles.col}>
           <Form.Item
             label={
@@ -242,7 +231,6 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>全硫(% Std)
               </div>
             }
-            // label="全硫(% Std)"
             name={[name, 'sulfur']}
             validateFirst={true}
             rules={[
@@ -258,10 +246,12 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 message: '内容不可超过100',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
-        {/* 固定碳 */}
+      </div>
+
+      <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
             label={
@@ -269,7 +259,6 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>固定碳(% Fcd)
               </div>
             }
-            // label="固定碳(% Fcd)"
             name={[name, 'carbon']}
             validateFirst={true}
             rules={[
@@ -285,12 +274,9 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 message: '内容不可超过100',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
-      </div>
-      {/* 回收 */}
-      <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
             label={
@@ -298,7 +284,6 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>回收(% r)
               </div>
             }
-            // label="回收(% r)"
             name={[name, 'recovery']}
             validateFirst={true}
             rules={[
@@ -314,10 +299,11 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 message: '内容不可超过100',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
-        {/* 全水分 */}
+      </div>
+      <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
             label={
@@ -325,7 +311,6 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>全水分(% Mt)
               </div>
             }
-            // label="全水分(% Mt)"
             name={[name, 'totalWaterContent']}
             validateFirst={true}
             rules={[
@@ -341,12 +326,9 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 message: '内容不可超过100',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
-      </div>
-      <div className={styles.row}>
-        {/* 粘结指数 */}
         <div className={styles.col}>
           <Form.Item
             label={
@@ -354,7 +336,6 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>粘结指数(GRI)
               </div>
             }
-            // label="粘结指数(GRI)"
             name={[name, 'bond']}
             validateFirst={true}
             rules={[
@@ -370,10 +351,11 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 message: '内容不可超过100',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
-        {/* 胶质层 */}
+      </div>
+      <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
             label={
@@ -381,7 +363,6 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>胶质层(Y)
               </div>
             }
-            // label="胶质层(Y)"
             name={[name, 'colloid']}
             validateFirst={true}
             rules={[
@@ -397,12 +378,9 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 message: '内容不可超过100',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
-      </div>
-      <div className={styles.row}>
-        {/* 含矸石 */}
         <div className={styles.col}>
           <Form.Item
             label={
@@ -410,7 +388,6 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>含矸石(%)
               </div>
             }
-            // label="含矸石(%)"
             name={[name, 'stone']}
             validateFirst={true}
             rules={[
@@ -426,10 +403,11 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 message: '内容不可超过100',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
-        {/* 含中煤 */}
+      </div>
+      <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
             label={
@@ -437,7 +415,6 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>含中煤(%)
               </div>
             }
-            // label="含中煤(%)"
             name={[name, 'midCoal']}
             validateFirst={true}
             rules={[
@@ -453,12 +430,9 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 message: '内容不可超过100',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
-      </div>
-      <div className={styles.row}>
-        {/* 含精煤 */}
         <div className={styles.col}>
           <Form.Item
             label={
@@ -466,7 +440,6 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>含精煤(%)
               </div>
             }
-            // label="含精煤(%)"
             name={[name, 'cleanCoal']}
             validateFirst={true}
             rules={[
@@ -482,16 +455,15 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
                 message: '内容不可超过100',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
-        <div className={styles.col}></div>
       </div>
       <Form.Item style={{ display: 'none' }} name={[name, 'goodsName']}>
-        <Input style={{ marginLeft: 8 }}></Input>
+        <Input style={{ width: 200 }}></Input>
       </Form.Item>
       <Form.Item style={{ display: 'none' }} name={[name, 'companyName']}>
-        <Input style={{ marginLeft: 8 }}></Input>
+        <Input style={{ width: 200 }}></Input>
       </Form.Item>
     </>
   );

@@ -196,6 +196,15 @@ const getDeviceEditList = ({ params } = {}) => {
   });
 };
 
+// /v_saas/production/coalBlendingSchemeGoods
+const getBlendingSchemeDetail = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/production/coalBlendingSchemeDetail',
+    params,
+  });
+};
+
 export default {
   getDataList,
   saveRawMaterial,
@@ -219,4 +228,5 @@ export default {
   deleteCoalWashLog,
   addCoalWashLog,
   getDeviceEditList,
+  getBlendingSchemeDetail,
 };
