@@ -1,14 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
-import router from 'next/router';
-import moment from 'moment';
-import { Layout, Search, Content, Status, Ellipsis } from '@components';
-import { Input, Button, Table, message, DatePicker, Select } from 'antd';
-import { keepState, getState, clearState, Format } from '@utils/common';
-import { railWay, downLoadFile } from '@api';
-import LoadingBtn from '@components/LoadingBtn';
+import { Layout } from '@components';
 
-const { Option } = Select;
-const VRIframe = props => {
+const VRIframe = () => {
   const routeView = {
     title: '全景VR',
     pageKey: 'vriframe',
@@ -29,8 +21,4 @@ const VRIframe = props => {
   );
 };
 
-VRIframe.getInitialProps = async props => {
-  const { isServer } = props;
-  return { isServer };
-};
 export default VRIframe;
