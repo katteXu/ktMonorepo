@@ -2,10 +2,11 @@
 import React, { useState, useRef } from 'react';
 import { Input, Button, message } from 'antd';
 import StandardForm from './standar_form';
-import { Content } from '@components';
+import { Content, ChildTitle } from '@components';
 import { product } from '@api';
 import styles from './styles.less';
 import { Format } from '@utils/common';
+
 const FormComponent = ({ handleToStep, dataSource, handleDataInfo }) => {
   const formRef = useRef();
 
@@ -22,10 +23,12 @@ const FormComponent = ({ handleToStep, dataSource, handleDataInfo }) => {
     }
 
     // 原料煤配比设置
-    const msg = validateList();
-    if (msg) {
-      message.error(msg);
-      return;
+    if (list.length > 0) {
+      const msg = validateList();
+      if (msg) {
+        message.error(msg);
+        return;
+      }
     }
 
     // 目标数据
@@ -60,18 +63,20 @@ const FormComponent = ({ handleToStep, dataSource, handleDataInfo }) => {
     };
 
     const params = {
-      rawMaterial: list.map(item => ({
-        ...item,
-        proportionMax: (item.proportionMax * 100).toFixed(0) * 1,
-        proportionMin: (item.proportionMin * 100).toFixed(0) * 1,
-      })),
+      rawMaterial:
+        list.length > 0
+          ? list.map(item => ({
+              ...item,
+              proportionMax: ((item.proportionMax ? item.proportionMax : 100) * 100).toFixed(0) * 1,
+              proportionMin: ((item.proportionMin ? item.proportionMin : 0) * 100).toFixed(0) * 1,
+            }))
+          : [],
       targetGoods,
     };
-
     const res = await product.submitCoalBlending({ params });
 
     if (res.status === 0) {
-      message.success('配煤完成');
+      // message.success('配煤完成');
       handleToStep(4);
       handleDataInfo(res.result);
     } else {
@@ -131,57 +136,63 @@ const FormComponent = ({ handleToStep, dataSource, handleDataInfo }) => {
         } else {
           return `${goodsName} 最小占比应小于最大占比`;
         }
-      } else {
-        return `${goodsName} 占比不可为空`;
       }
     }
   };
 
   return (
-    <Content style={{ marginTop: 24 }}>
+    <Content style={{ marginTop: 16 }}>
       <header>原料煤配比设置</header>
-      <section>
+      <section style={{ paddingBottom: 48 }}>
         <div className={styles.form}>
-          <table className={styles.table}>
-            <tr className={styles.header}>
-              <td>已选原料煤</td>
-              <td>当前库存(吨)</td>
-              <td>最小占比(%)</td>
-              <td>最大占比(%)</td>
-              <td>操作</td>
-            </tr>
-            {list.map(item => {
-              return (
-                <tr className={styles['data-row']}>
-                  <td>{item.goodsName}</td>
-                  <td>{Format.weight(item.inventoryValue)}</td>
-                  <td>
-                    <Input
-                      value={item.proportionMin}
-                      placeholder="请输入最小占比"
-                      className={styles.ipt}
-                      onChange={e => handleChangeMin(item.inventoryId, e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <Input
-                      value={item.proportionMax}
-                      placeholder="请输入最大占比"
-                      className={styles.ipt}
-                      onChange={e => handleChangeMiax(item.inventoryId, e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <Button type="link" size="small" onClick={() => handleRemove(item.inventoryId)}>
-                      移除
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
-          </table>
+          {list.length > 0 ? (
+            <table className={styles.table}>
+              <tr className={styles.header}>
+                <td>已选原料煤</td>
+                <td>当前库存(吨)</td>
+                <td>最小占比(%)</td>
+                <td>最大占比(%)</td>
+                <td style={{ textAlign: 'right' }}>操作</td>
+              </tr>
+              {list.map(item => {
+                return (
+                  <tr className={styles['data-row']} key={item.goodsName}>
+                    <td>{item.goodsName}</td>
+                    <td>{Format.weight(item.inventoryValue)}</td>
+                    <td>
+                      <Input
+                        value={item.proportionMin}
+                        placeholder="请输入最小占比"
+                        className={styles.ipt}
+                        onChange={e => handleChangeMin(item.inventoryId, e.target.value)}
+                      />
+                    </td>
+                    <td>
+                      <Input
+                        value={item.proportionMax}
+                        placeholder="请输入最大占比"
+                        className={styles.ipt}
+                        onChange={e => handleChangeMiax(item.inventoryId, e.target.value)}
+                      />
+                    </td>
+                    <td style={{ textAlign: 'right' }}>
+                      <Button type="link" size="small" danger onClick={() => handleRemove(item.inventoryId)}>
+                        移除
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </table>
+          ) : (
+            <div className={styles.allData}>未勾选原料煤，按库存中现有货品输出最优配比方案</div>
+          )}
 
-          <header style={{ marginTop: 12, border: 0, paddingLeft: 0 }}>配煤指标</header>
+          {/* <header style={{ marginTop: 12, border: 0, paddingLeft: 0, fontSize: 14 }}> */}
+          <ChildTitle className="hei14" style={{ fontSize: 14, marginTop: 24, marginBottom: 8, fontWeight: 'bold' }}>
+            配煤指标
+          </ChildTitle>
+          {/* </header> */}
 
           <StandardForm onChangeGoods={handleChangeGoods} ref={formRef} />
           <div className={styles.bottom}>

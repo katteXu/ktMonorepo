@@ -1,6 +1,6 @@
 // 方案
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Input, Button, Table, Progress } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Table, Progress } from 'antd';
 import { RosePie } from '@components/Charts';
 import styles from './styles.less';
 import { RiseOutlined, FallOutlined } from '@ant-design/icons';
@@ -17,42 +17,49 @@ const Scheme = props => {
       dataIndex: 'data1',
       key: 'data1',
       width: 120,
+      align: 'right',
     },
     {
       title: '灰分(% Ad)',
       dataIndex: 'data2',
       key: 'data2',
       width: 120,
+      align: 'right',
     },
     {
       title: '挥发(% Vdaf)',
       dataIndex: 'data3',
       key: 'data3',
       width: 120,
+      align: 'right',
     },
     {
       title: '全硫(% Std)',
       dataIndex: 'data4',
       key: 'data4',
       width: 120,
+      align: 'right',
     },
     {
       title: '固定碳(% Fcd)',
       dataIndex: 'data5',
       key: 'data5',
       width: 120,
+      align: 'right',
     },
     {
       title: '回收(% r)',
       dataIndex: 'data6',
       key: 'data6',
       width: 120,
+      align: 'right',
     },
     {
       title: '粘结指数(% GRI)',
       dataIndex: 'data7',
       key: 'data7',
       width: 120,
+      align: 'right',
     },
     {
       title: '胶质层(% Y)',
@@ -60,6 +67,7 @@ const Scheme = props => {
       key: 'data8',
       align: 'right',
       width: 120,
+      align: 'right',
     },
   ];
   const [AIPieData, setAIPieData] = useState([]);

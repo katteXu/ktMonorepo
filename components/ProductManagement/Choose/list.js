@@ -1,9 +1,10 @@
 // 选煤列表
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { keepState, getState, clearState, Format } from '@utils/common';
 import { Input, Button, Table, Modal, Select, message } from 'antd';
 import { Search, Ellipsis, Content } from '@components';
 import { product } from '@api';
+import router from 'next/router';
 import GoodsForm from './goods_form';
 
 const List = ({ onCoalBlending, isServer, GoodsType }) => {
@@ -97,7 +98,13 @@ const List = ({ onCoalBlending, isServer, GoodsType }) => {
       align: 'right',
       render: (value, record) => {
         return (
-          <Button size="small" type="link" onClick={() => handleEdit(record)}>
+          <Button
+            size="small"
+            type="link"
+            onClick={() => {
+              // router.push(`/productManagement/editMaterial?id=${record.id}`);
+              handleEdit(record);
+            }}>
             编辑
           </Button>
         );
@@ -150,41 +157,33 @@ const List = ({ onCoalBlending, isServer, GoodsType }) => {
 
   // 编辑按钮
   const handleEdit = record => {
-    const _form = {
-      id: record.id,
-      inventoryId: record.inventoryId,
-      goodsName: record.goodsName,
-      companyName: record.companyName,
-      goodsType: GoodsType[record.goodsType],
-      cooperation: record.cooperation,
-      warningValue: record.warningValue ? `${Format.weight(record.warningValue)} 吨` : '-',
-      limitValue: record.limitValue ? `${Format.weight(record.limitValue)} 吨/天` : '-',
-      unitPrice: Format.price(record.unitPrice),
-      standard_ad: record.ashContent && (record.ashContent / 100).toFixed(2),
-      standard_coal: record.cleanCoal && (record.cleanCoal / 100).toFixed(2),
-      standard_crc: record.cinder && (record.cinder / 100).toFixed(0),
-      standard_fcd: record.carbon && (record.carbon / 100).toFixed(2),
-      standard_gangue: record.stone && (record.stone / 100).toFixed(2),
-      standard_gri: record.bond && (record.bond / 100).toFixed(2),
-      standard_mad: record.waterContent && (record.waterContent / 100).toFixed(2),
-      standard_middle: record.midCoal && (record.midCoal / 100).toFixed(2),
-      standard_mt: record.totalWaterContent && (record.totalWaterContent / 100).toFixed(2),
-      standard_r: record.recovery && (record.recovery / 100).toFixed(2),
-      standard_std: record.sulfur && (record.sulfur / 100).toFixed(2),
-      standard_vdaf: record.volatilization && (record.volatilization / 100).toFixed(2),
-      standard_y: record.colloid && (record.colloid / 100).toFixed(2),
-    };
-    setCurrentFormData(_form);
-    setShowEdit(true);
+    router.push(`/productManagement/aiCoalBlending/edit?id=${record.inventoryId}`);
   };
   // 智能配煤
-  const handleCoalBlending = () => {
-    if (selectedRows.length < 2) {
-      message.warn('请选择至少两种原料煤');
-      return;
-    }
+  const handleCoalBlending = async () => {
+    if (dataList.data.length > 0) {
+      if (selectedRows.length === 0) {
+        const params = {
+          check: 1,
+        };
+        const res = await product.submitCoalBlending({ params });
 
-    onCoalBlending && onCoalBlending(selectedRows);
+        if (res.status === 0) {
+          onCoalBlending && onCoalBlending([]);
+        } else {
+          message.error(res.detail || res.description);
+        }
+      } else {
+        if (selectedRows.length < 2) {
+          message.warn('请选择至少两种原料煤');
+          return;
+        }
+
+        onCoalBlending && onCoalBlending(selectedRows);
+      }
+    } else {
+      message.warn('当前可用原料煤种类少于两种，请添加原料煤后重试');
+    }
   };
 
   // 分页
@@ -334,20 +333,11 @@ const List = ({ onCoalBlending, isServer, GoodsType }) => {
   // 可选判断
   const canCheck = record => {
     const { unitPrice, waterContent, ashContent, volatilization, sulfur, recovery, bond, colloid } = record;
-    const disabled = !(
-      unitPrice &&
-      (waterContent || ashContent || volatilization || sulfur || recovery || bond || colloid)
-    );
+    const disabled = !(unitPrice && waterContent && ashContent && volatilization && sulfur && bond);
     return { disabled };
   };
   return (
-    <Content style={{ marginTop: 24 }}>
-      <header>
-        配煤列表
-        <Button style={{ float: 'right' }} type="primary" onClick={handleCoalBlending}>
-          智能配煤
-        </Button>
-      </header>
+    <Content style={{ marginTop: 16 }}>
       <section>
         <Search simple onSearch={handleSearch} onReset={handleReset}>
           <Search.Item label="货品名称">
@@ -370,6 +360,9 @@ const List = ({ onCoalBlending, isServer, GoodsType }) => {
             </Select>
           </Search.Item>
         </Search>
+        <Button style={{ marginTop: 16 }} type="primary" onClick={handleCoalBlending}>
+          智能配煤
+        </Button>
         <div style={{ marginTop: 16 }}>
           <Table
             columns={columns}

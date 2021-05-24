@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback, useRef, forwardRef, useImperativeHandle } from 'react';
-import { Input, Button, Table, Form, Select, message } from 'antd';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import { Input, Form, Select, message } from 'antd';
 import { product } from '@api';
 import styles from './styles.less';
 const formItemLayout = {
@@ -92,7 +92,10 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
   };
 
   const initGoodsType = async () => {
-    const res = await product.getGoodsList();
+    const params = {
+      coalBlend: 1,
+    };
+    const res = await product.getGoodsList({ params });
     if (res.status === 0) {
       setGoodsType(res.result);
     }
@@ -114,7 +117,6 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
 
   // 触发小值验证
   const validateMax = name => {
-    // form.validateFields([[`standard_${name}`, 'min']], { force: true });
     return Promise.resolve();
   };
 
@@ -131,11 +133,15 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
 
   return (
     <Form {...formItemLayout} className={styles.form} autoComplete="off" layout="inline" form={form}>
-      <div className={styles.row}>
+      <div className={styles.row} style={{ marginTop: 24 }}>
         <div className={styles.col}>
-          <Form.Item label="目标货品" name="goodsName" rules={[{ required: true, message: '目标货品不可为空' }]}>
+          <Form.Item
+            label="目标货品"
+            style={{ width: 403 }}
+            name="goodsName"
+            rules={[{ required: true, message: '目标货品不可为空' }]}>
             <Select
-              style={{ marginLeft: 8 }}
+              style={{ width: 200 }}
               allowClear
               placeholder="请选择目标货品"
               className={styles.ipt}
@@ -150,7 +156,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
         </div>
         <div className={styles.col}>
           <Form.Item
-            label="成本单价(元/吨)"
+            label="成本单价"
             name="unitPrice"
             validateFirst={true}
             rules={[
@@ -164,7 +170,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
                 message: '内容不可为负数且不可超过2位小数',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} className={styles.ipt} placeholder="请输入成本单价" />
+            <Input style={{ width: 200 }} className={styles.ipt} placeholder="请输入成本单价" addonAfter={'元/吨'} />
           </Form.Item>
         </div>
       </div>
@@ -193,7 +199,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
                 validator: () => validateMin('mad'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input placeholder="请输入" />
           </Form.Item>
           <span>≤Mad≤</span>
           <Form.Item
@@ -244,7 +250,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
                 validator: () => validateMin('ad'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input placeholder="请输入" />
           </Form.Item>
           <span>≤Ad≤</span>
           <Form.Item
@@ -298,7 +304,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
                 validator: () => validateMin('vdaf'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input placeholder="请输入" />
           </Form.Item>
           <span>≤Vdaf≤</span>
           <Form.Item
@@ -350,7 +356,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
                 message: '请输入正确的数值:1-8',
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} className={styles.ipt} placeholder="请输入" />
+            <Input style={{ width: 96 }} className={styles.ipt} placeholder="请输入" />
           </Form.Item>
         </div>
       </div>
@@ -378,7 +384,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
                 validator: () => validateMin('std'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input placeholder="请输入" />
           </Form.Item>
           <span>≤Std≤</span>
           <Form.Item
@@ -409,11 +415,15 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
         {/* 固定碳 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
-            label="固定碳(% Fcd)"
+            label={
+              <div>
+                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>固定碳(% Fcd)
+              </div>
+            }
             name={['standard_fcd', 'min']}
             validateFirst={true}
             rules={[
-              { required: true, message: '内容不可为空' },
+              { required: false, message: '内容不可为空' },
               {
                 pattern: /^[0-9]+(.?[0-9]{1,2})?$/,
                 message: '最多输入两位小数',
@@ -429,7 +439,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
                 validator: () => validateMin('fcd'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input placeholder="请输入" />
           </Form.Item>
           <span>≤Fcd≤</span>
           <Form.Item
@@ -438,7 +448,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
             name={['standard_fcd', 'max']}
             validateFirst={true}
             rules={[
-              { required: true, message: '内容不可为空' },
+              { required: false, message: '内容不可为空' },
               {
                 pattern: /^[0-9]+(.?[0-9]{1,2})?$/,
                 message: '最多输入两位小数',
@@ -486,7 +496,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
                 validator: () => validateMin('r'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input placeholder="请输入" />
           </Form.Item>
           <span>≤r≤</span>
           <Form.Item
@@ -540,7 +550,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
                 validator: () => validateMin('mt'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input placeholder="请输入" />
           </Form.Item>
           <span>≤Mt≤</span>
           <Form.Item
@@ -592,7 +602,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
                 validator: () => validateMin('gri'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input placeholder="请输入" />
           </Form.Item>
           <span>≤GRI≤</span>
           <Form.Item
@@ -647,7 +657,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
                 validator: () => validateMin('y'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input placeholder="请输入" />
           </Form.Item>
           <span>≤Y≤</span>
           <Form.Item
@@ -703,7 +713,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
                 validator: () => validateMin('gangue'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input placeholder="请输入" />
           </Form.Item>
           <span>≤%≤</span>
           <Form.Item
@@ -757,7 +767,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
                 validator: () => validateMin('middle'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input placeholder="请输入" />
           </Form.Item>
           <span>≤%≤</span>
           <Form.Item
@@ -813,7 +823,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
                 validator: () => validateMin('coal'),
               },
             ]}>
-            <Input style={{ marginLeft: 8 }} placeholder="请输入" />
+            <Input placeholder="请输入" />
           </Form.Item>
           <span>≤%≤</span>
           <Form.Item

@@ -49,6 +49,9 @@ const TiaoTaiStatic = `${publicRuntimeConfig.staticFolder}/image/tiaotaiStatic.p
 const TiaoTaiGif = `${publicRuntimeConfig.staticFolder}/image/tiaotai.gif`;
 const ChuanSongStatic = `${publicRuntimeConfig.staticFolder}/image/chuansongStatic.png`;
 const ChuanSongGif = `${publicRuntimeConfig.staticFolder}/image/chuansong.gif`;
+
+const LoadingScheme = `${publicRuntimeConfig.staticFolder}/image/loading.gif`;
+
 // 其他
 const Error404 = `${publicRuntimeConfig.staticFolder}/image/error-404.png`;
 const Error500 = `${publicRuntimeConfig.staticFolder}/image/error-500.png`;
@@ -115,4 +118,5 @@ export {
   SettlmentEmpty,
   SettlmentLeftBg,
   SettlmentRightBg,
+  LoadingScheme,
 };

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Layout, Content, Search } from '@components';
+import React, { useState, useEffect } from 'react';
+import { Layout, Content, Image } from '@components';
 import { Button } from 'antd';
 import CoalBlendingSteps from '@components/ProductManagement/coalBlendingSteps';
 import ChooseList from '@components/ProductManagement/Choose/list';
@@ -7,6 +7,8 @@ import ChooseForm from '@components/ProductManagement/Choose/form';
 import ChooseScheme from '@components/ProductManagement/Choose/scheme';
 import router from 'next/router';
 import { getGoodsType } from '@api';
+import style from './styles.less';
+
 const routeView = {
   title: '智能配煤',
   pageKey: 'aiCoalBlending',
@@ -17,7 +19,7 @@ const routeView = {
 
 const AICoalBlending = props => {
   const [step, setStep] = useState(1);
-
+  const [loading, setLoading] = useState(false);
   // 货品列表
   const [GoodsType, setGoodsType] = useState({});
 
@@ -48,6 +50,7 @@ const AICoalBlending = props => {
   // 智能配煤
   const handleCoalBlending = record => {
     setSourceCoal(record);
+
     handleNext();
   };
 
@@ -67,6 +70,7 @@ const AICoalBlending = props => {
       setGoodsType(_goods);
     }
   };
+
   return (
     <Layout {...routeView}>
       <Content>
@@ -75,9 +79,7 @@ const AICoalBlending = props => {
           <CoalBlendingSteps step={step} />
         </section>
       </Content>
-      {/* <Content style={{ marginTop: 24 }}>
-        <header>配煤列表</header>
-        <section> */}
+
       {step === 1 && <ChooseList onCoalBlending={handleCoalBlending} isServer={props.isServer} GoodsType={GoodsType} />}
 
       {(step === 2 || step === 3) && (
@@ -86,23 +88,30 @@ const AICoalBlending = props => {
           dataSource={sourceCoal}
           handleDataInfo={data => {
             setDataInfo(data), console.log(data);
+            setLoading(true);
+            setTimeout(() => {
+              setLoading(false);
+            }, 5000);
           }}
         />
       )}
-
-      {step === 4 && (
-        <Content style={{ marginTop: 24 }}>
-          <header>输出方案</header>
-          <section>
-            <ChooseScheme dataInfo={dataInfo} />
-            <Button style={{ marginTop: 8 }} type="primary" onClick={handleSubmit}>
-              完成
-            </Button>
-          </section>
-        </Content>
+      {loading ? (
+        <div className={style.loadingBox}>
+          <img src={Image.LoadingScheme} className={style.loadingImg} />
+        </div>
+      ) : (
+        step === 4 && (
+          <Content style={{ marginTop: 16 }}>
+            <header>输出方案</header>
+            <section>
+              <ChooseScheme dataInfo={dataInfo} />
+              <Button style={{ marginTop: 8 }} type="primary" onClick={handleSubmit}>
+                完成
+              </Button>
+            </section>
+          </Content>
+        )
       )}
-      {/* </section>
-      </Content> */}
     </Layout>
   );
 };
