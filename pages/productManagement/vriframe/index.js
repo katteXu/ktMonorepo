@@ -1,6 +1,14 @@
-import { Layout } from '@components';
+import { useState, useEffect, useCallback } from 'react';
+import router from 'next/router';
+import moment from 'moment';
+import { Layout, Search, Content, Status, Ellipsis } from '@components';
+import { Input, Button, Table, message, DatePicker, Select } from 'antd';
+import { keepState, getState, clearState, Format } from '@utils/common';
+import { railWay, downLoadFile } from '@api';
+import LoadingBtn from '@components/LoadingBtn';
 
-const VRIframe = () => {
+const { Option } = Select;
+const VRIframe = props => {
   const routeView = {
     title: '全景VR',
     pageKey: 'vriframe',
@@ -12,7 +20,7 @@ const VRIframe = () => {
   return (
     <Layout {...routeView}>
       <iframe
-        src="http://vr.kachexiongdi.com/pano-share.html?shareId=share_c04fa8088"
+        src="http://vr.kachexiongdi.com/"
         title="iframe"
         style={{ width: '100%', border: 0, height: '100%' }}
         sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
@@ -21,4 +29,8 @@ const VRIframe = () => {
   );
 };
 
+VRIframe.getInitialProps = async props => {
+  const { isServer } = props;
+  return { isServer };
+};
 export default VRIframe;
