@@ -6,7 +6,6 @@ import { getState, clearState } from '@utils/common';
 const Option = Select.Option;
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { Permission } from '@store';
-import deleteBtn from '../deleteBtn.less';
 
 const Child = props => {
   const routeView = {
@@ -48,6 +47,7 @@ const Child = props => {
     {
       title: '操作',
       dataIndex: '操作',
+      align: 'right',
       key: 'ctrl',
       render: (text, data, index) => {
         const { id } = data;
@@ -57,11 +57,7 @@ const Child = props => {
             placement="topRight"
             icon={<QuestionCircleFilled />}
             onConfirm={() => deleteChild(id)}>
-            <Button
-              type="link"
-              size="small"
-              className={deleteBtn.delete}
-              style={{ padding: 0, border: 'none', margin: 0 }}>
+            <Button type="link" size="small" danger style={{ padding: 0, border: 'none', margin: 0 }}>
               删除
             </Button>
           </Popconfirm>
@@ -87,7 +83,6 @@ const Child = props => {
   // 查询条件
   const [query, setQuery] = useState({
     page: 1,
-    // pageSize: 10,
     name: '',
     groupId: undefined,
   });
@@ -178,6 +173,7 @@ const Child = props => {
     const res = await childAccount.deleteChildUser({ params });
     if (res.status === 0) {
       message.success('删除成功');
+      getTableData(query);
     } else {
       message.error(res.detail || res.description);
     }
@@ -221,18 +217,12 @@ const Child = props => {
             </Search.Item>
           </Search>
         </section>
-        <header>子账号列表</header>
-        <section>
+        <section style={{ paddingTop: 0 }}>
           <Table rowKey="id" loading={loading} columns={columns} dataSource={dataSource.data} pagination={false} />
         </section>
       </Content>
     </Layout>
   );
-};
-
-Child.getInitialProps = async props => {
-  const { isServer, userInfo } = props;
-  return { isServer, userInfo };
 };
 
 export default Child;
