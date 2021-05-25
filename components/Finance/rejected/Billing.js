@@ -1,15 +1,16 @@
-// 待申请开票
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import styles from '../styles.less';
-import Progress from '../Progress';
+// 驳回待申请开票
+import React, { useState, useCallback, useEffect } from 'react';
+import styles from './styles.less';
 import { finance } from '@api';
-import { Content, Search, Msg, Ellipsis } from '@components';
-import { Format, keepState, getState, clearState, getQuery } from '@utils/common';
-import { Input, Button, Table, message, Affix, DatePicker, Checkbox } from 'antd';
+import { Search, Msg, Ellipsis, DrawerInfo } from '@components';
+import { Format, keepState, getState, clearState } from '@utils/common';
+import { Input, Button, Table, message, DatePicker, Checkbox } from 'antd';
 import moment from 'moment';
 import router from 'next/router';
+import Steps from '@components/Finance/main/Steps';
+import Detail from '@components/Finance/rejected/BillingDetail';
 
-const StayInvoice = props => {
+const Billing = props => {
   const columns = [
     {
       title: '发货企业',
@@ -47,10 +48,11 @@ const StayInvoice = props => {
       render: value => <Ellipsis value={value} width={120} />,
     },
     {
-      title: '结算吨数',
+      title: '结算吨数(吨)',
       dataIndex: 'weightSum',
       key: 'weightSum',
       width: 120,
+      align: 'right',
       render: Format.weight,
     },
     {
@@ -69,14 +71,19 @@ const StayInvoice = props => {
       fixed: 'right',
       align: 'right',
       render: (value, record, i) => {
+        // 获取总体缓存数据中的当前数据信息
+        const _checkedData = checkedData[record.ids];
         return (
-          <Button type="link" size="small" onClick={() => props.changeByOrder(record)}>
-            按运单申请
-          </Button>
+          <>
+            <Button type="link" size="small" onClick={() => handleShowDetail({ ...record, checkedData: _checkedData })}>
+              编辑
+            </Button>
+          </>
         );
       },
     },
   ];
+  // 查询条件
   const [query, setQuery] = useState({
     page: 1,
     pageSize: 10,
@@ -87,6 +94,31 @@ const StayInvoice = props => {
     end: undefined,
   });
 
+  // 选择数据
+  /**
+   * 数据结构：
+   * {
+   *   "1xx1,2xx2":{ids:"1xx1",price:122.34},
+   *   "1xx2,2xx2":{ids:"1xx2",price:1234.2}
+   * }
+   */
+  const [checkedData, setCheckedData] = useState({});
+
+  // 按运单开票组
+  const [orderDetail, setOrderDetail] = useState({
+    fromCompany: '',
+    toCompany: '',
+    fromAddress: '',
+    toAddress: '',
+    fromAddressId: '',
+    toAddressId: '',
+    goodsType: '',
+  });
+  const handleShowDetail = data => {
+    setOrderDetail(data);
+    setShowDetail(true);
+  };
+
   // 对账单统计
   const [invoiceTotal, setInvoiceTotal] = useState({
     priceSum: 0,
@@ -96,6 +128,8 @@ const StayInvoice = props => {
 
   const [checkedAll, setCheckedAll] = useState(false);
   const [indexList, setIndexList] = useState(false);
+
+  const [showDetail, setShowDetail] = useState(false);
 
   useEffect(() => {
     if (query.pageSize) {
@@ -109,42 +143,29 @@ const StayInvoice = props => {
 
   const [dataList, setDataList] = useState({});
 
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
-  // 监听选择变化
-  const checkedRef = useRef({ isAll: false, selectedRowKeys: [] });
-  useEffect(() => {
-    checkedRef.current = {
-      isAll: checkedAll,
-      selectedRowKeys: selectedRowKeys,
-    };
-  }, [checkedAll, selectedRowKeys]);
-
   const [total, setTotal] = useState({
     price: 0,
     weight: 0,
     invoice_price: 0,
   });
 
+  // 已选总统计数据
   const [checkTotal, setCheckTotal] = useState({
     price: 0,
     weight: 0,
-    errorCount: 0,
+    count: 0,
   });
 
   // 初始化
   useEffect(() => {
     const { isServer } = props;
-    if (isServer || getQuery().batchId) {
+    if (isServer || router.query.batchId) {
       clearState();
     }
     // 获取持久化数据
     const state = getState().query;
     setQuery({ ...query, ...state });
     getRemoteData({ ...query, ...state });
-
-    // 获取开票信息
-    // getInvoiceId();
   }, []);
 
   /**
@@ -225,32 +246,10 @@ const StayInvoice = props => {
     const price = record.priceSum;
     const weight = record.weightSum;
     if (selected) {
-      setSelectedRowKeys([...selectedRowKeys, key]);
+      setCheckedData({ ...checkedData, [key]: { price, weight, ids: key } });
     } else {
-      const i = selectedRowKeys.indexOf(key);
-      selectedRowKeys.splice(i, 1);
-      setSelectedRowKeys([...selectedRowKeys]);
-    }
-
-    // 计算总净重 & 运费总额
-    let _weight = 0;
-    let _price = 0;
-    _weight += weight || 0;
-    _price += price || 0;
-    if (selected) {
-      setCheckTotal(total => {
-        return {
-          price: total.price + _price,
-          weight: total.weight + _weight,
-        };
-      });
-    } else {
-      setCheckTotal(total => {
-        return {
-          price: total.price - _price,
-          weight: total.weight - _weight,
-        };
-      });
+      delete checkedData[key];
+      setCheckedData({ ...checkedData });
     }
   };
 
@@ -260,38 +259,14 @@ const StayInvoice = props => {
       const key = record.ids;
       const price = record.priceSum;
       const weight = record.weightSum;
-      const i = selectedRowKeys.indexOf(key);
       if (selected) {
-        if (i === -1) selectedRowKeys.push(key);
+        checkedData[key] = { price, weight, ids: key };
       } else {
-        selectedRowKeys.splice(i, 1);
-      }
-
-      // 计算总净重 & 运费总额
-      let _weight = 0;
-      let _price = 0;
-      _weight += weight || 0;
-      _price += price || 0;
-      if (selected) {
-        if (i === -1) {
-          setCheckTotal(total => {
-            return {
-              price: total.price + _price,
-              weight: total.weight + _weight,
-            };
-          });
-        }
-      } else {
-        setCheckTotal(total => {
-          return {
-            price: total.price - _price,
-            weight: total.weight - _weight,
-          };
-        });
+        delete checkedData[key];
       }
     });
 
-    setSelectedRowKeys([...selectedRowKeys]);
+    setCheckedData({ ...checkedData });
   };
 
   // 全选按钮
@@ -305,13 +280,35 @@ const StayInvoice = props => {
     }
   };
 
+  useEffect(() => {
+    const data = Object.entries(checkedData);
+    let price = 0;
+    let weight = 0;
+    if (data.length > 0) {
+      data.forEach(item => {
+        price += item[1].price;
+        weight += item[1].weight;
+      });
+    }
+    setCheckTotal({
+      count: data.length,
+      price,
+      weight,
+    });
+  }, [checkedData]);
+  // 部分从表数据选择
+  const handleCheck = params => {
+    setShowDetail(false);
+    // 缓存部分选择数据
+    setCheckedData({ ...checkedData, ...params });
+  };
+
   /**
    * 查询数据
    * @param {Object} param0
    */
   const getRemoteData = async ({ fromCompany, toCompany, goodsType, begin, end, page, pageSize = 10 }) => {
     setLoading(true);
-    const { invoiceId } = getQuery();
     const params = {
       fromCompany,
       toCompany,
@@ -319,7 +316,6 @@ const StayInvoice = props => {
       begin: begin || undefined,
       end: end || undefined,
       limit: pageSize,
-      invoiceId,
       page,
     };
 
@@ -357,18 +353,14 @@ const StayInvoice = props => {
    * 添加提交
    *
    */
-  const submit = useCallback(async () => {
-    const { isAll: checkedAll, selectedRowKeys } = checkedRef.current;
-    const { batchId } = getQuery();
-    if (selectedRowKeys.length === 0 && !checkedAll) {
-      message.warn('请选择要提交的合同');
-      return;
-    }
+  const submit = async () => {
+    const { batchId } = router.query;
 
     let res = {};
     setBtnLoading(true);
     if (checkedAll) {
-      const { begin, end, fromCompany, toCompany, goodsType } = query;
+      // 全选跨分页
+      const { begin, end, fromCompany, toCompany, goodsType } = getCallbackQuery();
       const params = {
         isAll: 1,
         begin: begin || undefined,
@@ -381,136 +373,94 @@ const StayInvoice = props => {
       res = batchId ? await submitByReject({ ...params, batchId }) : await submitByCurrent(params);
       setCheckedAll(false);
     } else {
-      const ids = [];
-      selectedRowKeys.forEach(key => {
-        ids.push(...key.split(','));
-      });
+      // 部分选择
+      const _ids = [];
+      Object.values(checkedData).forEach(({ ids }) => _ids.push(...ids.split(',')));
       const params = {
-        transportIds: ids.join(),
+        transportIds: _ids.join(),
       };
       res = batchId ? await submitByReject({ ...params, batchId }) : await submitByCurrent(params);
     }
 
     if (res.status === 0) {
-      message.success(<span>添加成功，您可以查看对账单或继续添加</span>, 5);
-
-      setQuery({ ...query, page: 1 });
-      clearCheckData();
-      getRemoteData({ ...query, page: 1 });
-
-      props.refreshTotalData && props.refreshTotalData();
+      // 添加成功跳转页面
+      // batchId ? router.back() : router.push('/finance/applyInvoice/record?mode=edit');
     } else {
       message.error(`添加失败，原因：${res.detail || res.description}`);
     }
     setBtnLoading(false);
+  };
+
+  // 获取参数
+  const getCallbackQuery = useCallback(() => {
+    return query;
   }, [dataList]);
 
   // 本次开票
   const submitByCurrent = params => {
     const { finance_pay_type = 'PRICE' } = typeof window === 'undefined' ? {} : sessionStorage;
-    const res = finance.saveAskInvoice({
-      params: { ...params, payType: finance_pay_type },
-    });
+    const res = finance.saveAskInvoice({ params: { ...params, payType: finance_pay_type } });
     return res;
   };
 
   // 驳回提交
   const submitByReject = params => {
     const { finance_pay_type = 'PRICE' } = typeof window === 'undefined' ? {} : sessionStorage;
-    const res = finance.addRejectInvoice({
-      params: { ...params, payType: finance_pay_type },
-    });
+    const res = finance.addRejectInvoice({ params: { ...params, payType: finance_pay_type } });
     return res;
   };
 
   // 暂不开票提交
-  const submitNever = useCallback(async () => {
-    const { isAll: checkedAll, selectedRowKeys } = checkedRef.current;
+  const handleUnBilling = async ids => {
     const { finance_pay_type = 'PRICE' } = typeof window === 'undefined' ? {} : sessionStorage;
 
-    if (selectedRowKeys.length === 0 && !checkedAll) {
-      message.warn('请选择暂不开票的合同');
-      return;
-    }
+    const _ids = [...ids.split(',')];
+    const params = {
+      transportIds: _ids.join(),
+      payType: finance_pay_type,
+      approveClose: '1',
+    };
 
-    let res = {};
-    setBtnNeverLoading(true);
-    if (checkedAll) {
-      const { begin, end, fromCompany, toCompany, goodsType } = query;
-      const params = {
-        isAll: 1,
-        begin: begin || undefined,
-        end: end || undefined,
-        fromCompany: fromCompany || undefined,
-        toCompany: toCompany || undefined,
-        goodsType: goodsType || undefined,
-        payType: finance_pay_type,
-        approveClose: '1',
-      };
-
-      res = await finance.removeAskInvoice({ params });
-      setCheckedAll(false);
-    } else {
-      const ids = [];
-      selectedRowKeys.forEach(key => {
-        ids.push(...key.split(','));
-      });
-      const params = {
-        transportIds: ids.join(),
-        payType: finance_pay_type,
-        approveClose: '1',
-      };
-      res = await finance.removeAskInvoice({ params });
-    }
+    const res = await finance.removeAskInvoice({ params });
 
     if (res.status === 0) {
-      message.success(<span>所选合同已添加到暂不开票页</span>, 5);
+      message.success(<span>已添加到暂不开票页</span>, 5);
 
+      // 删除选择项
+      delete checkedData[ids];
       setQuery({ ...query, page: 1 });
-      clearCheckData();
       getRemoteData({ ...query, page: 1 });
-
-      props.refreshTotalData && props.refreshTotalData();
     } else {
       message.error(`添加失败，原因：${res.detail || res.description}`);
     }
-    setBtnNeverLoading(false);
-  }, [dataList]);
+  };
 
   /**
    * 清空选中数据
    */
   const clearCheckData = () => {
-    setSelectedRowKeys([]);
+    setCheckedData({});
     setCheckTotal({
       price: 0,
       weight: 0,
-      errorCount: 0,
+      count: 0,
     });
   };
 
-  // 跳转对账单页
-  const toTableList = () => {
-    let clickCount = 0;
-    function _to() {
-      if (clickCount === 0) {
-        if (getQuery().batchId) {
-          router.back();
-        } else {
-          router.push('/finance/applyInvoice/record?mode=edit');
-        }
-      }
-      clickCount++;
+  // 下一步
+  const handleNext = async () => {
+    // 添加对账单
+    if (Object.keys(checkedData).length > 0 || checkedAll) {
+      await submit();
     }
-    return _to;
+    props.onChangeStep();
   };
 
   // 判断选中项是否为空
-  const isEmpty = selectedRowKeys.length === 0 ? true : false;
-
+  const isChecked = Object.keys(checkedData).length !== 0 || checkedAll;
   return (
-    <div className={styles['stay-invoice']}>
-      <Progress />
+    <>
+      <Steps style={{ marginBottom: 16 }} current={0} />
       <Search onSearch={handleSearch} onReset={handleReset} simple>
         <Search.Item label="承运时间" br>
           <DatePicker.RangePicker
@@ -533,97 +483,106 @@ const StayInvoice = props => {
         </Search.Item>
       </Search>
 
-      <Content style={{ paddingBottom: 0 }}>
-        <header style={{ padding: '6px 0' }}>
-          申请列表
-          <div style={{ float: 'right' }}>
-            <Button type="primary" onClick={submit} loading={btnLoading}>
-              添加至对账单
-            </Button>
-            {typeof window !== 'undefined' && !getQuery().batchId && (
-              <Button type="primary" ghost onClick={submitNever} loading={btnNeverLoading} style={{ marginLeft: 8 }}>
-                暂不开票
-              </Button>
-            )}
-          </div>
-        </header>
-        <Affix offsetTop={0}>
-          <Msg>
-            <span className="select-all" onClick={handleCheckedAll}>
-              <Checkbox checked={checkedAll}></Checkbox>
-              <span>全选(支持跨分页)</span>
-            </span>
-            {!isEmpty ? <span style={{ marginRight: 12 }}>已选</span> : <span>共</span>}
+      <Msg style={{ marginTop: 16 }}>
+        <span className="select-all" onClick={handleCheckedAll}>
+          <Checkbox checked={checkedAll}></Checkbox>
+          <span>全选(支持跨分页)</span>
+        </span>
+        {isChecked ? (
+          <>
+            {/* 已选 （全选|部分选） */}
             <span>
-              <span className="total-num">{isEmpty ? dataList.count || 0 : selectedRowKeys.length}</span>条
+              已选<span className="total-num">{checkedAll ? dataList.count || 0 : checkTotal.count}</span>条
             </span>
             <span style={{ marginLeft: 32 }}>总净重</span>
-            <span className="total-num">{Format.weight(isEmpty ? total.weight : checkTotal.weight)}</span>吨
+            <span className="total-num">{Format.weight(checkedAll ? total.weight : checkTotal.weight)}</span>吨
             <span style={{ marginLeft: 32 }}>运费总额</span>
-            <span className="total-num">{Format.price(isEmpty ? total.price : checkTotal.price)}</span>元
+            <span className="total-num">{Format.price(checkedAll ? total.price : checkTotal.price)}</span>元
             <span style={{ marginLeft: 32 }}>含税总额</span>
-            <span className="total-num">{Format.price(isEmpty ? total.invoice_price : checkTotal.price * 1.09)}</span>元
-          </Msg>
-        </Affix>
-        <Table
-          loading={loading}
-          dataSource={dataList.data}
-          columns={columns}
-          rowKey={(record, i) => {
-            return checkedAll ? i : record.ids;
-          }}
-          pagination={{
-            onChange: onChangePage,
-            onShowSizeChange: onChangePageSize,
-            showSizeChanger: true,
-            pageSize: query.pageSize,
-            current: query.page,
-            total: dataList.count,
-          }}
-          rowClassName={(record, index) => {
-            if (record.errorCount > 0) {
-              return styles.red;
-            }
-            return '';
-          }}
-          rowSelection={{
-            selectedRowKeys: checkedAll ? indexList : selectedRowKeys,
-            onSelect: onSelectRow,
-            onSelectAll: onSelectAll,
-            columnWidth: '17px',
-            getCheckboxProps: () => {
-              return { disabled: checkedAll };
-            },
-          }}
-          style={{ minHeight: 400 }}
-          scroll={{ x: 'auto' }}
-        />
-        <Affix offsetBottom={0}>
-          <div className={styles.bottom}>
-            {/* 驳回数据显示批次号 */}
-            {typeof window !== 'undefined' && getQuery().batchId && (
-              <div className={styles.item}>当前批次号：{getQuery().batchId}</div>
-            )}
-            <div className={styles.item}>
-              含税总金额：
-              <span className={styles['total-num']}>{Format.price(invoiceTotal.taxPriceSum)}</span> 元
-            </div>
-            <div className={styles.item}>
-              不含税总金额：
-              <span className={styles['total-num']}>{Format.price(invoiceTotal.priceSum)}</span> 元
-            </div>
-            <div className={styles.item}>
-              总净重：
-              <span className={styles['total-num']}>{Format.weight(invoiceTotal.weightSum)}</span> 吨
-            </div>
-            <Button type="primary" onClick={toTableList()}>
-              查看对账单
-            </Button>
-          </div>
-        </Affix>
-      </Content>
-    </div>
+            <span className="total-num">
+              {Format.price(checkedAll ? total.invoice_price : checkTotal.price * 1.09)}
+            </span>
+            元
+          </>
+        ) : (
+          <>
+            <span>
+              共<span className="total-num">{dataList.count || 0}</span>条
+            </span>
+            <span style={{ marginLeft: 32 }}>总净重</span>
+            <span className="total-num">{Format.weight(total.weight)}</span>吨
+            <span style={{ marginLeft: 32 }}>运费总额</span>
+            <span className="total-num">{Format.price(total.price)}</span>元
+            <span style={{ marginLeft: 32 }}>含税总额</span>
+            <span className="total-num">{Format.price(total.invoice_price)}</span>元
+          </>
+        )}
+      </Msg>
+
+      <Table
+        loading={loading}
+        dataSource={dataList.data}
+        columns={columns}
+        rowKey={(record, i) => {
+          return checkedAll ? i : record.ids;
+        }}
+        pagination={{
+          onChange: onChangePage,
+          onShowSizeChange: onChangePageSize,
+          showSizeChanger: true,
+          pageSize: query.pageSize,
+          current: query.page,
+          total: dataList.count,
+        }}
+        rowClassName={(record, index) => {
+          if (record.errorCount > 0) {
+            return styles.red;
+          }
+          return '';
+        }}
+        rowSelection={{
+          columnWidth: '17px',
+          selectedRowKeys: checkedAll ? indexList : Object.keys(checkedData),
+          onSelect: onSelectRow,
+          onSelectAll: onSelectAll,
+          getCheckboxProps: () => {
+            return { disabled: checkedAll };
+          },
+        }}
+        style={{ minHeight: 400 }}
+        scroll={{ x: 'auto' }}
+      />
+      <div className={styles.bottom}>
+        <Button type="primary" onClick={handleNext} style={{ marginRight: 12 }} loading={btnLoading}>
+          下一步
+        </Button>
+        {/* 驳回数据显示批次号 */}
+        {/* {typeof window !== 'undefined' && router.query.batchId && (
+          <div className={styles.item}>当前批次号：{router.query.batchId}</div>
+        )}
+        <div className={styles.item}>
+          含税总金额：<span className={styles['total-num']}>{Format.price(invoiceTotal.taxPriceSum)}</span> 元
+        </div>
+        <div className={styles.item}>
+          不含税总金额：<span className={styles['total-num']}>{Format.price(invoiceTotal.priceSum)}</span> 元
+        </div>
+        <div className={styles.item}>
+          总净重：<span className={styles['total-num']}>{Format.weight(invoiceTotal.weightSum)}</span> 吨
+        </div> */}
+      </div>
+
+      <DrawerInfo title="编辑" onClose={() => setShowDetail(false)} showDrawer={showDetail} width="1152">
+        {showDetail && (
+          <Detail
+            orderDetail={orderDetail}
+            onClose={() => setShowDetail(false)}
+            onSubmit={handleCheck}
+            onUnBilling={handleUnBilling}
+          />
+        )}
+      </DrawerInfo>
+    </>
   );
 };
 
-export default StayInvoice;
+export default Billing;

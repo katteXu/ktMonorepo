@@ -51,12 +51,29 @@ i.yellow {
 
 .record {
   min-height: 500px;
-  :global(.ant-descriptions-title) {
-    font-family: PingFangSC-Regular;
-    font-size: 16px;
+  :global {
+    .ant-descriptions-header {
+      margin-bottom: 0;
+      .ant-descriptions-title {
+        font-family: PingFangSC-Regular;
+        font-size: 16px;
+        color: #4a4a5a;
+        margin-bottom: 13px;
+        font-weight: unset;
+      }
+    }
+  }
+
+  :global {
+    .ant-descriptions-bordered.ant-descriptions-middle .ant-descriptions-item-label,
+    .ant-descriptions-bordered.ant-descriptions-middle .ant-descriptions-item-content {
+      border-color: #d8d8d866;
+    }
+  }
+
+  :global(.ant-descriptions-item-content) {
+    background: #f6f7f966;
     color: #4a4a5a;
-    margin-bottom: 13px;
-    font-weight: unset;
   }
 
   :global(.ant-descriptions-item-label) {
@@ -108,7 +125,7 @@ i.yellow {
 
   .total {
     :global(.ant-descriptions-item-label) {
-      background-color: #fff4ee;
+      background-color: #fff7f2;
     }
 
     .header-label {
@@ -138,16 +155,20 @@ i.yellow {
 
 .remark-detail {
   border: 1px solid #ededed;
-  background: rgba(247, 247, 247, 0.2);
+  background: #f6f7f966;
   padding: 0 20px;
   border-top: none;
-
+  :global {
+    .ant-checkbox-disabled.ant-checkbox-checked .ant-checkbox-inner::after {
+      border-color: white !important;
+    }
+  }
   .ctrl-btn {
-    color: #848485;
+    color: #3d86ef;
     cursor: pointer;
 
     &:hover {
-      color: #4a4a5a;
+      color: #3d86efe6;
     }
   }
 

@@ -6,7 +6,6 @@ import { finance } from '@api';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { useEffect, useState, useImperativeHandle, forwardRef } from 'react';
 import DescriptDetail from './DescriptDetail';
-import deleteBtn from './deleteBtn.less';
 import { getQuery } from '@utils/common';
 const formatWeight = value => {
   return ((value || 0) / 1000).toFixed(2);
@@ -214,10 +213,7 @@ const Record = ({ id, mode = 'view', onChange, detailUrl, payType, batchId, hand
         {record.data &&
           record.data.map((v, i) => {
             const index = (record.page - 1) * 10 + i + 1;
-            const title = i === 0 ? '对账明细：' : undefined;
-            const style = {
-              marginTop: i === 0 ? 25 : 32,
-            };
+
             return (
               <div key={index}>
                 <DescriptDetail mode={mode} index={index} detail={v} styles={styles} />
@@ -234,7 +230,7 @@ const Record = ({ id, mode = 'view', onChange, detailUrl, payType, batchId, hand
                     运单明细
                   </Button>
                   {mode === 'edit' && (
-                    <Button type="link" className={deleteBtn.delete} onClick={() => ConfirmDelete(v.id)}>
+                    <Button type="link" danger onClick={() => ConfirmDelete(v.id)}>
                       删除
                     </Button>
                   )}

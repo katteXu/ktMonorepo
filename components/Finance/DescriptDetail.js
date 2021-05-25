@@ -103,7 +103,7 @@ const DescriptDetail = ({ detail, index, styles, mode }) => {
       title={index === 1 ? '对账明细：' : undefined}
       size="middle"
       column={2}
-      style={{ marginTop: index === 0 ? 25 : 32 }}
+      style={{ marginTop: 25 }}
       className={styles.detail}>
       <Descriptions.Item
         label={
@@ -130,7 +130,7 @@ const DescriptDetail = ({ detail, index, styles, mode }) => {
         )}
         {mode === 'edit' && modify !== 'goodsType' && (
           <Button type="link" style={{ float: 'right' }} size="small" onClick={() => setModify('goodsType')}>
-            更改
+            编辑
           </Button>
         )}
       </Descriptions.Item>
@@ -155,7 +155,7 @@ const DescriptDetail = ({ detail, index, styles, mode }) => {
         )}
         {mode === 'edit' && modify !== 'fromCompany' && (
           <Button type="link" style={{ float: 'right' }} size="small" onClick={() => setModify('fromCompany')}>
-            更改
+            编辑
           </Button>
         )}
       </Descriptions.Item>
@@ -180,7 +180,7 @@ const DescriptDetail = ({ detail, index, styles, mode }) => {
         )}
         {mode === 'edit' && modify !== 'toCompany' && (
           <Button type="link" style={{ float: 'right' }} size="small" onClick={() => setModify('toCompany')}>
-            更改
+            编辑
           </Button>
         )}
       </Descriptions.Item>
@@ -199,7 +199,7 @@ const DescriptDetail = ({ detail, index, styles, mode }) => {
         )}
         {mode === 'edit' && modify !== 'fromAddress' && (
           <Button type="link" style={{ float: 'right' }} size="small" onClick={() => setModify('fromAddress')}>
-            更改
+            编辑
           </Button>
         )}
       </Descriptions.Item>
@@ -218,7 +218,7 @@ const DescriptDetail = ({ detail, index, styles, mode }) => {
         )}
         {mode === 'edit' && modify !== 'toAddress' && (
           <Button type="link" style={{ float: 'right' }} size="small" onClick={() => setModify('toAddress')}>
-            更改
+            编辑
           </Button>
         )}
       </Descriptions.Item>

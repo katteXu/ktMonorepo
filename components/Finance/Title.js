@@ -1,7 +1,7 @@
 import styles from './styles.less';
-const Title = () => {
+const Title = ({ style }) => {
   return (
-    <div className={styles.title}>
+    <div className={styles.title} style={{ float: 'right', ...style }}>
       <span className={styles.block}>
         <i className={`${styles.icon} ${styles.red}`}></i>
         {'收货净重>40吨'}
@@ -10,7 +10,7 @@ const Title = () => {
         <i className={`${styles.icon} ${styles.green}`}></i>
         {'收货净重<10吨'}
       </span>
-      <span className={styles.block}>
+      <span className={styles.block} style={{ marginRight: 0 }}>
         <i className={`${styles.icon} ${styles.yellow}`}></i>
         {'实际运费<50元'}
       </span>

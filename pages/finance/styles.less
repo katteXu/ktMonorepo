@@ -368,13 +368,20 @@ i.yellow {
 }
 
 .bottom {
+  position: fixed;
+  bottom: 0;
+  left: 200px;
+  right: 0;
+  font-size: 16px;
   display: flex;
   background: #fff;
-  padding: 10px 32px;
-  margin: 0 -32px;
-  box-shadow: 0px -1px 4px 0px rgba(174, 189, 210, 0.3);
-  justify-content: flex-end;
+  padding: 12px 32px;
+  height: 56px;
+  box-shadow: 0px -1px 4px 0px rgb(174 189 210 / 30%);
+  justify-content: flex-start;
   align-items: center;
+  z-index: 99;
+
   .item {
     padding: 0 15px;
 
@@ -400,6 +407,9 @@ i.yellow {
     color: #4a4a5a;
     letter-spacing: 0.36px;
     line-height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .number {
       font-family: PingFangSC-Medium;
@@ -409,7 +419,9 @@ i.yellow {
   }
 
   .pass-ipt {
-    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
   }
 
   .error-msg {
@@ -460,4 +472,91 @@ i.yellow {
   color: #4a4a5a;
   font-size: 24px;
   top: 50px;
+}
+
+.header {
+  background-color: #fff;
+  display: flex;
+  padding: 16px 24px;
+  .left {
+    flex: 1;
+    display: flex;
+    font-size: 16px;
+
+    font-weight: 500;
+    color: #4a4a5a;
+    .item {
+      flex: 1;
+      .title {
+        line-height: 24px;
+        .txt {
+          font-family: PingFangSC-Medium, PingFang SC;
+          font-size: 16px;
+        }
+      }
+      .price {
+        font-family: PingFangSC-Medium, PingFang SC;
+        margin-top: 16px;
+        font-size: 28px;
+        line-height: 32px;
+        margin-bottom: 24px;
+      }
+      & + .item {
+        border-left: 1px dashed #d8d8d8;
+        border-right: 1px dashed #d8d8d8;
+        padding-left: 23px;
+      }
+    }
+  }
+
+  .right {
+    flex: 1;
+    padding-left: 23px;
+
+    .title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #4a4a5a;
+      line-height: 24px;
+      display: flex;
+      .txt {
+        font-family: PingFangSC-Medium, PingFang SC;
+      }
+    }
+
+    .row {
+      margin-top: 16px;
+      display: flex;
+      font-size: 14px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #4a4a5a;
+      line-height: 22px;
+      div {
+        flex: 1;
+      }
+    }
+  }
+}
+
+.reject-reason {
+  margin: 16px;
+  margin-bottom: 8px;
+  padding: 16px;
+  background-color: #f6f7f9;
+  .title {
+    font-size: 16px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #e44040;
+    line-height: 22px;
+  }
+  .content {
+    margin-top: 16px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #4a4a5a;
+    line-height: 22px;
+  }
 }

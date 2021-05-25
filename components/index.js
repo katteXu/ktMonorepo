@@ -53,3 +53,6 @@ export { default as Prompt } from './Prompt';
 
 // 顶端消息
 export { default as TopMessage } from './TopMessage';
+
+//步骤条
+export { default as Steps } from './Steps';
