@@ -1,19 +1,16 @@
 import { useState, useEffect } from 'react';
-import { InfoCircleTwoTone } from '@ant-design/icons';
-import { Input, Button, Select, Modal, message, Form } from 'antd';
+import { InfoCircleFilled } from '@ant-design/icons';
+import { Input, Button, Select, Modal, message, Form, Tooltip } from 'antd';
 import styles from './styles.less';
 import PayPasswordInput from '@components/common/PayPasswordInput';
-import { capital, getUserInfo } from '@api';
+import { capital } from '@api';
 import router from 'next/router';
+import { getUserInfo } from '@api';
 const formItemLayout = {
   labelAlign: 'left',
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 },
 };
 
-const tailFormItemLayout = {
-  wrapperCol: { span: 18, offset: 6 },
-};
+const tailFormItemLayout = {};
 // 提现表单
 const CashOutForm = ({ onSubmit, amount }) => {
   const [form] = Form.useForm();
@@ -47,7 +44,7 @@ const CashOutForm = ({ onSubmit, amount }) => {
   // 提交数据
   const onFinish = async values => {
     const hasPayPass = await getUser();
-
+    console.log(hasPayPass);
     // 未设置支付密码 提示去设置
     if (!hasPayPass) {
       Modal.warn({
@@ -67,6 +64,7 @@ const CashOutForm = ({ onSubmit, amount }) => {
   // 全部提现
   const cashOutAll = () => {
     form.setFieldsValue({ amount: amount });
+    console.log(amount);
   };
 
   const cashOutInfo = async () => {
@@ -117,14 +115,7 @@ const CashOutForm = ({ onSubmit, amount }) => {
   };
   // 帮助文案
   const Help = () => {
-    return (
-      <div style={{ fontSize: 12, lineHeight: '12px', marginTop: 3 }}>
-        可提现余额{amount}
-        <a style={{ float: 'right' }} onClick={cashOutAll}>
-          全部提现
-        </a>
-      </div>
-    );
+    return <div style={{ fontSize: 12, lineHeight: '12px', marginTop: 3, color: '#4a4a5a' }}>可提现余额{amount}元</div>;
   };
 
   const onFinishFailed = errorInfo => {
@@ -137,19 +128,9 @@ const CashOutForm = ({ onSubmit, amount }) => {
         <Form.Item
           label={
             <div>
-              <span
-                style={{
-                  display: 'inline-block',
-                  marginRight: 4,
-                  visibility: 'hidden',
-                }}>
-                *
-              </span>
-              提现金额
+              <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>提现金额
             </div>
-          }
-          // label="提现金额"
-        >
+          }>
           <Form.Item
             name="amount"
             noStyle
@@ -159,13 +140,11 @@ const CashOutForm = ({ onSubmit, amount }) => {
                 required: true,
                 message: '提现金额不可为空',
               },
-              {
-                type: 'number',
-                message: '请输入有效的数字',
-                transform: value => Number(value),
-              },
+              { type: 'number', message: '请输入有效的数字', transform: value => Number(value) },
               {
                 validator: (rule, value) => {
+                  console.log(typeof value);
+                  console.log(typeof amount);
                   if (value * 1 > amount * 1) {
                     form.setFieldsValue({ amount });
                   } else {
@@ -175,11 +154,16 @@ const CashOutForm = ({ onSubmit, amount }) => {
               },
               {
                 pattern: /^\d+(\.?\d{1,2})?$/,
-                message: '提现金额只能是数字，最多两位小数!',
+                message: '提现金额只能是数字，最多!',
               },
             ]}>
-            <Input placeholder="请输入提现金额" />
+            <Input placeholder="请输入提现金额" style={{ width: 264 }} addonAfter={<span>元</span>} />
           </Form.Item>
+          <a
+            style={{ marginLeft: 12, fontSize: 14, color: '#3D86EF', position: 'relative', lineHeight: '32px' }}
+            onClick={cashOutAll}>
+            全部提现
+          </a>
           <Help />
         </Form.Item>
         <Form.Item
@@ -191,7 +175,7 @@ const CashOutForm = ({ onSubmit, amount }) => {
               message: '企业名称不可为空',
             },
           ]}>
-          <Input placeholder="请输入企业名称" />
+          <Input placeholder="请输入企业名称" style={{ width: 264 }} />
         </Form.Item>
 
         <Form.Item
@@ -202,14 +186,10 @@ const CashOutForm = ({ onSubmit, amount }) => {
               required: true,
               message: '企业对公账号不可为空',
             },
-            {
-              type: 'number',
-              message: '请输入有效的数字',
-              transform: value => Number(value),
-            },
+            { type: 'number', message: '请输入有效的数字', transform: value => Number(value) },
           ]}
           validateFirst={true}>
-          <Input placeholder="请输入账户号码" maxLength={30} />
+          <Input placeholder="请输入账户号码" maxLength={30} style={{ width: 264 }} />
         </Form.Item>
         <Form.Item
           label="开户行"
@@ -220,7 +200,7 @@ const CashOutForm = ({ onSubmit, amount }) => {
               message: '开户行不可为空',
             },
           ]}>
-          <Input placeholder="请输入开户行" maxLength={20} />
+          <Input placeholder="请输入开户行" maxLength={20} style={{ width: 264 }} />
         </Form.Item>
 
         <Form.Item
@@ -232,7 +212,7 @@ const CashOutForm = ({ onSubmit, amount }) => {
               message: '提现原因不可为空',
             },
           ]}>
-          <Select placeholder="请选择提现原因">
+          <Select placeholder="请选择提现原因" style={{ width: 264 }}>
             <Select.Option key={1} value={'运费结余'}>
               运费结余
             </Select.Option>
@@ -245,18 +225,9 @@ const CashOutForm = ({ onSubmit, amount }) => {
         <Form.Item
           label={
             <div>
-              <span
-                style={{
-                  display: 'inline-block',
-                  marginRight: 4,
-                  visibility: 'hidden',
-                }}>
-                *
-              </span>
-              详细说明
+              <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>详细说明
             </div>
           }
-          // label="详细说明"
           name="detail"
           rules={[
             {
@@ -268,9 +239,14 @@ const CashOutForm = ({ onSubmit, amount }) => {
               message: '最多填写100个字符',
             },
           ]}>
-          <Input.TextArea placeholder="请输入4-100个字符的详细说明" autosize={{ minRows: 5 }} maxLength={100} />
+          <Input.TextArea
+            placeholder="请输入4-100个字符的详细说明"
+            autosize={{ minRows: 5 }}
+            maxLength={100}
+            style={{ width: 480 }}
+          />
         </Form.Item>
-        <Form.Item {...tailFormItemLayout}>
+        <Form.Item {...tailFormItemLayout} style={{ marginLeft: 117 }}>
           <Button htmlType="submit" type="primary" loading={loading}>
             发起提现
           </Button>
@@ -288,15 +264,25 @@ const CashOutForm = ({ onSubmit, amount }) => {
         title="请输入支付密码">
         <div className={styles['password-block']}>
           <div className={styles['confirm-msg']}>
-            <InfoCircleTwoTone style={{ fontSize: 18, verticalAlign: 'sub', marginRight: 6 }} twoToneColor="#faad14" />
+            <InfoCircleFilled style={{ fontSize: 18, verticalAlign: 'sub', marginRight: 6, color: '#faad14' }} />
             您的提现总额为<span className={styles.number}>{money}</span>元
           </div>
-          <div className={styles['pass-ipt']} style={{ display: 'flex', justifyContent: 'center' }}>
+          <div
+            className={styles['pass-ipt']}
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>支付密码:</span>
             <PayPasswordInput
               onChange={value => {
                 setPassWord(value);
               }}
             />
+            <Tooltip
+              placement="topRight"
+              title={
+                '进入方向物流app -> 登录账号 -> 点击”我的”-> 点击”设置” -> 点击”密码管理” ->点击”修改支付密码” -> 设置密码'
+              }>
+              <span style={{ color: '#3D86EF' }}>忘记密码？</span>
+            </Tooltip>
           </div>
           <div className={styles['error-msg']}>{errorTxt}</div>
           <div className={styles.btn}>

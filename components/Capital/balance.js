@@ -5,7 +5,7 @@ import { Image } from '@components';
 const Balance = ({ children, wallet, exclusiveRechargeAccount, prepaid, prepaidFreight }) => {
   return (
     <div className={styles.wallet} style={{ backgroundImage: `url(${Image.BgCard})` }}>
-      <div style={{ fontSize: 16, fontWeight: 'normal' }}>{children}</div>
+      <div style={{ fontSize: 16, fontWeight: 'bold' }}>{children}</div>
       <div className={styles.money}>
         <span className={styles.icon}>￥</span>
         <span className={styles.number}>{wallet ? (wallet / 100).toFixed(2) : 0}</span>
@@ -13,7 +13,7 @@ const Balance = ({ children, wallet, exclusiveRechargeAccount, prepaid, prepaidF
       </div>
       <div style={{ marginTop: 20 }}>
         {prepaid ? (
-          <Button type="primary" ghost onClick={() => prepaidFreight()}>
+          <Button type="primary" onClick={() => prepaidFreight()}>
             预付运费
           </Button>
         ) : (

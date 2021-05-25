@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
-import { InfoCircleTwoTone } from '@ant-design/icons';
-import { Input, Button, Select, Modal, message, Form } from 'antd';
+import { InfoCircleFilled } from '@ant-design/icons';
+import { Input, Button, Select, Modal, message, Form, Tooltip } from 'antd';
 import styles from './styles.less';
 import PayPasswordInput from '@components/common/PayPasswordInput';
-import { capital, getUserInfo } from '@api';
+import { capital } from '@api';
+import { getUserInfo } from '@api';
 const formItemLayout = {
   labelAlign: 'left',
-  labelCol: { span: 5 },
-  wrapperCol: { span: 19 },
 };
 const { Option } = Select;
 
@@ -115,7 +114,13 @@ const CashOutForm = ({ onCancel, amount, refresh }) => {
 
   return (
     <div>
-      <Form {...formItemLayout} form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}>
+      <Form
+        {...formItemLayout}
+        className={styles.prepaidForm}
+        form={form}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        hideRequiredMark={true}>
         <Form.Item
           label="车队长"
           name="userId"
@@ -125,7 +130,7 @@ const CashOutForm = ({ onCancel, amount, refresh }) => {
               message: '车队长不可为空',
             },
           ]}>
-          <Select placeholder="请选择车队长" allowClear>
+          <Select placeholder="请选择车队长" allowClear style={{ width: 264 }}>
             {captainList.map(item => (
               <Option key={item.id} value={item.id}>
                 {item.name}
@@ -143,17 +148,12 @@ const CashOutForm = ({ onCancel, amount, refresh }) => {
               required: true,
               message: '预付金额不可为空',
             },
-            {
-              type: 'number',
-              message: '请输入有效的数字',
-              transform: value => Number(value),
-            },
+            { type: 'number', message: '请输入有效的数字', transform: value => Number(value) },
             {
               validator: (rule, value) => {
+                console.log(value);
                 if (value > +amount) {
-                  form.setFieldsValue({
-                    amount: +(amount.split('.')[0] + '.' + amount.split('.')[1].slice(0, 2)),
-                  });
+                  form.setFieldsValue({ amount: +(amount.split('.')[0] + '.' + amount.split('.')[1].slice(0, 2)) });
                 } else if (!/^\d+(\.?\d{1,2})?$/.test(value)) {
                   return Promise.reject('预付金额只能是数字，最多两位小数!');
                 } else {
@@ -162,26 +162,11 @@ const CashOutForm = ({ onCancel, amount, refresh }) => {
               },
             },
           ]}>
-          <Input placeholder="请输入预付金额" />
+          <Input placeholder="请输入预付金额" addonAfter="元" style={{ width: 264 }} />
         </Form.Item>
 
-        <Form.Item
-          label={
-            <div>
-              <span
-                style={{
-                  display: 'inline-block',
-                  marginRight: 4,
-                  visibility: 'hidden',
-                }}>
-                *
-              </span>
-              钱包余额
-            </div>
-          }
-          // label="钱包余额"
-        >
-          <div>{amount}</div>
+        <Form.Item label="钱包余额">
+          <div style={{ color: '#4a4a5a' }}>{amount}</div>
         </Form.Item>
 
         <div style={{ textAlign: 'right' }}>
@@ -193,7 +178,7 @@ const CashOutForm = ({ onCancel, amount, refresh }) => {
             取消
           </Button>
           <Button size="default" type="primary" style={{ marginLeft: 8 }} htmlType="submit" loading={loading}>
-            预付
+            确定
           </Button>
         </div>
       </Form>
@@ -212,20 +197,30 @@ const CashOutForm = ({ onCancel, amount, refresh }) => {
         title="请输入支付密码">
         <div className={styles['password-block']}>
           <div className={styles['confirm-msg']}>
-            <InfoCircleTwoTone style={{ fontSize: 18, verticalAlign: 'sub', marginRight: 6 }} twoToneColor="#faad14" />
+            <InfoCircleFilled style={{ fontSize: 18, verticalAlign: 'sub', marginRight: 6, color: '#faad14' }} />
             您的预付金额为<span className={styles.number}>{money}</span>元
           </div>
-          <div className={styles['pass-ipt']}>
+          <div
+            className={styles['pass-ipt']}
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>支付密码:</span>
             <PayPasswordInput
               onChange={value => {
                 setPassWord(value);
               }}
             />
+            <Tooltip
+              placement="topRight"
+              title={
+                '进入方向物流app -> 登录账号 -> 点击”我的”-> 点击”设置” -> 点击”密码管理” ->点击”修改支付密码” -> 设置密码'
+              }>
+              <span style={{ color: '#3D86EF' }}>忘记密码？</span>
+            </Tooltip>
           </div>
           <div className={styles['error-msg']}>{errorTxt}</div>
           <div className={styles.btn}>
             <Button type="primary" onClick={crashOut}>
-              预付
+              确定
             </Button>
           </div>
         </div>

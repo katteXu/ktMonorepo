@@ -150,8 +150,8 @@ const Index = props => {
 
   return (
     <>
-      <Msg style={{ textAlign: 'center' }}>
-        <span style={{ marginLeft: 8 }}>运单数</span>
+      <Msg>
+        <span>运单数</span>
         <span className={'total-num'}>{!loading ? list.count : '-'}</span>单
       </Msg>
       <Table

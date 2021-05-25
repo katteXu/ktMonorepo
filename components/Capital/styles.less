@@ -8,7 +8,7 @@
   width: calc(100% - 2px);
   height: 132px;
   // transform: translateY(-50%);
-  padding: 16px;
+  padding: 16px 24px;
 
   .money {
     vertical-align: bottom;
@@ -83,7 +83,13 @@
 }
 
 .root {
-  width: 550px;
+  // width: 550px;
+  :global {
+    .ant-form-item-label > label {
+      width: 81px;
+      margin-right: 8px;
+    }
+  }
   :global {
     .ant-form-horizontal .ant-form-item-label {
       width: 79px;
@@ -103,6 +109,7 @@
     line-height: 18px;
 
     .number {
+      font-weight: 600;
       font-family: PingFangSC-Medium;
       font-size: 18px;
       color: #3d86ef;
@@ -110,7 +117,7 @@
   }
 
   .pass-ipt {
-    // margin-top: 16px;
+    margin-top: 24px;
     display: flex;
     justify-content: center;
   }
@@ -127,7 +134,7 @@
   }
 
   .btn {
-    margin-top: 16px;
+    margin-top: 24px;
     text-align: right;
   }
 }
@@ -147,5 +154,14 @@
   .emptytxt {
     color: #848485;
     font-size: 14px;
+  }
+}
+
+.prepaidForm {
+  :global {
+    .ant-form-item-label > label {
+      width: 69px;
+      margin-right: 8px;
+    }
   }
 }

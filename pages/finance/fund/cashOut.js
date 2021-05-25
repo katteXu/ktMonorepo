@@ -1,12 +1,12 @@
 /** @format */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Layout from '@components/Layout';
 import Link from 'next/link';
 import Content from '@components/Content';
 import CashOutForm from '@components/Capital/cashOutForm';
 import { getUserInfo } from '@api';
 
-const PageDemo = props => {
+const Index = props => {
   const routeView = {
     title: '提现申请',
     pageKey: 'fund',
@@ -42,8 +42,7 @@ const PageDemo = props => {
   return (
     <Layout {...routeView}>
       <Content>
-        <header>提现申请</header>
-        <section>
+        <section style={{ paddingTop: 24, paddingLeft: 48 }}>
           <CashOutForm amount={amount} onSubmit={getMoney} />
         </section>
       </Content>
@@ -51,4 +50,4 @@ const PageDemo = props => {
   );
 };
 
-export default PageDemo;
+export default Index;

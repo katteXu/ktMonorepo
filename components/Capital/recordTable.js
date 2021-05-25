@@ -12,7 +12,7 @@ import EmptyList from './emptyList';
 import DrawerInfo from '@components/DrawerInfo';
 
 const titleDrawer = {
-  0: { title: '', width: 500 },
+  0: { title: '', width: 664 },
   1: { title: '运单列表', width: 1280 },
   2: { title: '开票信息', width: 1000 },
 };
@@ -60,7 +60,7 @@ const Index = props => {
       },
     },
     {
-      title: '交易金额（元）',
+      title: '交易金额(元)',
       dataIndex: 'amount',
       key: 'amount',
       width: '50px',
@@ -71,7 +71,7 @@ const Index = props => {
       },
     },
     {
-      title: '余额（元）',
+      title: '余额(元)',
       dataIndex: 'wallet_after',
       key: 'wallet_after',
       width: '50px',
@@ -124,6 +124,7 @@ const Index = props => {
       key: 'id',
       width: '50px',
       fixed: 'right',
+      align: 'right',
       render: (value, record, i) => {
         return (
           <span

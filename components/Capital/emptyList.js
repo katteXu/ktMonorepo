@@ -1,10 +1,10 @@
-const imgSrc = './list-empty.png';
+import { Image } from '@components';
 import styles from './styles.less';
 const Index = props => {
   return (
     <div className={styles.emptyBox}>
       <div>
-        <img src={imgSrc} className={styles.emptyImg} />
+        <img src={Image.ListEmpty} className={styles.emptyImg} />
         <div className={styles.emptytxt}>暂无详情~</div>
       </div>
     </div>

@@ -27,7 +27,7 @@ const columns = [
     width: '200px',
   },
   {
-    title: '预付余额（元）',
+    title: '预付余额(元)',
     dataIndex: 'remainAmount',
     key: 'remainAmount',
     width: '200px',
@@ -38,7 +38,7 @@ const columns = [
     },
   },
   {
-    title: '预付总额',
+    title: '预付总额(元)',
     dataIndex: 'sumAmount',
     key: 'sumAmount',
     width: '200px',
@@ -50,7 +50,7 @@ const columns = [
   },
 ];
 
-const Index = () => {
+const Index = props => {
   const [loading, setLoading] = useState(false);
   const [lineData, setLineData] = useState({});
   const [lineX, setLineX] = useState([]);
@@ -91,9 +91,7 @@ const Index = () => {
       page,
       fcName: fcName || undefined,
     };
-    const { status, result, detail, description } = await capital.prePayList({
-      params,
-    });
+    const { status, result, detail, description } = await capital.prePayList({ params });
     if (!status) {
       setCount(result.count);
       setList(result.data);
@@ -235,7 +233,7 @@ const Index = () => {
           <div className={styles.rightLine}>
             <div
               style={{
-                padding: 16,
+                padding: '12px 24px 8px',
                 paddingTop: 12,
                 lineHeight: '32px',
                 fontSize: '16px',
@@ -250,11 +248,7 @@ const Index = () => {
                 disabledDate={date => date > moment()}
               />
             </div>
-            <section style={{ padding: '0px 16px 16px' }}>
-              {/* <div className={styles.sumAmount}>
-                ￥{Format.price(sumAmount)}
-                <span style={{ fontSize: 12, marginLeft: 2 }}>元</span>
-              </div> */}
+            <section style={{ padding: '0px 24px 16px' }}>
               {emptyChart ? (
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
               ) : (
@@ -267,7 +261,7 @@ const Index = () => {
 
       <Content>
         <section style={{ paddingTop: 8 }}>
-          <div style={{ marginBottom: 16, fontSize: 16, fontWeight: 'bold' }}>
+          <div style={{ marginBottom: 16, fontSize: 14, fontWeight: 'bold' }}>
             <ChildTitle className="hei14">预付明细</ChildTitle>
           </div>
           <Search onSearch={search} onReset={resetFilter} simple>

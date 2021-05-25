@@ -11,6 +11,7 @@ const Finance = `${publicRuntimeConfig.staticFolder}/image/finance.png`;
 
 // 财务中心
 const BgCard = `${publicRuntimeConfig.staticFolder}/image/bgcard.png`;
+const ListEmpty = `${publicRuntimeConfig.staticFolder}/image/list-empty.png`;
 
 // 个人中心
 const QrCode = `${publicRuntimeConfig.staticFolder}/image/qrcode.png`;
@@ -123,4 +124,5 @@ export {
   LoadingScheme,
   ChuanSongOldGif,
   TiaoTaiOldGif,
+  ListEmpty,
 };

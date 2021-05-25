@@ -200,8 +200,7 @@ const Capital = props => {
           <div className={styles.rightLine}>
             <div
               style={{
-                padding: 16,
-                paddingTop: 12,
+                padding: '12px 24px 8px ',
                 lineHeight: '32px',
                 fontSize: '16px',
                 fontWeight: 'bold',
@@ -216,7 +215,7 @@ const Capital = props => {
                 value={monthPickerVal}
               />
             </div>
-            <section style={{ padding: '0px 16px 16px' }}>
+            <section style={{ padding: '0px 24px 16px' }}>
               <div className={styles.sumAmount}>
                 ￥{Format.price(sumAmount)}
                 <span style={{ fontSize: 12, marginLeft: 2 }}>元</span>
@@ -233,8 +232,8 @@ const Capital = props => {
 
       <Content>
         <section>
-          <div style={{ marginBottom: 16, fontSize: 16, fontWeight: 'bold' }}>
-            <ChildTitle>交易记录</ChildTitle>
+          <div style={{ marginBottom: 16, fontWeight: 'bold' }}>
+            <ChildTitle className="hei14">交易记录</ChildTitle>
           </div>
           <RecordTable
             isServer={props.isServer}
@@ -246,7 +245,12 @@ const Capital = props => {
         </section>
       </Content>
 
-      <Modal visible={visible} title="专属充值账号" onCancel={() => setVisible(false)} footer={null}>
+      <Modal
+        className={styles.modal}
+        visible={visible}
+        title="专属充值账号"
+        onCancel={() => setVisible(false)}
+        footer={null}>
         <div>
           {generate ? (
             <div className={styles.bgCard} style={{ backgroundImage: `url(${Image.BgCard})` }}>

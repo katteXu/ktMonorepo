@@ -51,6 +51,11 @@ i.yellow {
 
 .record {
   min-height: 500px;
+  :global {
+    .ant-checkbox + span {
+      color: #4a4a5a;
+    }
+  }
   :global(.ant-descriptions-title) {
     font-family: PingFangSC-Regular;
     font-size: 16px;
@@ -58,7 +63,16 @@ i.yellow {
     margin-bottom: 13px;
     font-weight: unset;
   }
-
+  :global {
+    .ant-descriptions-bordered.ant-descriptions-middle .ant-descriptions-item-label,
+    .ant-descriptions-bordered.ant-descriptions-middle .ant-descriptions-item-content {
+      border-color: #d8d8d866;
+    }
+  }
+  :global(.ant-descriptions-item-content) {
+    background: #f6f7f966;
+    color: #4a4a5a;
+  }
   :global(.ant-descriptions-item-label) {
     width: 145px;
   }
@@ -75,7 +89,7 @@ i.yellow {
     :global(.ant-descriptions-row) {
       // &:first-child{
       th {
-        background: #f1f7ff;
+        background: #f6faff;
         color: #3d86ef;
         width: 145px;
         position: relative;
@@ -91,6 +105,7 @@ i.yellow {
   }
 
   .number {
+    font-weight: 600;
     border: 1px solid #3d86ef;
     display: inline-block;
     height: 18px;
@@ -108,7 +123,7 @@ i.yellow {
 
   .total {
     :global(.ant-descriptions-item-label) {
-      background-color: #fff4ee;
+      background-color: #fff7f2;
     }
 
     .header-label {
@@ -123,12 +138,14 @@ i.yellow {
     border-top: 0px;
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
-    background: rgba(247, 247, 247, 0.2);
+    background: #f6f7f966;
   }
 }
 
 .bottom-block {
-  padding: 10px 32px;
+  font-size: 16px;
+  height: 56px;
+  padding: 12px 32px;
   background: #fff;
   box-shadow: 0px -1px 4px 0px rgba(174, 189, 210, 0.3);
   display: flex;
@@ -138,16 +155,20 @@ i.yellow {
 
 .remark-detail {
   border: 1px solid #ededed;
-  background: rgba(247, 247, 247, 0.2);
+  background: #f6f7f966;
   padding: 0 20px;
   border-top: none;
-
+  :global {
+    .ant-checkbox-disabled.ant-checkbox-checked .ant-checkbox-inner::after {
+      border-color: white !important;
+    }
+  }
   .ctrl-btn {
-    color: #848485;
+    color: #3d86ef;
     cursor: pointer;
 
     &:hover {
-      color: #4a4a5a;
+      color: #3d86efe6;
     }
   }
 
@@ -240,7 +261,7 @@ i.yellow {
       width: 88px;
       height: 32px;
       background: #fff;
-      border-radius: 4px;
+      border-radius: 2px;
       font-size: 16px;
       color: #3d86ef;
       margin-left: 16px;
@@ -316,7 +337,7 @@ i.yellow {
   padding: 24px 100px;
   margin-bottom: 16px;
   display: flex;
-  background: #f7f7f7;
+  background: #f6f7f9;
 
   .item {
     font-size: 14px;
@@ -371,16 +392,20 @@ i.yellow {
 }
 
 .bottom {
+  font-size: 16px;
   display: flex;
   background: #fff;
-  padding: 10px 32px;
+  padding: 12px 32px;
+  height: 56px;
   margin: 0 -32px;
   box-shadow: 0px -1px 4px 0px rgba(174, 189, 210, 0.3);
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   .item {
-    padding: 0 15px;
-
+    padding: 0 12px;
+    &:first-child {
+      padding-left: 24px;
+    }
     .total-num {
       font-weight: 600;
       color: #3d86ef;
@@ -405,6 +430,7 @@ i.yellow {
     line-height: 18px;
 
     .number {
+      font-weight: 600;
       font-family: PingFangSC-Medium;
       font-size: 18px;
       color: #3d86ef;
@@ -412,7 +438,9 @@ i.yellow {
   }
 
   .pass-ipt {
-    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
   }
 
   .error-msg {
@@ -427,7 +455,7 @@ i.yellow {
   }
 
   .btn {
-    margin-top: 16px;
+    margin-top: 24px;
     text-align: right;
   }
 }
@@ -459,8 +487,46 @@ i.yellow {
 
 .sumAmount {
   position: absolute;
-  font-weight: 600;
+  font-weight: 500;
   color: #4a4a5a;
   font-size: 24px;
-  top: 50px;
+  top: 47px;
+}
+
+.modal {
+  :global {
+    .ant-modal-body {
+      padding: 16px 16px 24px 16px;
+    }
+  }
+}
+
+.autoChooseForm {
+  :global {
+    .ant-form-item-label > label {
+      margin-right: 8px;
+    }
+  }
+}
+
+.reject-reason {
+  margin: 16px;
+  margin-bottom: 8px;
+  padding: 16px;
+  background-color: #f6f7f9;
+  .title {
+    font-size: 16px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #e44040;
+    line-height: 22px;
+  }
+  .content {
+    margin-top: 16px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #4a4a5a;
+    line-height: 22px;
+  }
 }
