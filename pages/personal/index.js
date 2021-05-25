@@ -37,8 +37,9 @@ const Personal = () => {
     <Layout {...routeView}>
       <div className={styles.root}>
         <div style={{ width: '25%' }}>
-          <Content style={{ padding: 24 }}>
-            <div className={styles.picVer}>
+          <Content>
+            <header>个人信息</header>
+            <div className={styles.picVer} style={{ marginTop: 16 }}>
               <div className={styles.picBack}>
                 {userInfo.verifyStatus == 'VERIFY_SUCCESS' ? (
                   <img src={Icon.VerifyIcon} className={styles.certification} />
@@ -49,7 +50,7 @@ const Personal = () => {
               </div>
             </div>
 
-            <div className={styles.personalData}>
+            <div className={styles.personalData} style={{ padding: '0 16px' }}>
               <div className={styles.picVer}></div>
               <div className={styles.content}>
                 <p className={styles.company}>
@@ -101,7 +102,7 @@ const Personal = () => {
                 </p>
                 <p
                   style={{
-                    marginBottom: 20,
+                    marginBottom: 32,
                     marginTop: 4,
                     textAlign: 'center',
                   }}>
