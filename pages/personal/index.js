@@ -112,7 +112,12 @@ const Personal = () => {
             </div>
           </Content>
         </div>
-        <div style={{ width: '73%', background: '#fff' }}>
+        <div
+          style={{
+            flex: 1,
+            marginLeft: 16,
+            background: '#fff',
+          }}>
           <div className={styles.tab}>
             <div
               className={`${styles.tab_item} ${currentTab === 'verify' ? styles.active : ''}`}
