@@ -56,3 +56,6 @@ export { default as TopMessage } from './TopMessage';
 
 //步骤条
 export { default as Steps } from './Steps';
+
+// 上传到OSS
+export { default as UploadToOSS } from './UploadToOSS';

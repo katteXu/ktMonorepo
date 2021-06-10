@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import { QuestionCircleFilled, UploadOutlined } from '@ant-design/icons';
-import { Input, Select, Button, DatePicker, Modal, Upload, Tooltip, message, Form } from 'antd';
+import { Input, Select, Button, DatePicker, Modal, Tooltip, message, Form } from 'antd';
 import moment from 'moment';
 import { railWay, contract } from '../../api';
 import SelectBtn from '../RailDetail/selectBtn_new';
-import { uploadToCDN } from '../BatchImport/upload';
 import router from 'next/router';
 import { PlusOutlined } from '@ant-design/icons';
 import AssociatedContract from '@components/contractManagement/associatedContract';
-
+import { UploadToOSS } from '@components';
 import styles from './styles.less';
 // 表单格式
 const formItemLayout = {
@@ -17,9 +16,6 @@ const formItemLayout = {
   // wrapperCol: { span: 18 },
 };
 
-const tailFormItemLayout = {
-  // wrapperCol: { offset: 4 },
-};
 // 获取货物类型
 const getGoodsType = async () => {
   const res = await railWay.getGoodsType();
@@ -38,17 +34,8 @@ const Index = () => {
   // 税前单价
   const [unitePrice, setUnitePrice] = useState();
 
-  // 上传附件
-  const [excelFile, setExcelFile] = useState([]);
-  const [excelRules, setExcelRules] = useState({});
-  const [excelFileList, setExcelFileList] = useState([]);
   const [showAssociatedContract, setShowAssociatedContract] = useState(false);
   const [selectedRowKeysItem, setSelectedRowKeysItem] = useState([]);
-  useEffect(() => {
-    if (excelFile.length !== 0) {
-      setExcelRules({});
-    }
-  }, [excelFile]);
 
   // 签订时间
   const [signDate, setSignDate] = useState();
@@ -70,34 +57,13 @@ const Index = () => {
     });
   }, [totalWeight, unitePrice]);
 
-  // // 税后单价自动填充
-  // useEffect(() => {
-  //   const uniteTaxPrice = unitePrice * (1 - parseInt(taxRate) / 100) || 0;
-  //   form.setFieldsValue({
-  //     uniteTaxPrice: uniteTaxPrice.toFixed(2),
-  //   });
-  // }, [unitePrice]);
-
   // 表单提交
   const handleSubmit = async values => {
-    if (excelFile.length === 0) {
-      setExcelRules({
-        message: '上传附件不可为空',
-        status: 'error',
-      });
-    }
-
-    // 判断是否存在上传附件或图片 以及其他验证
-    if (excelFile.length === 0) {
-      return;
-    }
     const isTime = moment().format('YYYY-MM-DD') === moment(values.effectiveDateFrom).format('YYYY-MM-DD');
-    let file = [];
-    excelFile.map((item, key) => {
-      file.push({
-        name: item.fileName,
-        url: item.fileUrl,
-      });
+
+    const file = values.files.map(item => {
+      const { response = {} } = item;
+      return { name: response.fileName, url: response.fileUrl };
     });
 
     const params = {
@@ -120,6 +86,7 @@ const Index = () => {
       annex_url: JSON.stringify(file),
       relation_contracts: selectedRowKeysItem.join(','),
     };
+
     const res = await contract.create_contract({ params });
     if (res.status === 0) {
       message.success('合同创建成功');
@@ -139,44 +106,6 @@ const Index = () => {
       setGoodsList(await getGoodsType());
     })();
   }, []);
-
-  // 上传excel附件
-  const uploadExcel = async ({ onSuccess, onProgress, file }) => {
-    const { userId } = localStorage;
-    setExcelFileList([...excelFileList, file]);
-    const resUrl = await uploadToCDN(file, userId, {
-      onProgress: percent => {
-        onProgress({ percent: percent * 100 });
-      },
-    });
-    const fileObj = {
-      fileType: 1,
-      fileName: file.name,
-      fileUrl: resUrl,
-      discernContent: '',
-    };
-
-    onSuccess(fileObj);
-  };
-
-  const fileRemove = (dragIndex, hoverIndex) => {
-    const dragRow = excelFileList[dragIndex];
-
-    const arr = excelFileList.filter(i => {
-      return i.uid != dragIndex.uid;
-    });
-    setExcelFileList(arr);
-  };
-
-  // 附件change
-  const changeExcel = ({ file, fileList }) => {
-    const resultExcel = fileList.map(item => item.response);
-    if (file.status === 'done') {
-      setExcelFile(resultExcel);
-    } else if (file.status === 'removed') {
-      setExcelFile(resultExcel);
-    }
-  };
 
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
@@ -519,19 +448,21 @@ const Index = () => {
           name="totalValue">
           <Input disabled placeholder="0.000" style={{ width: 264 }} suffix={'元'} />
         </Form.Item>
-        <Form.Item label="上传附件" required help={excelRules.message} validateStatus={excelRules.status || undefined}>
-          <Upload
-            accept=".doc,.docx,.pdf,.xlsx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            supportServerRender={true}
-            customRequest={e => uploadExcel(e)}
-            onRemove={fileRemove}
-            fileList={excelFileList}
-            onChange={e => changeExcel(e)}>
+        <Form.Item
+          label="上传附件"
+          name="files"
+          rules={[
+            {
+              required: true,
+              message: '附件不可为空',
+            },
+          ]}>
+          <UploadToOSS accept=".doc,.docx,.pdf,.xlsx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
             <Button>
               <UploadOutlined />
               点击上传
             </Button>
-          </Upload>
+          </UploadToOSS>
         </Form.Item>
         <Form.Item
           label={
