@@ -17,7 +17,7 @@ const Index = props => {
           <img src={Image.Error404} className={styles.imgError} />
           <div className={styles.right}>
             <h1>404</h1>
-            <div>抱歉，您访问的资源不存在！ </div>
+            <div>抱歉，您访问的资源不存在！</div>
             <Button type="primary" onClick={() => router.back()}>
               返回上一页
             </Button>
