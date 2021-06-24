@@ -227,18 +227,9 @@ const Billing = props => {
 
   // 分页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
       getRemoteData({ ...query, page });
-    },
-    [query]
-  );
-
-  // 切页码
-  const onChangePageSize = useCallback(
-    (current, pageSize) => {
-      setQuery({ ...query, page: 1, pageSize });
-      getRemoteData({ ...query, page: 1, pageSize });
     },
     [query]
   );
@@ -531,7 +522,6 @@ const Billing = props => {
         }}
         pagination={{
           onChange: onChangePage,
-          onShowSizeChange: onChangePageSize,
           showSizeChanger: true,
           pageSize: query.pageSize,
           current: query.page,
