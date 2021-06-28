@@ -1,13 +1,14 @@
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { Button, Input, Select, Switch, Modal, Row, Col, Tooltip, Radio, Form, message } from 'antd';
 import styles from './styles.less';
-import { AutoInputRoute } from '@components';
-import { railWay, customer } from '@api';
+import { AutoInputRoute, WareHouseSelect } from '@components';
+import { railWay, customer, getCommon } from '@api';
 import CreateGoods from './createGoods';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import AddressForm from '@components/CustomerDetail/address/form';
 import CompanyForm from '@components/CustomerDetail/company/form';
 import router from 'next/router';
+import WarehouseFrom from './warehouseFrom';
 const { Option } = Select;
 const { TextArea } = Input;
 // 表单布局
@@ -101,6 +102,10 @@ const RailWayForm = ({ onSubmit }) => {
 
   // 选择合同
   const [contract, setContract] = useState({});
+  const [isWarehouse, setIsWarehouse] = useState(false);
+
+  const wareHouseRef = useRef(null);
+  const [isShowWarehouse, setIsShowWarehouse] = useState(false);
 
   // 货品添加成功
   const createFinish = async () => {
@@ -119,8 +124,21 @@ const RailWayForm = ({ onSubmit }) => {
       // 获取地址列表
       const { data } = await getAddressList();
       setAddressList(data);
+      setHiddenDate();
     })();
   }, []);
+
+  const setHiddenDate = async () => {
+    const res = await getCommon();
+    if (res.status === 0) {
+      const currentUserName = window.localStorage.username;
+
+      const hiddenWarehouseName = res.result.find(item => item.key === 'HAS_WAREHOUSE').url;
+      if (hiddenWarehouseName.includes(currentUserName)) {
+        setIsShowWarehouse(true);
+      }
+    }
+  };
 
   // 监听发货联系人
   useEffect(() => {
@@ -183,6 +201,7 @@ const RailWayForm = ({ onSubmit }) => {
       receiverName: values.receiverName,
       receiverMobilePhone: values.receiverMobilePhone,
       remark: values.remark,
+      wareHouseId: values.wareHouseId > 0 ? values.wareHouseId : undefined,
       //隐藏信息
       ...hiddenInfo,
     };
@@ -381,6 +400,11 @@ const RailWayForm = ({ onSubmit }) => {
     visibleAfterOrderVisible: '司机抢单后可见隐藏信息',
   };
 
+  const refresh = async () => {
+    setIsWarehouse(false);
+    await wareHouseRef.current.refresh();
+  };
+
   Object.keys(options).forEach(item => {
     selectChildren.push(<Option key={item}>{options[item]}</Option>);
   });
@@ -397,6 +421,7 @@ const RailWayForm = ({ onSubmit }) => {
           printPoundBill: true,
           isLeavingAmount: 0,
           unitName: '吨',
+          wareHouseId: -1,
         }}>
         <Form.Item
           label={
@@ -492,6 +517,25 @@ const RailWayForm = ({ onSubmit }) => {
             新增
           </Button>
         </Form.Item>
+
+        {isShowWarehouse && (
+          <Form.Item
+            label="预计仓库"
+            name="wareHouseId"
+            validateFirst={true}
+            style={{ marginLeft: 32 }}
+            rules={[
+              {
+                required: true,
+                message: '请选择预计仓库',
+              },
+            ]}>
+            <WareHouseSelect allowClear placeholder="请选择仓库" style={{ width: 264 }} ref={wareHouseRef} />
+            <Button type="link" onClick={() => setIsWarehouse(true)} className={styles['btn-new']}>
+              新增
+            </Button>
+          </Form.Item>
+        )}
 
         {/* 是否打印磅单 */}
         <Form.Item label="打印磅单" required name="printPoundBill" style={{ marginLeft: 32 }}>
@@ -798,6 +842,18 @@ const RailWayForm = ({ onSubmit }) => {
           </Button>
         </Form.Item>
       </Form>
+
+      {/* 新增仓库 */}
+      <Modal
+        title="新增仓库"
+        onCancel={() => {
+          setIsWarehouse(false);
+        }}
+        visible={isWarehouse}
+        destroyOnClose
+        footer={null}>
+        <WarehouseFrom onSubmit={refresh} close={() => setIsWarehouse(false)} />
+      </Modal>
 
       {/* 添加货品弹窗 */}
       <Modal
