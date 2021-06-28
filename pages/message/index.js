@@ -52,9 +52,9 @@ const Message = props => {
 
   // 翻页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      getMessageList({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      getMessageList({ ...query, page, pageSize });
     },
     [list]
   );
@@ -92,7 +92,6 @@ const Message = props => {
             dataSource={list}
             pagination={{
               onChange: onChangePage,
-              onShowSizeChange: onChangePageSize,
               pageSize: query.pageSize,
               current: query.page,
               total: count,

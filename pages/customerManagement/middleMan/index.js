@@ -242,9 +242,9 @@ const MiddleMan = props => {
 
   // 翻页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      getDataList({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      getDataList({ ...query, page, pageSize });
     },
     [dataList]
   );
@@ -336,7 +336,6 @@ const MiddleMan = props => {
             scroll={{ x: 'auto' }}
             pagination={{
               onChange: onChangePage,
-              onShowSizeChange: onChangePageSize,
               pageSize: query.pageSize,
               current: query.page,
               total: dataList.count,

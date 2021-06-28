@@ -266,9 +266,9 @@ const RailWayDetail = () => {
 
   // 分页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      getDataList({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      getDataList({ ...query, page, pageSize });
     },
     [orderData]
   );
@@ -789,7 +789,6 @@ const RailWayDetail = () => {
             scroll={{ x: 1400 }}
             pagination={{
               onChange: onChangePage,
-              onShowSizeChange: onChangePageSize,
               pageSize: query.pageSize,
               current: query.page,
               total: orderData.count,

@@ -1,115 +1,127 @@
 .title {
   &:before {
-    margin-right: 11px;
-    display: inline-block;
-    height: 16px;
-    width: 3px;
+    margin-right    : 11px;
+    display         : inline-block;
+    height          : 16px;
+    width           : 3px;
     background-color: #3d86ef;
-    position: relative;
-    left: 0;
-    content: '.';
-    font-size: 0;
-    top: -2px;
+    position        : relative;
+    left            : 0;
+    content         : '.';
+    font-size       : 0;
+    top             : -2px;
   }
+
   padding-top: 8px;
-  font-size: 16px;
+  font-size  : 16px;
   line-height: 24px;
-  color: #4a4a5a;
-  font-family: PingFangSC-Medium, PingFang SC;
+  color      : #4a4a5a;
+  font-family: PingFangSC-Medium,
+  PingFang SC;
   font-weight: 600;
 }
+
 .row {
   // display: flex;
-  position: relative;
-  display: block;
-  align-items: center;
+  position       : relative;
+  display        : block;
+  align-items    : center;
   justify-content: space-between;
-  width: 100%;
-  margin-top: 16px;
-  height: 32px;
-  padding-left: 22px;
+  width          : 100%;
+  margin-top     : 16px;
+  height         : 32px;
+  padding-left   : 22px;
 
   .col {
     // flex: 1;
-    display: inline-block;
+    display  : inline-block;
     font-size: 14px;
-    height: 32px;
-    color: #848485;
+    height   : 32px;
+    color    : #848485;
 
-    & + .col {
+    &+.col {
       margin-left: 40px;
     }
 
     &.db-input {
-      display: flex;
+      display    : flex;
       align-items: center;
+
       input {
         width: 96px;
       }
     }
-    > span {
-      margin: 0 5px;
-      min-width: 51px;
+
+    >span {
+      margin    : 0 5px;
+      min-width : 51px;
       text-align: center;
-      color: #4a4a5a;
+      color     : #4a4a5a;
     }
   }
 }
-.row1 {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 24px;
-  .col {
-    flex: 1;
-    font-size: 14px;
-    color: #848485;
 
-    & + .col {
+.row1 {
+  display        : flex;
+  align-items    : center;
+  justify-content: space-between;
+  width          : 100%;
+  margin-top     : 24px;
+
+  .col {
+    flex     : 1;
+    font-size: 14px;
+    color    : #848485;
+
+    &+.col {
       margin-left: 19px;
     }
 
     &.db-input {
-      display: flex;
+      display    : flex;
       align-items: center;
+
       input {
         width: 96px;
       }
     }
-    > span {
-      margin: 0 5px;
-      min-width: 51px;
+
+    >span {
+      margin    : 0 5px;
+      min-width : 51px;
       text-align: center;
-      color: #4a4a5a;
+      color     : #4a4a5a;
     }
   }
 
-  & + .title {
+  &+.title {
     margin-top: 30px;
   }
 }
+
 .bottomBtn {
   margin-top: 24px;
 }
 
 .btn {
-  border: none;
-  outline: none;
-  color: #3d86ef;
-  box-shadow: none;
+  border       : none;
+  outline      : none;
+  color        : #3d86ef;
+  box-shadow   : none;
   padding-right: 0;
-  padding-left: 12px;
+  padding-left : 12px;
+
   &:hover {
     color: #3d86ef;
   }
+
   &:focus {
     color: #3d86ef;
   }
 }
 
 .rowDetail {
-  display: flex;
+  display    : flex;
   line-height: 38px;
 
   .item {
@@ -118,12 +130,26 @@
     }
 
     padding-right: 20px;
-    flex: 1;
-    color: #4a4a5a;
+    flex         : 1;
+    color        : #4a4a5a;
   }
+
   :global {
     .ant-input-affix-wrapper {
       color: #4a4a5a;
     }
   }
+}
+
+.btnBox {
+  position       : fixed;
+  bottom         : 0;
+  right          : 0;
+  width          : 933px;
+  border-top     : 1px solid #e9e9e9;
+  display        : flex;
+  justify-content: flex-end;
+  padding        : 15px 22px;
+  background     : #fff;
+  z-index        : 999;
 }

@@ -59,3 +59,6 @@ export { default as Steps } from './Steps';
 
 // 上传到OSS
 export { default as UploadToOSS } from './UploadToOSS';
+
+//仓库下拉选择
+export { default as WareHouseSelect } from './WareHouseSelect';

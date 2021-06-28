@@ -336,9 +336,9 @@ const RailWayPay = () => {
   };
 
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      getRemoteData({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      getRemoteData({ ...query, page, pageSize });
     },
     [dataList]
   );
@@ -684,7 +684,6 @@ const RailWayPay = () => {
             rowKey={(record, i) => (isAllTransport ? i : record.id)}
             pagination={{
               onChange: onChangePage,
-              onShowSizeChange: onChangePageSize,
               pageSize: query.pageSize,
               current: query.page,
               total: dataList.count,

@@ -131,9 +131,9 @@ const Index = props => {
 
   // 翻页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      setData({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      setData({ ...query, page, pageSize });
     },
     [list]
   );
@@ -280,7 +280,6 @@ const Index = props => {
               pageSize: query.pageSize,
               current: query.page,
               total: count,
-              onShowSizeChange: onChangePageSize,
             }}
           />
         </section>

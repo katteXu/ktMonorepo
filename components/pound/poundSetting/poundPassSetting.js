@@ -124,9 +124,9 @@ const PoundManagement = props => {
 
   // 分页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      getData({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      getData({ ...query, page, pageSize });
     },
     [dataList]
   );
@@ -275,7 +275,6 @@ const PoundManagement = props => {
           columns={columns}
           pagination={{
             onChange: onChangePage,
-            onShowSizeChange: onChangePageSize,
             showSizeChanger: true,
             pageSize: query.pageSize,
             current: query.page,

@@ -129,6 +129,155 @@ const inventoryListTotalSum = ({ params }) => {
     params,
   });
 };
+// 仓库列表
+const wareHouseList = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/wareHouseList',
+    params,
+  });
+};
+// 仓库新增
+const addWareHouse = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/addWareHouse',
+    params,
+  });
+};
+// 新增物料关系
+const addEditMatterRelationship = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/addEditMatterRelationship',
+    params,
+  });
+};
+// 物料关系列表
+const matterRelationshipList = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/matterRelationshipList',
+    params,
+  });
+};
+// 物料关系删除
+const deleteMatterRelationship = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/deleteMatterRelationship',
+    params,
+  });
+};
+// 变更记录
+const matterRelationshipLogList = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/matterRelationshipLogList',
+    params,
+  });
+};
+// 库存查询
+const inventoryTotalSum = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/inventoryTotalSum',
+    params,
+  });
+};
+
+//仓库修改
+const editWareHouse = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/editWareHouse',
+    params,
+  });
+};
+
+//仓库删除
+const deleteWareHouse = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/deleteWareHouse',
+    params,
+  });
+};
+
+// 仓库列表
+const wareHouseList = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/wareHouseList',
+    params,
+  });
+};
+// 仓库新增
+const addWareHouse = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/addWareHouse',
+    params,
+  });
+};
+// 新增物料关系
+const addEditMatterRelationship = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/addEditMatterRelationship',
+    params,
+  });
+};
+// 物料关系列表
+const matterRelationshipList = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/matterRelationshipList',
+    params,
+  });
+};
+// 物料关系删除
+const deleteMatterRelationship = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/deleteMatterRelationship',
+    params,
+  });
+};
+// 变更记录
+const matterRelationshipLogList = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/matterRelationshipLogList',
+    params,
+  });
+};
+// 库存查询
+const inventoryTotalSum = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/inventoryTotalSum',
+    params,
+  });
+};
+
+//仓库修改
+const editWareHouse = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/editWareHouse',
+    params,
+  });
+};
+
+//仓库删除
+const deleteWareHouse = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/inventory/deleteWareHouse',
+    params,
+  });
+};
 
 export default {
   getInventoryCheckList,
@@ -146,4 +295,13 @@ export default {
   inventoryLogDel,
   inventoryCheckDetailDel,
   inventoryListTotalSum,
+  wareHouseList,
+  addWareHouse,
+  addEditMatterRelationship,
+  matterRelationshipList,
+  deleteMatterRelationship,
+  matterRelationshipLogList,
+  inventoryTotalSum,
+  editWareHouse,
+  deleteWareHouse,
 };

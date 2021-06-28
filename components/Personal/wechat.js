@@ -87,9 +87,9 @@ const WxBind = props => {
 
   // 翻页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      formatDataSource({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      formatDataSource({ ...query, page, pageSize });
     },
     [dataList]
   );
@@ -120,7 +120,6 @@ const WxBind = props => {
           pagination={{
             onChange: onChangePage,
             pageSize: query.pageSize,
-            onShowSizeChange: onChangePageSize,
             current: query.page,
             total: dataList.count,
           }}

@@ -187,9 +187,9 @@ const InvoiceList = () => {
 
   // 分页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      getRemoteData({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      getRemoteData({ ...query, page, pageSize });
     },
     [query]
   );
@@ -421,7 +421,6 @@ const InvoiceList = () => {
             scroll={{ x: 'auto' }}
             pagination={{
               onChange: onChangePage,
-              onShowSizeChange: onChangePageSize,
               pageSize: query.pageSize,
               current: query.page,
               total: dataList.count,

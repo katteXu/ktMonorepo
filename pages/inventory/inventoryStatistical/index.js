@@ -239,9 +239,9 @@ const Index = props => {
 
   // 分页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      getStatisticalData({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      getStatisticalData({ ...query, page, pageSize });
       destory();
       setTimeout(() => {
         start({
@@ -412,7 +412,6 @@ const Index = props => {
             columns={columns}
             pagination={{
               onChange: onChangePage,
-              onShowSizeChange: onChangePageSize,
               showSizeChanger: true,
               pageSize: query.pageSize,
               current: query.page,

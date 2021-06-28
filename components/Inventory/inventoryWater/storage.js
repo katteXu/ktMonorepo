@@ -19,6 +19,20 @@ const Index = props => {
       render: value => value || '-',
     },
     {
+      title: '供应商',
+      dataIndex: 'supplyCompany',
+      key: 'supplyCompany',
+      width: 200,
+      render: value => value || '-',
+    },
+    {
+      title: '仓库',
+      dataIndex: 'wareHouseName',
+      key: 'wareHouseName',
+      width: 200,
+      render: value => value || '-',
+    },
+    {
       title: '入库类型',
       dataIndex: 'dataTypeZn',
       key: 'dataTypeZn',
@@ -52,7 +66,15 @@ const Index = props => {
           size="small"
           type="link"
           key="detail"
-          onClick={() => router.push(`/inventory/inventoryWater/storageDetail?id=${record.id}`)}>
+          onClick={() => {
+            keepState({
+              query: {
+                ...query,
+                num: 2,
+              },
+            });
+            router.push(`/inventory/inventoryWater/storageDetail?id=${record.id}`);
+          }}>
           详情
         </Button>
       ),
@@ -65,6 +87,8 @@ const Index = props => {
     end: undefined,
     type: undefined,
     goodsName: '',
+    supplyCompany: '',
+    wareHouseName: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -89,7 +113,7 @@ const Index = props => {
     getDataInfo({ ...query, begin: startTime, end: nowTime, type: typeStatus, goodsName });
   }, []);
 
-  const getDataInfo = async ({ page, pageSize, begin, end, type, goodsName }) => {
+  const getDataInfo = async ({ page, pageSize, begin, end, type, goodsName, supplyCompany, wareHouseName }) => {
     setLoading(true);
 
     const params = {
@@ -99,6 +123,8 @@ const Index = props => {
       changeTimeBegin: begin,
       changeTimeEnd: end,
       type,
+      supplyCompany,
+      wareHouseName,
     };
 
     const res = await inventory.inventoryInList({ params });
@@ -119,6 +145,8 @@ const Index = props => {
           end,
           type,
           count: res.result.count,
+          supplyCompany,
+          wareHouseName,
         },
       });
     } else {
@@ -142,6 +170,8 @@ const Index = props => {
       end: undefined,
       type: undefined,
       goodsName: '',
+      supplyCompany: '',
+      wareHouseName: '',
     };
     setQuery(query);
     getDataInfo(query);
@@ -149,9 +179,9 @@ const Index = props => {
 
   // 分页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      getDataInfo({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      getDataInfo({ ...query, page, pageSize });
     },
     [dataList]
   );
@@ -184,6 +214,17 @@ const Index = props => {
     setQuery(() => ({ ...query, goodsName }));
   });
 
+  // 供应商
+  const handleChangeCompany = useCallback(e => {
+    const supplyCompany = e.target.value;
+    setQuery(() => ({ ...query, supplyCompany }));
+  });
+  // 仓库
+  const handleChangeWarehouse = useCallback(e => {
+    const wareHouseName = e.target.value;
+    setQuery(() => ({ ...query, wareHouseName }));
+  });
+
   return (
     <section>
       {(isSuperUser || permissions.includes('INVENTORY_OPERATE')) && (
@@ -212,13 +253,20 @@ const Index = props => {
             allowClear>
             {/* <Option value="">全部</Option> */}
             <Option value="POUND">采购入库</Option>
-            <Option value="MANUAL_PRO">生产入库</Option>
+            <Option value="COAL_WASH">洗煤入库</Option>
+            <Option value="COAL_BLENDING">配煤入库</Option>
             <Option value="MANUAL">手动入库</Option>
             <Option value="INVENTORY_CHECK">盘点入库</Option>
           </Select>
         </Search.Item>
         <Search.Item label="货品名称">
           <Input allowClear value={query.goodsName} placeholder="请输入货品名称" onChange={handleChangeGoodsType} />
+        </Search.Item>
+        <Search.Item label="供应商">
+          <Input allowClear value={query.supplyCompany} placeholder="请输入供应商" onChange={handleChangeCompany} />
+        </Search.Item>
+        <Search.Item label="仓库">
+          <Input allowClear value={query.wareHouseName} placeholder="请输入仓库" onChange={handleChangeWarehouse} />
         </Search.Item>
       </Search>
 
@@ -234,7 +282,6 @@ const Index = props => {
         columns={columns}
         pagination={{
           onChange: onChangePage,
-          onShowSizeChange: onChangePageSize,
           showSizeChanger: true,
           pageSize: query.pageSize,
           current: query.page,
