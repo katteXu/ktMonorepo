@@ -17,6 +17,7 @@ const RailWay = props => {
     breadNav: '专线管理.开票专线',
     pageTitle: '开票专线',
   };
+
   // 列数据
   const columns = [
     {
