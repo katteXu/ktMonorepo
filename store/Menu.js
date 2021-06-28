@@ -119,6 +119,11 @@ const MENU_LIST = [
     key: 'inventory',
     children: [
       {
+        name: '库存查询',
+        key: 'inventoryQuery',
+        permission: ['INVENTORY_SEARCH_OPERATE'],
+      },
+      {
         name: '实时库存',
         key: 'inventoryStatistical',
         permission: ['INVENTORY_DATA_READ'],

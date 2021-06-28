@@ -109,7 +109,8 @@ const Home = () => {
 
   return (
     <Layout {...routeView}>
-      {menuList.findIndex(item => item.module === 'finance') !== -1 && <TopMessage />}
+      <TopMessage />
+      {/* {menuList.findIndex(item => item.module === 'finance') !== -1 && <TopMessage />} */}
       <Row gutter={24}>
         <Col span={8}>
           <Content>

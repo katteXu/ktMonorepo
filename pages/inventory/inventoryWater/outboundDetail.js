@@ -193,6 +193,10 @@ const Index = props => {
           </div>
           <div className={styles.rowDetail}>
             <div className={styles.item}>
+              <span className={styles.label}>仓库：</span>
+              {dataInfo.wareHouse || '-'}
+            </div>
+            <div className={styles.item}>
               <span className={styles.label}>货物单价：</span>
               {dataInfo.unitPrice ? Format.price(dataInfo.unitPrice) || '-' : '-'}
             </div>
@@ -201,12 +205,12 @@ const Index = props => {
               <span className={styles.label}>出库时间：</span>
               {dataInfo.createdAt || '-'}
             </div>
-            <div className={styles.item}>
-              <span className={styles.label}>供货单位：</span>
-              {dataInfo.supplyCompany || '-'}
-            </div>
           </div>
           <div className={styles.rowDetail}>
+            <div className={styles.item}>
+              <span className={styles.label}>客户：</span>
+              {dataInfo.supplyCompany || '-'}
+            </div>
             <div className={styles.item} style={{ display: 'flex' }}>
               <span className={styles.label} style={{ minWidth: 45 }}>
                 备注：
