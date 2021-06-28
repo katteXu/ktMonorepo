@@ -1,12 +1,23 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Input, DatePicker, Button, Table, message } from 'antd';
-import { Ellipsis, Layout, Content, Search } from '@components';
+import { Ellipsis, Layout, Content, Search, DrawerInfo } from '@components';
 import { Format, keepState, getState } from '@utils/common';
 import { inventory } from '@api';
 import router from 'next/router';
 import moment from 'moment';
 import { Permission } from '@store';
-
+import queryString from 'query-string';
+import CreateCmpt from '@components/StockTaking/create';
+import StockDetail from '@components/StockTaking/stockDetail';
+const initData = [
+  {
+    goodsName: '',
+    checkNum: '',
+    inventoryNum: '',
+    formatDiffNum: '',
+    id: '',
+  },
+];
 const StockTaking = props => {
   const routeView = {
     title: '库存盘点',
@@ -68,6 +79,7 @@ const StockTaking = props => {
           key="detail"
           onClick={() => {
             router.push(`/inventory/stockTaking/detail?id=${record.id}`);
+            // router.push(`/inventory/stockTaking/detail`);
           }}>
           详情
         </Button>
@@ -76,6 +88,9 @@ const StockTaking = props => {
   ];
   const [exportLoading, setExportLoading] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showDrawer, setShowDrawer] = useState(false);
+  const [showDetailDrawer, setShowDetailDrawer] = useState(false);
+  const [tableList, setTableList] = useState(initData);
   const [query, setQuery] = useState({
     begin: undefined,
     end: undefined,
@@ -83,9 +98,12 @@ const StockTaking = props => {
     page: 1,
     pageSize: 10,
   });
+  const [currentStock, setCurrentStock] = useState({});
   // 初始化
   useEffect(() => {
     const state = getState().query;
+    if (queryString.parse(location.search).add) setShowDrawer(true);
+    else setShowDrawer(false);
     setQuery({ ...query, ...state });
     getInventoryCheckList({ ...query, ...state });
   }, []);
@@ -159,6 +177,33 @@ const StockTaking = props => {
     [dataList]
   );
 
+  const handleCreateStockTaking = () => {
+    setShowDrawer(true);
+  };
+
+  //隐藏面包屑
+  const hideModal = type => {
+    setShowDrawer(false);
+  };
+
+  const handleCloseDrawer = type => {
+    setShowDetailDrawer(false);
+    handleSubmit();
+  };
+
+  const handleTableListChange = data => {
+    setTableList(data);
+  };
+
+  const handleToStockDetail = data => {
+    setCurrentStock(data);
+    setShowDetailDrawer(true);
+  };
+
+  const handleInventory = data => {
+    router.push('/inventory/stockTaking/inventoryManage');
+  };
+
   return (
     <Layout {...routeView}>
       <Content
@@ -168,10 +213,7 @@ const StockTaking = props => {
         }}>
         <section>
           {(isSuperUser || permissions.includes('INVENTORY_CHECK_OPERATE')) && (
-            <Button
-              type="primary"
-              onClick={() => router.push('/inventory/stockTaking/create')}
-              style={{ marginBottom: 16 }}>
+            <Button type="primary" onClick={handleCreateStockTaking} style={{ marginBottom: 16 }}>
               新增盘点
             </Button>
           )}
@@ -215,6 +257,20 @@ const StockTaking = props => {
           />
         </section>
       </Content>
+      <DrawerInfo title="新增盘点" onClose={() => setShowDrawer(false)} showDrawer={showDrawer} width="933">
+        <CreateCmpt
+          tableList={tableList}
+          poundType="from"
+          handleTableListChange={handleTableListChange}
+          onClose={() => setShowDrawer(false)}
+          handleInventory={handleInventory}
+          drawerVisible={showDrawer}
+          handleRefreshList={handleSubmit}
+        />
+      </DrawerInfo>
+      <DrawerInfo title="盘点详情" onClose={() => setShowDetailDrawer(false)} showDrawer={showDetailDrawer} width="933">
+        <StockDetail props={props} id={currentStock.id} handleCloseDrawer={handleCloseDrawer}></StockDetail>
+      </DrawerInfo>
     </Layout>
   );
 };
