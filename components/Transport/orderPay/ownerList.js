@@ -238,10 +238,11 @@ class OwnerList extends PureComponent {
   };
 
   // 分页
-  onChangePage = page => {
+  onChangePage = (page, pageSize) => {
     this.setState(
       {
         page,
+        pageSize,
       },
       this.setDataList
     );
@@ -414,8 +415,7 @@ class OwnerList extends PureComponent {
           rowKey={item => `${item.id}:${item.price}`}
           scroll={{ x: 1590 }}
           pagination={{
-            onChange: page => this.onChangePage(page),
-            onShowSizeChange: (current, size) => this.onChangePageSize(size),
+            onChange: (page, pageSize) => this.onChangePage(page, pageSize),
             pageSize: pageSize,
             current: page,
             total: dataList.count,

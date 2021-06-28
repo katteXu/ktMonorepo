@@ -47,9 +47,9 @@ const Point = props => {
 
   // 分页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      getDataList({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      getDataList({ ...query, page, pageSize });
     },
     [dataList]
   );
@@ -105,7 +105,6 @@ const Point = props => {
         columns={columns}
         pagination={{
           onChange: onChangePage,
-          onShowSizeChange: onChangePageSize,
           showSizeChanger: true,
           pageSize: query.pageSize,
           current: query.page,

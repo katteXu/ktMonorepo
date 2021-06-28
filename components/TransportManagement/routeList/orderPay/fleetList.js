@@ -195,10 +195,11 @@ class FleetList extends PureComponent {
     );
   };
 
-  onChangePage = page => {
+  onChangePage = (page, pageSize) => {
     this.setState(
       {
         page,
+        pageSize,
       },
       this.setDataList
     );
@@ -256,8 +257,7 @@ class FleetList extends PureComponent {
               columns={columns}
               scroll={{ x: 1500 }}
               pagination={{
-                onChange: page => this.onChangePage(page),
-                onShowSizeChange: (current, size) => this.onChangePageSize(size),
+                onChange: (page, pageSize) => this.onChangePage(page, pageSize),
                 pageSize,
                 current: page,
                 total: dataList.count,

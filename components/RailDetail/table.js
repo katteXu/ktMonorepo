@@ -219,8 +219,9 @@ const OrderTable = () => {
   };
 
   // 翻页
-  const onChangePage = value => {
-    setPage(value);
+  const onChangePage = (page, pageSize) => {
+    setPage(page);
+    setPageSize(pageSize);
     setSearch(state => !state);
   };
 
@@ -339,7 +340,6 @@ const OrderTable = () => {
             total: total,
             current: currPage,
             onChange: onChangePage,
-            onShowSizeChange: onChangePageSize,
           }}
         />
       </section>

@@ -149,8 +149,8 @@ const TotalReportDetail = props => {
     return pound.getPoundBillDetailList({ params });
   };
 
-  const onChangePage = page => {
-    setQuery({ ...query, page });
+  const onChangePage = (page, pageSize) => {
+    setQuery({ ...query, page, pageSize });
     // getDataList({ ...query, page });
   };
 
@@ -261,7 +261,6 @@ const TotalReportDetail = props => {
             showSorterTooltip={false}
             pagination={{
               onChange: onChangePage,
-              onShowSizeChange: onChangePageSize,
               pageSize: query.pageSize,
               current: query.page,
               total: dataList.count,

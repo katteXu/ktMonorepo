@@ -181,9 +181,9 @@ const UnBilling = props => {
 
   // 分页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      getRemoteData({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      getRemoteData({ ...query, page, pageSize });
     },
     [query]
   );
@@ -307,7 +307,6 @@ const UnBilling = props => {
         rowKey="ids"
         pagination={{
           onChange: onChangePage,
-          onShowSizeChange: onChangePageSize,
           showSizeChanger: true,
           pageSize: query.pageSize,
           current: query.page,
