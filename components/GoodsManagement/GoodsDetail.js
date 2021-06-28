@@ -164,17 +164,17 @@ const GoodsDetail = ({ rowData = {}, setShowOutModal, setShowInModal, setGetList
 
   // 分页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      getQualidyByGoods({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      getQualidyByGoods({ ...query, page, pageSize });
     },
     [dataList]
   );
   // 分页2
   const onChangePage2 = useCallback(
-    page => {
-      setQuery2({ ...query2, page });
-      getStockListByGoods({ ...query2, page });
+    (page, pageSize) => {
+      setQuery2({ ...query2, page, pageSize });
+      getStockListByGoods({ ...query2, page, pageSize });
     },
     [dataList2]
   );
@@ -370,9 +370,7 @@ const GoodsDetail = ({ rowData = {}, setShowOutModal, setShowInModal, setGetList
                   dataSource={dataList.data}
                   columns={columns}
                   pagination={{
-                    onChange: onChangePage,
-                    onShowSizeChange: onChangePageSize,
-                    // showSizeChanger: false,
+                    onChange: onChangePage, // showSizeChanger: false,
                     pageSize: query.pageSize,
                     current: query.page,
                     total: dataList.count,
@@ -388,7 +386,6 @@ const GoodsDetail = ({ rowData = {}, setShowOutModal, setShowInModal, setGetList
                 columns={columns2}
                 pagination={{
                   onChange: onChangePage2,
-                  onShowSizeChange: onChangePageSize2,
                   // showSizeChanger: true,
                   pageSize: query2.pageSize,
                   current: query2.page,

@@ -145,9 +145,9 @@ const ToSettlment = props => {
 
   // 分页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      getRemoteData({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      getRemoteData({ ...query, page, pageSize });
     },
     [dataList]
   );
@@ -250,7 +250,6 @@ const ToSettlment = props => {
             columns={columns}
             pagination={{
               onChange: onChangePage,
-              onShowSizeChange: onChangePageSize,
               pageSize: query.pageSize,
               current: query.page,
               total: dataList.count,

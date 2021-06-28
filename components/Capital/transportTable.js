@@ -166,7 +166,6 @@ const Index = props => {
           current: query.page,
           total: list.count,
           showSizeChanger: false,
-          // onShowSizeChange: onChangePageSize,
         }}
       />
     </>
