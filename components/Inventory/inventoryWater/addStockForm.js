@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { inventory } from '@api';
 import styles from './inventoryWater.less';
 import moment from 'moment';
-import { AutoInputSelect } from '@components';
+import { AutoInputSelect, WareHouseSelect } from '@components';
 const { Option } = Select;
 const { TextArea } = Input;
 // 表单布局
@@ -33,6 +33,7 @@ const AddStockForm = ({ onClose, formData, onSubmit }) => {
       remark: values.remark,
       num: values.num * 1000,
       inventoryId: goodsType.id,
+      wareHouseId: values.wareHouseId > 0 ? values.wareHouseId : undefined,
     };
 
     const res = await inventory.addInventoryIn({ params });
@@ -147,7 +148,18 @@ const AddStockForm = ({ onClose, formData, onSubmit }) => {
             {/* <Option value="MANUAL_PRO">生产入库</Option> */}
           </Select>
         </Form.Item>
-
+        <Form.Item
+          label="仓库"
+          name="wareHouseId"
+          validateFirst={true}
+          rules={[
+            {
+              required: true,
+              message: '请选择仓库',
+            },
+          ]}>
+          <WareHouseSelect allowClear placeholder="请选择仓库" style={{ width: 264 }} />
+        </Form.Item>
         <Form.Item
           label="货品名称"
           name="goodsType"
@@ -262,7 +274,7 @@ const AddStockForm = ({ onClose, formData, onSubmit }) => {
                 }}>
                 *
               </span>
-              供货单位
+              供应商
             </div>
           }
           name="companyName"
@@ -274,7 +286,7 @@ const AddStockForm = ({ onClose, formData, onSubmit }) => {
           <AutoInputSelect
             mode="company"
             allowClear
-            placeholder="请选择供货单位"
+            placeholder="请选择供应商"
             value={fromCompany.companyName}
             onChange={(e, val) => {
               onChangeFromCompany(e, val);

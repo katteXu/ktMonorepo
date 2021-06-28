@@ -20,6 +20,20 @@ const Index = props => {
       render: value => value || '-',
     },
     {
+      title: '客户',
+      dataIndex: 'supplyCompany',
+      key: 'supplyCompany',
+      width: 200,
+      render: value => value || '-',
+    },
+    {
+      title: '仓库',
+      dataIndex: 'wareHouseName',
+      key: 'wareHouseName',
+      width: 200,
+      render: value => value || '-',
+    },
+    {
       title: '出库类型',
       dataIndex: 'dataTypeZn',
       key: 'dataTypeZn',
@@ -53,7 +67,15 @@ const Index = props => {
           size="small"
           type="link"
           key="detail"
-          onClick={() => router.push(`/inventory/inventoryWater/outboundDetail?id=${record.id}`)}>
+          onClick={() => {
+            keepState({
+              query: {
+                ...query,
+                num: 2,
+              },
+            });
+            router.push(`/inventory/inventoryWater/outboundDetail?id=${record.id}`);
+          }}>
           详情
         </Button>
       ),
@@ -66,6 +88,8 @@ const Index = props => {
     end: undefined,
     type: undefined,
     goodsName: '',
+    supplyCompany: '',
+    wareHouseName: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -90,7 +114,7 @@ const Index = props => {
     getDataInfo({ ...query, begin: startTime, end: nowTime, type: typeStatus, goodsName });
   }, []);
 
-  const getDataInfo = async ({ page, pageSize, begin, end, type, goodsName }) => {
+  const getDataInfo = async ({ page, pageSize, begin, end, type, goodsName, supplyCompany, wareHouseName }) => {
     setLoading(true);
     const params = {
       goodsName,
@@ -99,6 +123,8 @@ const Index = props => {
       changeTimeBegin: begin,
       changeTimeEnd: end,
       type,
+      supplyCompany,
+      wareHouseName,
     };
 
     const res = await inventory.inventoryOutList({ params });
@@ -119,6 +145,8 @@ const Index = props => {
           type,
           goodsName,
           count: res.result.count,
+          supplyCompany,
+          wareHouseName,
         },
       });
     } else {
@@ -142,6 +170,8 @@ const Index = props => {
       end: undefined,
       type: undefined,
       goodsName: '',
+      supplyCompany: '',
+      wareHouseName: '',
     };
     setQuery(query);
     getDataInfo(query);
@@ -184,6 +214,17 @@ const Index = props => {
     setQuery(() => ({ ...query, goodsName }));
   });
 
+  // 供应商
+  const handleChangeCompany = useCallback(e => {
+    const supplyCompany = e.target.value;
+    setQuery(() => ({ ...query, supplyCompany }));
+  });
+  // 仓库
+  const handleChangeWarehouse = useCallback(e => {
+    const wareHouseName = e.target.value;
+    setQuery(() => ({ ...query, wareHouseName }));
+  });
+
   return (
     <section>
       {(isSuperUser || permissions.includes('INVENTORY_OPERATE')) && (
@@ -215,6 +256,12 @@ const Index = props => {
         </Search.Item>
         <Search.Item label="货品名称">
           <Input allowClear value={query.goodsName} placeholder="请输入货品名称" onChange={handleChangeGoodsType} />
+        </Search.Item>
+        <Search.Item label="客户">
+          <Input allowClear value={query.supplyCompany} placeholder="请输入客户" onChange={handleChangeCompany} />
+        </Search.Item>
+        <Search.Item label="仓库">
+          <Input allowClear value={query.wareHouseName} placeholder="请输入仓库" onChange={handleChangeWarehouse} />
         </Search.Item>
       </Search>
 
