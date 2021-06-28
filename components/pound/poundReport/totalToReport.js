@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Input, Button, Table, message, Menu } from 'antd';
-import { Content, Search, Msg, Ellipsis, TableHeaderConfig } from '@components';
+import { Content, Search, Msg, Ellipsis, TableHeaderConfig, DrawerInfo } from '@components';
 import moment from 'moment';
 import { pound, downLoadFile, getColumnsByTable, setColumnsByTable } from '@api';
 import { keepState, getState, clearState, Format } from '@utils/common';
 import router from 'next/router';
 import DatePicker from '@components/pound/DatePicker/static';
-
+import Detail from './detailTo';
 const Index = props => {
   const defaultColumns = [
     'goodsType',
@@ -107,7 +107,16 @@ const Index = props => {
       render: (value, record) => {
         const { customer, goodsType } = record;
         return (
-          <Button type="link" size="small" onClick={() => handleToDetail(customer, goodsType)}>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              setShowDetail(true);
+              setInfo({
+                customer,
+                goodsType,
+              });
+            }}>
             详情
           </Button>
         );
@@ -143,6 +152,21 @@ const Index = props => {
     begin: undefined,
     end: undefined,
   });
+  const [info, setInfo] = useState({});
+  const [showDetail, setShowDetail] = useState(false);
+  const [queryDetail, setQueryDetail] = useState({
+    page: 1,
+    pageSize: 10,
+    begin: props.dateTime.begin,
+    end: props.dateTime.end,
+    goodsType: undefined,
+    dateStatus: props.dateTime.dateStatus,
+    company: '',
+  });
+
+  useEffect(() => {
+    setQueryDetail(query);
+  }, [dataList]);
   useEffect(() => {
     const { isServer } = props;
     if (isServer) {
@@ -305,6 +329,28 @@ const Index = props => {
         titleList.push(column.title);
       }
     });
+    const detailColumns = [
+      'outTime',
+      'customer',
+      'goodsType',
+      'trailerPlateNumber',
+      'totalWeight',
+      'carWeight',
+      'goodsWeight',
+      'fromGoodsWeight',
+      'loss',
+    ];
+    const detailTitleList = [
+      '出站时间',
+      '发货企业',
+      '货品名称',
+      '车牌号',
+      '毛重（吨）',
+      '皮重（吨）',
+      '实收净重（吨）',
+      '原发净重（吨）',
+      '路损（吨）',
+    ];
     const params = {
       receiveOrSend: true,
       startTime: begin || undefined,
@@ -314,8 +360,8 @@ const Index = props => {
       dump: true,
       bossId: dataList.bossId ? dataList.bossId : undefined,
       childId: dataList.childId ? dataList.childId : undefined,
-      keyList: keyList.join(' '),
-      titleList: titleList.join(' '),
+      keyList: type === 'detail' ? detailColumns.join(' ') : keyList.join(' '),
+      titleList: type === 'detail' ? detailTitleList.join(' ') : titleList.join(' '),
     };
     if (type === 'detail') {
       return pound.getPoundBillDetailList({ params });
@@ -538,6 +584,17 @@ const Index = props => {
           />
         </section>
       </Content>
+      <DrawerInfo title="汇总收货详情" onClose={() => setShowDetail(false)} showDrawer={showDetail} width="800">
+        {showDetail && (
+          <Detail
+            close={() => {
+              setShowDetail(false);
+            }}
+            info={info}
+            queryDetail={queryDetail}
+          />
+        )}
+      </DrawerInfo>
     </>
   );
 };

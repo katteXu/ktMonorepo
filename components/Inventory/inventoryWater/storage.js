@@ -212,7 +212,8 @@ const Index = props => {
             allowClear>
             {/* <Option value="">全部</Option> */}
             <Option value="POUND">采购入库</Option>
-            <Option value="MANUAL_PRO">生产入库</Option>
+            <Option value="COAL_WASH">洗煤入库</Option>
+            <Option value="COAL_BLENDING">配煤入库</Option>
             <Option value="MANUAL">手动入库</Option>
             <Option value="INVENTORY_CHECK">盘点入库</Option>
           </Select>

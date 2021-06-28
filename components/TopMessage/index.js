@@ -11,9 +11,9 @@ const TopMessage = () => {
   const [list, setList] = useState([]);
   const [total, setTotal] = useState(0);
   // const [url, setUrl] = useState();
-  // useEffect(() => {
-  //   showMessage();
-  // }, [props.common.refreshTopMessage]);
+  useEffect(() => {
+    showMessage();
+  }, []);
 
   // 提示开票驳回
   const showMessage = async () => {
@@ -82,12 +82,12 @@ const TopMessage = () => {
             </a>
           </div>
           <div className={styles.list}>
-            {list.map(item => {
+            {list.map((item, key) => {
               const { id, batchId, payType } = item;
               const mode = 'edit';
               const url = `/finance/invoiceList/record?id=${id}&&mode=${mode}&&batchId=${batchId}&&payType=${payType}&&status=REJECT_APPROVE`;
               return (
-                <div className={styles.item}>
+                <div className={styles.item} key={key}>
                   <div className={styles.content}>您有开票申请已被驳回，请及时查看以免影响开票流程</div>
                   <div className={styles.bottom}>
                     <div className={styles.date}>{item.createdAt}</div>

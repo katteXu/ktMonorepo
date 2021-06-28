@@ -207,7 +207,8 @@ const Index = props => {
           <Select value={query.type} placeholder="请选择出库类型" style={{ width: '100%' }} onChange={handleChangeType}>
             {/* <Option value="">全部</Option> */}
             <Option value="POUND">销售出库</Option>
-            <Option value="MANUAL_PRO">生产出库</Option>
+            <Option value="COAL_WASH">洗煤出库</Option>
+            <Option value="COAL_BLENDING">配煤出库</Option>
             <Option value="MANUAL">手动出库</Option>
             <Option value="INVENTORY_CHECK">盘点出库</Option>
           </Select>
