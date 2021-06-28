@@ -45,6 +45,12 @@ const MENU_LIST = [
     ],
   },
   {
+    module: 'stationManagement',
+    icon: 'robot',
+    name: '站内管理',
+    key: 'stationManagement',
+  },
+  {
     module: 'contractManagement',
     icon: 'book',
     name: '合同管理',
