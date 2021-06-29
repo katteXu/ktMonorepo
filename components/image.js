@@ -35,6 +35,8 @@ const TiaoTai = `${publicRuntimeConfig.staticFolder}/image/tiaotai.png`;
 const FuXuan = `${publicRuntimeConfig.staticFolder}/image/fuxuan.png`;
 const FenXuan = `${publicRuntimeConfig.staticFolder}/image/fenxuan.png`;
 const ChuanSongGray = `${publicRuntimeConfig.staticFolder}/image/chuansongGrey.png`;
+const ZhuKong = `${publicRuntimeConfig.staticFolder}/image/zhuKong.png`;
+const ZhuKongGray = `${publicRuntimeConfig.staticFolder}/image/zhuKongGrey.png`;
 const DiBangGray = `${publicRuntimeConfig.staticFolder}/image/dibangGrey.png`;
 const TiaoTaiGray = `${publicRuntimeConfig.staticFolder}/image/tiaotaiGrey.png`;
 const FuXuanGray = `${publicRuntimeConfig.staticFolder}/image/fuxuanGrey.png`;
@@ -54,6 +56,7 @@ const ChuanSongGif = `${publicRuntimeConfig.staticFolder}/image/chuansong.gif`;
 const ChuanSongOldGif = `${publicRuntimeConfig.staticFolder}/image/chuansong_old.gif`;
 const TiaoTaiOldGif = `${publicRuntimeConfig.staticFolder}/image/tiaotai_old.gif`;
 const LoadingScheme = `${publicRuntimeConfig.staticFolder}/image/loading.gif`;
+const EquipmentNo = `${publicRuntimeConfig.staticFolder}/image/equipmentNo.png`;
 
 // 其他
 const Error404 = `${publicRuntimeConfig.staticFolder}/image/error-404.png`;
@@ -125,4 +128,7 @@ export {
   ChuanSongOldGif,
   TiaoTaiOldGif,
   ListEmpty,
+  ZhuKong,
+  ZhuKongGray,
+  EquipmentNo,
 };
