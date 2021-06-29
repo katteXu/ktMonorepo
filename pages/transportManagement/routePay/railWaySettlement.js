@@ -387,6 +387,11 @@ const RailWaySettlement = props => {
   const handleReload = useCallback(() => {
     getDataList({ ...query });
     setSelectedRowKeys([]);
+    setCheckTotal({
+      waitPayNum: 0,
+      goodsWeight: 0,
+      arrivalGoodsWeight: 0,
+    });
   }, [query]);
 
   useEffect(() => {

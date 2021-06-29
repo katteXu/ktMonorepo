@@ -257,11 +257,6 @@ const RailWayPay = () => {
   };
 
   const onSelectAll = (selected, selectedRows, changeRows) => {
-    // 计算总净重 & 运费总额
-    let _realPrice = 0;
-    let _arrivalGoodsWeight = 0;
-    let _goodsWeight = 0;
-
     changeRows.forEach(record => {
       const realPrice = record.realPrice;
       const arrivalGoodsWeight = record.arrivalGoodsWeight;
@@ -274,21 +269,30 @@ const RailWayPay = () => {
       } else {
         selectedRowKeys.splice(i, 1);
       }
-
+      // 计算总净重 & 运费总额
+      let _realPrice = 0;
+      let _arrivalGoodsWeight = 0;
+      let _goodsWeight = 0;
       _realPrice += realPrice || 0;
       _arrivalGoodsWeight += arrivalGoodsWeight || 0;
       _goodsWeight += goodsWeight || 0;
       if (selected) {
-        setCheckTotal({
-          waitPayNum: _realPrice,
-          goodsWeight: _goodsWeight,
-          arrivalGoodsWeight: _arrivalGoodsWeight,
-        });
+        if (i === -1) {
+          setCheckTotal(total => {
+            return {
+              waitPayNum: total.waitPayNum + _realPrice,
+              goodsWeight: total.goodsWeight + _goodsWeight,
+              arrivalGoodsWeight: total.arrivalGoodsWeight + _arrivalGoodsWeight,
+            };
+          });
+        }
       } else {
-        setCheckTotal({
-          waitPayNum: 0,
-          goodsWeight: 0,
-          arrivalGoodsWeight: 0,
+        setCheckTotal(total => {
+          return {
+            waitPayNum: total.waitPayNum - _realPrice,
+            goodsWeight: total.goodsWeight - _goodsWeight,
+            arrivalGoodsWeight: total.arrivalGoodsWeight - _arrivalGoodsWeight,
+          };
         });
       }
     });
@@ -357,6 +361,11 @@ const RailWayPay = () => {
 
     if (!checked) {
       setSelectedRowKeys([]);
+      setCheckTotal({
+        waitPayNum: 0,
+        goodsWeight: 0,
+        arrivalGoodsWeight: 0,
+      });
     } else {
       const time = await getStamp();
       setStamp(time);
@@ -424,6 +433,11 @@ const RailWayPay = () => {
   const handleReload = () => {
     getRemoteData(query);
     setSelectedRowKeys([]);
+    setCheckTotal({
+      waitPayNum: 0,
+      goodsWeight: 0,
+      arrivalGoodsWeight: 0,
+    });
   };
 
   const handleChangeDate = ({ begin, end }, dateStatus) => {
@@ -663,16 +677,20 @@ const RailWayPay = () => {
             <span style={{ marginRight: 32 }}>
               发货净重
               <span className="total-num">
-                {Format.weight(selectedRowKeys.length > 0 ? checkTotal.goodsWeight : dataList.goodsWeight)}
+                {isAllTransport
+                  ? Format.weight(dataList.goodsWeight)
+                  : Format.weight(selectedRowKeys.length > 0 ? checkTotal.goodsWeight : dataList.goodsWeight)}
               </span>
               吨
             </span>
             <span>
               收货净重
               <span className="total-num">
-                {Format.weight(
-                  selectedRowKeys.length > 0 ? checkTotal.arrivalGoodsWeight : dataList.arrivalGoodsWeight
-                )}
+                {isAllTransport
+                  ? Format.weight(dataList.arrivalGoodsWeight)
+                  : Format.weight(
+                      selectedRowKeys.length > 0 ? checkTotal.arrivalGoodsWeight : dataList.arrivalGoodsWeight
+                    )}
               </span>
               吨
             </span>
