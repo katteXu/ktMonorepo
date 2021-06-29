@@ -4,11 +4,13 @@ import styles from './styles.less';
 import moment from 'moment';
 import { railWay, customer, getCommon } from '@api';
 import CreateGoods from './createGoods';
-import { useState, useEffect, useCallback } from 'react';
-import { AutoInputRoute } from '@components';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { AutoInputRoute, WareHouseSelect } from '@components';
 import AddressForm from '@components/CustomerDetail/address/form';
 import CompanyForm from '@components/CustomerDetail/company/form';
 import router from 'next/router';
+import { User } from '@store';
+import WarehouseFrom from './warehouseFrom';
 const { Option } = Select;
 const { TextArea } = Input;
 // 货运方式
@@ -98,6 +100,7 @@ const getGoodsUnitName = async () => {
 
 // 表单组件
 const RailWayForm = ({ serverTime, onSubmit }) => {
+  const { userInfo, loading } = User.useContainer();
   // 服务端时间和本地时间差
   const [diffTime, setDiffTime] = useState(() => {
     return moment(serverTime).diff(moment());
@@ -121,6 +124,8 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   const [companyModal, setCompanyModal] = useState(false);
   const [newCompany, setNewCompany] = useState(false);
 
+  const [isWarehouse, setIsWarehouse] = useState(false);
+  const [isShowWarehouse, setIsShowWarehouse] = useState(false);
   // 危险品提示
   // 货品单位
   const [unitNameList, setUnitNameList] = useState([]);
@@ -141,14 +146,20 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   const [whiteList, setWhiteList] = useState(false);
 
   const [isFleet, setIsFleet] = useState(0);
-
+  const wareHouseRef = useRef(null);
   const setHiddenDate = async () => {
     const res = await getCommon();
     if (res.status === 0) {
+      const currentUserName = userInfo.username;
       const hiddenUserName = res.result.find(item => item.key === 'noValidTimeForRoute').url;
-      const currentUserName = window.localStorage.username;
+
       if (hiddenUserName.includes(currentUserName)) {
         setIsHiddenDate(true);
+      }
+      const hiddenWarehouseName = res.result.find(item => item.key === 'HAS_WAREHOUSE').url;
+
+      if (hiddenWarehouseName.includes(currentUserName)) {
+        setIsShowWarehouse(true);
       }
     }
   };
@@ -253,7 +264,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
     Object.keys(options).forEach(item => {
       hiddenInfo[item] = values.hiddenInfo && values.hiddenInfo.includes(item) ? 1 : 0;
     });
-    console.log(values.hiddenInfo);
+
     const fromAddress = addressList.find(({ id }) => id === fromAddressId);
     const toAddress = addressList.find(({ id }) => id === toAddressId);
 
@@ -283,6 +294,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       eraseZero: values.eraseZero ? '1' : '0',
       payMethod: values.payMethod,
       remark: values.remark,
+      wareHouseId: values.wareHouseId > 0 ? values.wareHouseId : undefined,
       //业务类型
       businessType: values.businessType || '1',
       //隐藏信息
@@ -381,7 +393,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       };
       dataView.routeContactMobile = { label: '专线负责人：', value: values.routeContactMobile };
     }
-    console.log(data);
+
     onSubmit(data, dataView);
   };
 
@@ -390,7 +402,6 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   };
 
   const settlementMethod = v => {
-    console.log(v);
     v === '1'
       ? form.setFieldsValue({
           payMethod: '0',
@@ -510,6 +521,11 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
     visibleAfterOrderVisible: '司机抢单后可见隐藏信息',
   };
 
+  const refresh = async () => {
+    setIsWarehouse(false);
+    await wareHouseRef.current.refresh();
+  };
+
   Object.keys(options).forEach(item => {
     selectChildren.push(<Option key={item}>{options[item]}</Option>);
   });
@@ -529,6 +545,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           payMethod: '0',
           businessType: '1',
           fleet: '0',
+          wareHouseId: -1,
         }}>
         <Form.Item label="专线类型" name="fleet" style={{ marginLeft: 32 }} rules={rules}>
           <Radio.Group onChange={e => setIsFleet(e.target.value)}>
@@ -835,6 +852,25 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
             新增
           </Button>
         </Form.Item>
+        {isShowWarehouse && (
+          <Form.Item
+            label="预计仓库"
+            name="wareHouseId"
+            validateFirst={true}
+            style={{ marginLeft: 32 }}
+            rules={[
+              {
+                required: true,
+                message: '请选择预计仓库',
+              },
+            ]}>
+            <WareHouseSelect allowClear placeholder="请选择仓库" style={{ width: 264 }} ref={wareHouseRef} />
+
+            <Button type="link" onClick={() => setIsWarehouse(true)} className={styles['btn-new']}>
+              新增
+            </Button>
+          </Form.Item>
+        )}
 
         {/* 货品方式 */}
         <Form.Item
@@ -1130,6 +1166,17 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           </Button>
         </Form.Item>
       </Form>
+      {/* 新增仓库 */}
+      <Modal
+        title="新增仓库"
+        onCancel={() => {
+          setIsWarehouse(false);
+        }}
+        visible={isWarehouse}
+        destroyOnClose
+        footer={null}>
+        <WarehouseFrom onSubmit={refresh} close={() => setIsWarehouse(false)} />
+      </Modal>
       {/* 添加货品弹窗 */}
       <Modal
         title="新增货品名称"

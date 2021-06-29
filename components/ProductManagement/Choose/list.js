@@ -163,16 +163,7 @@ const List = ({ onCoalBlending, isServer, GoodsType }) => {
   const handleCoalBlending = async () => {
     if (dataList.data.length > 0) {
       if (selectedRows.length === 0) {
-        const params = {
-          check: 1,
-        };
-        const res = await product.submitCoalBlending({ params });
-
-        if (res.status === 0) {
-          onCoalBlending && onCoalBlending([]);
-        } else {
-          message.error(res.detail || res.description);
-        }
+        onCoalBlending && onCoalBlending([]);
       } else {
         if (selectedRows.length < 2) {
           message.warn('请选择至少两种原料煤');
@@ -333,7 +324,7 @@ const List = ({ onCoalBlending, isServer, GoodsType }) => {
   // 可选判断
   const canCheck = record => {
     const { unitPrice, waterContent, ashContent, volatilization, sulfur, recovery, bond, colloid } = record;
-    const disabled = !(unitPrice && waterContent && ashContent && volatilization && sulfur && bond);
+    const disabled = !(unitPrice && ashContent && volatilization && sulfur && bond);
     return { disabled };
   };
   return (

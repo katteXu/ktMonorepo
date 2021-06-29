@@ -627,6 +627,12 @@ const RailWayDetail = () => {
                   )}
                 </div>
               </div>
+              <div className={styles.row}>
+                <div className={styles.item}>
+                  <span className={styles.label}>存放仓库：</span>
+                  {dataInfo.wareHouseName}
+                </div>
+              </div>
             </div>
           </Skeleton>
           {/* <Divider></Divider> */}

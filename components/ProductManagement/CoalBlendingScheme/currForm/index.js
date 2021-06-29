@@ -113,7 +113,7 @@ const CurrentForm = ({ onSubmit, onClose }) => {
               name="targetGoodId"
               validateFirst={true}
               rules={[{ required: true, message: '内容不可为空' }]}>
-              <Select allowClear placeholder="请选择目标货品">
+              <Select allowClear placeholder="请选择目标货品" optionFilterProp="children" showSearch>
                 {GoodsType.map(v => (
                   <Select.Option key={v.id} value={v.id}>
                     {v.goodsName}
