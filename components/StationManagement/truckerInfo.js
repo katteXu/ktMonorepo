@@ -4,7 +4,7 @@ import { Steps } from '@components/Station';
 import { Input, Button, Select, Table, Popconfirm, message, Drawer, Modal } from 'antd';
 import { station } from '@api';
 import styles from './index.less';
-import { Format } from '@utils/common';
+import { Format, getQuery } from '@utils/common';
 import ChooseTucker from './chooseTrucker';
 import { PlusOutlined, RightOutlined } from '@ant-design/icons';
 import TruckerInfoError from './truckerInfoError';
@@ -30,11 +30,12 @@ const Index = ({ truckInfo, routeInfo, onsubmit, fromTruckerData, type, handleCh
 
   const handleSubmitChange = async item => {
     if (type === 'detail') {
+      const { id } = getQuery();
       const params = {
         truckerInfo: {
           ...item,
         },
-        id: router.query.id,
+        id: id,
       };
       const res = await station.modifyInStationRecordV2({ params });
       if (res.status === 0) {

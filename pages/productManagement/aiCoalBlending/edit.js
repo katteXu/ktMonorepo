@@ -1,6 +1,6 @@
 // 选煤列表
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { keepState, getState, clearState, Format } from '@utils/common';
+import { keepState, getState, clearState, Format, getQuery } from '@utils/common';
 import { Input, Button, Table, Modal, Select, message } from 'antd';
 import { Layout, Search, Ellipsis, Content } from '@components';
 import { product } from '@api';
@@ -26,7 +26,7 @@ const routeView = {
 const EditMaterial = props => {
   const [currentFormData, setCurrentFormData] = useState({});
   const router = useRouter();
-  const { id } = router.query;
+  const { id } = getQuery();
 
   // 货品列表
   const [GoodsType, setGoodsType] = useState({});

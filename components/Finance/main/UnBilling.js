@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import styles from './styles.less';
 import { finance } from '@api';
 import { Search, Msg, Ellipsis, DrawerInfo } from '@components';
-import { Format, keepState, getState, clearState } from '@utils/common';
+import { Format, keepState, getState, clearState, getQuery } from '@utils/common';
 import { Input, Button, Table, message, DatePicker } from 'antd';
 import moment from 'moment';
 import router from 'next/router';
@@ -124,7 +124,8 @@ const UnBilling = props => {
   // 初始化
   useEffect(() => {
     const { isServer } = props;
-    if (isServer || router.query.batchId) {
+    const { batchId } = getQuery();
+    if (isServer || batchId) {
       clearState();
     }
     // 获取持久化数据

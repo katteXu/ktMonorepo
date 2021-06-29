@@ -11,6 +11,7 @@ import Abnormal from '@components/StationManagement/abnormal.js';
 import ConfirmModal from '@components/StationManagement/confirmModal';
 import router from 'next/router';
 import PoundBox from '@components/StationManagement/poundBox';
+import { getQuery } from '@utils/common';
 const express = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Za-z]{1}[A-Za-z]{1}[警京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼]{0,1}[A-Za-z0-9]{4}[A-Za-z0-9挂学警港澳]{1}$/;
 
 const Index = () => {
@@ -45,6 +46,7 @@ const Index = () => {
   const [showModal, setModal] = useState(false);
   const [confirmInfo, setConfirmInfo] = useState();
   const [goodsWeight, setGoodsWeight] = useState(0);
+  const { id } = getQuery();
   useEffect(() => {
     poundMachine_list();
     getDetailInfo();
@@ -52,7 +54,7 @@ const Index = () => {
 
   //获取详情
   const getDetailInfo = async () => {
-    const params = { id: router.query.id };
+    const params = { id };
     const res = await station.outStationDetail({ params });
     if (res.status === 0) {
       setDataInfo(res.result.weigh);
@@ -152,7 +154,7 @@ const Index = () => {
   const submitData = async () => {
     const params = {
       receiveOrSend: 0,
-      inStationId: router.query.id,
+      inStationId: id,
       plateNum,
       remark,
       // fromGoodsWeight: fromGoodsWeight ? fromGoodsWeight * 1000 : 0,

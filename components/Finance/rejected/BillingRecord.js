@@ -9,7 +9,7 @@ import InvoiceType from '@components/Finance/InvoiceType';
 import router from 'next/router';
 import { finance, downLoadFile } from '@api';
 import personalApi from '@api/personalCenter';
-import { Format } from '@utils/common';
+import { Format, getQuery } from '@utils/common';
 import Steps from '@components/Finance/main/Steps';
 import { LoadingBtn } from '@components';
 
@@ -90,7 +90,7 @@ class PageDemo extends PureComponent {
 
     this.setState({ formData: {} });
 
-    const { batchId } = router.query;
+    const { batchId } = getQuery();
     const { userId } = localStorage;
     const params = {
       batchId,
@@ -114,7 +114,7 @@ class PageDemo extends PureComponent {
   // 取消开票
   cancelInvoice = async () => {
     const { userId } = localStorage;
-    const { batchId } = router.query;
+    const { batchId } = getQuery();
     const params = {
       ownerId: userId,
       batchId,
@@ -143,7 +143,7 @@ class PageDemo extends PureComponent {
 
   // 获取开票信息
   getInvoiceInfo = async () => {
-    const { batchId } = router.query;
+    const { batchId } = getQuery();
 
     const params = {
       batchId,
@@ -216,8 +216,8 @@ class PageDemo extends PureComponent {
         </LoadingBtn>
         {invoiceTypeShow && <InvoiceType onChange={this.changePayType} payType={payType} />}
         <Record
-          id={router.query.id}
-          batchId={router.query.batchId}
+          id={getQuery().id}
+          batchId={getQuery().batchId}
           mode={mode}
           onChange={this.onChange}
           detailUrl="/finance/applyInvoice/detail"

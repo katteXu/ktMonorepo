@@ -4,7 +4,7 @@ import { Steps } from '@components/Station';
 import { Input, Button, Select, Table, Popconfirm, message, Drawer } from 'antd';
 import { station } from '@api';
 import styles from './index.less';
-import { Format } from '@utils/common';
+import { Format, getQuery } from '@utils/common';
 import ChooseRouteModal from './chooseRouteModal';
 import { PlusOutlined } from '@ant-design/icons';
 import router from 'next/router';
@@ -37,9 +37,10 @@ const Index = ({ onsubmit, fromRouteData, routeId, type }) => {
     }
 
     if (type === 'detail') {
+      const { urlId } = getQuery();
       const params = {
         routeId: id,
-        id: router.query.id,
+        id: urlId,
       };
       const res = await station.changeInStationRoute({ params });
       if (res.status === 0) {
