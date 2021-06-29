@@ -697,7 +697,7 @@ const EditableTable = props => {
       </div>
       <div className={styles['btn-add']}>
         <Button onClick={handleAddBefore} style={{ width: 400 }} block ghost>
-          <PlusOutlined style={{ color: '#4A4A5A' }} />
+          <PlusOutlined style={{ color: '#333333' }} />
           新增
         </Button>
       </div>

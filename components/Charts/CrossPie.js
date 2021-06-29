@@ -16,7 +16,7 @@ const CrossPie = ({ data = [], size }) => {
       itemHeight: 6,
       textStyle: {
         fontSize: 14,
-        color: '#4A4A5A',
+        color: '#333333',
         padding: [0, 0, 0, -6],
       },
     },
@@ -57,7 +57,7 @@ const CrossPie = ({ data = [], size }) => {
         },
       },
     },
-    color: ['#46B8AF', '#FFB844', '#3D86EF', '#FF8742', '#FD5F7D'],
+    color: ['#46B8AF', '#FFB844', '#477AEF', '#FF8742', '#FD5F7D'],
   };
 
   // 生成配置

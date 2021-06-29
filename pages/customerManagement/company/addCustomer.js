@@ -26,7 +26,7 @@ const addCustomer = () => {
             <div
               style={{
                 fontSize: 16,
-                color: '#4A4A5A',
+                color: '#333333',
                 fontWeight: 700,
                 position: 'relative',
                 top: 1,

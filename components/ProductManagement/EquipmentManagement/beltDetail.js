@@ -59,7 +59,7 @@ const Index = props => {
           </div>
           <div
             // className={styles.fontcolorblue}
-            style={{ marginLeft: 12, color: !stop ? '#E44040' : '#3D86EF' }}
+            style={{ marginLeft: 12, color: !stop ? '#E44040' : '#477AEF' }}
             onClick={() => {
               !stop ? onclickStop() : onclickOpen();
             }}>

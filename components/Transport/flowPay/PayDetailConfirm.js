@@ -58,7 +58,7 @@ const PayDetailConfirm = ({ onSubmit, onFinish, result, price, DetailComponent }
           content: (
             <>
               <div>￥</div>
-              <div style={{ color: '#3D86EF', fontSize: 20, margin: '0 4px' }}>{price}</div>
+              <div style={{ color: '#477AEF', fontSize: 20, margin: '0 4px' }}>{price}</div>
               <div>元</div>
             </>
           ),
@@ -72,7 +72,7 @@ const PayDetailConfirm = ({ onSubmit, onFinish, result, price, DetailComponent }
           icon: <CloseCircleFilled style={{ color: '#e44040', fontSize: 47 }} />,
           content: (
             <div>
-              请联系客服 <span style={{ color: '#3D86EF' }}>400-690-8700</span>
+              请联系客服 <span style={{ color: '#477AEF' }}>400-690-8700</span>
             </div>
           ),
         });

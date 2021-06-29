@@ -90,14 +90,14 @@ const Index = props => {
         return (
           <>
             <span
-              style={{ color: '#3d86ef', cursor: 'pointer', marginRight: 12 }}
+              style={{ color: '#477AEF', cursor: 'pointer', marginRight: 12 }}
               onClick={() => {
                 router.push(`/productManagement/equipmentManagement/detail?id=${record.id}`);
               }}>
               详情
             </span>
             <span
-              style={{ color: '#3d86ef', cursor: 'pointer' }}
+              style={{ color: '#477AEF', cursor: 'pointer' }}
               onClick={() => {
                 setDid(record.id);
                 form1.setFieldsValue({ name: record.name, remark: record.remark });
@@ -107,7 +107,7 @@ const Index = props => {
             </span>
             {record.category != 0 && (
               <span
-                style={{ color: record.runStatus ? '#3d86ef' : '#E44040', cursor: 'pointer', marginLeft: 12 }}
+                style={{ color: record.runStatus ? '#477AEF' : '#E44040', cursor: 'pointer', marginLeft: 12 }}
                 onClick={() => {
                   // operateDeviceRunOrStop({ id: record.id });
                   if (record.runStatus == 1) {

@@ -76,7 +76,7 @@ const HeaderConfig = ({ onChange, columns = [], showColumns, onRestore, type, he
   return (
     <Dropdown overlay={menu} trigger={['click']} visible={show} onVisibleChange={setShow}>
       <Button
-        icon={<SettingOutlined style={{ color: '#3d86ef', fontSize: 16, position: 'relative', top: 1, right: 0 }} />}
+        icon={<SettingOutlined style={{ color: '#477AEF', fontSize: 16, position: 'relative', top: 1, right: 0 }} />}
         type="link"
         style={{ alignItems: 'center', position: 'relative' }}>
         自定义列表

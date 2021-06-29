@@ -26,8 +26,8 @@ const Header = props => {
         <Tag
           color={transportFleetId ? '#FFF5F5' : '#F5F9FF'}
           style={{
-            color: transportFleetId ? '#e44040' : '#3d86ef',
-            borderColor: transportFleetId ? '#e44040' : '#3d86ef',
+            color: transportFleetId ? '#e44040' : '#477AEF',
+            borderColor: transportFleetId ? '#e44040' : '#477AEF',
             borderWidth: 1,
           }}>
           {transportFleetId ? '车队单' : '个人单'}

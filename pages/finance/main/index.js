@@ -451,7 +451,7 @@ const InvoiceList = () => {
               title={
                 '进入方向物流app -> 登录账号 -> 点击”我的”-> 点击”设置” -> 点击”密码管理” ->点击”修改支付密码” -> 设置密码'
               }>
-              <span style={{ color: '#3D86EF' }}>忘记密码？</span>
+              <span style={{ color: '#477AEF' }}>忘记密码？</span>
             </Tooltip>
           </div>
           <div className={styles['error-msg']}>{payInfo.payError}</div>

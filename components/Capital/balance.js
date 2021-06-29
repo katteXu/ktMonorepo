@@ -4,7 +4,7 @@ import router from 'next/router';
 import { Image } from '@components';
 const Balance = ({ children, wallet, exclusiveRechargeAccount, prepaid, prepaidFreight }) => {
   return (
-    <div className={styles.wallet} style={{ backgroundImage: `url(${Image.BgCard})` }}>
+    <div className={styles.wallet} style={{ backgroundImage: `url(${Image.BgCard})`, backgroundPosition: '-2px 0' }}>
       <div style={{ fontSize: 16, fontWeight: 'bold' }}>{children}</div>
       <div className={styles.money}>
         <span className={styles.icon}>￥</span>

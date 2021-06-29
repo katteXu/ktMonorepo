@@ -166,7 +166,7 @@ const CashOutForm = ({ onCancel, amount, refresh }) => {
         </Form.Item>
 
         <Form.Item label="钱包余额">
-          <div style={{ color: '#4a4a5a' }}>{amount}</div>
+          <div style={{ color: '#333333' }}>{amount}</div>
         </Form.Item>
 
         <div style={{ textAlign: 'right' }}>
@@ -214,7 +214,7 @@ const CashOutForm = ({ onCancel, amount, refresh }) => {
               title={
                 '进入方向物流app -> 登录账号 -> 点击”我的”-> 点击”设置” -> 点击”密码管理” ->点击”修改支付密码” -> 设置密码'
               }>
-              <span style={{ color: '#3D86EF' }}>忘记密码？</span>
+              <span style={{ color: '#477AEF' }}>忘记密码？</span>
             </Tooltip>
           </div>
           <div className={styles['error-msg']}>{errorTxt}</div>

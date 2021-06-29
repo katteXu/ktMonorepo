@@ -10,7 +10,7 @@ import { getQuery } from '@utils/common';
 const contractStatus = {
   1: { name: '未开始', color: '' },
   2: { name: '执行中', color: '#FFB741' },
-  3: { name: '已完成', color: '#3D86EF' },
+  3: { name: '已完成', color: '#477AEF' },
   4: { name: '已超时', color: '#E44040' },
 };
 

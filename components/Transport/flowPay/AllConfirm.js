@@ -111,7 +111,7 @@ const BatchConfirm = ({ payInfo, onFinish, payAllFilter }) => {
         content: (
           <>
             <div>￥</div>
-            <div style={{ color: '#3D86EF', fontSize: 16, margin: '0 4px' }}>{Format.price(payInfo.realPrice)}</div>
+            <div style={{ color: '#477AEF', fontSize: 16, margin: '0 4px' }}>{Format.price(payInfo.realPrice)}</div>
             <div>元</div>
           </>
         ),
@@ -126,7 +126,7 @@ const BatchConfirm = ({ payInfo, onFinish, payAllFilter }) => {
         icon: <CloseCircleFilled style={{ color: '#e44040', fontSize: 47 }} />,
         detail: (
           <div>
-            请联系客服 <span style={{ color: '#3D86EF' }}>400-690-8700</span>
+            请联系客服 <span style={{ color: '#477AEF' }}>400-690-8700</span>
           </div>
         ),
       });

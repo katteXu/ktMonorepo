@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 const descStyle = {
   fontSize: 18,
-  color: '#4A4A5A',
+  color: '#333333',
   fontFamily: 'PingFangSC-Medium',
   textAlign: 'center',
 };
@@ -44,7 +44,7 @@ const passwordForm = ({ onSubmit, onClose, result, price, afterPay, onPayError, 
           title: '支付成功',
           content: (
             <div style={descStyle}>
-              您已成功支付<span style={{ color: '#3D86EF' }}>{price}</span>元
+              您已成功支付<span style={{ color: '#477AEF' }}>{price}</span>元
             </div>
           ),
           onOk: () => afterPay && afterPay(),
@@ -57,7 +57,7 @@ const passwordForm = ({ onSubmit, onClose, result, price, afterPay, onPayError, 
           title: '支付失败',
           content: (
             <div style={descStyle}>
-              请联系客服 <span style={{ color: '#3D86EF' }}>400-690-8700</span>
+              请联系客服 <span style={{ color: '#477AEF' }}>400-690-8700</span>
             </div>
           ),
         });
@@ -94,7 +94,7 @@ const passwordForm = ({ onSubmit, onClose, result, price, afterPay, onPayError, 
           <span style={{ marginLeft: 3, fontSize: !6 }}>结算总额</span>
         </div>
         <h3 style={{ marginTop: 15, fontSize: 18 }}>
-          您结算总额为<span style={{ color: '#3D86EF' }}>{price || '-'}</span>元
+          您结算总额为<span style={{ color: '#477AEF' }}>{price || '-'}</span>元
         </h3>
         {/* 其他信息组件 */}
         {DetailComponent && <DetailComponent />}
@@ -113,7 +113,7 @@ const passwordForm = ({ onSubmit, onClose, result, price, afterPay, onPayError, 
             title={
               '进入方向物流app -> 登录账号 -> 点击”我的”-> 点击”设置” -> 点击”密码管理” ->点击”修改支付密码” -> 设置密码'
             }>
-            <span style={{ fontSize: 12, color: '#3D86EF', cursor: 'pointer', marginRight: 60 }}>忘记密码？</span>
+            <span style={{ fontSize: 12, color: '#477AEF', cursor: 'pointer', marginRight: 60 }}>忘记密码？</span>
           </Tooltip>
         </div>
       </div>

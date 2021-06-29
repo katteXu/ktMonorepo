@@ -113,7 +113,7 @@ const Pay = props => {
               </span>
               {status === 'CHECKING' ? (
                 <span
-                  style={{ color: '#3D86EF', marginLeft: 9, cursor: 'pointer' }}
+                  style={{ color: '#477AEF', marginLeft: 9, cursor: 'pointer' }}
                   onClick={() => setEditUnitPrice(true)}>
                   修改
                 </span>

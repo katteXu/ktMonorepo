@@ -522,7 +522,7 @@ const BillingDetail = props => {
             ]}>
             <Input addonAfter="吨" style={{ width: 264 }} />
           </Form.Item>
-          <div style={{ marginBottom: 24, color: '#4a4a5a' }}>
+          <div style={{ marginBottom: 24, color: '#333333' }}>
             <span>注：</span>筛选计算出的预开票净重可能为近似值.
           </div>
           <div style={{ textAlign: 'right' }}>

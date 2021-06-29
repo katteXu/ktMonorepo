@@ -131,7 +131,7 @@ const Index = props => {
           </div>
           <div className={styles.right}>
             <div className={styles.subTitle}>货品收货统计</div>
-            <Bar data={barData2} xAxis={xAxis2} color="#3D86EF" bgColor="rgba(240, 246, 254, 1)" />
+            <Bar data={barData2} xAxis={xAxis2} color="#477AEF" bgColor="rgba(240, 246, 254, 1)" />
           </div>
         </div>
       </div>
