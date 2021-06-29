@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Layout, Content, Ellipsis } from '@components';
 import { EditForm } from '@components/pound/Settlment';
 import { Button, Table, Modal, message } from 'antd';
-import { Format } from '@utils/common';
+import { Format, getQuery } from '@utils/common';
 import Link from 'next/link';
 import moment from 'moment';
 import styles from './styles.less';
@@ -130,7 +130,7 @@ const View = () => {
       payTime: moment(payTime).format('YYYY-MM-DD HH:mm:ss'),
       payMobilNumber,
       cardNumber,
-      id: router.query.id,
+      id: getQuery().id,
       remark,
     };
 
@@ -156,7 +156,7 @@ const View = () => {
     if (dataList.data && dataList.data.length > 0) {
       setExportLoading(true);
       const params = {
-        id: router.query.id,
+        id: getQuery().id,
         dump: 1,
       };
       const res = await pound.getPoundBillAccountList({ params });
@@ -177,7 +177,7 @@ const View = () => {
     if (dataList.data && dataList.data.length > 0) {
       setExportDetailLoading(true);
       const params = {
-        listId: router.query.id,
+        listId: getQuery().id,
         // dump: true,
       };
       const res = await pound.getPoundBillAccountDetailExport({ params });
@@ -197,7 +197,7 @@ const View = () => {
   const getRemoteData = async () => {
     setLoading(true);
     const params = {
-      id: router.query.id,
+      id: getQuery().id,
     };
     const res = await pound.getPoundBillAccountList({ params });
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Layout, Content, Status, ChildTitle } from '@components';
 import { Skeleton } from 'antd';
-import { Format } from '@utils/common';
+import { Format, getQuery } from '@utils/common';
 import styles from './styles.less';
 import router from 'next/router';
 import Link from 'next/link';
@@ -33,7 +33,7 @@ const QualityDetail = props => {
   }, []);
 
   const setDetail = async () => {
-    const { id } = router.query;
+    const { id } = getQuery();
     const params = { id };
     setLoading(true);
     const res = await quality.getDetail({ params });

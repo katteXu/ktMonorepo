@@ -4,6 +4,8 @@ import { Input, Button, Select, Form, Popconfirm, message, Modal } from 'antd';
 import { station } from '@api';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import router from 'next/router';
+import { getQuery } from '@utils/common';
+
 const truckTypeInfo = ['重型半挂牵引车', '重型自卸货车', '罐式货物运输车', '其他'];
 const shaftNumberInfo = [2, 3, 4, 5, 6];
 const truckLoadInfo = [49, 46, 43, 42, 36, 35, 31, 27, 25, 18];
@@ -16,7 +18,7 @@ const formItemLayout = {
 const Index = ({ truckDataInfo, onsubmit, onclose }) => {
   const [info, setInfo] = useState({});
   const [form] = Form.useForm();
-
+  const { id } = getQuery();
   useEffect(() => {
     setInfo(truckDataInfo);
   }, [truckDataInfo]);
@@ -49,7 +51,7 @@ const Index = ({ truckDataInfo, onsubmit, onclose }) => {
             truckLoad: values.truckLoad * 1000,
             status: false,
           },
-          id: router.query.id,
+          id: id,
         };
         const res = await station.updateInStationTruckOrTrucker({ params });
         if (res.status === 0) {
