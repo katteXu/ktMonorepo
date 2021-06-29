@@ -215,7 +215,7 @@ const Index = () => {
             truckInfo={truckInfo}
             routeInfo={routeInfo}
             onsubmit={val => setTruckerInfo(val)}
-            stationType={1}
+            stationType={3}
           />
           <div className={styles.block1} style={{ marginTop: 32, marginBottom: 32 }}>
             <span className={styles.lableText}>备注:</span>
