@@ -21,6 +21,7 @@ import {
   FundProjectionScreenOutlined,
   InteractionOutlined,
   HomeOutlined,
+  RobotOutlined,
 } from '@ant-design/icons';
 
 const Icon = {
@@ -45,6 +46,7 @@ const Icon = {
   goods: <GoldOutlined style={{ fontSize: 16 }} />,
   fundProjectionScreenOutlined: <FundProjectionScreenOutlined style={{ fontSize: 16 }} />,
   interactionOutlined: <InteractionOutlined style={{ fontSize: 16 }} />,
+  robot: <RobotOutlined style={{ fontSize: 16 }} />,
 };
 
 export default Icon;

@@ -79,7 +79,7 @@ const OrderPayDetail = props => {
               ]
             }
           </Tag>
-          <Tag color="#F5F9FF" style={{ color: '#3D86EF' }}>
+          <Tag color="#F5F9FF" style={{ color: '#477AEF' }}>
             {dataList.isFleet ? '车队单' : '个人单'}
           </Tag>
           {dataList.isFleet ? (

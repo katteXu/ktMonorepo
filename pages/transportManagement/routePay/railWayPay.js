@@ -455,8 +455,8 @@ const RailWayPay = () => {
             color={transportFleetId ? '#FFF5F5' : '#F5F9FF'}
             style={{
               marginLeft: 10,
-              color: transportFleetId ? '#e44040' : '#3d86ef',
-              borderColor: transportFleetId ? '#e44040' : '#3d86ef',
+              color: transportFleetId ? '#e44040' : '#477AEF',
+              borderColor: transportFleetId ? '#e44040' : '#477AEF',
               borderWidth: 1,
               position: 'relative',
               top: -1,

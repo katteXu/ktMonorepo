@@ -1,156 +1,167 @@
 .step {
-  overflow: hidden;
+  overflow        : hidden;
   background-color: #f6f7f9;
-  display: flex;
-  font-size: 14px;
-  font-family: PingFangSC-Medium, PingFang SC;
-  font-weight: 500;
-  color: #4a4a5a;
-  position: relative;
+  display         : flex;
+  font-size       : 14px;
+  font-family     : PingFangSC-Medium, PingFang SC;
+  font-weight     : 500;
+  color           : #333333;
+  position        : relative;
+
   .left {
-    padding: 9px 0;
-    flex: 1;
+    padding   : 9px 0;
+    flex      : 1;
     text-align: center;
 
     &.active {
-      position: relative;
-      background-color: #3d86ef;
-      color: #fff;
+      position        : relative;
+      background-color: #477AEF;
+      color           : #fff;
     }
   }
+
   .right {
-    padding: 9px 0;
-    flex: 1;
+    padding   : 9px 0;
+    flex      : 1;
     text-align: center;
 
     &.active {
-      background-color: #3d86ef;
-      color: #fff;
+      background-color: #477AEF;
+      color           : #fff;
     }
   }
 
   .arrow {
-    position: absolute;
-    left: 50%;
-    top: 50%;
+    position : absolute;
+    left     : 50%;
+    top      : 50%;
     transform: translateY(-50%);
+
     &:after {
-      top: 50%;
-      transform: translateY(-50%);
-      right: -10px;
-      position: absolute;
-      content: '.';
-      font-size: 0;
-      display: block;
-      width: 0;
-      height: 0;
-      border-top: 20px solid transparent;
+      top          : 50%;
+      transform    : translateY(-50%);
+      right        : -10px;
+      position     : absolute;
+      content      : '.';
+      font-size    : 0;
+      display      : block;
+      width        : 0;
+      height       : 0;
+      border-top   : 20px solid transparent;
       border-bottom: 20px solid transparent;
-      border-left: 10px solid #3d86ef;
+      border-left  : 10px solid #477AEF;
     }
 
     &:before {
-      top: 50%;
-      transform: translateY(-50%);
-      right: -12px;
-      position: absolute;
-      content: '.';
-      font-size: 0;
-      display: block;
-      width: 0;
-      height: 0;
-      border-top: 24px solid transparent;
+      top          : 50%;
+      transform    : translateY(-50%);
+      right        : -12px;
+      position     : absolute;
+      content      : '.';
+      font-size    : 0;
+      display      : block;
+      width        : 0;
+      height       : 0;
+      border-top   : 24px solid transparent;
       border-bottom: 24px solid transparent;
-      border-left: 12px solid #f6f7f9;
+      border-left  : 12px solid #f6f7f9;
     }
   }
 }
 
 .red {
-  > td {
+  >td {
     color: #d56464 !important;
   }
 }
 
 .green {
-  > td {
+  >td {
     color: #63b67a !important;
   }
 }
 
 .yellow {
-  > td {
+  >td {
     color: #f3b655 !important;
   }
 }
 
 .detail {
   padding-bottom: 64px;
+
   .content {
     .company-info {
       .child-title {
-        padding: 0 0 16px 0;
+        padding    : 0 0 16px 0;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
       }
+
       .row {
         display: flex;
-        color: #4a4a5a;
+        color  : #333333;
+
         .item {
           flex: 1;
+
           .label {
             color: #848485;
           }
         }
 
-        & + .row {
+        &+.row {
           margin-top: 16px;
         }
       }
     }
   }
+
   .btn-bottom {
-    display: flex;
-    border-top: 1px solid #f0f0f0;
-    padding: 0 16px;
-    position: fixed;
-    height: 62px;
-    right: 0;
-    bottom: 0;
+    display         : flex;
+    border-top      : 1px solid #f0f0f0;
+    padding         : 0 16px;
+    position        : fixed;
+    height          : 62px;
+    right           : 0;
+    bottom          : 0;
     background-color: #fff;
-    width: 1152px;
-    align-items: center;
-    justify-content: flex-end;
-    z-index: 999;
+    width           : 1152px;
+    align-items     : center;
+    justify-content : flex-end;
+    z-index         : 999;
   }
 }
 
 .bottom {
-  position: fixed;
-  bottom: 0;
-  left: 200px;
-  right: 0;
-  font-size: 16px;
-  display: flex;
-  background: #fff;
-  padding: 12px 32px;
-  height: 56px;
-  box-shadow: 0px -1px 4px 0px rgba(174, 189, 210, 0.3);
+  position       : fixed;
+  bottom         : 0;
+  left           : 200px;
+  right          : 0;
+  font-size      : 16px;
+  display        : flex;
+  background     : #fff;
+  padding        : 12px 32px;
+  height         : 56px;
+  box-shadow     : 0px -1px 4px 0px rgba(174, 189, 210, 0.3);
   justify-content: flex-start;
-  align-items: center;
-  z-index: 99;
+  align-items    : center;
+  z-index        : 99;
+
   .item {
     padding: 0 12px;
+
     &:first-child {
       padding-left: 24px;
     }
+
     .total-num {
       font-weight: 600;
-      color: #3d86ef;
+      color      : #477AEF;
     }
 
     .price-block {
-      display: inline-block;
+      display    : inline-block;
       white-space: nowrap;
     }
   }

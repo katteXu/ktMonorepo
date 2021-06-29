@@ -81,12 +81,28 @@ const ToView = () => {
       render: Format.weight,
     },
     {
+      title: '货物单价',
+      dataIndex: 'goodsUnitPrice',
+      key: 'goodsUnitPrice',
+      width: '120px',
+      align: 'right',
+      render: Format.price,
+    },
+    {
       title: '路损(吨)',
       dataIndex: 'loss',
       key: 'loss',
       width: '120px',
       align: 'right',
       render: Format.weight,
+    },
+    {
+      title: '路耗(元)',
+      dataIndex: 'lossPrice',
+      key: 'lossPrice',
+      width: '120px',
+      align: 'right',
+      render: Format.price,
     },
     {
       title: '运费单价(元/吨)',
@@ -118,12 +134,12 @@ const ToView = () => {
     return {
       page: 1,
       pageSize: 10,
-      begin,
-      end,
+      begin: undefined,
+      end: undefined,
       fromCompany: '',
       goodsType: '',
       plate: '',
-      dateStatus: 'toYesterday',
+      dateStatus: '',
     };
   });
 

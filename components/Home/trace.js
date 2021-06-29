@@ -6,7 +6,7 @@ import { Icon } from '@components';
 const ICON = [Icon.Blue, Icon.Red, Icon.Yellow, Icon.Green];
 
 const COLOR = [
-  '#3D86EF',
+  '#477AEF',
   '#E44040',
   '#FE9E43',
   '#23C0B1',

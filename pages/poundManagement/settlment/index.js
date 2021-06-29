@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Button, message, Spin } from 'antd';
 import { Layout, Content, Image, Icon } from '@components';
-import { Panel, SettlmentList, FromSettlment, ToSettlment } from '@components/pound/Settlment';
+import { Panel, SettlmentList, FromSettlment, ToSettlment, SettlmentSet } from '@components/pound/Settlment';
 import styles from './styles.less';
 import router from 'next/router';
 import { pound } from '@api';
@@ -126,11 +126,15 @@ const Settlment = props => {
           <div className={`tab-item ${currentTab === 'list' ? 'active' : ''}`} onClick={() => onChangeTab('list')}>
             结算单列表
           </div>
+          <div className={`tab-item ${currentTab === 'set' ? 'active' : ''}`} onClick={() => onChangeTab('set')}>
+            设置
+          </div>
         </header>
         <section style={{ margiBottom: 50 }}>
           {currentTab === 'from' && <FromSettlment isServer={props.isServer} onReload={getData} />}
           {currentTab === 'to' && <ToSettlment isServer={props.isServer} onReload={getData} />}
           {currentTab === 'list' && <SettlmentList isServer={props.isServer} />}
+          {currentTab === 'set' && <SettlmentSet isServer={props.isServer} />}
           {currentTab === '' && (
             <div className={styles['loading-component']}>
               <Spin size="large" tip="加载中..." />
@@ -140,6 +144,10 @@ const Settlment = props => {
       </Content>
     </Layout>
   );
+};
+Settlment.getInitialProps = async props => {
+  const { isServer } = props;
+  return { isServer };
 };
 
 export default Settlment;

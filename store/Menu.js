@@ -45,6 +45,12 @@ const MENU_LIST = [
     ],
   },
   {
+    module: 'stationManagement',
+    icon: 'robot',
+    name: '站内管理',
+    key: 'stationManagement',
+  },
+  {
     module: 'contractManagement',
     icon: 'book',
     name: '合同管理',
@@ -166,6 +172,11 @@ const MENU_LIST = [
         name: '配煤管理',
         key: 'coalBlendingManagement',
         permission: ['COAL_BLENDING_MANAGEMENT'],
+      },
+      {
+        name: '配煤列表',
+        key: 'coalBlendingList',
+        permission: ['COAL_BLENDING_LIST'],
       },
       {
         module: 'qualityManagement',

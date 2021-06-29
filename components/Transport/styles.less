@@ -1,26 +1,27 @@
 .amount {
+
   .green,
   .orange {
-    width: 10px;
-    height: 10px;
+    width        : 10px;
+    height       : 10px;
     border-radius: 5px;
-    display: inline-block;
-    margin-right: 12px;
+    display      : inline-block;
+    margin-right : 12px;
   }
 
   .green {
     background-color: #46b8af;
-    color: #46b8af;
+    color           : #46b8af;
   }
 
   .orange {
     background-color: #ffb741;
-    color: #ffb741;
+    color           : #ffb741;
   }
 
   span {
     font-size: 12px;
-    padding: 0 5px;
+    padding  : 0 5px;
   }
 }
 
@@ -29,12 +30,12 @@
 }
 
 .transport-row {
-  height: 40px;
+  height     : 40px;
   line-height: 40px;
 
   .label {
     text-align: right;
-    color: #a3a3a3;
+    color     : #a3a3a3;
   }
 
   .content {
@@ -47,50 +48,50 @@
 
   .good-type {
     background-color: rgba(61, 134, 239, 0.15);
-    color: #3d86ef;
-    font-size: 12px;
-    padding: 4px 24px;
-    border-radius: 4px;
-    line-height: normal;
+    color           : #477AEF;
+    font-size       : 12px;
+    padding         : 4px 24px;
+    border-radius   : 4px;
+    line-height     : normal;
   }
 }
 
 .good-type {
   background-color: rgba(61, 134, 239, 0.15);
-  color: #3d86ef;
-  font-size: 12px;
-  padding: 4px 24px;
-  border-radius: 4px;
-  line-height: normal;
+  color           : #477AEF;
+  font-size       : 12px;
+  padding         : 4px 24px;
+  border-radius   : 4px;
+  line-height     : normal;
 }
 
 .progress-div {
-  display: flex;
+  display        : flex;
   justify-content: flex-start;
-  padding: 12px 24px;
+  padding        : 12px 24px;
 
   div {
-    font-size: 16px;
-    color: #848485;
+    font-size   : 16px;
+    color       : #848485;
     margin-right: 12px;
   }
 }
 
 .count {
-  font-size: 20px;
-  color: #3d86ef;
+  font-size  : 20px;
+  color      : #477AEF;
   line-height: 36px;
-  margin: 0 10px;
+  margin     : 0 10px;
 }
 
 .contentHeader {
-  display: flex;
-  align-items: center;
+  display        : flex;
+  align-items    : center;
   justify-content: space-between;
 
   span:first-child {
-    font-size: 16px;
-    color: #4a4a5a;
+    font-size  : 16px;
+    color      : #333333;
     font-weight: 600;
   }
 
@@ -112,22 +113,22 @@
   margin-bottom: 24px;
 
   div {
-    background: rgba(247, 247, 247, 1);
+    background   : rgba(247, 247, 247, 1);
     border-radius: 4px;
-    padding: 24px;
+    padding      : 24px;
   }
 }
 
 .title {
-  color: "#4A4A5A";
-  font-size: 14px;
-  font-weight: 600;
+  color        : "#333333";
+  font-size    : 14px;
+  font-weight  : 600;
   margin-bottom: 8px;
 }
 
 // 磅室专线 转下详情
 section.pound-railWay-detail {
-  display: flex;
+  display       : flex;
   flex-direction: row;
 
   .left {
@@ -141,14 +142,14 @@ section.pound-railWay-detail {
 
 .railWay-detail {
   .reject_msg {
-    padding: 24px;
-    background: #ffb74126;
-    border: 1px solid #ffb741;
+    padding      : 24px;
+    background   : #ffb74126;
+    border       : 1px solid #ffb741;
     // background: #F7F7F7;
     border-radius: 4px;
     margin-bottom: 20px;
-    margin-top: 16px;
-    color: #666666;
+    margin-top   : 16px;
+    color        : #666666;
   }
 
   .area {
@@ -160,8 +161,8 @@ section.pound-railWay-detail {
 
     .row {
       padding-left: 11px;
-      display: flex;
-      line-height: 38px;
+      display     : flex;
+      line-height : 38px;
 
       .item {
         .label {
@@ -169,12 +170,13 @@ section.pound-railWay-detail {
         }
 
         padding-right: 20px;
-        flex: 1;
-        color: #4a4a5a;
+        flex         : 1;
+        color        : #333333;
       }
+
       :global {
         .ant-input-affix-wrapper {
-          color: #4a4a5a;
+          color: #333333;
         }
       }
     }
@@ -182,25 +184,23 @@ section.pound-railWay-detail {
 }
 
 .railWay-detail-header {
-  .trucker {
-  }
+  .trucker {}
 
-  .status {
-  }
+  .status {}
 }
 
 // 个人单结算按钮样式
 .drop-down-btn {
   :global(button) {
-    border: 1px solid #1890ff;
-    border-top-right-radius: 0 !important;
+    border                    : 1px solid #1890ff;
+    border-top-right-radius   : 0 !important;
     border-bottom-right-radius: 0 !important;
 
-    & + :global(button) {
-      border-top-right-radius: 4px !important;
+    &+ :global(button) {
+      border-top-right-radius   : 4px !important;
       border-bottom-right-radius: 4px !important;
-      border-top-left-radius: 0 !important;
-      border-bottom-left-radius: 0 !important;
+      border-top-left-radius    : 0 !important;
+      border-bottom-left-radius : 0 !important;
     }
   }
 }
@@ -208,40 +208,40 @@ section.pound-railWay-detail {
 //批量支付样式
 
 .topTitle {
-  height: 54px;
-  display: flex;
+  height         : 54px;
+  display        : flex;
   justify-content: flex-end;
-  align-items: center;
+  align-items    : center;
 }
 
 .root {
-  overflow: hidden;
+  overflow     : hidden;
   border-radius: 4px;
-  border: 1px solid #f0f0f0;
-  padding: 12px;
+  border       : 1px solid #f0f0f0;
+  padding      : 12px;
   margin-bottom: 24px;
 
   .aFold {
-    font-size: 14px;
+    font-size  : 14px;
     font-weight: 600;
-    color: #3d86ef;
-    cursor: pointer;
+    color      : #477AEF;
+    cursor     : pointer;
   }
 }
 
 .moreLoad {
   text-align: center;
-  padding: 16px 0 50px;
+  padding   : 16px 0 50px;
   background: #fff;
 }
 
 .backTop {
-  width: 64px;
-  height: 64px;
-  background: #ffffff;
+  width        : 64px;
+  height       : 64px;
+  background   : #ffffff;
   border-radius: 32px;
-  border: 1px solid #d8d8d8;
-  text-align: center;
+  border       : 1px solid #d8d8d8;
+  text-align   : center;
 
   div {
     color: #666666;

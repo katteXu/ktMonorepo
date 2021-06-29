@@ -85,7 +85,7 @@ const Index = props => {
         return (
           <>
             <span
-              style={{ color: '#3d86ef', cursor: 'pointer' }}
+              style={{ color: '#477AEF', cursor: 'pointer' }}
               onClick={() => {
                 setDid(record.id);
                 form1.setFieldsValue({ name: record.name, remark: record.remark });
@@ -149,7 +149,6 @@ const Index = props => {
 
   // 开始订阅
   const subscribe = async () => {
-    // const { userId } = localStorage;
     const _topic = `${config.parent_topic}/${config.child_topic}/${macAddress}`;
     console.log(_topic);
     client.subscribe(_topic, { qos: 0 }, e => {

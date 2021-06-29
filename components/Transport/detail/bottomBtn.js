@@ -26,7 +26,7 @@ const radioStyle = {
 // 确认信息
 const ConfirmDetail = ({ fromWeight, toWeight, unitName }) => {
   return (
-    <div style={{ fontFamily: 'PingFangSC-Regular', color: '#4A4A5A', fontSize: 16 }}>
+    <div style={{ fontFamily: 'PingFangSC-Regular', color: '#333333', fontSize: 16 }}>
       <span>
         原发:{fromWeight} {unitName || '吨'}
       </span>
@@ -327,10 +327,10 @@ const BottomBtn = props => {
           content: (
             <div>
               <div style={{ marginBottom: 6 }}>
-                结算运费：<span style={{ color: '#3D86EF' }}>{(price * 1).toFixed(2)}</span> 元
+                结算运费：<span style={{ color: '#477AEF' }}>{(price * 1).toFixed(2)}</span> 元
               </div>
               <div>
-                预计运费：<span style={{ color: '#3D86EF' }}>{Format.price(props.dataInfo.price)}</span> 元
+                预计运费：<span style={{ color: '#477AEF' }}>{Format.price(props.dataInfo.price)}</span> 元
               </div>
             </div>
           ),

@@ -16,7 +16,7 @@ const mainStyle = {
 const titleStyle = {
   fontSize: 20,
   fontWeight: 600,
-  color: '#4A4A5A',
+  color: '#333333',
   padding: '6px 0 16px',
 };
 

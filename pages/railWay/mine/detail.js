@@ -261,8 +261,8 @@ const RailWayDetail = props => {
           <Tag
             color={dataInfo.fleetCaptionId ? '#FFF5F5' : '#F5F9FF'}
             style={{
-              color: dataInfo.fleetCaptionId ? '#e44040' : '#3d86ef',
-              borderColor: dataInfo.fleetCaptionId ? '#e44040' : '#3d86ef',
+              color: dataInfo.fleetCaptionId ? '#e44040' : '#477AEF',
+              borderColor: dataInfo.fleetCaptionId ? '#e44040' : '#477AEF',
               fontWeight: 400,
               position: 'relative',
               bottom: 1,
@@ -287,7 +287,7 @@ const RailWayDetail = props => {
               <Button
                 style={{
                   padding: '4px 0',
-                  color: '#3D86EF',
+                  color: '#477AEF',
                   border: 'none',
                   boxShadow: 'none',
                 }}
@@ -299,7 +299,7 @@ const RailWayDetail = props => {
                 style={{
                   marginLeft: 12,
                   padding: '4px 0',
-                  color: '#3D86EF',
+                  color: '#477AEF',
                   border: 'none',
                   boxShadow: 'none',
                 }}
@@ -326,7 +326,7 @@ const RailWayDetail = props => {
                   {canEdit && startLoadTime && (
                     <span
                       style={{
-                        color: '#3d86ef',
+                        color: '#477AEF',
                         cursor: 'pointer',
                         wordBreak: 'keep-all',
                       }}
@@ -350,7 +350,7 @@ const RailWayDetail = props => {
               <ChildTitle
                 className="hei14"
                 style={{
-                  color: '#4A4A5A',
+                  color: '#333333',
                   fontSize: '14px',
                   fontWeight: 600,
                   marginBottom: '8px',
@@ -410,7 +410,7 @@ const RailWayDetail = props => {
               <ChildTitle
                 className="hei14"
                 style={{
-                  color: '#4A4A5A',
+                  color: '#333333',
                   fontSize: '14px',
                   fontWeight: 600,
                   marginBottom: '8px',
@@ -480,7 +480,7 @@ const RailWayDetail = props => {
                     (!showUnitPrice ? (
                       <span
                         style={{
-                          color: '#3d86ef',
+                          color: '#477AEF',
                           marginLeft: 9,
                           cursor: 'pointer',
                         }}
@@ -491,7 +491,7 @@ const RailWayDetail = props => {
                       <div style={{ display: 'inline' }}>
                         <span
                           style={{
-                            color: '#3d86ef',
+                            color: '#477AEF',
                             marginLeft: 9,
                             cursor: 'pointer',
                           }}
@@ -499,7 +499,7 @@ const RailWayDetail = props => {
                           保存
                         </span>
                         <span
-                          style={{ marginLeft: 9, cursor: 'pointer', color: '#3d86ef' }}
+                          style={{ marginLeft: 9, cursor: 'pointer', color: '#477AEF' }}
                           onClick={() => {
                             setShowUnitPrice(false);
                             setNewUnitPrice(0);
@@ -527,7 +527,7 @@ const RailWayDetail = props => {
                   {canEdit && (
                     <span
                       style={{
-                        color: '#3d86ef',
+                        color: '#477AEF',
                         marginLeft: 9,
                         cursor: 'pointer',
                       }}
@@ -553,7 +553,7 @@ const RailWayDetail = props => {
               <ChildTitle
                 className="hei14"
                 style={{
-                  color: '#4A4A5A',
+                  color: '#333333',
                   fontSize: '14px',
                   fontWeight: 600,
                   marginBottom: '8px',
@@ -585,7 +585,7 @@ const RailWayDetail = props => {
               <ChildTitle
                 className="hei14"
                 style={{
-                  color: '#4A4A5A',
+                  color: '#333333',
                   fontSize: '14px',
                   fontWeight: 600,
                   marginBottom: '8px',
@@ -626,7 +626,7 @@ const RailWayDetail = props => {
                   {canEdit && (
                     <span
                       style={{
-                        color: '#3d86ef',
+                        color: '#477AEF',
                         marginLeft: 9,
                         cursor: 'pointer',
                       }}

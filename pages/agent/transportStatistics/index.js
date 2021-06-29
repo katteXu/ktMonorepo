@@ -462,9 +462,9 @@ const TransportStatistics = props => {
                     style={{
                       fontSize: 14,
                       padding: '0 10px',
-                      border: '1px solid #3d86ef',
+                      border: '1px solid #477AEF',
                       background: '#f5f9ff',
-                      color: '#3d86ef',
+                      color: '#477AEF',
                       borderRadius: 2,
                     }}
                     key={item.id}>

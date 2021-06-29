@@ -124,7 +124,7 @@ const CustomerDetail = props => {
             <div
               style={{
                 fontSize: 16,
-                color: '#4A4A5A',
+                color: '#333333',
                 fontWeight: 700,
                 position: 'relative',
                 top: 1,
@@ -297,7 +297,7 @@ const CustomerDetail = props => {
                 <div
                   style={{
                     fontSize: 16,
-                    color: '#4A4A5A',
+                    color: '#333333',
                     fontWeight: 600,
                     position: 'relative',
                     top: 1,

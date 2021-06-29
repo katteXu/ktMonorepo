@@ -15,7 +15,7 @@ const Prompt = ({ value, type }) => {
       )}
       {type === 'info' && (
         <ExclamationCircleFilled
-          color="#3D86EF"
+          color="#477AEF"
           style={{
             marginRight: 2,
             fontSize: 16,

@@ -198,7 +198,7 @@ const Scheme = props => {
             <span className={styles.desc}>AI优化成本</span>
             <span className={styles.num}>{(dataInfo && Format.price(dataInfo.predictUnitPrice)) || 0}</span>
           </div>
-          <Progress percent={(aiProcess / total) * 100} showInfo={false} strokeColor="#3D86EF" strokeWidth={10} />
+          <Progress percent={(aiProcess / total) * 100} showInfo={false} strokeColor="#477AEF" strokeWidth={10} />
           <div className={styles.progress}>
             <span className={styles.desc}>现配比成本</span>
             <span className={styles.num}>{inputScheme && Format.price(inputScheme.unitPrice)}</span>

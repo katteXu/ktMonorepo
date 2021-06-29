@@ -133,7 +133,7 @@ const Index = props => {
               setRetType(record.retType);
               setShowDrawer(true);
             }}
-            style={{ color: '#3D86EF' }}>
+            style={{ color: '#477AEF' }}>
             查看
           </span>
         );

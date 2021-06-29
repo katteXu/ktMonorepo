@@ -78,7 +78,7 @@ const Index = props => {
         return (
           <span
             className={value[1] ? styles.sheetId : ''}
-            style={value ? { color: '#3d86ef', cursor: value[1] ? 'pointer' : 'none' } : {}}
+            style={value ? { color: '#477AEF', cursor: value[1] ? 'pointer' : 'none' } : {}}
             onClick={() => {
               if (value[1]) {
                 router.push(`/productManagement/qualityManagement/detail?id=${value[1]}`);
@@ -312,7 +312,7 @@ const Index = props => {
               style={{
                 height: 32,
                 minWidth: 56,
-                color: '#4A4A5A',
+                color: '#333333',
                 border: '1px solid #F6F7F9',
                 fontSize: 16,
                 lineHeight: '30px',
@@ -347,7 +347,7 @@ const Index = props => {
                 </div>
                 <div style={{ marginTop: 16 }}>
                   <span>设备工作状态</span>
-                  <span style={{ marginLeft: 24, color: isPaused ? 'red' : '#3d86ef' }}>
+                  <span style={{ marginLeft: 24, color: isPaused ? 'red' : '#477AEF' }}>
                     {isPaused ? '已关闭' : '正常'}
                   </span>
                 </div>
@@ -442,7 +442,7 @@ const Index = props => {
                         fontSize: 14,
                         height: 14,
                         width: 14,
-                        border: '1px solid #4a4a5a',
+                        border: '1px solid #333333',
                         lineHeight: '10px',
                         textAlign: 'center',
                         cursor: 'pointer',
@@ -478,7 +478,7 @@ const Index = props => {
                         fontSize: 14,
                         height: 14,
                         width: 14,
-                        border: '1px solid #4a4a5a',
+                        border: '1px solid #333333',
                         lineHeight: '10px',
                         textAlign: 'center',
                         cursor: 'pointer',
@@ -531,7 +531,7 @@ const Index = props => {
                 </div>
                 <div style={{ marginTop: 16 }}>
                   <span>设备工作状态</span>
-                  <span style={{ marginLeft: 24, color: isPaused2 ? 'red' : '#3d86ef' }}>
+                  <span style={{ marginLeft: 24, color: isPaused2 ? 'red' : '#477AEF' }}>
                     {isPaused2 ? '已关闭' : '正常'}
                   </span>
                 </div>
@@ -650,7 +650,7 @@ const Index = props => {
                         fontSize: 14,
                         height: 14,
                         width: 14,
-                        border: '1px solid #4a4a5a',
+                        border: '1px solid #333333',
                         lineHeight: '10px',
                         textAlign: 'center',
                         cursor: 'pointer',
@@ -686,7 +686,7 @@ const Index = props => {
                         fontSize: 14,
                         height: 14,
                         width: 14,
-                        border: '1px solid #4a4a5a',
+                        border: '1px solid #333333',
                         lineHeight: '10px',
                         textAlign: 'center',
                         cursor: 'pointer',
@@ -714,7 +714,7 @@ const Index = props => {
                         fontSize: 14,
                         height: 14,
                         width: 14,
-                        border: '1px solid #4a4a5a',
+                        border: '1px solid #333333',
                         lineHeight: '10px',
                         textAlign: 'center',
                         cursor: 'pointer',
@@ -751,7 +751,7 @@ const Index = props => {
                         fontSize: 14,
                         height: 14,
                         width: 14,
-                        border: '1px solid #4a4a5a',
+                        border: '1px solid #333333',
                         lineHeight: '10px',
                         textAlign: 'center',
                         cursor: 'pointer',
@@ -779,7 +779,7 @@ const Index = props => {
                         fontSize: 14,
                         height: 14,
                         width: 14,
-                        border: '1px solid #4a4a5a',
+                        border: '1px solid #333333',
                         lineHeight: '10px',
                         textAlign: 'center',
                         cursor: 'pointer',
@@ -815,7 +815,7 @@ const Index = props => {
                         fontSize: 14,
                         height: 14,
                         width: 14,
-                        border: '1px solid #4a4a5a',
+                        border: '1px solid #333333',
                         lineHeight: '10px',
                         textAlign: 'center',
                         cursor: 'pointer',

@@ -66,7 +66,7 @@ const RosePie = ({ data = [], size }) => {
         },
       },
     },
-    color: ['#46B8AF', '#FFB844', '#3D86EF', '#FF8742', '#FD5F7D'],
+    color: ['#46B8AF', '#FFB844', '#477AEF', '#FF8742', '#FD5F7D'],
   };
 
   // 生成配置
