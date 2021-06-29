@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Steps } from '@components/pound/Settlment';
-import { Layout, Content, Ellipsis } from '@components';
+// import { Steps } from '@components/pound/Settlment';
+import { Layout, Content, Ellipsis, Steps } from '@components';
 import { SettlmentForm } from '@components/pound/Settlment';
 import { Button, Table, Modal, message, Popconfirm, Input } from 'antd';
 import { QuestionCircleFilled } from '@ant-design/icons';
@@ -11,7 +11,6 @@ import styles from './styles.less';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import { pound, downLoadFile } from '@api';
-import { Permission } from '@store';
 // 编辑单元格
 const EditCell = ({ title, editable, children, dataIndex, record, reload, ...restProps }) => {
   const [editing, setEditing] = useState(false);
@@ -37,20 +36,28 @@ const EditCell = ({ title, editable, children, dataIndex, record, reload, ...res
   // 编辑输入框
   const handleChangeInput = e => {
     const { value } = e.target;
-    validateInput(value);
-    setValue(value);
+    // validateInput(value);
+    // setValue(value);
+    let val;
+    val = value
+      .replace(/[^\d.]/g, '')
+      .replace(/^\./g, '')
+      .replace('.', '$#$')
+      .replace(/\./g, '')
+      .replace('$#$', '.')
+      .replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
+    validateInput(val);
+    setValue(val);
   };
 
   const handleSave = async () => {
-    console.log(record);
     if (error) {
-      message.error('运费单价只能是数字，且最多输入两位小数');
+      message.error('请输入非0数字');
     } else {
       const params = {
         pIds: record.ids.join(','),
         unitPrice: value * 100,
       };
-      console.log(params);
       const res = await pound.updatePrice({ params });
       if (res.status === 0) {
         message.success('运费单价修改成功');
@@ -219,10 +226,6 @@ const Order = props => {
     },
   ];
 
-  useEffect(() => {
-    console.log(permissions, isSuperUser);
-  }, []);
-
   // 弹窗
   const [showModal, setShowModal] = useState(false);
 
@@ -373,10 +376,21 @@ const Order = props => {
   return (
     <Layout {...routeView}>
       <Content style={{ marginBottom: 56 }}>
-        <section style={{ position: 'relative' }}>
-          <Steps current={1} />
+        <section style={{ position: 'relative', paddingTop: 24 }}>
+          <Steps
+            data={[
+              {
+                title: '添加待结算磅单',
+                key: true,
+              },
+              {
+                title: '查看结算单',
+                key: true,
+              },
+            ]}
+          />
 
-          <div className={styles.ctrl} style={{ marginTop: 24 }}>
+          <div className={styles.ctrl} style={{ marginTop: 16 }}>
             <Button onClick={handleExport} loading={exportLoading}>
               导出
             </Button>
@@ -386,6 +400,16 @@ const Order = props => {
           </div>
 
           <div className={styles['table-block']}>
+            {/* <div className={styles.header}>
+              <div>
+                <span>结算银行卡号：{formData.cardNumber || '--'}</span>
+                <span>结算日期：{formData.payTime.format('YYYY-MM-DD HH:mm:ss')}</span>
+              </div>
+              <div>
+                <span>结算姓名：{formData.payName || '--'}</span>
+                <span>结算手机号：{formData.payMobilNumber || '--'}</span>
+              </div>
+            </div> */}
             <Table
               loading={loading}
               dataSource={dataList.data}

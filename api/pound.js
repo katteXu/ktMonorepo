@@ -417,6 +417,33 @@ const importPoundBillWeight = ({ params } = {}) => {
   });
 };
 
+// 获取人工结算设置
+const manPaySetInfo = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/man_pay_pound/manPaySetInfo',
+    params,
+  });
+};
+
+// 保存人工结算设置
+const manPaySet = ({ params } = {}) => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/man_pay_pound/manPaySet',
+    data: params,
+  });
+};
+
+// 保存人工结算设置
+const updateManPayGoodsUnitPrice = ({ params } = {}) => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/man_pay_pound/updateManPayGoodsUnitPrice',
+    data: params,
+  });
+};
+
 export default {
   getBillReport,
   getBillMonthReport,
@@ -468,4 +495,7 @@ export default {
   updateAccountListStatus,
   updateAccountData,
   importPoundBillWeight,
+  manPaySetInfo,
+  manPaySet,
+  updateManPayGoodsUnitPrice,
 };
