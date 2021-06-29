@@ -234,3 +234,65 @@
   background: #d8d8d8;
   transform: rotate(19deg);
 }
+.equipment-box {
+  overflow-x: auto;
+  .equipmentBlock {
+    margin-top: 16px;
+
+    .equipment {
+      border: 1px solid #d8d8d8;
+      display: inline-block;
+      text-align: center;
+      color: #333333;
+      box-sizing: border-box;
+
+      div {
+        line-height: 32px;
+        width: 140px;
+      }
+
+      .title {
+        background: #f6f7f9;
+        border-bottom: 1px solid #d8d8d8;
+        color: #333333;
+      }
+      .btn {
+        display: inline-block;
+        width: 100%;
+        border-top: 1px solid #d8d8d8;
+        cursor: pointer;
+      }
+      .statusInfo {
+        width: 6px;
+        height: 6px;
+        display: inline-block;
+        border-radius: 3px;
+        margin-right: 4px;
+        position: relative;
+        top: -3px;
+      }
+    }
+  }
+}
+
+.loadingBox {
+  background: #fff;
+  position: fixed;
+  top: 167px;
+  bottom: 16px;
+  right: 16px;
+  left: 216px;
+
+  text-align: center;
+  min-width: 968px;
+  padding-top: 208px;
+  .noImg {
+    width: 232px;
+    height: 174px;
+  }
+  .text {
+    color: #848485;
+    margin-top: 12px;
+    font-size: 14px;
+  }
+}

@@ -7,7 +7,7 @@ import EditConveyorSpeed from './editConveyorSpeed';
 import EditBedThinkness from './editBedThinkness';
 import { product } from '@api';
 
-const Index = ({ onSubmit, did, refreshData, data }) => {
+const Index = ({ onSubmit, did, refreshData, data, jiggerData }) => {
   const [form] = Form.useForm();
 
   // 风阀
@@ -68,55 +68,11 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
   const { init, connectionStatus, client } = useMqtt();
   const [macAddress, setMacAddress] = useState();
   const [macThickness, setMacThickness] = useState();
-  useEffect(() => {
-    // 开始mqtt
-    init();
-    return () => {
-      // 结束mqtt
-      window.ClientEndDetail.end();
-    };
-  }, []);
-
-  const config = {
-    child_topic: 'proton/jigger', // 过磅topic
-    parent_topic: 'testSaas', //测试是testSaas正式是Saas
-  };
 
   useEffect(() => {
-    if (client && macAddress) {
-      window.ClientEndDetail = client;
-      console.log('开始订阅--->订阅消息--->监听消息');
-      subscribe();
-      // 监听信息
-      client.on('message', (topic, message) => {
-        if (topic.includes(config.child_topic)) {
-          console.log('接收消息', `${message}`);
-          const res = JSON.parse(message);
-          console.log(res);
-          if (res.status === 0) {
-            setMacThickness(res.result.jiggerData);
-          } else {
-            console.log('失败');
-          }
-        }
-      });
-    }
-  }, [client, macAddress]);
-
-  // 开始订阅
-  const subscribe = async () => {
-    // const { userId } = localStorage;
-    const _topic = `${config.parent_topic}/${config.child_topic}/${macAddress}`;
-    console.log(_topic);
-    client.subscribe(_topic, { qos: 0 }, e => {
-      console.log(e);
-      if (!e) {
-        console.log('订阅成功:' + _topic);
-      } else {
-        console.log('订阅错误', e);
-      }
-    });
-  };
+    console.log('=====>' + jiggerData);
+    setMacThickness(jiggerData);
+  }, [jiggerData]);
 
   const onclickStop = () => {
     Modal.confirm({
@@ -243,12 +199,31 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
     };
     const res = await product.updateJiggerParams({ params });
 
+    console.log(form.getFieldValue());
+
     setTimeout(() => {
       refreshData();
     }, 100);
   };
 
   const setFormInit = async () => {
+    // form.setFieldsValue({
+    //   intakeFirstValue: data.intakeFirstValue / 100 || undefined,
+    //   inflateFirstValue: data.inflateFirstValue / 100 || undefined,
+    //   exhaustFirstValue: data.exhaustFirstValue / 100 || undefined,
+    //   restFirstValue: data.restFirstValue / 100 || undefined,
+    //   frequencyFirstValue: data.frequencyFirstValue || undefined,
+    //   intakeSecondValue: data.intakeSecondValue / 100 || undefined,
+    //   inflateSecondValue: data.inflateSecondValue / 100 || undefined,
+    //   exhaustSecondValue: data.exhaustSecondValue / 100 || undefined,
+    //   restSecondValue: data.restSecondValue / 100 || undefined,
+    //   frequencySecondValue: data.frequencySecondValue || undefined,
+    //   intakeThirdValue: data.intakeThirdValue / 100 || undefined,
+    //   inflateThirdValue: data.inflateThirdValue / 100 || undefined,
+    //   exhaustThirdValue: data.exhaustThirdValue / 100 || undefined,
+    //   restThirdValue: data.restThirdValue / 100 || undefined,
+    //   frequencyThirdValue: data.frequencyThirdValue || undefined,
+    // });
     setspeed(data.speedFirstSetValue);
     setspeed1(data.speedSecondSetValue);
     setspeed2(data.speedThirdSetValue);
