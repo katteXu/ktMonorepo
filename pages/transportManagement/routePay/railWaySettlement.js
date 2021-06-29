@@ -411,8 +411,8 @@ const RailWaySettlement = props => {
             color={dataList.transportFleetId ? '#FFF5F5' : '#F5F9FF'}
             style={{
               marginLeft: 10,
-              color: dataList.transportFleetId ? '#e44040' : '#3d86ef',
-              borderColor: dataList.transportFleetId ? '#e44040' : '#3d86ef',
+              color: dataList.transportFleetId ? '#e44040' : '#477AEF',
+              borderColor: dataList.transportFleetId ? '#e44040' : '#477AEF',
               borderWidth: 1,
               position: 'relative',
               top: -1,
@@ -721,14 +721,14 @@ const RailWaySettlement = props => {
               top: 75,
             }}
           />
-          <div style={{ color: '#4A4A5A', fontSize: 16, fontWeight: 600 }}>
+          <div style={{ color: '#333333', fontSize: 16, fontWeight: 600 }}>
             批量结算无法修改运费，如需修改请单笔结算
           </div>
           <div
             style={{
               marginBottom: 6,
               marginTop: 24,
-              color: '#4A4A5A',
+              color: '#333333',
               fontSize: 14,
             }}>
             运输车次：<span>{settlementInfo.transportCount}</span>次
@@ -737,7 +737,7 @@ const RailWaySettlement = props => {
             style={{
               display: 'flex',
               marginTop: 16,
-              color: '#4A4A5A',
+              color: '#333333',
               fontSize: 14,
             }}>
             <div style={{ marginRight: 24 }}>
@@ -749,9 +749,9 @@ const RailWaySettlement = props => {
               <span>{Format.weight(settlementInfo.totalArrivalGoodsWeight)}</span>吨
             </div>
           </div>
-          <div style={{ marginTop: 16, color: '#4A4A5A' }}>
+          <div style={{ marginTop: 16, color: '#333333' }}>
             结算运费：
-            <span style={{ color: '#3D86EF', fontSize: 16 }}>{Format.price(settlementInfo.realPrice)}</span>元
+            <span style={{ color: '#477AEF', fontSize: 16 }}>{Format.price(settlementInfo.realPrice)}</span>元
           </div>
         </div>
       </Modal>

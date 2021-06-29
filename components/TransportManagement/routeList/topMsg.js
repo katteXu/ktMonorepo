@@ -57,7 +57,7 @@ const TopMsg = (props, ref) => {
                   style={{
                     display: 'inline-block',
                     marginLeft: 12,
-                    color: '#3d86ef',
+                    color: '#477AEF',
                     cursor: 'pointer',
                   }}>
                   <span onClick={() => router.push('/transportManagement/routeList?tab=CHECKING')}>按专线结算</span>
@@ -72,7 +72,7 @@ const TopMsg = (props, ref) => {
                   style={{
                     display: 'inline-block',
                     marginLeft: 12,
-                    color: '#3d86ef',
+                    color: '#477AEF',
                     cursor: 'pointer',
                   }}>
                   <span onClick={() => router.push('/transportManagement/transportList?tab=CHECKING')}>按运单结算</span>
@@ -109,14 +109,14 @@ const TopMsg = (props, ref) => {
               src={Icon.SpeakerIcon}></img>
             <span>
               您有待结算费用
-              <span className="total-num" style={{ color: '#4A4A5AFF', fontSize: 16 }}>
+              <span className="total-num" style={{ color: '#333333FF', fontSize: 16 }}>
                 {Format.price(checkingPrice)}
               </span>
               元
             </span>
             <span style={{ marginLeft: 32 }}>
               待支付费用
-              <span className="total-num" style={{ color: '#4A4A5AFF', fontSize: 16 }}>
+              <span className="total-num" style={{ color: '#333333FF', fontSize: 16 }}>
                 {Format.price(waitPayPrice)}
               </span>
               元

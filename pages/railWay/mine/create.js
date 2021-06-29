@@ -87,7 +87,7 @@ const CreateRailWay = props => {
             <Col span={6} style={{ textAlign: 'right' }}>
               {confirmData[key].label}
             </Col>
-            <Col span={18} style={{ color: '#3D86EF' }}>
+            <Col span={18} style={{ color: '#477AEF' }}>
               {confirmData[key].value}
             </Col>
           </Row>

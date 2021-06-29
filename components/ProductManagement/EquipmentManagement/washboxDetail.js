@@ -202,7 +202,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
           </div>
           <div
             // className={styles.fontcolorblue}
-            style={{ marginLeft: 12, color: data.runStatus ? '#E44040' : '#3D86EF', cursor: 'pointer' }}
+            style={{ marginLeft: 12, color: data.runStatus ? '#E44040' : '#477AEF', cursor: 'pointer' }}
             onClick={() => {
               data.runStatus ? onclickOpen() : onclickStop();
             }}>
@@ -341,7 +341,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
             handleSubmit();
             setVisible(false);
           }}>
-          <div style={{ color: '#4a4a5a', paddingLeft: 16 }}>
+          <div style={{ color: '#333333', paddingLeft: 16 }}>
             <div className={styles.row}>
               <div className={styles.col} style={{ flex: 'unset', width: 42, marginRight: 16 }}></div>
               <div className={styles.col}>进气期</div>
@@ -622,7 +622,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
           updateBedThinkness();
           setVisible2(false);
         }}>
-        <div style={{ color: '#4a4a5a', paddingLeft: 16 }}>
+        <div style={{ color: '#333333', paddingLeft: 16 }}>
           <div className={styles.row} style={{ alignItems: 'center', marginTop: 8 }}>
             <div className={styles.col} style={{ flex: 'unset', marginRight: 24 }}>
               第一段
@@ -660,7 +660,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
           updateSpeed();
           setVisible3(false);
         }}>
-        <div style={{ color: '#4a4a5a', paddingLeft: 16 }}>
+        <div style={{ color: '#333333', paddingLeft: 16 }}>
           <div className={styles.row} style={{ alignItems: 'center', marginTop: 8 }}>
             <div className={styles.col} style={{ flex: 'unset', marginRight: 24 }}>
               第一段

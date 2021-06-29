@@ -15,7 +15,7 @@ const Index = ({ form, to, production, inputTotal }) => {
                 style={{
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  color: '#4A4A5A',
+                  color: '#333333',
                   fontSize: 16,
                   marginTop: -4,
                 }}>
@@ -26,7 +26,7 @@ const Index = ({ form, to, production, inputTotal }) => {
                 {form}
                 <span
                   style={{
-                    color: '#4A4A5A',
+                    color: '#333333',
                     fontSize: 16,
                     fontWeight: 400,
                     marginLeft: 12,
@@ -45,7 +45,7 @@ const Index = ({ form, to, production, inputTotal }) => {
                 style={{
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  color: '#4A4A5A',
+                  color: '#333333',
                   fontSize: 16,
                   marginTop: -4,
                 }}>
@@ -56,7 +56,7 @@ const Index = ({ form, to, production, inputTotal }) => {
                 {to}
                 <span
                   style={{
-                    color: '#4A4A5A',
+                    color: '#333333',
                     fontSize: 16,
                     fontWeight: 400,
                     marginLeft: 12,
@@ -75,7 +75,7 @@ const Index = ({ form, to, production, inputTotal }) => {
                 style={{
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  color: '#4A4A5A',
+                  color: '#333333',
                   fontSize: 16,
                   marginTop: -4,
                 }}>
@@ -86,7 +86,7 @@ const Index = ({ form, to, production, inputTotal }) => {
                 {production}
                 <span
                   style={{
-                    color: '#4A4A5A',
+                    color: '#333333',
                     fontSize: 16,
                     fontWeight: 400,
                     marginLeft: 12,
@@ -105,7 +105,7 @@ const Index = ({ form, to, production, inputTotal }) => {
                 style={{
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  color: '#4A4A5A',
+                  color: '#333333',
                   fontSize: 16,
                   marginTop: -4,
                 }}>
@@ -116,7 +116,7 @@ const Index = ({ form, to, production, inputTotal }) => {
                 {inputTotal}
                 <span
                   style={{
-                    color: '#4A4A5A',
+                    color: '#333333',
                     fontSize: 16,
                     fontWeight: 400,
                     marginLeft: 12,

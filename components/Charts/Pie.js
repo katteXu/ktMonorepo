@@ -58,7 +58,7 @@ const Pie = ({ data = [], size }) => {
         },
       },
     },
-    color: ['#46B8AF', '#FFB844', '#3D86EF', '#FD5F7D', '#FF8742'],
+    color: ['#46B8AF', '#FFB844', '#477AEF', '#FD5F7D', '#FF8742'],
   };
 
   // 生成配置

@@ -435,7 +435,7 @@ const RailWayDetail = () => {
             <span style={{ float: 'right' }}>
               <Button
                 style={{
-                  color: '#3D86EF',
+                  color: '#477AEF',
                   outline: 'none',
                   border: 'none',
                   padding: '4px 0',
@@ -489,7 +489,7 @@ const RailWayDetail = () => {
                   {canEdit && (
                     <span
                       style={{
-                        color: '#3d86ef',
+                        color: '#477AEF',
                         marginLeft: 9,
                         cursor: 'pointer',
                       }}
@@ -526,7 +526,7 @@ const RailWayDetail = () => {
                   {canEdit && (
                     <span
                       style={{
-                        color: '#3d86ef',
+                        color: '#477AEF',
                         marginLeft: 9,
                         cursor: 'pointer',
                       }}
@@ -579,7 +579,7 @@ const RailWayDetail = () => {
                     (!showUnitPrice ? (
                       <span
                         style={{
-                          color: '#3d86ef',
+                          color: '#477AEF',
                           marginLeft: 9,
                           cursor: 'pointer',
                         }}
@@ -590,7 +590,7 @@ const RailWayDetail = () => {
                       <div style={{ display: 'inline' }}>
                         <span
                           style={{
-                            color: '#3d86ef',
+                            color: '#477AEF',
                             marginLeft: 9,
                             cursor: 'pointer',
                           }}
@@ -598,7 +598,7 @@ const RailWayDetail = () => {
                           保存
                         </span>
                         <span
-                          style={{ marginLeft: 9, cursor: 'pointer', color: '#3d86ef' }}
+                          style={{ marginLeft: 9, cursor: 'pointer', color: '#477AEF' }}
                           onClick={() => {
                             setShowUnitPrice(false);
                             setNewUnitPrice(0);
@@ -617,7 +617,7 @@ const RailWayDetail = () => {
                   {canEdit && (
                     <span
                       style={{
-                        color: '#3d86ef',
+                        color: '#477AEF',
                         marginLeft: 9,
                         cursor: 'pointer',
                       }}
@@ -676,7 +676,7 @@ const RailWayDetail = () => {
                   {canEdit && (
                     <span
                       style={{
-                        color: '#3d86ef',
+                        color: '#477AEF',
                         marginLeft: 9,
                         cursor: 'pointer',
                       }}
@@ -713,7 +713,7 @@ const RailWayDetail = () => {
                     (!showRemark ? (
                       <span
                         style={{
-                          color: '#3d86ef',
+                          color: '#477AEF',
                           marginLeft: 9,
                           cursor: 'pointer',
                         }}
@@ -724,7 +724,7 @@ const RailWayDetail = () => {
                       <div style={{ display: 'inline' }}>
                         <span
                           style={{
-                            color: '#3d86ef',
+                            color: '#477AEF',
                             marginLeft: 9,
                             cursor: 'pointer',
                           }}
@@ -732,7 +732,7 @@ const RailWayDetail = () => {
                           保存
                         </span>
                         <span
-                          style={{ marginLeft: 9, cursor: 'pointer', color: '#3d86ef' }}
+                          style={{ marginLeft: 9, cursor: 'pointer', color: '#477AEF' }}
                           onClick={() => {
                             setShowRemark(false);
                             setNewRemarkInfo('');

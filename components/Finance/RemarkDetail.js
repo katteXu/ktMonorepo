@@ -123,7 +123,7 @@ const RemarkDetail = ({ onChange, formData = {}, id, mode }) => {
   };
   return (
     <div className={styles['remark-detail']}>
-      <div style={{ textAlign: 'right', padding: 9, color: '#4A4A5A', userSelect: 'none' }}>
+      <div style={{ textAlign: 'right', padding: 9, color: '#333333', userSelect: 'none' }}>
         <span className={styles['ctrl-btn']} onClick={() => setShow(state => !state)}>
           {isShow ? (
             <span>

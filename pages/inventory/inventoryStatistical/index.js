@@ -56,7 +56,7 @@ const Index = props => {
       render: (value, data) => {
         return (
           <span
-            style={{ color: value > 0 ? '#3d86ef' : '#4a4a5a', cursor: value > 0 ? 'pointer' : '' }}
+            style={{ color: value > 0 ? '#477AEF' : '#333333', cursor: value > 0 ? 'pointer' : '' }}
             onClick={() => {
               value > 0 &&
                 router.push(`/inventory/inventoryWater?waterTab=outbound&type=POUND&goodsName=${data.goodsName}`);
@@ -75,7 +75,7 @@ const Index = props => {
       render: (value, data) => {
         return (
           <span
-            style={{ color: value > 0 ? '#3d86ef' : '#4a4a5a', cursor: value > 0 ? 'pointer' : '' }}
+            style={{ color: value > 0 ? '#477AEF' : '#333333', cursor: value > 0 ? 'pointer' : '' }}
             onClick={() => {
               value > 0 &&
                 router.push(`/inventory/inventoryWater?waterTab=storage&type=POUND&goodsName=${data.goodsName}`);
@@ -94,7 +94,7 @@ const Index = props => {
       render: (value, data) => {
         return (
           <span
-            style={{ color: value > 0 ? '#3d86ef' : '#4a4a5a', cursor: value > 0 ? 'pointer' : '' }}
+            style={{ color: value > 0 ? '#477AEF' : '#333333', cursor: value > 0 ? 'pointer' : '' }}
             onClick={() => {
               value > 0 &&
                 router.push(`/inventory/inventoryWater?waterTab=outbound&type=COAL_WASH&goodsName=${data.goodsName}`);
@@ -113,7 +113,7 @@ const Index = props => {
       render: (value, data) => {
         return (
           <span
-            style={{ color: value > 0 ? '#3d86ef' : '#4a4a5a', cursor: value > 0 ? 'pointer' : '' }}
+            style={{ color: value > 0 ? '#477AEF' : '#333333', cursor: value > 0 ? 'pointer' : '' }}
             onClick={() => {
               value > 0 &&
                 router.push(`/inventory/inventoryWater?waterTab=storage&type=COAL_WASH&goodsName=${data.goodsName}`);
@@ -132,7 +132,7 @@ const Index = props => {
       render: (value, data) => {
         return (
           <span
-            style={{ color: value > 0 ? '#3d86ef' : '#4a4a5a', cursor: value > 0 ? 'pointer' : '' }}
+            style={{ color: value > 0 ? '#477AEF' : '#333333', cursor: value > 0 ? 'pointer' : '' }}
             onClick={() => {
               value > 0 &&
                 router.push(
@@ -153,7 +153,7 @@ const Index = props => {
       render: (value, data) => {
         return (
           <span
-            style={{ color: value > 0 ? '#3d86ef' : '#4a4a5a', cursor: value > 0 ? 'pointer' : '' }}
+            style={{ color: value > 0 ? '#477AEF' : '#333333', cursor: value > 0 ? 'pointer' : '' }}
             onClick={() => {
               value > 0 &&
                 router.push(

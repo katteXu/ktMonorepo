@@ -1,79 +1,80 @@
 .steps {
   background-color: #fff;
   // max-width: 904px;
-  margin: 0 auto;
-  padding-left: 36px;
-  padding-right: 36px;
-  padding-top: 24px;
-  padding-bottom: 32px;
+  margin          : 0 auto;
+  padding-left    : 36px;
+  padding-right   : 36px;
+  padding-top     : 24px;
+  padding-bottom  : 32px;
 
   .step-block {
-    margin-bottom: 8px;
-    position: relative;
-    display: flex;
+    margin-bottom  : 8px;
+    position       : relative;
+    display        : flex;
     justify-content: space-between;
-    align-items: center;
+    align-items    : center;
+
     .step-item {
       &.current {
         .num {
-          background: #3d86ef;
-          border: 1px solid #3d86ef;
-          color: #fff;
+          background: #477AEF;
+          border    : 1px solid #477AEF;
+          color     : #fff;
         }
+
         .title {
           font-family: PingFangSC-Medium, PingFang SC;
           font-weight: 600;
-          color: #4a4a5a;
+          color      : #333333;
         }
       }
 
       .num {
-        box-sizing: border-box;
-        font-size: 14px;
-        height: 32px;
-        width: 32px;
+        box-sizing   : border-box;
+        font-size    : 14px;
+        height       : 32px;
+        width        : 32px;
         border-radius: 16px;
-        text-align: center;
-        line-height: 30px;
-        display: inline-block;
-        border: 1px solid #d8d8d8;
+        text-align   : center;
+        line-height  : 30px;
+        display      : inline-block;
+        border       : 1px solid #d8d8d8;
       }
 
       .title {
         margin-left: 8px;
-        font-size: 16px;
+        font-size  : 16px;
         font-family: PingFangSC-Regular, PingFang SC;
-        color: #4a4a5a;
+        color      : #333333;
         font-weight: 400;
-        color: #6a6a6a;
+        color      : #6a6a6a;
       }
     }
 
     .step-line {
-      position: relative;
-      height: 6px;
+      position  : relative;
+      height    : 6px;
       border-top: 1px solid #6a6a6a;
-      transform: scaleY(0.5);
-      margin: 0 12px;
-      flex: 1;
+      transform : scaleY(0.5);
+      margin    : 0 12px;
+      flex      : 1;
 
       &.active {
-        border-color: #3d86ef;
+        border-color: #477AEF;
       }
 
       .desc {
-        position: absolute;
-        transform: scaleY(2) translateX(-50%);
-        font-size: 14px;
-        top: -50px;
+        position   : absolute;
+        transform  : scaleY(2) translateX(-50%);
+        font-size  : 14px;
+        top        : -50px;
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
-        color: #4a4a5a;
-        left: 50%;
+        color      : #333333;
+        left       : 50%;
       }
     }
   }
 }
 
-.standard {
-}
+.standard {}

@@ -115,7 +115,7 @@ const CashOutForm = ({ onSubmit, amount }) => {
   };
   // 帮助文案
   const Help = () => {
-    return <div style={{ fontSize: 12, lineHeight: '12px', marginTop: 3, color: '#4a4a5a' }}>可提现余额{amount}元</div>;
+    return <div style={{ fontSize: 12, lineHeight: '12px', marginTop: 3, color: '#333333' }}>可提现余额{amount}元</div>;
   };
 
   const onFinishFailed = errorInfo => {
@@ -160,7 +160,7 @@ const CashOutForm = ({ onSubmit, amount }) => {
             <Input placeholder="请输入提现金额" style={{ width: 264 }} addonAfter={<span>元</span>} />
           </Form.Item>
           <a
-            style={{ marginLeft: 12, fontSize: 14, color: '#3D86EF', position: 'relative', lineHeight: '32px' }}
+            style={{ marginLeft: 12, fontSize: 14, color: '#477AEF', position: 'relative', lineHeight: '32px' }}
             onClick={cashOutAll}>
             全部提现
           </a>
@@ -281,7 +281,7 @@ const CashOutForm = ({ onSubmit, amount }) => {
               title={
                 '进入方向物流app -> 登录账号 -> 点击”我的”-> 点击”设置” -> 点击”密码管理” ->点击”修改支付密码” -> 设置密码'
               }>
-              <span style={{ color: '#3D86EF' }}>忘记密码？</span>
+              <span style={{ color: '#477AEF' }}>忘记密码？</span>
             </Tooltip>
           </div>
           <div className={styles['error-msg']}>{errorTxt}</div>

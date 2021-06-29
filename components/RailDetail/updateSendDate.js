@@ -45,10 +45,10 @@ const UpdateForm = ({ onSubmit, onClose, startLoadTime, lastLoadTime, initValue 
         form={form}
         autoComplete="off">
         <Form.Item label="当前时间">
-          <span style={{ color: '#4a4a5a' }}>{initValue}</span>
+          <span style={{ color: '#333333' }}>{initValue}</span>
         </Form.Item>
         <Row>
-          <Col style={{ lineHeight: '32px', marginRight: 19, width: 70, color: '#4a4a5a' }}>发货时间:</Col>
+          <Col style={{ lineHeight: '32px', marginRight: 19, width: 70, color: '#333333' }}>发货时间:</Col>
           <Col span={9}>
             <Form.Item
               name="begin"

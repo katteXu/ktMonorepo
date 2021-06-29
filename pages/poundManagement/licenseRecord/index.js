@@ -70,7 +70,7 @@ const LicenseRecord = props => {
                 info(a);
               }
             }}>
-            <span style={text >= 2 ? { color: '#3D86EF' } : { color: 'black' }}>{text || '-'}</span>
+            <span style={text >= 2 ? { color: '#477AEF' } : { color: 'black' }}>{text || '-'}</span>
           </div>
         );
       },
@@ -119,7 +119,7 @@ const LicenseRecord = props => {
                 router.push(`/virtualDetail?id=${data.poundBillId}`);
               }
             }}>
-            <span style={data.poundBillId ? { color: '#3D86EF' } : { color: 'black' }}>
+            <span style={data.poundBillId ? { color: '#477AEF' } : { color: 'black' }}>
               {data.poundBillId ? '查看详情' : '-'}
             </span>
           </div>

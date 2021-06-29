@@ -23,7 +23,7 @@ const DetailStep = ({ totalGoodsWeight, totalArrivalGoodsWeight, transportCount,
       </div>
       <div className={styles['data-row']}>
         结算运费：¥
-        <span style={{ color: '#3D86EF', fontSize: 16, padding: '0 4px', fontWeight: 600 }}>
+        <span style={{ color: '#477AEF', fontSize: 16, padding: '0 4px', fontWeight: 600 }}>
           {Format.price(realPrice)}
         </span>
         元
@@ -98,7 +98,7 @@ const FleetBatchConfirm = ({ payInfo, payId, onFinish, rides }) => {
         content: (
           <>
             <div>￥</div>
-            <div style={{ color: '#3D86EF', fontSize: 20, margin: '0 4px' }}>{Format.price(payInfo.realPrice)}</div>
+            <div style={{ color: '#477AEF', fontSize: 20, margin: '0 4px' }}>{Format.price(payInfo.realPrice)}</div>
             <div>元</div>
           </>
         ),
@@ -113,7 +113,7 @@ const FleetBatchConfirm = ({ payInfo, payId, onFinish, rides }) => {
         icon: <CloseCircleFilled style={{ color: '#e44040', fontSize: 47 }} />,
         detail: (
           <div>
-            请联系客服 <span style={{ color: '#3D86EF' }}>400-690-8700</span>
+            请联系客服 <span style={{ color: '#477AEF' }}>400-690-8700</span>
           </div>
         ),
       });
