@@ -4,7 +4,7 @@ import { Button, Tabs, DatePicker, Input, Table, Tooltip, Modal, message } from 
 import { InfoCircleFilled } from '@ant-design/icons';
 import router from 'next/router';
 import { finance } from '@api';
-import { Format } from '@utils/common';
+import { Format, getQuery } from '@utils/common';
 import PayPasswordInput from '@components/common/PayPasswordInput';
 import styles from '../styles.less';
 import moment from 'moment';
@@ -124,7 +124,7 @@ const InvoiceList = () => {
     end: undefined,
   });
   useEffect(() => {
-    const { tab } = router.query;
+    const { tab } = getQuery();
     if (tab) {
       setQuery({ ...query, status: tab });
       getRemoteData({ ...query, status: tab });

@@ -5,7 +5,7 @@ import TotalFromReport from '@components/pound/poundReport/totalFromReport';
 import TotalToReport from '@components/pound/poundReport/totalToReport';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Tabs } from 'antd';
-import { clearState } from '@utils/common';
+import { clearState, getQuery } from '@utils/common';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import LicenseRecord from '../licenseRecord';
@@ -32,7 +32,7 @@ const PoundReport = props => {
   }, []);
 
   useEffect(() => {
-    const { tab, subTab } = router.query;
+    const { tab, subTab } = getQuery();
 
     if (tab === 'register') {
       setCurrentRegistrationTab('1');
@@ -43,7 +43,7 @@ const PoundReport = props => {
       setTabReport(1);
       setCurrentTab('2');
     }
-  }, [router.query]);
+  }, []);
 
   // 改变tab
   const onChangeTotalTab = useCallback(key => {

@@ -12,7 +12,7 @@ import ReceiveWeight from '@components/StationManagement/receiveWeight.js';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import PoundBox from '@components/StationManagement/poundBox';
 import ConfirmModal from '@components/StationManagement/confirmModal';
-import { Format } from '@utils/common';
+import { Format, getQuery } from '@utils/common';
 const express = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Za-z]{1}[A-Za-z]{1}[警京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼]{0,1}[A-Za-z0-9]{4}[A-Za-z0-9挂学警港澳]{1}$/;
 
 const { TextArea } = Input;
@@ -47,6 +47,8 @@ const Index = () => {
   const [lossChangeWeight, setLossChangeWeight] = useState();
   const [outStationCarVal, setOutStationCarVal] = useState(); //没有输入皮重直接出站的皮重
   const [outStationGoodsVal, setOutStationGoodsVal] = useState(); //没有输入皮重直接出站的净重
+  const { id } = getQuery();
+
   // 取皮重
   const takeTareWeight = () => {
     setReceiveCarWeight(weight);
@@ -57,7 +59,8 @@ const Index = () => {
 
   //获取详情
   const getDetailInfo = async () => {
-    const params = { id: router.query.id };
+    const params = { id };
+    console.log(params);
     const res = await station.outStationDetail({ params });
     if (res.status === 0) {
       setReceiveInfo(res.result.weigh);
@@ -164,7 +167,7 @@ const Index = () => {
   const submitOutStationFunc = async () => {
     const params = {
       receiveOrSend: 1,
-      inStationId: router.query.id,
+      inStationId: id,
       plateNum,
       remark,
       ...receiveWeight,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Content } from '@components';
 import { message } from 'antd';
-import { Format } from '@utils/common';
+import { Format, getQuery } from '@utils/common';
 import { stock } from '@api';
 import { useRouter } from 'next/router';
 import GoodsForm from '@components/GoodsManagement/GoodsForm';
@@ -26,8 +26,9 @@ const Index = props => {
   const router = useRouter();
   const [currFormData, setCurrentFormData] = useState({});
   const getData = async () => {
+    const { id } = getQuery();
     const params = {
-      inventoryId: router.query.id,
+      inventoryId: id,
     };
     const res = await stock.getInventoryList({ params });
     if (res.status === 0) {
