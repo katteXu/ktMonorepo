@@ -52,9 +52,9 @@ const Index = ({ recordId, refreshData }) => {
 
   // 分页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      getInventoryCheckList({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      getInventoryCheckList({ ...query, page, pageSize });
     },
     [dataList]
   );
@@ -74,7 +74,6 @@ const Index = ({ recordId, refreshData }) => {
       columns={columns}
       pagination={{
         onChange: onChangePage,
-        onShowSizeChange: onChangePageSize,
         showSizeChanger: false,
         pageSize: query.pageSize,
         current: query.page,

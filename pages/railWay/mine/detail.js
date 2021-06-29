@@ -541,7 +541,10 @@ const RailWayDetail = props => {
                   <span className={styles.label}>运输方式：</span>
                   {dataInfo.transportType === 'FTL' ? '整车运输' : '零担运输'}
                 </div>
-                <div className={styles.item}></div>
+                <div className={styles.item}>
+                  <span className={styles.label}>存放仓库：</span>
+                  {dataInfo.wareHouseName}
+                </div>
               </div>
             </div>
           </Skeleton>

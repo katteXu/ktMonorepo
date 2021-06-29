@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Layout, Content, ChildTitle } from '@components';
+import { Layout, Content, Status, ChildTitle } from '@components';
 import { Skeleton } from 'antd';
-import { Format, getQuery } from '@utils/common';
+import { Format } from '@utils/common';
 import styles from './styles.less';
+import router from 'next/router';
 import Link from 'next/link';
 import { quality } from '@api';
 
@@ -31,14 +32,8 @@ const QualityDetail = props => {
     setDetail();
   }, []);
 
-  const dataInfo = {};
-  const unitPrice = '';
-  const canEdit = false;
-  const totalAmount = 1000;
-  const loadTime = '';
-
   const setDetail = async () => {
-    const { id } = getQuery();
+    const { id } = router.query;
     const params = { id };
     setLoading(true);
     const res = await quality.getDetail({ params });
@@ -50,7 +45,7 @@ const QualityDetail = props => {
   return (
     <Layout {...routeView}>
       <Content>
-        <header>化验单信息</header>
+        <header>化验单详情</header>
         <section className={styles['quailty-detail']}>
           <Skeleton loading={loading} paragraph={{ rows: 1 }}>
             <div className={styles.area}>
@@ -70,7 +65,7 @@ const QualityDetail = props => {
               </div>
             </div>
           </Skeleton>
-          {/* <Divider></Divider> */}
+
           <Skeleton loading={loading} paragraph={{ rows: 2 }}>
             <div className={styles.area}>
               <div className={styles.title}>
@@ -88,8 +83,8 @@ const QualityDetail = props => {
                 </div>
 
                 <div className={styles.item}>
-                  <span className={styles.label}>质检类型：</span>
-                  {data.purchaseOrSale === 1 ? '采购质检' : '销售质检'}
+                  <span className={styles.label}>化验类型：</span>
+                  <Status.Assay code={data.purchaseOrSale} />
                 </div>
               </div>
 
@@ -107,7 +102,7 @@ const QualityDetail = props => {
               </div>
             </div>
           </Skeleton>
-          {/* <Divider></Divider> */}
+
           <Skeleton loading={loading} paragraph={{ rows: 5 }}>
             <div className={styles.area}>
               <div className={styles.title}>
@@ -181,6 +176,25 @@ const QualityDetail = props => {
                 <div className={styles.item}></div>
               </div>
             </div>
+          </Skeleton>
+
+          <Skeleton loading={loading} paragraph={{ rows: 1 }}>
+            {data.samplingData && data.samplingData.length > 0 && (
+              <div className={styles.area}>
+                <div className={styles.title}>
+                  <ChildTitle className="hei14">采样煤种</ChildTitle>
+                </div>
+                <div className={styles.row} style={{ flexWrap: 'wrap' }}>
+                  {data.samplingData.map(item => (
+                    <div className={styles.item} style={{ minWidth: '33%', flex: 1 }}>
+                      <span className={styles.label}>{item.goodsName}：</span>
+                      {item.samplingWeight * 1} g
+                    </div>
+                  ))}
+                  {data.samplingData.length % 3 > 0 && <div className={styles.item}></div>}
+                </div>
+              </div>
+            )}
           </Skeleton>
         </section>
       </Content>

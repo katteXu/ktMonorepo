@@ -82,7 +82,9 @@ const Scheme = props => {
     if (aiDataPieInfo.length > 0) {
       setAIPieData(
         aiDataPieInfo.map(item => ({
-          key: `${item.goodsName}:${item.proportion / 100}%`,
+          key: `${item.inventoryId === '' ? '(推荐)' : ''}${
+            item.goodsName.length > 10 ? item.goodsName.substring(0, 10) + '...' : item.goodsName
+          }:${item.proportion / 100}%`,
           value: item.proportion / 100,
         }))
       );

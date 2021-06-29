@@ -174,6 +174,11 @@ const MENU_LIST = [
         permission: ['COAL_BLENDING_MANAGEMENT'],
       },
       {
+        name: '配煤列表',
+        key: 'coalBlendingList',
+        permission: ['COAL_BLENDING_LIST'],
+      },
+      {
         module: 'qualityManagement',
         icon: 'audit',
         name: '质检管理',

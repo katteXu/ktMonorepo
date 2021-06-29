@@ -86,12 +86,28 @@ const ToAdd = () => {
       render: Format.weight,
     },
     {
+      title: '货物单价',
+      dataIndex: 'goodsUnitPrice',
+      key: 'goodsUnitPrice',
+      width: '120px',
+      align: 'right',
+      render: Format.price,
+    },
+    {
       title: '路损(吨)',
       dataIndex: 'loss',
       key: 'loss',
       width: '120px',
       align: 'right',
       render: Format.weight,
+    },
+    {
+      title: '路耗(元)',
+      dataIndex: 'lossPrice',
+      key: 'lossPrice',
+      width: '120px',
+      align: 'right',
+      render: Format.price,
     },
     {
       title: '运费单价(元/吨)',
@@ -121,12 +137,12 @@ const ToAdd = () => {
     return {
       page: 1,
       pageSize: 10,
-      begin,
-      end,
+      begin: undefined,
+      end: undefined,
       fromCompany: '',
       goodsType: '',
       plate: '',
-      dateStatus: 'toYesterday',
+      dateStatus: '',
     };
   });
 
@@ -165,6 +181,12 @@ const ToAdd = () => {
     };
     setQuery(query);
     getRemoteData(query);
+    setTotalCheck({
+      check_count: 0,
+      check_fromGoodsWeight: 0,
+      check_toGoodsWeight: 0,
+      check_loss: 0,
+    });
   };
 
   // 时间输入
@@ -374,10 +396,17 @@ const ToAdd = () => {
       getRemoteData(query);
       Modal.confirm({
         icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
-        title: '添加成功，是否继续添加？',
-        okText: '是',
-        cancelText: '否',
-        onOk: () => {},
+        title: '添加成功，您可以选择',
+        okText: '继续添加',
+        cancelText: '返回上页',
+        onOk: () => {
+          setTotalCheck({
+            check_count: 0,
+            check_fromGoodsWeight: 0,
+            check_toGoodsWeight: 0,
+            check_loss: 0,
+          });
+        },
         onCancel: () => router.back(),
       });
     } else {

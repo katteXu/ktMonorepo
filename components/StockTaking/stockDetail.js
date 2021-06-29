@@ -108,9 +108,9 @@ const Index = ({ props, id, handleCloseDrawer }) => {
   };
   // 分页
   const onChangePage = useCallback(
-    page => {
-      setQuery({ ...query, page });
-      getList({ ...query, page });
+    (page, pageSize) => {
+      setQuery({ ...query, page, pageSize });
+      getList({ ...query, page, pageSize });
     },
     [dataList]
   );
@@ -175,7 +175,6 @@ const Index = ({ props, id, handleCloseDrawer }) => {
           columns={columns}
           pagination={{
             onChange: onChangePage,
-            onShowSizeChange: onChangePageSize,
             showSizeChanger: false,
             pageSize: query.pageSize,
             current: query.page,

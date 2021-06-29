@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Layout, Content, Search, Ellipsis } from '@components';
+import { Layout, Content, Search, Ellipsis, Status } from '@components';
 import moment from 'moment';
 import { Input, Button, Table, message, DatePicker, Select } from 'antd';
 import { keepState, getState, clearState, Format } from '@utils/common';
 import router from 'next/router';
+// import styles from '@styles/qualityManagement.less';
 import { quality } from '@api';
 
 const routeView = {
@@ -96,13 +97,13 @@ const QualityManagement = props => {
     },
 
     {
-      title: '质检类型',
+      title: '化验类型',
       dataIndex: 'purchaseOrSale',
       key: 'purchaseOrSale',
       align: 'right',
       width: 150,
       render: value => {
-        return value === 1 ? '采购质检' : '销售质检';
+        return <Status.Assay code={value} />;
       },
     },
     {
@@ -292,6 +293,7 @@ const QualityManagement = props => {
       endTime: end || undefined,
       limit: pageSize,
       page,
+      isNew: 1, // 移动端区分新老版本
     };
 
     const res = await quality.getDataList({ params });
@@ -346,15 +348,18 @@ const QualityManagement = props => {
               <Input allowClear value={query.goodsName} placeholder="请输入货品名称" onChange={handleChangeGoodsName} />
             </Search.Item>
 
-            <Search.Item label="质检类型">
+            <Search.Item label="化验类型">
               <Select
                 value={query.purchaseOrSale || undefined}
                 allowClear
-                placeholder="请选择质检类型"
+                placeholder="请选择化验类型"
                 style={{ width: '100%' }}
                 onChange={handleChangePurchaseOrSale}>
-                <Select.Option value="1">采购质检</Select.Option>
-                <Select.Option value="0">销售质检</Select.Option>
+                <Select.Option value="1">入厂化验</Select.Option>
+                <Select.Option value="0">出厂化验</Select.Option>
+                <Select.Option value="2">旋选化验</Select.Option>
+                <Select.Option value="3">浮选化验</Select.Option>
+                <Select.Option value="4">配煤化验</Select.Option>
               </Select>
             </Search.Item>
 
@@ -393,6 +398,11 @@ const QualityManagement = props => {
       </Content>
     </Layout>
   );
+};
+
+QualityManagement.getInitialProps = async props => {
+  const { isServer } = props;
+  return { isServer };
 };
 
 export default QualityManagement;

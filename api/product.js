@@ -204,6 +204,60 @@ const getBlendingSchemeDetail = ({ params } = {}) => {
     params,
   });
 };
+//
+const device_detail = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/production/device_detail',
+    params,
+  });
+};
+const start_or_stop = ({ params } = {}) => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/production/start_or_stop',
+    data: params,
+  });
+};
+const modify_sub_device_name = ({ params } = {}) => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/production/modify_sub_device_name',
+    data: params,
+  });
+};
+
+const getCoalBlendingDataList = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/production/coalBlendingRecordList',
+    params,
+  });
+};
+
+const device_regulation = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/production/device_regulation',
+    params,
+  });
+};
+
+const addCoalBlendingRecord = ({ params } = {}) => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/production/addCoalBlendingRecord',
+    data: params,
+  });
+};
+
+const deleteCoalBlendingRecord = ({ params } = {}) => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/production/deleteCoalBlendingRecord',
+    data: params,
+  });
+};
 
 export default {
   getDataList,
@@ -229,4 +283,11 @@ export default {
   addCoalWashLog,
   getDeviceEditList,
   getBlendingSchemeDetail,
+  getCoalBlendingDataList,
+  addCoalBlendingRecord,
+  deleteCoalBlendingRecord,
+  device_detail,
+  start_or_stop,
+  modify_sub_device_name,
+  device_regulation,
 };

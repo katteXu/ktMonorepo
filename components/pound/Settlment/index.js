@@ -2,6 +2,7 @@ export { default as Panel } from './Panel';
 export { default as SettlmentList } from './SettlmentList';
 export { default as FromSettlment } from './FromSettlment';
 export { default as ToSettlment } from './ToSettlment';
+export { default as SettlmentSet } from './SettlmentSet';
 export { default as Steps } from './Steps';
 export { default as Empty } from './Empty';
 export { default as SettlmentForm } from './SettlmentForm';
