@@ -9,6 +9,7 @@ import { AutoInputRoute, WareHouseSelect } from '@components';
 import AddressForm from '@components/CustomerDetail/address/form';
 import CompanyForm from '@components/CustomerDetail/company/form';
 import router from 'next/router';
+import { User } from '@store';
 import WarehouseFrom from './warehouseFrom';
 const { Option } = Select;
 const { TextArea } = Input;
@@ -99,6 +100,7 @@ const getGoodsUnitName = async () => {
 
 // 表单组件
 const RailWayForm = ({ serverTime, onSubmit }) => {
+  const { userInfo, loading } = User.useContainer();
   // 服务端时间和本地时间差
   const [diffTime, setDiffTime] = useState(() => {
     return moment(serverTime).diff(moment());
@@ -148,7 +150,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   const setHiddenDate = async () => {
     const res = await getCommon();
     if (res.status === 0) {
-      const currentUserName = window.localStorage.username;
+      const currentUserName = userInfo.username;
       const hiddenUserName = res.result.find(item => item.key === 'noValidTimeForRoute').url;
 
       if (hiddenUserName.includes(currentUserName)) {
@@ -262,7 +264,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
     Object.keys(options).forEach(item => {
       hiddenInfo[item] = values.hiddenInfo && values.hiddenInfo.includes(item) ? 1 : 0;
     });
-    console.log(values.hiddenInfo);
+
     const fromAddress = addressList.find(({ id }) => id === fromAddressId);
     const toAddress = addressList.find(({ id }) => id === toAddressId);
 
@@ -391,7 +393,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       };
       dataView.routeContactMobile = { label: '专线负责人：', value: values.routeContactMobile };
     }
-    console.log(data);
+
     onSubmit(data, dataView);
   };
 
@@ -400,7 +402,6 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   };
 
   const settlementMethod = v => {
-    console.log(v);
     v === '1'
       ? form.setFieldsValue({
           payMethod: '0',
@@ -528,7 +529,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   Object.keys(options).forEach(item => {
     selectChildren.push(<Option key={item}>{options[item]}</Option>);
   });
-  console.log(isShowWarehouse);
+
   return (
     <div className={styles.fromInfoRailWay}>
       <Form

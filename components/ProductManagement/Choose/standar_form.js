@@ -145,6 +145,8 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
               allowClear
               placeholder="请选择目标货品"
               className={styles.ipt}
+              optionFilterProp="children"
+              showSearch
               onChange={handleChangeGoodsType}>
               {GoodsType.map(({ id, goodsName }) => (
                 <Select.Option value={id} key={id}>
@@ -179,11 +181,15 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
         {/* 水分 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
-            label="水分(% Mad)"
+            label={
+              <div>
+                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>水分(% Mad)
+              </div>
+            }
             name={['standard_mad', 'min']}
             validateFirst={true}
             rules={[
-              { required: true, message: '内容不可为空' },
+              { required: false, message: '内容不可为空' },
               {
                 pattern: /^[0-9]+(.?[0-9]{1,2})?$/,
                 message: '最多输入两位小数',
@@ -208,7 +214,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
             name={['standard_mad', 'max']}
             validateFirst={true}
             rules={[
-              { required: true, message: '内容不可为空' },
+              { required: false, message: '内容不可为空' },
               {
                 pattern: /^[0-9]+(.?[0-9]{1,2})?$/,
                 message: '最多输入两位小数',

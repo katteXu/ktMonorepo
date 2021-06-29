@@ -9,6 +9,7 @@ import AddressForm from '@components/CustomerDetail/address/form';
 import CompanyForm from '@components/CustomerDetail/company/form';
 import router from 'next/router';
 import WarehouseFrom from './warehouseFrom';
+import { User } from '@store';
 const { Option } = Select;
 const { TextArea } = Input;
 // 表单布局
@@ -77,6 +78,7 @@ const getAddressList = async ({ page = 1, limit = 1000 } = {}) => {
 
 // 表单组件
 const RailWayForm = ({ onSubmit }) => {
+  const { userInfo, loading } = User.useContainer();
   const [form] = Form.useForm();
   // 企业
   const [fromCompany, setFromCompany] = useState({});
@@ -131,7 +133,7 @@ const RailWayForm = ({ onSubmit }) => {
   const setHiddenDate = async () => {
     const res = await getCommon();
     if (res.status === 0) {
-      const currentUserName = window.localStorage.username;
+      const currentUserName = userInfo.username;
 
       const hiddenWarehouseName = res.result.find(item => item.key === 'HAS_WAREHOUSE').url;
       if (hiddenWarehouseName.includes(currentUserName)) {
