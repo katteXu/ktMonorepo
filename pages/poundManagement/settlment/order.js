@@ -11,6 +11,7 @@ import styles from './styles.less';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import { pound, downLoadFile } from '@api';
+import { Permission } from '@store';
 // 编辑单元格
 const EditCell = ({ title, editable, children, dataIndex, record, reload, ...restProps }) => {
   const [editing, setEditing] = useState(false);
