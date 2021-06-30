@@ -35,7 +35,6 @@ const UpdateForm = ({ onSubmit, onClose, startLoadTime, lastLoadTime, initValue 
   return (
     <div className={styles.formSendData}>
       <Form
-        className="small"
         {...formItemLayout}
         onFinish={handleSubmit}
         onFinishFailed={onFinishFailed}

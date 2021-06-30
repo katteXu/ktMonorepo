@@ -17,9 +17,8 @@
 }
 
 :global {
-  .ant-form-item-label > label.ant-form-item-required::before {
-    font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Roboto, Arial, PingFang SC,
-      Hiragino Sans GB, Microsoft Yahei, SimSun, sans-serif;
+  .ant-form-item-label>label.ant-form-item-required::before {
+    font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Roboto, Arial, PingFang SC, Hiragino Sans GB, Microsoft Yahei, SimSun, sans-serif !important;
   }
 
   .ant-input[disabled] {
@@ -30,16 +29,22 @@
   //   background-color: #477AEF;
   //   border-color: #477AEF;
   // }
-  .ant-radio-inner::after {
-    background-color: #477aef;
-  }
+
 
   .ant-radio-checked .ant-radio-inner {
     border-color: #477aef;
   }
 
-  .ant-table-container table > thead > tr:first-child th:first-child,
-  .ant-table-container table > thead > tr:first-child th:last-child {
+  .ant-radio:hover .ant-radio-inner {
+    border-color: #477aef;
+  }
+
+  .ant-radio-inner::after {
+    background-color: #477aef;
+  }
+
+  .ant-table-container table>thead>tr:first-child th:first-child,
+  .ant-table-container table>thead>tr:first-child th:last-child {
     border-radius: 0;
   }
 
@@ -140,7 +145,15 @@
     opacity: 0.4;
   }
 
-  .ant-form-item-label > label {
+  .ant-input {
+    color: #333 !important;
+  }
+
+  .ant-switch-checked {
+    background: #477aef !important;
+  }
+
+  .ant-form-item-label>label {
     color: #333333 !important;
   }
 
@@ -200,6 +213,7 @@
     background: #f6f7f9;
   }
 
+
   .ant-calendar-range-picker-input:placeholder-shown {
     text-align: left;
   }
@@ -211,6 +225,18 @@
   .ant-alert {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
       'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  }
+
+  .ant-cascader-picker-label {
+    color: #333333;
+  }
+
+  .ant-cascader-picker-label:hover+.ant-cascader-input {
+    border-color: #477aef !important;
+  }
+
+  .ant-cascader-picker:focus .ant-cascader-input {
+    border-color: #477aef !important;
   }
 
   .ant-input:focus,
@@ -329,9 +355,9 @@
 }
 
 // 表单间距
-:global(.ant-form .ant-form-item) {
-  margin-bottom: 0;
-}
+// :global(.ant-form .ant-form-item) {
+//   margin-bottom: 0;
+// }
 
 :global(.ant-form .ant-divider-horizontal) {
   margin: 20px 0;
@@ -351,6 +377,10 @@
     padding-bottom: 0px !important;
     overflow: scroll !important;
   }
+}
+
+:global(.ant-btn-link) {
+  color: #477aef !important;
 }
 
 // 列表统计数字 蓝色字体突显
@@ -465,61 +495,109 @@
 :global {
   // 按钮
   .ant-btn {
-    box-shadow: none;
+    color      : #333333; //无状态按钮默认颜色
+    box-shadow : none;
     text-shadow: none;
 
-    // 危险按钮
     &.ant-btn-dangerous {
       color: #e44040;
       border-color: #e44040;
-
-      &:hover {
-        color: #e44040;
-        border-color: #e44040;
-      }
     }
 
-    // 常规按钮
+    &.ant-btn-dangerous:hover {
+      color       : #e44040;
+      border-color: #e44040;
+    }
+
+    &:hover {
+      border: 1px solid #477aef;
+      color : #477aef;
+    }
+
     &.ant-btn-primary {
       background-color: #477aef;
+      border          : 1px solid #477aef;
+      color           : #fff;
 
-      // color: #477AEF;
       &:hover {
-        background-color: #477aefe6;
+        background-color: #477aef;
+        border-color    : #477aef;
       }
 
       &:active {
-        background-color: #477aefe6;
+        background-color: #477aef;
       }
-    }
 
-    // 链接按钮
-    &.ant-btn-link {
-      color: #477aef;
-      padding: 0;
+      &.ant-btn-background-ghost {
+        color     : #477aef;
+        // &.ant-btn-primary[disabled] {
+        //   color: #bfbfbf;
+        // }
+      }
 
-      &.ant-btn-dangerous {
-        border: none;
-
+      &[disabled] {
         &:hover {
-          color: #e44040;
+          background-color: #f6f6f6;
         }
-      }
 
-      & + .ant-btn-link {
-        margin-left: 8px;
+        background-color: #f6f6f6 !important;
+        border          : 1px solid #d9d9d9;
+        color           : rgba(0, 0, 0, 0.25);
       }
     }
 
-    // 不可用按钮
-    &[disabled] {
+    &.ant-btn-link {
       &:hover {
-        background-color: #f6f6f6;
+        border: none;
       }
+    }
+  }
 
-      background-color: #f6f6f6 !important;
-      border: 1px solid #d9d9d9;
-      color: rgba(0, 0, 0, 0.25);
+  .ant-btn-background-ghost.ant-btn-danger-disabled,
+  .ant-btn-background-ghost.ant-btn-danger.disabled,
+  .ant-btn-background-ghost.ant-btn-danger[disabled],
+  .ant-btn-background-ghost.ant-btn-danger-disabled:hover,
+  .ant-btn-background-ghost.ant-btn-danger.disabled:hover,
+  .ant-btn-background-ghost.ant-btn-danger[disabled]:hover,
+  .ant-btn-background-ghost.ant-btn-danger-disabled:focus,
+  .ant-btn-background-ghost.ant-btn-danger.disabled:focus,
+  .ant-btn-background-ghost.ant-btn-danger[disabled]:focus,
+  .ant-btn-background-ghost.ant-btn-danger-disabled:active,
+  .ant-btn-background-ghost.ant-btn-danger.disabled:active,
+  .ant-btn-background-ghost.ant-btn-danger[disabled]:active,
+  .ant-btn-background-ghost.ant-btn-danger-disabled.active,
+  .ant-btn-background-ghost.ant-btn-danger.disabled.active,
+  .ant-btn-background-ghost.ant-btn-danger[disabled].active {
+    //不可点按钮背景色
+    background-color: #f6f7f9 !important;
+
+    &:hover {
+      border-color: #bfbfbf;
+    }
+  }
+
+  .ant-btn>.anticon+span,
+  .ant-btn>span+.anticon {
+    margin-left: 4px;
+  }
+
+  .ant-btn-link {
+    cursor : pointer;
+    padding: 0;
+    border : none;
+
+    &+.ant-btn-link {
+      margin-left: 12px;
+    }
+
+    &.delete {
+      &:hover {
+        color: #e44040;
+      }
+    }
+
+    &:focus {
+      color: #477aef;
     }
   }
 
@@ -527,13 +605,13 @@
   .ant-form {
     // 表单项
     .ant-form-item {
-      .ant-form-item-control {
-        padding-bottom: 24px;
-      }
+      // .ant-form-item-control {
+      //   padding-bottom: 24px;
+      // }
 
       // label 文案
       .ant-form-item-label {
-        min-width: 110px;
+        // min-width   : 110px;
         margin-right: 8px;
       }
 
