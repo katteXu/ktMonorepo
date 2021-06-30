@@ -10,79 +10,84 @@
 
     .ant-form-item-explain-error,
     .ant-form-item-explain {
-      position: absolute;
+      position   : absolute;
       white-space: nowrap;
     }
 
     .ant-form-item-label {
-      width: 143px;
+      width       : 143px;
       margin-right: 8px;
     }
   }
+
   .title {
-    font-size: 16px;
-    color: #4a4a5a;
+    font-size  : 16px;
+    color      : #333333;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 600;
   }
 
   .row {
-    display: flex;
-    align-items: center;
+    display        : flex;
+    align-items    : center;
     justify-content: flex-start;
-    width: 100%;
-    padding-left: 32px;
+    width          : 100%;
+    padding-left   : 32px;
+
     .col {
       margin-right: 46px;
-      font-size: 14px;
-      color: #4a4a5a;
+      font-size   : 14px;
+      color       : #333333;
+
       label {
-        color: #4a4a5a !important;
+        color: #333333 !important;
       }
 
       .label {
-        width: 143px;
+        width       : 143px;
         margin-right: 8px;
-        line-height: 32px;
-        display: inline-block;
-        text-align: right;
-        font-size: 14px;
-        font-family: PingFangSC-Regular, PingFang SC;
-        font-weight: 400;
-        color: #4a4a5a;
+        line-height : 32px;
+        display     : inline-block;
+        text-align  : right;
+        font-size   : 14px;
+        font-family : PingFangSC-Regular, PingFang SC;
+        font-weight : 400;
+        color       : #333333;
       }
 
-      & + .col {
+      &+.col {
         margin-left: 28px;
       }
     }
 
-    & + .title {
+    &+.title {
       margin-top: 30px;
     }
   }
 
   .bottom {
-    width: 100%;
+    width       : 100%;
     padding-left: 183px;
   }
 }
 
 .raw-goods {
-  width: 100%;
+  width       : 100%;
   margin-right: -20px;
   padding-left: 32px;
+
   .raw-col {
     box-sizing: border-box;
+
     :global {
       .ant-form-item-label {
-        width: 143px;
+        width       : 143px;
         margin-right: 8px;
       }
     }
   }
 
-  .title + & {
+  .title+& {
     margin-top: 24px;
   }
 }

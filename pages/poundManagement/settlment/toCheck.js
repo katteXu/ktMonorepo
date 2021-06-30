@@ -27,13 +27,23 @@ const EditCell = ({ title, editable, children, dataIndex, reload, record, ...res
   // 编辑输入框
   const handleChangeInput = e => {
     const { value } = e.target;
-    validateInput(value);
-    setValue(value);
+    // validateInput(value);
+    // setValue(value);
+    let val;
+    val = value
+      .replace(/[^\d.]/g, '')
+      .replace(/^\./g, '')
+      .replace('.', '$#$')
+      .replace(/\./g, '')
+      .replace('$#$', '.')
+      .replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
+    validateInput(val);
+    setValue(val);
   };
 
   const handleSave = async () => {
     if (error) {
-      message.error('发货净重只能是数字，且最多输入两位小数');
+      message.error('请输入非0数字');
     } else {
       const params = {
         pId: record.id,
@@ -174,12 +184,28 @@ const ToCheck = () => {
       },
     },
     {
+      title: '货物单价',
+      dataIndex: 'goodsUnitPrice',
+      key: 'goodsUnitPrice',
+      width: '120px',
+      align: 'right',
+      render: Format.price,
+    },
+    {
       title: '路损(吨)',
       dataIndex: 'loss',
       key: 'loss',
       width: '120px',
       align: 'right',
       render: Format.weight,
+    },
+    {
+      title: '路耗(元)',
+      dataIndex: 'lossPrice',
+      key: 'lossPrice',
+      width: '120px',
+      align: 'right',
+      render: Format.price,
     },
     {
       title: '运费单价(元/吨)',
@@ -225,7 +251,9 @@ const ToCheck = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
-
+  const [showModalGoods, setShowModalGoods] = useState(false);
+  const [isSumLossWeight, setIsSumLossWeight] = useState(false);
+  const [checkSettlementLoading, setCheckSettlementLoading] = useState(false);
   // 已选信息
   const [totalCheck, setTotalCheck] = useState({
     check_count: 0,
@@ -265,6 +293,12 @@ const ToCheck = () => {
     };
     setQuery(query);
     getRemoteData(query);
+    setTotalCheck({
+      check_count: 0,
+      check_fromGoodsWeight: 0,
+      check_toGoodsWeight: 0,
+      check_loss: 0,
+    });
   };
 
   // 时间输入
@@ -441,6 +475,26 @@ const ToCheck = () => {
     }
   };
 
+  // 编辑货物单价
+  const handleEditPriceGoods = async data => {
+    const { unitPrice } = data;
+
+    let params = getParams();
+
+    params.unitPrice = unitPrice * 100;
+    // 发货
+    params.type = 1;
+
+    const res = await pound.updateManPayGoodsUnitPrice({ params });
+    if (res.status === 0) {
+      message.success('货物单价修改成功');
+      getRemoteData(query);
+      setShowModalGoods(false);
+    } else {
+      message.error(`${res.detail || res.description}`);
+    }
+  };
+
   // 查询
   const getRemoteData = async ({ fromCompany, goodsType, plate, page, pageSize, begin, end }) => {
     setLoading(true);
@@ -462,6 +516,7 @@ const ToCheck = () => {
     if (res.status === 0) {
       setDataList(res.result);
       setTotal({ ...res.result });
+      setIsSumLossWeight(res.result.isSumLossWeight);
     } else {
       message.error(`${res.detail || res.description}`);
     }
@@ -487,10 +542,17 @@ const ToCheck = () => {
       clearCheckData();
       Modal.confirm({
         icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
-        title: '审核成功，是否继续审核？',
-        okText: '是',
-        cancelText: '否',
-        onOk: () => {},
+        title: '审核成功，您可以选择',
+        okText: '继续审核',
+        cancelText: '去结算',
+        onOk: () => {
+          setTotalCheck({
+            check_count: 0,
+            check_fromGoodsWeight: 0,
+            check_toGoodsWeight: 0,
+            check_loss: 0,
+          });
+        },
         onCancel: () => {
           sessionStorage.setItem('settlment_tab', 'to');
           router.back();
@@ -500,6 +562,45 @@ const ToCheck = () => {
       message.error(`${res.detail || res.description}`);
     }
     setCheckLoading(false);
+  };
+
+  const handleAuditSettlement = async () => {
+    if (selectedRowKeys.length === 0 && !checkedAll) {
+      message.error('请选择审核的磅单');
+      return;
+    }
+
+    let params = getParams();
+
+    params.manPayStatus = 2;
+    // 收货
+    params.type = 1;
+    params.passApprove = 1;
+    setCheckSettlementLoading(true);
+    const res = await pound.updateStatus({ params });
+    if (res.status === 0) {
+      clearCheckData();
+      getRemoteData(query);
+      Modal.confirm({
+        icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
+        title: '已审核并添加到结算，您可以选择',
+        okText: '继续审核',
+        cancelText: '去结算',
+        onOk: () => {
+          setTotalCheck({
+            check_count: 0,
+            check_fromGoodsWeight: 0,
+          });
+        },
+        onCancel: () => {
+          sessionStorage.setItem('settlment_tab', 'to');
+          router.back();
+        },
+      });
+    } else {
+      message.error(`${res.detail || res.description}`);
+    }
+    setCheckSettlementLoading(false);
   };
 
   // 提交参数
@@ -572,6 +673,16 @@ const ToCheck = () => {
               onClick={() => setShowModal(true)}>
               编辑单价
             </Button>
+            {isSumLossWeight && (
+              <Button
+                style={{ marginLeft: 8 }}
+                type="primary"
+                ghost
+                disabled={!checkedAll && selectedRowKeys.length === 0}
+                onClick={() => setShowModalGoods(true)}>
+                编辑货物单价
+              </Button>
+            )}
           </div>
 
           <Msg style={{ marginTop: 16 }}>
@@ -637,6 +748,13 @@ const ToCheck = () => {
           />
 
           <div className={styles['ctrl-bottom']}>
+            <Button
+              type="primary"
+              loading={checkSettlementLoading}
+              onClick={handleAuditSettlement}
+              style={{ marginRight: 8 }}>
+              审核并结算
+            </Button>
             <Button type="primary" loading={checkLoading} onClick={handleAudit}>
               审核通过
             </Button>
@@ -652,7 +770,18 @@ const ToCheck = () => {
         width={420}
         destroyOnClose
         footer={null}>
-        <EditPriceForm onClose={() => setShowModal(false)} onSubmit={handleEditPrice} />
+        <EditPriceForm onClose={() => setShowModal(false)} onSubmit={handleEditPrice} lableTitle="运费单价" />
+      </Modal>
+      <Modal
+        title="编辑货物单价"
+        onCancel={() => {
+          setShowModalGoods(false);
+        }}
+        visible={showModalGoods}
+        width={420}
+        destroyOnClose
+        footer={null}>
+        <EditPriceForm onClose={() => setShowModalGoods(false)} onSubmit={handleEditPriceGoods} lableTitle="货物单价" />
       </Modal>
     </Layout>
   );

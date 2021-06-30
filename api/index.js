@@ -33,6 +33,9 @@ export { default as stock } from './stock';
 // 库存管理
 export { default as inventory } from './inventory';
 
+// 站内管理
+export { default as station } from './station';
+
 // 质检管理
 export { default as quality } from './quality';
 
@@ -432,5 +435,16 @@ export const setMsgReaded = () => {
   return request({
     method: 'get',
     url: 'api/v1/user/mark_all_msgs_read',
+  });
+};
+
+// 线路列表
+export const getUseRoute = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v1/route/oftenUseRoute',
+    params: {
+      ...params,
+    },
   });
 };

@@ -18,14 +18,13 @@ const UpdateForm = ({ onSubmit, onClose, initValue }) => {
   return (
     <div>
       <Form
-        className="small"
         {...formItemLayout}
         onFinish={handleSubmit}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
         hideRequiredMark={true}>
         <Form.Item label="已发货">
-          <span style={{ color: '#4a4a5a' }}>{initValue || '-'} 吨</span>
+          <span style={{ color: '#333333' }}>{initValue || '-'} 吨</span>
         </Form.Item>
         {/* 打印名称 */}
         <Form.Item

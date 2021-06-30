@@ -4,7 +4,7 @@ import { Search } from '@components';
 import moment from 'moment';
 import { vehicleRegister, downLoadFile } from '@api';
 import router from 'next/router';
-import { keepState, getState, clearState } from '@utils/common';
+import { keepState, getState, clearState, getQuery } from '@utils/common';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { Permission } from '@store';
 
@@ -148,7 +148,7 @@ const Register = props => {
     if (isServer) {
       clearState();
     }
-    const { date, violationType } = router.query;
+    const { date, violationType } = getQuery();
     const { defaultNum } = sessionStorage;
 
     // 获取持久化数据

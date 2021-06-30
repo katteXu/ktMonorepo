@@ -65,6 +65,8 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
             <Select
               allowClear
               placeholder="请选择原料煤名称"
+              optionFilterProp="children"
+              showSearch
               onChange={value => handleChangeRawGoods(value, name)}
               style={{ width: 264 }}>
               {rawGoods.map(v => (

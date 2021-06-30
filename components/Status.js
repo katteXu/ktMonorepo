@@ -35,7 +35,7 @@ const Status = {
     CLOSE: { color: '#E44040', bg: '#FFF0F0' },
     DELETE: { color: '#E44040', bg: '#FFF0F0' },
     NOT_BEGUN: { color: '#B4B4B4', bg: '#EDEFF1' },
-    PROCESS: { color: '#3D86EF', bg: '#F5F9FF' },
+    PROCESS: { color: '#477AEF', bg: '#F5F9FF' },
     COMPLETE: { color: '#B4B4B4', bg: '#EDEFF1' },
     EXPIRED: { color: '#E44040', bg: '#FFF0F0' },
   },
@@ -63,13 +63,13 @@ const Status = {
     CHECKING: '待结算',
   },
   orderColor: {
-    PROCESS: { color: '#3D86EF', bg: '#F5F9FF' },
+    PROCESS: { color: '#477AEF', bg: '#F5F9FF' },
     DONE: { color: '#BFBFBF', bg: '#FFFDFD' },
     WAIT_PAY: { color: '#66BD7E', bg: '#F5FFF8' },
     REJECT: { color: '#E44040', bg: '#FFF0F0' },
-    WAIT_CONFIRMED: { color: '#3D86EF', bg: '#F5F9FF' },
+    WAIT_CONFIRMED: { color: '#477AEF', bg: '#F5F9FF' },
     APPLY_CANCEL: { color: '#E44040', bg: '#FFF0F0' },
-    PAYING: { color: '#3D86EF', bg: '#F5F9FF' },
+    PAYING: { color: '#477AEF', bg: '#F5F9FF' },
     CHECKING: { color: '#66BD7E', bg: '#F5FFF8' },
     CANCEL: { color: '#E44040', bg: '#FFF0F0' },
   },
@@ -159,7 +159,7 @@ Status.Route = ({ code }) => {
     ),
     PROCESS: (
       <span style={status_styles}>
-        <i style={{ ...status_icon_styles, background: '#3D86EF' }} />
+        <i style={{ ...status_icon_styles, background: '#477AEF' }} />
         进行中
       </span>
     ),
@@ -184,7 +184,7 @@ Status.Order = ({ code }) => {
   const _status = {
     PROCESS: (
       <span style={{ ...status_styles }}>
-        <i style={{ ...status_icon_styles, background: '#3D86EF' }} />
+        <i style={{ ...status_icon_styles, background: '#477AEF' }} />
         待卸货
       </span>
     ),
@@ -214,7 +214,7 @@ Status.Order = ({ code }) => {
     ),
     WAIT_CONFIRMED: (
       <span style={{ ...status_styles }}>
-        <i style={{ ...status_icon_styles, background: '#3D86EF' }} />
+        <i style={{ ...status_icon_styles, background: '#477AEF' }} />
         待装货
       </span>
     ),
@@ -306,6 +306,12 @@ Status.Pay = ({ code }) => {
       </span>
     ),
   };
+  return _status[code] || <>{code}</>;
+};
+
+// 化验类型
+Status.Assay = ({ code }) => {
+  const _status = ['出厂化验', '入厂化验', '旋选化验', '浮选化验', '配煤化验'];
   return _status[code] || <>{code}</>;
 };
 

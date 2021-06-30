@@ -124,15 +124,15 @@ class Detail extends PureComponent {
 
   defaultStatus = {
     PROCESS: <span style={{ color: '#46B8AF' }}>运输中</span>,
-    DONE: <span style={{ color: '#3D86EF' }}>已完成</span>,
+    DONE: <span style={{ color: '#477AEF' }}>已完成</span>,
     WAIT_PAY: <span style={{ color: '#E44040' }}>待结算</span>,
     CHECKING: <span>待审核</span>,
     REJECT: <span>已驳回</span>,
     WAIT_CONFIRMED: <span>待装货</span>,
     APPLY_CANCEL: <span>待取消</span>,
     PAYING: <span>支付中</span>,
-    WAIT_FLEET_CAPTAIN_PAY: <span style={{ color: '#3D86EF' }}>已完成</span>,
-    FLEET_CAPTAIN_PAYING: <span style={{ color: '#3D86EF' }}>已完成</span>,
+    WAIT_FLEET_CAPTAIN_PAY: <span style={{ color: '#477AEF' }}>已完成</span>,
+    FLEET_CAPTAIN_PAYING: <span style={{ color: '#477AEF' }}>已完成</span>,
   };
 
   componentDidMount() {

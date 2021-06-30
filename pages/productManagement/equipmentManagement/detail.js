@@ -153,7 +153,7 @@ const Index = props => {
         <section className={styles.root}>
           <div className={styles.area}>
             <div className={styles.title}>
-              <ChildTitle style={{ color: '#4A4A5A', fontWeight: 600, marginBottom: '8px' }}>基本信息</ChildTitle>
+              <ChildTitle style={{ color: '#333333', fontWeight: 600, marginBottom: '8px' }}>基本信息</ChildTitle>
             </div>
             <div className={styles.row}>
               <div className={styles.col}>
@@ -172,7 +172,7 @@ const Index = props => {
           </div>
           <div className={styles.area}>
             <div className={styles.title}>
-              <ChildTitle style={{ color: '#4A4A5A', fontWeight: 600, marginBottom: '8px' }}>运行数据</ChildTitle>
+              <ChildTitle style={{ color: '#333333', fontWeight: 600, marginBottom: '8px' }}>运行数据</ChildTitle>
             </div>
             {/* 磅机 */}
             {data.category === 0 && <PoundDetail data={data} refreshData={refreshData} did={did} />}
@@ -187,7 +187,7 @@ const Index = props => {
           </div>
           <div className={styles.area}>
             <div className={styles.title}>
-              <ChildTitle style={{ color: '#4A4A5A', fontWeight: 600, marginBottom: '8px' }}>动态记录</ChildTitle>
+              <ChildTitle style={{ color: '#333333', fontWeight: 600, marginBottom: '8px' }}>动态记录</ChildTitle>
             </div>
             <Table
               style={{ marginTop: 16 }}

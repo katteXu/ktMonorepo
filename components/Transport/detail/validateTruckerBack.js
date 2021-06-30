@@ -9,7 +9,7 @@ const block_style = {
 const title_style = {
   fontFamily: 'PingFangSC-Regular',
   fontSize: 16,
-  color: '#4A4A5A',
+  color: '#333333',
   userSelect: 'none',
 };
 
@@ -192,7 +192,7 @@ const Index = ({ status, phone, onCancel, dataId }) => {
         onCancel={() => setLoading(false)}>
         <div style={block_style}>
           <div style={title_style}>
-            <LoadingOutlined style={{ marginRight: 5, fontSize: 18, color: '#3D86EF' }} />
+            <LoadingOutlined style={{ marginRight: 5, fontSize: 18, color: '#477AEF' }} />
             等待司机同意中...
           </div>
           <p style={content_style}>

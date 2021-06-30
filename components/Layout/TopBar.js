@@ -68,7 +68,7 @@ const TopBar = () => {
               display: 'flex',
               alignItems: 'center',
               padding: '5px 16px',
-              color: '#4a4a5a',
+              color: '#333333',
             }}>
             <SwapOutlined className={styles['opt-icon']} style={{ fontSize: 16 }} />
             {userMode === 'normal' ? '切换监管模式' : '切换个人模式'}
@@ -90,7 +90,7 @@ const TopBar = () => {
             display: 'flex',
             alignItems: 'center',
             padding: '5px 16px',
-            color: '#4a4a5a',
+            color: '#333333',
           }}>
           <UserOutlined className={styles['opt-icon']} style={{ fontSize: 16 }} />
           个人中心
@@ -105,7 +105,7 @@ const TopBar = () => {
             display: 'flex',
             alignItems: 'center',
             padding: '5px 16px',
-            color: '#4a4a5a',
+            color: '#333333',
           }}>
           <LockOutlined className={styles['opt-icon']} style={{ fontSize: 16 }} />
           修改密码
@@ -119,7 +119,7 @@ const TopBar = () => {
             display: 'flex',
             alignItems: 'center',
             padding: '5px 16px',
-            color: '#4a4a5a',
+            color: '#333333',
           }}>
           <LogoutOutlined className={styles['opt-icon']} rotate={270} style={{ fontSize: 16 }} />
           退出控制台

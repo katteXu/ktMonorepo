@@ -95,7 +95,7 @@ const Index = props => {
       </div>
       <div className={styles['btn-download']}>
         <a href="/static/temp/settlment_template.xlsx" download="导入模板">
-          <DownloadOutlined style={{ color: '#3d86ef', marginRight: 2 }} />
+          <DownloadOutlined style={{ color: '#477AEF', marginRight: 2 }} />
           下载模板
         </a>
       </div>

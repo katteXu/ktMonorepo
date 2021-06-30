@@ -4,7 +4,7 @@ import { Button, Tabs, DatePicker, Input, Table, Tooltip, Modal, message } from 
 import { InfoCircleFilled } from '@ant-design/icons';
 import router from 'next/router';
 import { finance } from '@api';
-import { Format } from '@utils/common';
+import { Format, getQuery } from '@utils/common';
 import PayPasswordInput from '@components/common/PayPasswordInput';
 import styles from '../styles.less';
 import moment from 'moment';
@@ -124,7 +124,7 @@ const InvoiceList = () => {
     end: undefined,
   });
   useEffect(() => {
-    const { tab } = router.query;
+    const { tab } = getQuery();
     if (tab) {
       setQuery({ ...query, status: tab });
       getRemoteData({ ...query, status: tab });
@@ -451,7 +451,7 @@ const InvoiceList = () => {
               title={
                 '进入方向物流app -> 登录账号 -> 点击”我的”-> 点击”设置” -> 点击”密码管理” ->点击”修改支付密码” -> 设置密码'
               }>
-              <span style={{ color: '#3D86EF' }}>忘记密码？</span>
+              <span style={{ color: '#477AEF' }}>忘记密码？</span>
             </Tooltip>
           </div>
           <div className={styles['error-msg']}>{payInfo.payError}</div>

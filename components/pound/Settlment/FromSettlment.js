@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Table, Button, message, Popconfirm, Affix } from 'antd';
 import { QuestionCircleFilled } from '@ant-design/icons';
-import { Msg, Ellipsis } from '@components';
-import { Steps, Empty } from '@components/pound/Settlment';
+import { Msg, Ellipsis, Steps } from '@components';
+import { Empty } from '@components/pound/Settlment';
 import router from 'next/router';
 import styles from './styles.less';
 import { keepState, getState, clearState, Format } from '@utils/common';
@@ -68,12 +68,28 @@ const FromSettlment = props => {
       render: Format.weight,
     },
     {
+      title: '货物单价',
+      dataIndex: 'goodsUnitPrice',
+      key: 'goodsUnitPrice',
+      width: '120px',
+      align: 'right',
+      render: Format.price,
+    },
+    {
       title: '路损(吨)',
       dataIndex: 'loss',
       key: 'loss',
       width: '120px',
       align: 'right',
       render: Format.weight,
+    },
+    {
+      title: '路耗(元)',
+      dataIndex: 'lossPrice',
+      key: 'lossPrice',
+      width: '120px',
+      align: 'right',
+      render: Format.price,
     },
     {
       title: '运费单价(元/吨)',
@@ -223,7 +239,21 @@ const FromSettlment = props => {
 
   return (
     <>
-      <Steps current={0} />
+      <div style={{ marginTop: 8 }}>
+        <Steps
+          data={[
+            {
+              title: '添加待结算磅单',
+              key: true,
+            },
+            {
+              title: '查看结算单',
+              key: false,
+            },
+          ]}
+        />
+      </div>
+
       {hasData ? (
         <>
           <div className={styles.ctrl}>

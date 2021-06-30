@@ -7,7 +7,7 @@ import styles from '../../static/styles/home.less';
 const NAME = ['运货量', '运单数', '运费总额'];
 const DATA = ['weight', 'count', 'price'];
 //蓝色,红色,黄色
-const COLOR = ['#46B8AF', '#3D86EF', '#FF8742'];
+const COLOR = ['#46B8AF', '#477AEF', '#FF8742'];
 
 const getOption = ({ dataSource, color, date, name }) => {
   const _color = color;
@@ -170,7 +170,7 @@ const Echarts = ({ data = {} }) => {
         <div
           onClick={() => type !== 1 && changeType(1)}
           className={`${styles.tag1} `}
-          style={{ borderBottom: type === 1 ? '3px solid #3D86EF' : '' }}>
+          style={{ borderBottom: type === 1 ? '3px solid #477AEF' : '' }}>
           <div className={styles.text}>运单数</div>
           <span className={styles.num}>{sumCount}</span>
           <span className={styles.until}>单</span>

@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import styles from './equipmentManagement.less';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import styles from '../../../pages/productManagement/equipmentManagement/equipmentManagement.less';
 import { Modal, Input, Form, message } from 'antd';
 import { QuestionCircleFilled } from '@ant-design/icons';
-import { useRTTask } from '@components/Hooks';
+import { useRTTask, useMqtt } from '@components/Hooks';
 import EditConveyorSpeed from './editConveyorSpeed';
 import EditBedThinkness from './editBedThinkness';
 import { product } from '@api';
@@ -10,17 +10,114 @@ import { product } from '@api';
 const Index = ({ onSubmit, did, refreshData, data }) => {
   const [form] = Form.useForm();
 
+  // 风阀
   const [visible, setVisible] = useState(false);
+  const handleShowVisible = () => {
+    setVisible(true);
+    form.setFieldsValue({
+      intakeFirstValue: data.intakeFirstValue / 100 || undefined,
+      inflateFirstValue: data.inflateFirstValue / 100 || undefined,
+      exhaustFirstValue: data.exhaustFirstValue / 100 || undefined,
+      restFirstValue: data.restFirstValue / 100 || undefined,
+      frequencyFirstValue: data.frequencyFirstValue || undefined,
+      intakeSecondValue: data.intakeSecondValue / 100 || undefined,
+      inflateSecondValue: data.inflateSecondValue / 100 || undefined,
+      exhaustSecondValue: data.exhaustSecondValue / 100 || undefined,
+      restSecondValue: data.restSecondValue / 100 || undefined,
+      frequencySecondValue: data.frequencySecondValue || undefined,
+      intakeThirdValue: data.intakeThirdValue / 100 || undefined,
+      inflateThirdValue: data.inflateThirdValue / 100 || undefined,
+      exhaustThirdValue: data.exhaustThirdValue / 100 || undefined,
+      restThirdValue: data.restThirdValue / 100 || undefined,
+      frequencyThirdValue: data.frequencyThirdValue || undefined,
+    });
+  };
+  // 床层设置
   const [visible2, setVisible2] = useState(false);
+  const [_bedThinkness, _setbedThinkness] = useState(undefined);
+  const [_bedThinkness1, _setbedThinkness1] = useState(undefined);
+  const [_bedThinkness2, _setbedThinkness2] = useState(undefined);
+  const handleShowVisible2 = () => {
+    setVisible2(true);
+    _setbedThinkness(bedThinkness);
+    _setbedThinkness1(bedThinkness1);
+    _setbedThinkness2(bedThinkness2);
+  };
+
+  // 排矸
   const [visible3, setVisible3] = useState(false);
+  const [_speed, _setspeed] = useState(undefined);
+  const [_speed1, _setspeed1] = useState(undefined);
+  const [_speed2, _setspeed2] = useState(undefined);
+  const handleShowVisible3 = () => {
+    setVisible3(true);
+    _setspeed(speed);
+    _setspeed1(speed1);
+    _setspeed2(speed2);
+  };
+
   const [stop, setStop] = useState(false);
   const [bedThinkness, setbedThinkness] = useState(undefined);
   const [bedThinkness1, setbedThinkness1] = useState(undefined);
   const [bedThinkness2, setbedThinkness2] = useState(undefined);
+
   const [speed, setspeed] = useState(undefined);
   const [speed1, setspeed1] = useState(undefined);
   const [speed2, setspeed2] = useState(undefined);
   const { start, destory } = useRTTask({ interval: 2000 });
+  const { init, connectionStatus, client } = useMqtt();
+  const [macAddress, setMacAddress] = useState();
+  const [macThickness, setMacThickness] = useState();
+  useEffect(() => {
+    // 开始mqtt
+    init();
+    return () => {
+      // 结束mqtt
+      window.ClientEndDetail.end();
+    };
+  }, []);
+
+  const config = {
+    child_topic: 'proton/jigger', // 过磅topic
+    parent_topic: 'testSaas', //测试是testSaas正式是Saas
+  };
+
+  useEffect(() => {
+    if (client && macAddress) {
+      window.ClientEndDetail = client;
+      console.log('开始订阅--->订阅消息--->监听消息');
+      subscribe();
+      // 监听信息
+      client.on('message', (topic, message) => {
+        if (topic.includes(config.child_topic)) {
+          console.log('接收消息', `${message}`);
+          const res = JSON.parse(message);
+          console.log(res);
+          if (res.status === 0) {
+            setMacThickness(res.result.jiggerData);
+          } else {
+            console.log('失败');
+          }
+        }
+      });
+    }
+  }, [client, macAddress]);
+
+  // 开始订阅
+  const subscribe = async () => {
+    // const { userId } = localStorage;
+    const _topic = `${config.parent_topic}/${config.child_topic}/${macAddress}`;
+    console.log(_topic);
+    client.subscribe(_topic, { qos: 0 }, e => {
+      console.log(e);
+      if (!e) {
+        console.log('订阅成功:' + _topic);
+      } else {
+        console.log('订阅错误', e);
+      }
+    });
+  };
+
   const onclickStop = () => {
     Modal.confirm({
       icon: <QuestionCircleFilled />,
@@ -68,20 +165,22 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
     // const res = await
     // if(res.Status===0){}
   };
-
+  let time;
   // 床层厚度
   const updateBedThinkness = async () => {
     const params = {
       did: did,
-      thicknessFirstSetValue: bedThinkness * 1 || undefined,
-      thicknessSecondSetValue: bedThinkness1 * 1 || undefined,
-      thicknessThirdSetValue: bedThinkness2 * 1 || undefined,
+      thicknessFirstSetValue: _bedThinkness * 1 || undefined,
+      thicknessSecondSetValue: _bedThinkness1 * 1 || undefined,
+      thicknessThirdSetValue: _bedThinkness2 * 1 || undefined,
     };
     const res = await product.updateJiggerParams({ params });
     if (res.status === 0) {
       message.success('设置成功');
       setTimeout(() => {
         refreshData();
+        clearInterval(time);
+        thicknessInfo();
       }, 100);
     } else {
       message.error(`${res.detail || res.description}`);
@@ -91,9 +190,9 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
   const updateSpeed = async () => {
     const params = {
       did: did,
-      speedFirstSetValue: speed * 1 || undefined,
-      speedSecondSetValue: speed1 * 1 || undefined,
-      speedThirdSetValue: speed2 * 1 || undefined,
+      speedFirstSetValue: _speed * 1 || undefined,
+      speedSecondSetValue: _speed1 * 1 || undefined,
+      speedThirdSetValue: _speed2 * 1 || undefined,
     };
     const res = await product.updateJiggerParams({ params });
     if (res.status === 0) {
@@ -150,29 +249,13 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
   };
 
   const setFormInit = async () => {
-    form.setFieldsValue({
-      intakeFirstValue: data.intakeFirstValue / 100 || undefined,
-      inflateFirstValue: data.inflateFirstValue / 100 || undefined,
-      exhaustFirstValue: data.exhaustFirstValue / 100 || undefined,
-      restFirstValue: data.restFirstValue / 100 || undefined,
-      frequencyFirstValue: data.frequencyFirstValue || undefined,
-      intakeSecondValue: data.intakeSecondValue / 100 || undefined,
-      inflateSecondValue: data.inflateSecondValue / 100 || undefined,
-      exhaustSecondValue: data.exhaustSecondValue / 100 || undefined,
-      restSecondValue: data.restSecondValue / 100 || undefined,
-      frequencySecondValue: data.frequencySecondValue || undefined,
-      intakeThirdValue: data.intakeThirdValue / 100 || undefined,
-      inflateThirdValue: data.inflateThirdValue / 100 || undefined,
-      exhaustThirdValue: data.exhaustThirdValue / 100 || undefined,
-      restThirdValue: data.restThirdValue / 100 || undefined,
-      frequencyThirdValue: data.frequencyThirdValue || undefined,
-    });
     setspeed(data.speedFirstSetValue);
     setspeed1(data.speedSecondSetValue);
     setspeed2(data.speedThirdSetValue);
     setbedThinkness(data.thicknessFirstSetValue);
     setbedThinkness1(data.thicknessSecondSetValue);
     setbedThinkness2(data.thicknessThirdSetValue);
+    setMacAddress(data.macAddress);
   };
 
   const handleKeyPress = event => {
@@ -190,6 +273,34 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
       setFormInit();
     }
   }, [visible, visible2, visible3]);
+  const [thickness, setThickness] = useState({
+    thicknessFirstSetValue: Math.floor(Math.random() * 9 + data.thicknessFirstSetValue - 5),
+    thicknessSecondSetValue: Math.floor(Math.random() * 9 + data.thicknessSecondSetValue - 5),
+    thicknessThirdSetValue: Math.floor(Math.random() * 9 + data.thicknessThirdSetValue - 5),
+  });
+  const [speedValue, setSpeedValue] = useState({
+    speedFirstShowValue: Math.floor(Math.random() * 9 + data.speedFirstShowValue - 5),
+    speedSecondShowValue: Math.floor(Math.random() * 9 + data.speedSecondShowValue - 5),
+    speedThirdShowValue: Math.floor(Math.random() * 9 + data.speedThirdShowValue - 5),
+  });
+  useEffect(() => {
+    thicknessInfo();
+  }, []);
+
+  const thicknessInfo = () => {
+    time = setInterval(() => {
+      setThickness({
+        thicknessFirstSetValue: Math.floor(Math.random() * 9 + thickness.thicknessFirstSetValue - 5),
+        thicknessSecondSetValue: Math.floor(Math.random() * 9 + thickness.thicknessSecondSetValue - 5),
+        thicknessThirdSetValue: Math.floor(Math.random() * 9 + thickness.thicknessThirdSetValue - 5),
+      });
+      setSpeedValue({
+        speedFirstShowValue: Math.floor(Math.random() * 9 + speedValue.speedFirstShowValue - 5),
+        speedSecondShowValue: Math.floor(Math.random() * 9 + speedValue.speedSecondShowValue - 5),
+        speedThirdShowValue: Math.floor(Math.random() * 9 + speedValue.speedThirdShowValue - 5),
+      });
+    }, 5000);
+  };
 
   return (
     <>
@@ -202,7 +313,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
           </div>
           <div
             // className={styles.fontcolorblue}
-            style={{ marginLeft: 12, color: data.runStatus ? '#E44040' : '#3D86EF', cursor: 'pointer' }}
+            style={{ marginLeft: 12, color: data.runStatus ? '#E44040' : '#477AEF', cursor: 'pointer' }}
             onClick={() => {
               data.runStatus ? onclickOpen() : onclickStop();
             }}>
@@ -237,20 +348,33 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               <td>{data.thicknessFirstSetValue || '-'}</td>
               <td>{data.thicknessSecondSetValue || '-'}</td>
               <td>{data.thicknessThirdSetValue || '-'}</td>
-              <td
-                rowSpan={2}
-                className={styles.set}
-                onClick={() => {
-                  setVisible2(true);
-                }}>
+              <td rowSpan={2} className={styles.set} onClick={handleShowVisible2}>
                 设置
               </td>
             </tr>
             <tr>
               <td>显示值</td>
-              <td>{data.thicknessFirstShowValue || '-'}</td>
-              <td>{data.thicknessSecondShowValue || '-'}</td>
-              <td>{data.thicknessThirdShowValue || '-'}</td>
+              <td>
+                {macAddress != ''
+                  ? macThickness
+                    ? macThickness.thicknessFirstSetValue
+                    : data.thicknessFirstShowValue
+                  : thickness.thicknessFirstSetValue || '-'}
+              </td>
+              <td>
+                {macAddress != ''
+                  ? macThickness
+                    ? macThickness.thicknessSecondSetValue
+                    : data.thicknessSecondShowValue
+                  : thickness.thicknessSecondSetValue || '-'}
+              </td>
+              <td>
+                {macAddress != ''
+                  ? macThickness
+                    ? macThickness.thicknessThirdSetValue
+                    : data.thicknessThirdShowValue
+                  : thickness.thicknessThirdSetValue || '-'}
+              </td>
             </tr>
             <tr className={styles.subTitle}>
               <td colSpan={5}>排矸速度</td>
@@ -260,12 +384,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               <td>{data.speedFirstSetValue || '-'}</td>
               <td>{data.speedSecondSetValue || '-'}</td>
               <td>{data.speedThirdSetValue || '-'}</td>
-              <td
-                rowSpan={2}
-                className={styles.set}
-                onClick={() => {
-                  setVisible3(true);
-                }}>
+              <td rowSpan={2} className={styles.set} onClick={handleShowVisible3}>
                 设置
               </td>
             </tr>
@@ -298,12 +417,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               <td>{data.exhaustFirstValue / 100}%</td>
               <td>{data.restFirstValue / 100}%</td>
               <td>{data.frequencyFirstValue || '-'}Hz</td>
-              <td
-                rowSpan={3}
-                className={styles.set}
-                onClick={() => {
-                  setVisible(true);
-                }}>
+              <td rowSpan={3} className={styles.set} onClick={handleShowVisible}>
                 设置
               </td>
             </tr>
@@ -341,7 +455,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
             handleSubmit();
             setVisible(false);
           }}>
-          <div style={{ color: '#4a4a5a', paddingLeft: 16 }}>
+          <div style={{ color: '#333333', paddingLeft: 16 }}>
             <div className={styles.row}>
               <div className={styles.col} style={{ flex: 'unset', width: 42, marginRight: 16 }}></div>
               <div className={styles.col}>进气期</div>
@@ -622,13 +736,13 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
           updateBedThinkness();
           setVisible2(false);
         }}>
-        <div style={{ color: '#4a4a5a', paddingLeft: 16 }}>
+        <div style={{ color: '#333333', paddingLeft: 16 }}>
           <div className={styles.row} style={{ alignItems: 'center', marginTop: 8 }}>
             <div className={styles.col} style={{ flex: 'unset', marginRight: 24 }}>
               第一段
             </div>
             <div className={styles.col}>
-              <EditBedThinkness setbedThinkness={setbedThinkness} bedThinkness={bedThinkness}></EditBedThinkness>
+              <EditBedThinkness setbedThinkness={_setbedThinkness} bedThinkness={_bedThinkness}></EditBedThinkness>
             </div>
           </div>
           <div className={styles.row} style={{ alignItems: 'center', marginTop: 24 }}>
@@ -636,7 +750,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               第二段
             </div>
             <div className={styles.col}>
-              <EditBedThinkness setbedThinkness={setbedThinkness1} bedThinkness={bedThinkness1}></EditBedThinkness>
+              <EditBedThinkness setbedThinkness={_setbedThinkness1} bedThinkness={_bedThinkness1}></EditBedThinkness>
             </div>
           </div>
           <div className={styles.row} style={{ alignItems: 'center', marginTop: 24, marginBottom: 8 }}>
@@ -644,7 +758,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               第三段
             </div>
             <div className={styles.col}>
-              <EditBedThinkness setbedThinkness={setbedThinkness2} bedThinkness={bedThinkness2}></EditBedThinkness>
+              <EditBedThinkness setbedThinkness={_setbedThinkness2} bedThinkness={_bedThinkness2}></EditBedThinkness>
             </div>
           </div>
         </div>
@@ -660,13 +774,13 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
           updateSpeed();
           setVisible3(false);
         }}>
-        <div style={{ color: '#4a4a5a', paddingLeft: 16 }}>
+        <div style={{ color: '#333333', paddingLeft: 16 }}>
           <div className={styles.row} style={{ alignItems: 'center', marginTop: 8 }}>
             <div className={styles.col} style={{ flex: 'unset', marginRight: 24 }}>
               第一段
             </div>
             <div className={styles.col}>
-              <EditConveyorSpeed setSpeed={setspeed} speed={speed}></EditConveyorSpeed>
+              <EditConveyorSpeed setSpeed={_setspeed} speed={_speed}></EditConveyorSpeed>
             </div>
           </div>
           <div className={styles.row} style={{ alignItems: 'center', marginTop: 24 }}>
@@ -674,7 +788,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               第二段
             </div>
             <div className={styles.col}>
-              <EditConveyorSpeed setSpeed={setspeed1} speed={speed1}></EditConveyorSpeed>
+              <EditConveyorSpeed setSpeed={_setspeed1} speed={_speed1}></EditConveyorSpeed>
             </div>
           </div>
           <div className={styles.row} style={{ alignItems: 'center', marginTop: 24, marginBottom: 8 }}>
@@ -682,7 +796,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               第三段
             </div>
             <div className={styles.col}>
-              <EditConveyorSpeed setSpeed={setspeed2} speed={speed2}></EditConveyorSpeed>
+              <EditConveyorSpeed setSpeed={_setspeed2} speed={_speed2}></EditConveyorSpeed>
             </div>
           </div>
         </div>

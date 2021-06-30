@@ -32,7 +32,7 @@ const CrossBar = ({ data = [], size, yAxis, bgColor }) => {
     },
     series: [],
 
-    // color: ['#3D86EF'],
+    // color: ['#477AEF'],
   };
 
   // 生成配置
@@ -60,7 +60,7 @@ const CrossBar = ({ data = [], size, yAxis, bgColor }) => {
         normal: {
           color: params => {
             //首先定义一个数组
-            var colorList = ['#3D86EF', '#45B7AF'];
+            var colorList = ['#477AEF', '#45B7AF'];
             if (params.dataIndex % 2 == 0) {
               return colorList[0];
             } else {
@@ -73,7 +73,7 @@ const CrossBar = ({ data = [], size, yAxis, bgColor }) => {
             position: 'right', //在上方显示
             textStyle: {
               //数值样式
-              color: '#4A4A5A',
+              color: '#333333',
               fontSize: 14,
             },
             formatter: params => {

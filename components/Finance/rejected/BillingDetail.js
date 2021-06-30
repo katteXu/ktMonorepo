@@ -5,7 +5,7 @@ import { Button, Table, message, Modal, Input, Form, Checkbox } from 'antd';
 import Title from '@components/Finance/Title';
 import styles from './styles.less';
 import { finance } from '@api';
-import { Format } from '@utils/common';
+import { Format, getQuery } from '@utils/common';
 import Detail from '@components/Transport/detail';
 import router from 'next/router';
 
@@ -271,7 +271,7 @@ const BillingDetail = props => {
    */
   const getRemoteData = async ({ page = 1, pageSize = 10, begin, end, unitPrice }) => {
     setLoading(true);
-    const { invoiceId } = router.query;
+    const { invoiceId } = getQuery();
     const { fromCompany, toCompany, fromAddressId, toAddressId, goodsType } = orderDetail;
     const params = {
       limit: pageSize,
@@ -519,7 +519,7 @@ const BillingDetail = props => {
             ]}>
             <Input addonAfter="吨" style={{ width: 264 }} />
           </Form.Item>
-          <div style={{ marginBottom: 24, color: '#4a4a5a' }}>
+          <div style={{ marginBottom: 24, color: '#333333' }}>
             <span>注：</span>筛选计算出的预开票净重可能为近似值.
           </div>
           <div style={{ textAlign: 'right' }}>

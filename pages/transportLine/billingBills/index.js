@@ -210,7 +210,7 @@ const Index = () => {
         <header>
           账单列表
           <span style={{ marginLeft: 16, fontSize: 16 }}>
-            余额：<span style={{ color: '#3d86ef', fontSize: 20 }}>{Format.price(total.userWallet)}</span> 元
+            余额：<span style={{ color: '#477AEF', fontSize: 20 }}>{Format.price(total.userWallet)}</span> 元
           </span>
         </header>
         <section>

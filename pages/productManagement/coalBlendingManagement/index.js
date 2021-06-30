@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Layout, Content, Search, DrawerInfo } from '@components';
-import { Input, Table, Button, message, Select, Modal, Popconfirm } from 'antd';
+import { Layout, Content, Search, DrawerInfo, Ellipsis } from '@components';
+import { Input, Table, Button, message, Select, Modal, Popconfirm, Tooltip } from 'antd';
 import { keepState, getState, clearState, Format } from '@utils/common';
 import SchemeForm from '@components/ProductManagement/CoalBlendingScheme/form';
 import CurrForm from '@components/ProductManagement/CoalBlendingScheme/currForm';
-import { QuestionCircleFilled } from '@ant-design/icons';
+import { QuestionCircleFilled, ExclamationCircleFilled } from '@ant-design/icons';
 import router from 'next/router';
 import { product } from '@api';
 import styles from './styles.less';
@@ -42,12 +42,46 @@ const CoalBlendingManagement = props => {
       width: 90,
     },
     {
-      title: '原料煤',
+      title: (
+        <div>
+          原料煤
+          <Tooltip
+            // overlayStyle={{ maxWidth: 'max-content', padding: '0 10px' }}
+            title="平台会依据指标、成本等因素推荐符合厂内要求的煤种，如需购买请联系平台"
+            placement="top">
+            <ExclamationCircleFilled style={{ marginRight: 0, marginLeft: 5, cursor: 'pointer', color: '#D0D4DB' }} />
+          </Tooltip>
+        </div>
+      ),
       dataIndex: 'rawMaterial',
       key: 'raw',
-      width: 90,
+      width: 140,
       render: value => {
-        return multipleRender(value.map(item => item.goodsName));
+        return multipleRender(
+          value.map(item => {
+            return (
+              <Tooltip title={item.goodsName} placement="top">
+                <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: 120 }}>
+                  {item.inventoryId === '' && <span>(推荐)</span>}
+                  <span>{item.goodsName}</span>
+                </div>
+              </Tooltip>
+            );
+          })
+        );
+      },
+    },
+    {
+      title: '所属企业',
+      dataIndex: 'rawMaterial',
+      key: 'raw',
+      width: 150,
+      render: value => {
+        return multipleRender(
+          value.map(item => {
+            return <Ellipsis value={item.companyName} width={120} />;
+          })
+        );
       },
     },
     {
@@ -106,13 +140,18 @@ const CoalBlendingManagement = props => {
       width: 60,
       render: (value, record, index) => {
         const { isAI } = record;
+        const isShow = record.rawMaterial.map(item => {
+          return item.inventoryId === '';
+        });
         return (
           <>
             {isAI && (
               <>
-                <Button size="small" type="link" onClick={() => handleShowInput(record)}>
-                  录入实际产出
-                </Button>
+                {!isShow.includes(true) && (
+                  <Button size="small" type="link" onClick={() => handleShowInput(record)}>
+                    录入实际产出
+                  </Button>
+                )}
                 <Button size="small" type="link" onClick={() => handleToDetail(record.id)}>
                   详情
                 </Button>

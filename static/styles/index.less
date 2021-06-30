@@ -3,6 +3,7 @@
   @media screen and (max-width: 1400px) {
     min-width: 1280px;
   }
+
   min-width: 1400px;
 }
 
@@ -10,6 +11,7 @@
   @media screen and (max-width: 1400px) {
     max-width: 1080px;
   }
+
   max-width: 1280px;
 }
 
@@ -18,13 +20,15 @@
   .main-min-width();
 
   background: #fff;
+
   .floor {
     height: 540px;
+
     .content-box {
       .content-box-max-width();
-      margin: 0 auto;
-      height: 100%;
-      width: 100%;
+      margin  : 0 auto;
+      height  : 100%;
+      width   : 100%;
       position: relative;
     }
 
@@ -35,46 +39,48 @@
     }
 
     &.f1 {
-      position: relative;
+      position           : relative;
       background-position: center !important;
-      background-repeat: no-repeat !important;
-      background-color: #0f264a;
+      background-repeat  : no-repeat !important;
+      background-color   : #0f264a;
+
       // background-image: url(../../public/home/banner.png);
       .box {
         position: absolute;
-        right: 0;
-        top: 126px;
-        opacity: 1;
+        right   : 0;
+        top     : 126px;
+        opacity : 1;
       }
+
       .content {
-        height: 300px;
-        width: 360px;
+        height  : 300px;
+        width   : 360px;
         position: absolute;
-        top: 180px;
-        left: 0;
-        color: #fff;
+        top     : 180px;
+        left    : 0;
+        color   : #fff;
 
         h1 {
-          color: #fff;
-          margin-bottom: 8px;
-          font-family: PingFangSC-Medium;
-          font-size: 36px;
+          color         : #fff;
+          margin-bottom : 8px;
+          font-family   : PingFangSC-Medium;
+          font-size     : 36px;
           letter-spacing: 3.75px;
         }
 
         .system {
-          font-size: 30px;
-          margin-bottom: 12px;
-          font-family: PingFangSC-Medium;
-          font-size: 30px;
+          font-size     : 30px;
+          margin-bottom : 12px;
+          font-family   : PingFangSC-Medium;
+          font-size     : 30px;
           letter-spacing: 3.75px;
         }
 
         .desc {
-          font-weight: 300;
-          font-family: PingFangSC-Light;
-          font-size: 24px;
-          color: #f3f3f9;
+          font-weight   : 300;
+          font-family   : PingFangSC-Light;
+          font-size     : 24px;
+          color         : #f3f3f9;
           letter-spacing: 3.33px;
         }
       }
@@ -85,50 +91,52 @@
 
       .img-content {
         flex: 1;
+
         img {
           position: absolute;
-          top: 116px;
-          height: 332px;
+          top     : 116px;
+          height  : 332px;
         }
       }
 
       .txt-content {
         flex: 1;
+
         .description {
           position: absolute;
-          top: 166px;
-          height: 300px;
-          width: 370px;
+          top     : 166px;
+          height  : 300px;
+          width   : 370px;
 
           img {
             border-radius: 50px;
           }
 
           .title {
-            margin-top: 12px;
-            font-family: PingFangSC-Medium;
-            font-size: 28px;
-            color: #4a4a5a;
+            margin-top    : 12px;
+            font-family   : PingFangSC-Medium;
+            font-size     : 28px;
+            color         : #333333;
             letter-spacing: 0;
           }
 
           .line {
             background-image: linear-gradient(90deg, #00b2ff 0%, #007aff 100%);
-            margin-top: 12px;
-            height: 4px;
-            width: 40px;
-            border-radius: 4px;
-            border-radius: 4px;
+            margin-top      : 12px;
+            height          : 4px;
+            width           : 40px;
+            border-radius   : 4px;
+            border-radius   : 4px;
           }
 
           .desc {
-            margin-top: 16px;
-            font-family: PingFangSC-Regular;
-            font-size: 18px;
-            color: #7c7c7c;
+            margin-top    : 16px;
+            font-family   : PingFangSC-Regular;
+            font-size     : 18px;
+            color         : #7c7c7c;
             letter-spacing: 0;
-            line-height: 28px;
-            width: 300px;
+            line-height   : 28px;
+            width         : 300px;
           }
         }
       }
@@ -148,6 +156,7 @@
         }
       }
     }
+
     &.f3,
     &.f5 {
       .img-content {
@@ -170,12 +179,12 @@
 
   .footer {
     font-family: PingFangSC-Light;
-    height: 50px;
-    padding: 10px 0;
-    text-align: center;
-    background: #0f2649;
-    color: #8c8c8c;
-    font-size: 14px;
+    height     : 50px;
+    padding    : 10px 0;
+    text-align : center;
+    background : #0f2649;
+    color      : #8c8c8c;
+    font-size  : 14px;
   }
 }
 
@@ -188,6 +197,7 @@
 }
 
 :global {
+
   input:-webkit-autofill,
   textarea:-webkit-autofill,
   select:-webkit-autofill {

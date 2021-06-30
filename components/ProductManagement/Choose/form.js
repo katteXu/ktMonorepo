@@ -7,7 +7,7 @@ import { product } from '@api';
 import styles from './styles.less';
 import { Format } from '@utils/common';
 
-const FormComponent = ({ handleToStep, dataSource, handleDataInfo }) => {
+const FormComponent = ({ handleToStep, dataSource, handleDataInfo, changeLoading }) => {
   const formRef = useRef();
 
   const [list, setList] = useState(dataSource);
@@ -21,7 +21,7 @@ const FormComponent = ({ handleToStep, dataSource, handleDataInfo }) => {
     if (!data) {
       return;
     }
-
+    changeLoading(true);
     // 原料煤配比设置
     if (list.length > 0) {
       const msg = validateList();
@@ -80,6 +80,7 @@ const FormComponent = ({ handleToStep, dataSource, handleDataInfo }) => {
       handleToStep(4);
       handleDataInfo(res.result);
     } else {
+      changeLoading(false);
       message.error(res.detail || res.description);
     }
   };
@@ -185,7 +186,7 @@ const FormComponent = ({ handleToStep, dataSource, handleDataInfo }) => {
               })}
             </table>
           ) : (
-            <div className={styles.allData}>未勾选原料煤，按库存中现有货品输出最优配比方案</div>
+            <div className={styles.allData}>未勾选原料煤，则按平台中现有货品集输出最优配比方案</div>
           )}
 
           {/* <header style={{ marginTop: 12, border: 0, paddingLeft: 0, fontSize: 14 }}> */}

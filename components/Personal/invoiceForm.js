@@ -157,7 +157,7 @@ const EditForm = ({ data, onSubmit }) => {
         <Input maxLength={13} placeholder="请输入企业联系电话" />
       </Form.Item>
 
-      <Row style={{ marginBottom: 10, color: '#3D86EF' }}>
+      <Row style={{ marginBottom: 10, color: '#477AEF' }}>
         <Col span={3} style={{ textAlign: 'right' }}>
           联系地址：
         </Col>

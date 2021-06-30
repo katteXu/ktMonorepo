@@ -82,16 +82,14 @@ const AICoalBlending = props => {
 
       {step === 1 && <ChooseList onCoalBlending={handleCoalBlending} isServer={props.isServer} GoodsType={GoodsType} />}
 
-      {(step === 2 || step === 3) && (
+      {!loading && (step === 2 || step === 3) && (
         <ChooseForm
           handleToStep={handleToStep}
           dataSource={sourceCoal}
+          changeLoading={setLoading}
           handleDataInfo={data => {
             setDataInfo(data), console.log(data);
-            setLoading(true);
-            setTimeout(() => {
-              setLoading(false);
-            }, 5000);
+            setLoading(false);
           }}
         />
       )}

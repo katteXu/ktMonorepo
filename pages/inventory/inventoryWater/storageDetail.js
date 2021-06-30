@@ -164,7 +164,7 @@ const Index = props => {
               <span
                 style={{
                   float: 'right',
-                  color: '#3d86ef',
+                  color: '#477AEF',
                   fontSize: 14,
                   fontWeight: 400,
                   cursor: 'pointer',

@@ -255,7 +255,7 @@ const NewForm = ({ onSubmit, onClose, middleId, visible }) => {
               <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>账号
             </div>
           }>
-          <span style={{ color: '#4a4a5a' }}>{formData.username || '-'}</span>
+          <span style={{ color: '#333333' }}>{formData.username || '-'}</span>
         </Form.Item>
         <Form.Item
           label={
@@ -263,7 +263,7 @@ const NewForm = ({ onSubmit, onClose, middleId, visible }) => {
               <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>姓名
             </div>
           }>
-          <span style={{ color: '#4a4a5a' }}>{formData.name || '-'}</span>
+          <span style={{ color: '#333333' }}>{formData.name || '-'}</span>
         </Form.Item>
 
         <Form.Item
