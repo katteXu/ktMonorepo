@@ -177,7 +177,7 @@ const Index = () => {
 
       <footer className={styles.footer}>
         <a href="http://beian.miit.gov.cn/" className={styles.record} target="_blank">
-          {host && host.includes('jiexiujinneng') ? '晋ICP备 19013795 号' : '京ICP备 15049830 号'}
+          {host && host.includes('jiexiujinneng') ? '晋ICP备 19013795 号' : '京ICP备 15049831 号'}
         </a>
       </footer>
     </div>
