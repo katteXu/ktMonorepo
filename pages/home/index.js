@@ -5,7 +5,6 @@ import styles from '@styles/home.less';
 import RouteTable from '@components/Home/route';
 import StatisticalEcharts from '@components/Home/echarts';
 import Trace from '@components/Home/trace';
-
 import { getRoute, getStatistics, getStatisticsTrend, getProcessTruckers } from '@api';
 import router from 'next/router';
 import { Menu, User } from '@store';
@@ -32,8 +31,9 @@ const Home = () => {
   });
 
   useEffect(() => {
-    const { userId, companyName } = localStorage;
+    const { id, companyName } = userInfo;
     setDataList();
+    _czc.push(['_trackEvent', `概览`, `${companyName}${id}`, `${router.router.pathname}`]);
   }, []);
 
   const setDataList = async () => {
