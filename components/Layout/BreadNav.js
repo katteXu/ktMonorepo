@@ -1,6 +1,7 @@
 import { Breadcrumb, Button } from 'antd';
 import router from 'next/router';
 import { useEffect } from 'react';
+import { User } from '@store';
 const style = {
   position: 'absolute',
   top: 9,
@@ -21,6 +22,24 @@ const titleStyle = {
 };
 
 const Index = ({ breadNav, useBack, backUrl, rightArea }) => {
+  const { userInfo, loading } = User.useContainer();
+  useEffect(() => {
+    const { id, companyName } = userInfo;
+    if (TypeOf(breadNav, 'String')) {
+      _czc.push(['_trackEvent', `${breadNav}`, `${companyName}${id}`, `${router.router.pathname}`]);
+    } else if (TypeOf(breadNav, 'Array')) {
+      let info = [];
+      breadNav.map((item, index) => {
+        if (TypeOf(item, 'Object')) {
+          const val = item.props.children.props.children;
+          info.push(val);
+        } else {
+          info.push(item);
+        }
+      });
+      _czc.push(['_trackEvent', `${info}`, `${companyName}${id}`, `${router.router.pathname}`]);
+    }
+  }, []);
   const back = url => {
     if (url) {
       router.replace(url);

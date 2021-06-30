@@ -23,6 +23,8 @@ class MyDocument extends Document {
               }}
             />
           )}
+          {/* <script type="text/javascript" src="https://v1.cnzz.com/z_stat.php?id=1278809155&web_id=1278809155"></script> */}
+          <script type="text/javascript" src="https://s9.cnzz.com/z_stat.php?id=1279757257&web_id=1279757257"></script>
         </Head>
         <body>
           <Main />
