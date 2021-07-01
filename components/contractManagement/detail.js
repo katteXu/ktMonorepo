@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import router from 'next/router';
 import Line from '@components/contractManagement/Line';
 import styles from './styles.less';
-import { Progress, Modal, message, Spin } from 'antd';
+import { Progress, Modal, message, Spin, DatePicker, Input } from 'antd';
 import { contract, getPrivateUrl, downLoadFileNoSuffix } from '@api';
 import moment from 'moment';
 import UpdateTotalWeight from '@components/contractManagement/updateTotalWeight';
@@ -32,12 +32,15 @@ const Index = props => {
   const [showTotalWeight, setShowTotalWeight] = useState(false);
   const [dataInfo, setDataInfo] = useState({});
   const [totalWeight, setTotalWeight] = useState(0);
+  const [newTotalWeight, setNewTotalWeight] = useState('');
   const [startLoadTime, setStartLoadTime] = useState('');
   const [lastLoadTime, setLastLoadTime] = useState('');
   const [showSendDate, setShowSendDate] = useState(false);
   const [showEndDate, setShowEndDate] = useState(false);
   const [sendDate, setSendDate] = useState('');
+  const [newSendDate, setNewSendDate] = useState('');
   const [endDate, setEndDate] = useState('false');
+  const [newEndDate, setNewEndDate] = useState('');
   const [annexUrl, setAnnexUrl] = useState([]);
   const [loading, setLoading] = useState(false);
   const { permissions, isSuperUser } = Permission.useContainer();
@@ -58,7 +61,7 @@ const Index = props => {
     if (res.status === 0) {
       setDataInfo(res.result);
 
-      setTotalWeight(res.result.totalWeight);
+      setTotalWeight(Format.weight(res.result.totalWeight));
       let annex_url = JSON.parse(res.result.annex_url);
 
       if (annex_url.name) {
@@ -128,56 +131,59 @@ const Index = props => {
   };
 
   // 修改货物总量
-  const modifyTotalWeight = async value => {
-    const { totalWeight } = value;
-    const { id } = getQuery();
+  const modifyTotalWeight = async () => {
+    const { id } = router.query;
 
     const params = {
       id: id,
-      totalWeight: totalWeight * 1000,
+      totalWeight: newTotalWeight ? newTotalWeight * 1000 : totalWeight * 1000,
     };
 
     const res = await contract.modify_contract({ params });
     if (res.status === 0) {
       message.success('货物总量修改成功');
-      setTotalWeight(totalWeight * 1000);
+      // setTotalWeight(newTotalWeight ? newTotalWeight * 1000 : totalWeight * 1000);
       setShowTotalWeight(false);
       getDetail();
     } else {
       message.error(`货物总量修改失败，原因：${res.detail ? res.detail : res.description}`);
     }
   };
+
   // 修改生效时间
-  const modifySendDate = async value => {
-    const { effectiveDateFrom } = value;
+  const modifySendDate = async () => {
+    const isTime = moment().format('YYYY-MM-DD') === moment(newSendDate ? newSendDate : sendDate).format('YYYY-MM-DD');
+
     const params = {
-      id: getQuery().id,
-      effectiveDateFrom: effectiveDateFrom,
+      id: router.query.id,
+      effectiveDateFrom: isTime
+        ? moment().format('YYYY-MM-DD HH:mm:ss')
+        : moment(newSendDate ? newSendDate : sendDate).format('YYYY-MM-DD 00:00:00'),
     };
 
     const res = await contract.modify_contract({ params });
     if (res.status === 0) {
       message.success('生效时间修改成功');
-      setSendDate(effectiveDateFrom);
       setShowSendDate(false);
+      getDetail();
     } else {
       message.error(`生效时间修改失败，原因：${res.detail ? res.detail : res.description}`);
     }
   };
 
   // 修改有效时间
-  const modifyEndDate = async value => {
-    const { effectiveDateTo } = value;
+  const modifyEndDate = async () => {
     const params = {
-      id: getQuery().id,
-      effectiveDateTo: moment(effectiveDateTo).format('YYYY-MM-DD 23:59:59'),
+      id: router.query.id,
+      effectiveDateTo: moment(newEndDate ? newEndDate : endDate).format('YYYY-MM-DD 23:59:59'),
     };
 
     const res = await contract.modify_contract({ params });
     if (res.status === 0) {
       message.success('有效时间修改成功');
-      setEndDate(moment(effectiveDateTo).format('YYYY-MM-DD 23:59:59'));
+
       setShowEndDate(false);
+      getDetail();
     } else {
       message.error(`有效时间修改失败，原因：${res.detail ? res.detail : res.description}`);
     }
@@ -214,12 +220,39 @@ const Index = props => {
             </div>
             <div className={styles.item}>
               <span className={styles.label}>货物总量：</span>
-              {`${Format.weight(totalWeight)}吨` || '-'}
-              {(isSuperUser || permissions.includes('CONTRACT_MANAGEMENT_OPERATE')) && (
-                <span className={styles.edit} onClick={() => setShowTotalWeight(true)}>
-                  修改
-                </span>
+              {/* {`${Format.weight(totalWeight)}吨` || '-'} */}
+              {showTotalWeight ? (
+                <Input
+                  style={{ width: 120 }}
+                  addonAfter={<span style={{ color: '#BFBFBF' }}>吨</span>}
+                  value={newTotalWeight != '' ? newTotalWeight : totalWeight}
+                  onChange={e => {
+                    setNewTotalWeight(e.target.value);
+                  }}
+                />
+              ) : (
+                <span>{`${totalWeight}吨` || '-'}</span>
               )}
+              {(isSuperUser || permissions.includes('CONTRACT_MANAGEMENT_OPERATE')) &&
+                (!showTotalWeight ? (
+                  <span className={styles.edit} onClick={() => setShowTotalWeight(true)}>
+                    修改
+                  </span>
+                ) : (
+                  <div style={{ display: 'inline' }}>
+                    <span style={{ color: '#477AEF', marginLeft: 9, cursor: 'pointer' }} onClick={modifyTotalWeight}>
+                      保存
+                    </span>
+                    <span
+                      style={{ marginLeft: 9, cursor: 'pointer', color: '#477AEF' }}
+                      onClick={() => {
+                        setShowTotalWeight(false);
+                        setNewTotalWeight('');
+                      }}>
+                      取消
+                    </span>
+                  </div>
+                ))}
             </div>
             <div className={styles.item}>
               <span className={styles.label}>提货量：</span>
@@ -244,21 +277,79 @@ const Index = props => {
           <div className={styles.row}>
             <div className={styles.item}>
               <span className={styles.label}>生效时间：</span>
-              {sendDate || '-'}
-              {(isSuperUser || permissions.includes('CONTRACT_MANAGEMENT_OPERATE')) && (
-                <span className={styles.edit} onClick={() => setShowSendDate(true)}>
-                  修改
-                </span>
+              {showSendDate ? (
+                <DatePicker
+                  style={{ width: 150 }}
+                  disabledDate={date => date < moment().add(-1, 'day')}
+                  placeholder="请选择生效时间"
+                  format="YYYY-MM-DD"
+                  allowClear={false}
+                  value={newSendDate ? moment(newSendDate) : moment(sendDate)}
+                  onChange={(date, dateString) => {
+                    setNewSendDate(dateString);
+                  }}
+                />
+              ) : (
+                <span>{sendDate || '-'}</span>
               )}
+              {(isSuperUser || permissions.includes('CONTRACT_MANAGEMENT_OPERATE')) &&
+                (!showSendDate ? (
+                  <span className={styles.edit} onClick={() => setShowSendDate(true)}>
+                    修改
+                  </span>
+                ) : (
+                  <div style={{ display: 'inline' }}>
+                    <span style={{ color: '#477AEF', marginLeft: 9, cursor: 'pointer' }} onClick={modifySendDate}>
+                      保存
+                    </span>
+                    <span
+                      style={{ marginLeft: 9, cursor: 'pointer', color: '#477AEF' }}
+                      onClick={() => {
+                        setShowSendDate(false);
+                        setNewSendDate('');
+                      }}>
+                      取消
+                    </span>
+                  </div>
+                ))}
             </div>
             <div className={styles.item}>
               <span className={styles.label}>有效期至：</span>
-              {endDate || '-'}
-              {(isSuperUser || permissions.includes('CONTRACT_MANAGEMENT_OPERATE')) && (
-                <span className={styles.edit} onClick={() => setShowEndDate(true)}>
-                  修改
-                </span>
+              {showEndDate ? (
+                <DatePicker
+                  style={{ width: 150 }}
+                  disabledDate={date => date < moment().add(-1, 'day')}
+                  placeholder="请选择生效时间"
+                  format="YYYY-MM-DD"
+                  allowClear={false}
+                  value={newEndDate ? moment(newEndDate) : moment(endDate)}
+                  onChange={(date, dateString) => {
+                    setNewEndDate(dateString);
+                  }}
+                />
+              ) : (
+                <span>{endDate || '-'}</span>
               )}
+              {(isSuperUser || permissions.includes('CONTRACT_MANAGEMENT_OPERATE')) &&
+                (!showEndDate ? (
+                  <span className={styles.edit} onClick={() => setShowEndDate(true)}>
+                    修改
+                  </span>
+                ) : (
+                  <div style={{ display: 'inline' }}>
+                    <span style={{ color: '#477AEF', marginLeft: 9, cursor: 'pointer' }} onClick={modifyEndDate}>
+                      保存
+                    </span>
+                    <span
+                      style={{ marginLeft: 9, cursor: 'pointer', color: '#477AEF' }}
+                      onClick={() => {
+                        setShowEndDate(false);
+                        setNewEndDate('');
+                      }}>
+                      取消
+                    </span>
+                  </div>
+                ))}
             </div>
             <div className={styles.item}>
               <span className={styles.label}>附件：</span>
@@ -315,42 +406,6 @@ const Index = props => {
             <Line size={170} data={lineData} xAxis={lineX} showLegend={true} otherOption={otherOption} />
           </div>
         </div>
-        {/* 修改货物总量 */}
-        <Modal
-          title="修改货物总量"
-          visible={showTotalWeight}
-          destroyOnClose
-          onCancel={() => setShowTotalWeight(false)}
-          footer={null}>
-          <UpdateTotalWeight
-            initValue={Format.weight(totalWeight)}
-            onSubmit={modifyTotalWeight}
-            onClose={() => setShowTotalWeight(false)}
-          />
-        </Modal>
-        {/* 修改生效时间 */}
-        <Modal
-          title="修改生效时间"
-          visible={showSendDate}
-          destroyOnClose
-          onCancel={() => setShowSendDate(false)}
-          footer={null}>
-          <UpdateSendDate initValue={sendDate} onSubmit={modifySendDate} onClose={() => setShowSendDate(false)} />
-        </Modal>
-        {/* 修改有效时间 */}
-        <Modal
-          title="修改有效时间"
-          visible={showEndDate}
-          destroyOnClose
-          onCancel={() => setShowEndDate(false)}
-          footer={null}>
-          <UpdateEndDate
-            initValue={endDate}
-            startLoadTime={sendDate}
-            onSubmit={modifyEndDate}
-            onClose={() => setShowEndDate(false)}
-          />
-        </Modal>
       </div>
     </Spin>
   );

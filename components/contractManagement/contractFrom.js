@@ -297,8 +297,8 @@ const Index = () => {
           />
         </Form.Item>
         <div style={{ position: 'relative' }}>
-          <Form.Item name="deliveryType" validateFirst={true} style={{ position: 'absolute', right: 384, zIndex: 10 }}>
-            <Select style={{ width: 85, position: 'relative', left: 18 }} className={styles.deliveryType}>
+          <Form.Item name="deliveryType" validateFirst={true} style={{ position: 'absolute', right: 402, zIndex: 10 }}>
+            <Select style={{ width: 85, position: 'relative', left: 18, top: -1 }} className={styles.deliveryType}>
               <Select.Option value="DAY">吨/天</Select.Option>
               <Select.Option value="WEEK">吨/周</Select.Option>
               <Select.Option value="MONTH">吨/月</Select.Option>
@@ -310,11 +310,7 @@ const Index = () => {
             validateFirst={true}
             rules={[
               { required: true, whitespace: true, message: '内容不可为空' },
-              {
-                type: 'number',
-                message: '请输入有效的数字',
-                transform: value => Number(value),
-              },
+              { type: 'number', message: '请输入有效的数字', transform: value => Number(value) },
               {
                 pattern: /^\d+(\.\d{1,2})?$/,
                 message: '只能是数字，且不可超过2位小数',
