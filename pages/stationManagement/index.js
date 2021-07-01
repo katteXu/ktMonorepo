@@ -21,13 +21,13 @@ const Index = () => {
       title: '车牌号',
       dataIndex: 'plateNum',
       key: 'plateNum',
-      width: 150,
+      width: 100,
     },
     {
       title: '姓名',
       dataIndex: 'driverName',
       key: 'driverName',
-      width: 150,
+      width: 100,
     },
     {
       title: '手机号',
@@ -39,7 +39,7 @@ const Index = () => {
       title: '过磅类型',
       dataIndex: 'receiveOrSend',
       key: 'receiveOrSend',
-      width: 150,
+      width: 100,
       render: value => (value ? '收货' : '发货'),
     },
     {
@@ -121,6 +121,9 @@ const Index = () => {
   useEffect(() => {
     getRemoteData(query);
     poundMachine_list();
+    let isConnect = sessionStorage.getItem('isConnect') || '{}';
+
+    setBoxId(JSON.parse(isConnect).id);
   }, []);
 
   const router = useRouter();
@@ -132,7 +135,7 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const [dataList, setDataList] = useState({});
   const [poundMachineList, setPoundMachineList] = useState([]);
-
+  const [boxId, setBoxId] = useState();
   //  查询
   const handleSearch = useCallback(() => {
     setQuery({ ...query, page: 1 });
@@ -241,7 +244,7 @@ const Index = () => {
     <Layout {...routeView}>
       <Content>
         <section>
-          <PoundBox onChange={handleChangeWeight} style={{ marginLeft: 10 }} showWeight />
+          <PoundBox onChange={handleChangeWeight} style={{ marginLeft: 10 }} showWeight  boxId={boxId} />
           <div style={{ marginBottom: 16, marginTop: 16 }}>
             <Button.Group>
               <Button type="primary" onClick={handleInByFrom}>

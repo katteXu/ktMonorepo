@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useImperativeHandle, forwardRef } from 'react';
 import { Select, message } from 'antd';
 import { station } from '@api';
 import styles from './index.less';
@@ -7,11 +7,8 @@ import axios from 'axios';
 
 const Status = [<span className={styles.disconnected}>未连接</span>, <span className={styles.connected}>已连接</span>];
 
-const Index = props => {
-  useEffect(() => {
-    poundMachine_list();
-  }, []);
-  const { id, onReady, onChange, style, showWeight } = props;
+const Index = (props, ref) => {
+  const { id, onReady, onChange, style, showWeight, boxId } = props;
   const [loading, setLoading] = useState(false);
   const [weight, setWeight] = useState(0);
   /**
@@ -20,13 +17,25 @@ const Index = props => {
    * 已连接：1
    */
   const [status, setStatus] = useState(0);
-  const [poundMachineList, setPoundMachineList] = useState([]);
+  const timeoutRef = useRef();
 
+  const [poundMachineList, setPoundMachineList] = useState([]);
+  // 盒子地址
+  const [boxUrl, setBoxUrl] = useState();
+  //盒子
+  const [mac, setMac] = useState();
+  const [poundId, setPoundId] = useState();
+  useEffect(() => {
+    poundMachine_list();
+  }, []);
   // 更换磅机
   const handleChangePound = id => {
     const poundData = poundMachineList.find(item => item.id === id);
     onChange && onChange(poundData);
-    getLocalNet(poundData.url);
+
+    setPoundId(id);
+
+    getLocalNet(poundData.url, poundData);
   };
 
   //获取磅机列表
@@ -40,39 +49,74 @@ const Index = props => {
   };
 
   // 获取本地盒子地址
-  const getLocalNet = async url => {
+  const getLocalNet = async (url, poundData) => {
     setLoading(true);
     const res = await axios.get(url).then(res => res.data);
-    const _url = res.match(/URL=([\s\S]*?)"/)[1];
 
     try {
+      const _url = res.match(/URL=([\s\S]*?)"/)[1];
       const isConnect = await axios.get(_url).then(res => res.data);
+
       setLoading(false);
 
       // 模拟连接成功
+      setBoxUrl(isConnect.url);
+      setMac(isConnect.mac);
       setStatus(1);
+      sessionStorage.setItem('isConnect', JSON.stringify(poundData));
     } catch (e) {
       message.error('连接异常');
       setLoading(false);
-
-      setStatus(1);
+      setStatus(0);
     }
   };
 
   useEffect(() => {
-    const time = setInterval(() => {
-      if (status === 1) {
-        const _weight = (Math.random() * 40).toFixed(2);
-        setWeight(_weight);
-
-        onChange(_weight);
-      }
-    }, 3000);
+    if (status === 1) {
+      getWeight();
+    }
 
     return () => {
-      clearInterval(time);
+      clearTimeout(timeoutRef.current);
     };
   }, [status]);
+
+  // 获取重量
+  const getWeight = async () => {
+    const res = await axios.get(`${boxUrl}weight`).then(res => res.data);
+    setWeight(res.weight);
+    onChange(res.weight);
+    timeoutRef.current = setTimeout(async () => {
+      getWeight();
+    }, 1000);
+  };
+
+  useImperativeHandle(ref, () => ({
+    initpdf: async data => {
+      if (status === 1) {
+        const params = {
+          ...data,
+          mac,
+        };
+
+        const res = await station.generate_pdf({ params });
+        return res;
+      }
+    },
+    print: async params => {
+      const res = axios.post(`${boxUrl}print_pdf`, params).then(res => res.data);
+      return res;
+    },
+    parallelPortPrint: async params => {
+      const res = axios.post(`${boxUrl}parallelPortPrint`, params).then(res => res.data);
+      return res;
+    },
+  }));
+  useEffect(() => {
+    if (props.boxId) {
+      handleChangePound(props.boxId);
+    }
+  }, [poundMachineList]);
 
   return (
     <div className={styles['pound-box']} style={style}>
@@ -81,6 +125,7 @@ const Index = props => {
         placeholder="请选择磅机"
         onChange={handleChangePound}
         loading={loading}
+        value={poundId}
         disabled={loading}>
         {poundMachineList.map(item => (
           <Select.Option key={item.id} value={item.id}>
@@ -88,14 +133,12 @@ const Index = props => {
           </Select.Option>
         ))}
       </Select>
-      {!showWeight && (
-        <div style={{ display: 'inline-block' }}>
-          <div className={styles.status}>{loading ? <span>连接中...</span> : <span>{Status[status]}</span>}</div>
-          <span className={styles.weight}>{weight || 0}吨</span>
-        </div>
-      )}
+      <div style={{ display: 'inline-block' }}>
+        <div className={styles.status}>{loading ? <span>连接中...</span> : <span>{Status[status]}</span>}</div>
+        {!showWeight && <span className={styles.weight}>{weight || 0}吨</span>}
+      </div>
     </div>
   );
 };
 
-export default Index;
+export default forwardRef(Index);

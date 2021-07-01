@@ -116,6 +116,14 @@ const postOutStation = ({ params }) => {
   });
 };
 
+//生成pdf
+const generate_pdf = ({ params }) => {
+  return request({
+    method: 'post',
+    url: 'api/v1/pound/generate_pdf',
+    data: params,
+  });
+};
 export default {
   getStationList,
   deleteStationTruck,
@@ -131,4 +139,5 @@ export default {
   modifyInStationRecordV2,
   postOutStation,
   updateInStationTruckOrTrucker,
+  generate_pdf
 };

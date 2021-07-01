@@ -1,5 +1,5 @@
 import { Component, useEffect, useState } from 'react';
-import { Select, Input, Button, message, Modal, Form } from 'antd';
+import { Select, Input, Button, message, Modal, Form,Checkbox } from 'antd';
 import { station } from '../../api';
 
 const { Option } = Select;
@@ -80,7 +80,9 @@ const Index = ({ close, onSubmit }) => {
           ]}>
           <Input placeholder="请输入装车费用" style={{ width: 264 }} type="number" />
         </Form.Item>
-
+        <Form.Item label="是否打印" name="print" valuePropName="checked">
+          <Checkbox>是否打印</Checkbox>
+        </Form.Item>
         <div style={{ textAlign: 'right' }}>
           <Button size="default" onClick={close}>
             取消
