@@ -31,6 +31,17 @@ const RailWayPay = () => {
 
   const columns = [
     {
+      title: '承运时间',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      minWidth: 200,
+      width: 200,
+      align: 'left',
+      render: value => {
+        return value || '-';
+      },
+    },
+    {
       title: '车牌号',
       dataIndex: 'trailerPlateNumber',
       key: 'trailerPlateNumber',
@@ -79,16 +90,6 @@ const RailWayPay = () => {
       width: 130,
       align: 'right',
       render: Format.price,
-    },
-    {
-      title: '承运时间',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      minWidth: 250,
-      width: 250,
-      render: value => {
-        return value || '-';
-      },
     },
     {
       title: '操作',
