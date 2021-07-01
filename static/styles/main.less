@@ -8,18 +8,18 @@
 
 :global(body) {
   background-color: #f3f5f7;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+  font-family     : -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   color: #333333;
+
   a[title='站长统计'] {
     display: none;
   }
 }
 
 :global {
-  .ant-form-item-label > label.ant-form-item-required::before {
-    font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Roboto, Arial, PingFang SC,
-      Hiragino Sans GB, Microsoft Yahei, SimSun, sans-serif;
+  .ant-form-item-label>label.ant-form-item-required::before {
+    font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Roboto, Arial, PingFang SC, Hiragino Sans GB, Microsoft Yahei, SimSun, sans-serif !important;
   }
 
   .ant-input[disabled] {
@@ -30,16 +30,22 @@
   //   background-color: #477AEF;
   //   border-color: #477AEF;
   // }
-  .ant-radio-inner::after {
-    background-color: #477aef;
-  }
+
 
   .ant-radio-checked .ant-radio-inner {
     border-color: #477aef;
   }
 
-  .ant-table-container table > thead > tr:first-child th:first-child,
-  .ant-table-container table > thead > tr:first-child th:last-child {
+  .ant-radio:hover .ant-radio-inner {
+    border-color: #477aef;
+  }
+
+  .ant-radio-inner::after {
+    background-color: #477aef;
+  }
+
+  .ant-table-container table>thead>tr:first-child th:first-child,
+  .ant-table-container table>thead>tr:first-child th:last-child {
     border-radius: 0;
   }
 
@@ -58,28 +64,28 @@
   }
 
   .ant-layout-header {
-    height: 50px !important;
+    height     : 50px !important;
     line-height: 50px !important;
   }
 
   .ant-modal-close-x {
-    height: 48px;
-    width: 48px;
+    height     : 48px;
+    width      : 48px;
     line-height: 48px;
   }
 
   .ant-tag {
     margin-right: 0 !important;
-    margin-left: 8px !important;
-    font-weight: 400 !important;
+    margin-left : 8px !important;
+    font-weight : 400 !important;
   }
 
   .ant-breadcrumb a {
     color: #848485 !important;
   }
 
-  .ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title {
-    color: #333333 !important;
+  .ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title {
+    color    : #333333 !important;
     font-size: 16px;
   }
 
@@ -87,8 +93,8 @@
     color: #333333 !important;
   }
 
-  .ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title {
-    color: #333333 !important;
+  .ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title {
+    color    : #333333 !important;
     font-size: 16px;
   }
 
@@ -96,9 +102,9 @@
     font-size: 16px;
   }
 
-  .ant-steps-item-wait > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title {
+  .ant-steps-item-wait>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title {
     font-size: 16px;
-    color: #bfbfbf !important;
+    color    : #bfbfbf !important;
   }
 
   .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
@@ -115,7 +121,7 @@
 
   .ant-modal-footer {
     padding: 0 16px 16px 16px !important;
-    border: none;
+    border : none;
   }
 
   .ant-modal-title {
@@ -126,21 +132,29 @@
     color: #848485 !important;
   }
 
-  .ant-breadcrumb > span:last-child {
+  .ant-breadcrumb>span:last-child {
     color: #333333 !important;
   }
 
   .ant-modal-header {
-    height: 48px;
+    height : 48px;
     padding: 13px 16px !important;
   }
 
   .ant-input::placeholder {
-    color: #000000a6 !important;
+    color  : #000000a6 !important;
     opacity: 0.4;
   }
 
-  .ant-form-item-label > label {
+  .ant-input {
+    color: #333 !important;
+  }
+
+  .ant-switch-checked {
+    background: #477aef !important;
+  }
+
+  .ant-form-item-label>label {
     color: #333333 !important;
   }
 
@@ -152,12 +166,12 @@
     cursor: default;
   }
 
-  .ant-table-thead > tr {
+  .ant-table-thead>tr {
     height: 48px;
   }
 
   .ant-drawer-title {
-    color: #333333 !important;
+    color      : #333333 !important;
     font-weight: 600 !important;
   }
 
@@ -165,11 +179,11 @@
     color: #333333 !important;
   }
 
-  .ant-table-tbody > tr > td {
-    color: #333333;
-    font-weight: 400;
-    padding: 12px 16px;
-    white-space: nowrap;
+  .ant-table-tbody>tr>td {
+    color        : #333333;
+    font-weight  : 400;
+    padding      : 12px 16px;
+    white-space  : nowrap;
     border-bottom: 1px solid #f0f0f0;
   }
 
@@ -181,24 +195,25 @@
     background: #477aef !important;
   }
 
-  .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+  .ant-steps-item-finish .ant-steps-item-icon>.ant-steps-icon {
     color: #477aef !important;
   }
 
-  .ant-table.ant-table-middle .ant-table-tbody > tr > td,
-  .ant-table.ant-table-middle .ant-table-thead > tr > th,
+  .ant-table.ant-table-middle .ant-table-tbody>tr>td,
+  .ant-table.ant-table-middle .ant-table-thead>tr>th,
   .ant-table.ant-table-middle .ant-table-thead .ant-table-column-sorters {
     padding: 12px 16px;
   }
 
-  .ant-table-thead > tr > th {
-    color: #333333;
+  .ant-table-thead>tr>th {
+    color      : #333333;
     font-weight: 600;
 
     white-space: nowrap;
-    border: 0;
-    background: #f6f7f9;
+    border     : 0;
+    background : #f6f7f9;
   }
+
 
   .ant-calendar-range-picker-input:placeholder-shown {
     text-align: left;
@@ -211,6 +226,18 @@
   .ant-alert {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
       'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  }
+
+  .ant-cascader-picker-label {
+    color: #333333;
+  }
+
+  .ant-cascader-picker-label:hover+.ant-cascader-input {
+    border-color: #477aef !important;
+  }
+
+  .ant-cascader-picker:focus .ant-cascader-input {
+    border-color: #477aef !important;
   }
 
   .ant-input:focus,
@@ -231,16 +258,16 @@
 
   .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
     border-color: #477aef;
-    color: #477aef;
+    color       : #477aef;
   }
 
-  .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
-  .ant-tabs-card.ant-tabs-bottom > .ant-tabs-nav .ant-tabs-tab,
-  .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab,
-  .ant-tabs-card.ant-tabs-bottom > div > .ant-tabs-nav .ant-tabs-tab {
-    margin-right: -1px !important;
-    min-width: 88px;
-    display: flex;
+  .ant-tabs-card.ant-tabs-top>.ant-tabs-nav .ant-tabs-tab,
+  .ant-tabs-card.ant-tabs-bottom>.ant-tabs-nav .ant-tabs-tab,
+  .ant-tabs-card.ant-tabs-top>div>.ant-tabs-nav .ant-tabs-tab,
+  .ant-tabs-card.ant-tabs-bottom>div>.ant-tabs-nav .ant-tabs-tab {
+    margin-right   : -1px !important;
+    min-width      : 88px;
+    display        : flex;
     justify-content: center;
   }
 
@@ -253,7 +280,7 @@
   }
 
   .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-    color: #477aef !important;
+    color      : #477aef !important;
     font-weight: 400 !important;
   }
 
@@ -261,12 +288,12 @@
     color: #477aef !important;
   }
 
-  .ant-tabs-card.ant-tabs-small > .ant-tabs-nav .ant-tabs-tab {
+  .ant-tabs-card.ant-tabs-small>.ant-tabs-nav .ant-tabs-tab {
     padding: 6px 12px !important;
   }
 
-  .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active,
-  .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab-active {
+  .ant-tabs-card>.ant-tabs-nav .ant-tabs-tab-active,
+  .ant-tabs-card>div>.ant-tabs-nav .ant-tabs-tab-active {
     color: #477aef !important;
   }
 
@@ -317,21 +344,23 @@
   }
 
   .ant-drawer-header {
-    height: 48px;
+    height : 48px;
     padding: 13px 16px !important;
   }
 
   .ant-drawer-close {
-    height: 48px;
-    width: 48px;
+    height : 48px;
+    width  : 48px;
     padding: 16px !important;
   }
 }
 
 // 表单间距
-:global(.ant-form .ant-form-item) {
-  margin-bottom: 0;
-}
+// :global(.ant-form .ant-form-item) {
+//   margin-bottom: 0;
+// }
+
+
 
 :global(.ant-form .ant-divider-horizontal) {
   margin: 20px 0;
@@ -347,25 +376,29 @@
 
 :global(.ant-table-scroll) {
   :global(.ant-table-header) {
-    margin-bottom: -15px !important;
+    margin-bottom : -15px !important;
     padding-bottom: 0px !important;
-    overflow: scroll !important;
+    overflow      : scroll !important;
   }
+}
+
+:global(.ant-btn-link) {
+  color: #477aef !important;
 }
 
 // 列表统计数字 蓝色字体突显
 :global(.total-number) {
-  color: #477aef;
-  font-size: 16px;
-  line-height: 32px;
+  color       : #477aef;
+  font-size   : 16px;
+  line-height : 32px;
   margin-right: 5px;
-  margin-left: 5px;
+  margin-left : 5px;
 }
 
 :global(.max-label) {
-  overflow: hidden;
+  overflow     : hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space  : nowrap;
 }
 
 // 高德地图Logo隐藏
@@ -385,48 +418,48 @@
     background: #29d;
 
     position: fixed;
-    z-index: 1031;
-    top: 0;
-    left: 0;
+    z-index : 1031;
+    top     : 0;
+    left    : 0;
 
-    width: 100%;
+    width : 100%;
     height: 2px;
   }
 
   :global(.peg) {
-    display: block;
-    position: absolute;
-    right: 0px;
-    width: 100px;
-    height: 100%;
+    display   : block;
+    position  : absolute;
+    right     : 0px;
+    width     : 100px;
+    height    : 100%;
     box-shadow: 0 0 10px #29d, 0 0 5px #29d;
-    opacity: 1;
+    opacity   : 1;
 
     -webkit-transform: rotate(3deg) translate(0px, -4px);
-    -ms-transform: rotate(3deg) translate(0px, -4px);
-    transform: rotate(3deg) translate(0px, -4px);
+    -ms-transform    : rotate(3deg) translate(0px, -4px);
+    transform        : rotate(3deg) translate(0px, -4px);
   }
 
   :global(.spinner) {
-    display: block;
+    display : block;
     position: fixed;
-    z-index: 1031;
-    top: 15px;
-    right: 15px;
+    z-index : 1031;
+    top     : 15px;
+    right   : 15px;
   }
 
   :global(.spinner-icon) {
-    width: 18px;
-    height: 18px;
+    width     : 18px;
+    height    : 18px;
     box-sizing: border-box;
 
-    border: solid 2px transparent;
-    border-top-color: #29d;
+    border           : solid 2px transparent;
+    border-top-color : #29d;
     border-left-color: #29d;
-    border-radius: 50%;
+    border-radius    : 50%;
 
     -webkit-animation: nprogress-spinner 400ms linear infinite;
-    animation: nprogress-spinner 400ms linear infinite;
+    animation        : nprogress-spinner 400ms linear infinite;
   }
 }
 
@@ -463,77 +496,127 @@
 
 // ================================ 全局样式 ================================
 :global {
+
   // 按钮
   .ant-btn {
-    box-shadow: none;
+    color      : #333333; //无状态按钮默认颜色
+    box-shadow : none;
     text-shadow: none;
 
-    // 危险按钮
     &.ant-btn-dangerous {
-      color: #e44040;
+      color       : #e44040;
       border-color: #e44040;
-
-      &:hover {
-        color: #e44040;
-        border-color: #e44040;
-      }
     }
 
-    // 常规按钮
+    &.ant-btn-dangerous:hover {
+      color       : #e44040;
+      border-color: #e44040;
+    }
+
+    &:hover {
+      border: 1px solid #477aef;
+      color : #477aef;
+    }
+
     &.ant-btn-primary {
       background-color: #477aef;
+      border          : 1px solid #477aef;
+      color           : #fff;
 
-      // color: #477AEF;
       &:hover {
-        background-color: #477aefe6;
+        background-color: #477aef;
+        border-color    : #477aef;
       }
 
       &:active {
-        background-color: #477aefe6;
+        background-color: #477aef;
       }
-    }
 
-    // 链接按钮
-    &.ant-btn-link {
-      color: #477aef;
-      padding: 0;
+      &.ant-btn-background-ghost {
+        color     : #477aef;
+        // &.ant-btn-primary[disabled] {
+        //   color: #bfbfbf;
+        // }
+      }
 
-      &.ant-btn-dangerous {
-        border: none;
-
+      &[disabled] {
         &:hover {
-          color: #e44040;
+          background-color: #f6f6f6;
         }
-      }
 
-      & + .ant-btn-link {
-        margin-left: 8px;
+        background-color: #f6f6f6 !important;
+        border          : 1px solid #d9d9d9;
+        color           : rgba(0, 0, 0, 0.25);
       }
     }
 
-    // 不可用按钮
-    &[disabled] {
+    &.ant-btn-link {
       &:hover {
-        background-color: #f6f6f6;
+        border: none;
       }
+    }
+  }
 
-      background-color: #f6f6f6 !important;
-      border: 1px solid #d9d9d9;
-      color: rgba(0, 0, 0, 0.25);
+  .ant-btn-background-ghost.ant-btn-danger-disabled,
+  .ant-btn-background-ghost.ant-btn-danger.disabled,
+  .ant-btn-background-ghost.ant-btn-danger[disabled],
+  .ant-btn-background-ghost.ant-btn-danger-disabled:hover,
+  .ant-btn-background-ghost.ant-btn-danger.disabled:hover,
+  .ant-btn-background-ghost.ant-btn-danger[disabled]:hover,
+  .ant-btn-background-ghost.ant-btn-danger-disabled:focus,
+  .ant-btn-background-ghost.ant-btn-danger.disabled:focus,
+  .ant-btn-background-ghost.ant-btn-danger[disabled]:focus,
+  .ant-btn-background-ghost.ant-btn-danger-disabled:active,
+  .ant-btn-background-ghost.ant-btn-danger.disabled:active,
+  .ant-btn-background-ghost.ant-btn-danger[disabled]:active,
+  .ant-btn-background-ghost.ant-btn-danger-disabled.active,
+  .ant-btn-background-ghost.ant-btn-danger.disabled.active,
+  .ant-btn-background-ghost.ant-btn-danger[disabled].active {
+    //不可点按钮背景色
+    background-color: #f6f7f9 !important;
+
+    &:hover {
+      border-color: #bfbfbf;
+    }
+  }
+
+  .ant-btn>.anticon+span,
+  .ant-btn>span+.anticon {
+    margin-left: 4px;
+  }
+
+  .ant-btn-link {
+    cursor : pointer;
+    padding: 0;
+    border : none;
+
+    &+.ant-btn-link {
+      margin-left: 12px;
+    }
+
+    &.delete {
+      &:hover {
+        color: #e44040;
+      }
+    }
+
+    &:focus {
+      color: #477aef;
     }
   }
 
   // 表单
   .ant-form {
+
     // 表单项
     .ant-form-item {
-      .ant-form-item-control {
-        padding-bottom: 24px;
-      }
+      // .ant-form-item-control {
+      //   padding-bottom: 24px;
+      // }
 
       // label 文案
       .ant-form-item-label {
-        min-width: 110px;
+        // min-width   : 110px;
         margin-right: 8px;
       }
 
@@ -546,7 +629,7 @@
       // 错误信息
       .ant-form-item-explain {
         position: absolute;
-        bottom: 0;
+        bottom  : 0;
       }
     }
 
@@ -559,14 +642,11 @@
       }
     }
 
-    &.middle {
-    }
+    &.middle {}
 
-    &.big {
-    }
+    &.big {}
 
-    &.large {
-    }
+    &.large {}
   }
 
   // 复选框
@@ -574,7 +654,7 @@
     &.ant-checkbox-checked {
       .ant-checkbox-inner {
         background-color: #477aef;
-        border-color: #477aef;
+        border-color    : #477aef;
       }
     }
 

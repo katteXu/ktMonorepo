@@ -18,7 +18,6 @@ const UpdateForm = ({ onSubmit, onClose, initValue }) => {
   return (
     <div>
       <Form
-        className="small"
         {...formItemLayout}
         onFinish={handleSubmit}
         onFinishFailed={onFinishFailed}
