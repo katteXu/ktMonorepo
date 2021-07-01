@@ -1,5 +1,5 @@
 import { Layout, Content, ChildTitle } from '@components';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect ,useRef} from 'react';
 import { Steps } from '@components/Station';
 import { Input, Button, Select, Table, Popconfirm, message, Modal } from 'antd';
 import { station } from '@api';
@@ -47,9 +47,13 @@ const Index = () => {
   const [confirmInfo, setConfirmInfo] = useState();
   const [goodsWeight, setGoodsWeight] = useState(0);
   const { id } = getQuery();
+  const poundBoxRef = useRef();
+  const [boxId, setBoxId] = useState();
   useEffect(() => {
     poundMachine_list();
     getDetailInfo();
+    let isConnect = sessionStorage.getItem('isConnect') || '{}';
+    setBoxId(JSON.parse(isConnect).id);
   }, []);
 
   //获取详情
@@ -168,8 +172,26 @@ const Index = () => {
     if (res.status === 0) {
       setShowAbnormal(false);
       setModal(false);
-      message.success('出站成功');
-      router.push('/stationManagement');
+      const pdfParams = {
+        pid: res.result.pid,
+        poundType: 1,
+      };
+      const resPdf = await poundBoxRef.current.initpdf(pdfParams);
+
+      if (resPdf.status === 0) {
+        const printPramas = resPdf.result;
+        if (resPdf.result.printType === 3) {
+          const PortPrint = await poundBoxRef.current.parallelPortPrint(printPramas);
+          message.success('出站成功');
+          router.push('/stationManagement');
+        } else {
+          const resprint = await poundBoxRef.current.print(printPramas);
+          message.success('出站成功');
+          router.push('/stationManagement');
+        }
+      } else {
+        message.error(resPdf.description || '生成失败。请重试');
+      }
     } else {
       message.error(`${res.detail || res.description}`);
     }
@@ -279,7 +301,7 @@ const Index = () => {
       <Content>
         <section style={{ paddingBottom: 50 }}>
           <div className={styles.top}>
-            <PoundBox onChange={handleChangeWeight} style={{ marginLeft: 10 }} />
+            <PoundBox onChange={handleChangeWeight} style={{ marginLeft: 10 }} ref={poundBoxRef} boxId={boxId} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
