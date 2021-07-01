@@ -129,7 +129,7 @@ const Index = ({ truckInfo, routeInfo, onsubmit, fromTruckerData, type, handleCh
             </div>
           </div>
         )}
-        {truckerDataStatus && (
+        {stationType != 1 && truckerDataStatus && (
           <Button className={styles.informationNo} onClick={() => setShowInfoError(true)}>
             信息不全 ，点击录入信息
             <RightOutlined />

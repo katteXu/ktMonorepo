@@ -223,8 +223,22 @@
 
 .fromInfoRailWay {
   :global {
+    // .ant-form .ant-form-item {
+    //   width: 600px;
+    // }
+
     .ant-select {
       color: #333333;
+    }
+
+    .ant-form-item-label>label {
+      width       : 109px;
+      margin-right: 8px;
+    }
+
+    .ant-form-horizontal .ant-form-item-label {
+      width       : 109px;
+      margin-right: 8px;
     }
   }
 
@@ -320,7 +334,25 @@
 .formSendData {
   :global {
     .ant-form-item-label>label {
-      width       : 74px;
+      width       : 74px !important;
+      margin-right: 8px;
+    }
+  }
+}
+
+.formLeaving {
+  :global {
+    .ant-form-item-label>label {
+      width       : 109px;
+      margin-right: 8px;
+    }
+  }
+}
+
+.formContact {
+  :global {
+    .ant-form-item-label>label {
+      width       : 84px;
       margin-right: 8px;
     }
   }

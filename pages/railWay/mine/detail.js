@@ -285,13 +285,9 @@ const RailWayDetail = props => {
           {canEdit && (
             <div style={{ float: 'right' }}>
               <Button
-                style={{
-                  padding: '4px 0',
-                  color: '#477AEF',
-                  border: 'none',
-                  boxShadow: 'none',
-                }}
+                style={{ padding: '4px 0', color: '#477AEF', border: 'none', boxShadow: 'none' }}
                 loading={!status}
+                type="link"
                 onClick={setRailWayStatus}>
                 {status === 'CLOSE' ? '开启' : '关闭'}专线
               </Button>

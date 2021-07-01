@@ -1,5 +1,5 @@
 import { Layout, Content, ChildTitle } from '@components';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect,useRef } from 'react';
 import { Steps } from '@components/Station';
 import { Input, Button, Select, Table, Popconfirm, message, Modal } from 'antd';
 import { station } from '@api';
@@ -35,9 +35,13 @@ const Index = () => {
   const [allParams, setAllParams] = useState({});
   const [poundWeight, setPoundWeight] = useState(0);
   const [plateNum, setPlateNum] = useState();
+  const poundBoxRef = useRef();
+  const [boxId, setBoxId] = useState();
   useEffect(() => {
     poundMachine_list();
     getPrint();
+    let isConnect = sessionStorage.getItem('isConnect') || '{}';
+    setBoxId(JSON.parse(isConnect).id);
   }, []);
   //获取磅机列表
   const poundMachine_list = async () => {
@@ -151,15 +155,38 @@ const Index = () => {
   const handleOk = async valuse => {
     const params = {
       ...allParams,
-      ...valuse,
+      load_truck_type: valuse.load_truck_type,
       price: valuse.price * 100,
     };
 
     const res = await station.newUploadInOne({ params });
     if (res.status === 0) {
       setShowPrint(false);
-      message.success('进站成功');
-      router.push('/stationManagement');
+      if (valuse.print) {
+        const pdfParams = {
+          wid: res.result.weighId,
+          poundType: 4,
+        };
+        const resPdf = await poundBoxRef.current.initpdf(pdfParams);
+
+        if (resPdf.status === 0) {
+          const printPramas = resPdf.result;
+          if (resPdf.result.printType === 3) {
+            const PortPrint = await poundBoxRef.current.parallelPortPrint(printPramas);
+            message.success('进站成功');
+            router.push('/stationManagement');
+          } else {
+            const resprint = await poundBoxRef.current.print(printPramas);
+            message.success('进站成功');
+            router.push('/stationManagement');
+          }
+        } else {
+          message.error(resPdf.description || '生成失败。请重试');
+        }
+      } else {
+        message.success('进站成功');
+        router.push('/stationManagement');
+      }
     } else {
       message.error(`${res.detail || res.description}`);
     }
@@ -186,7 +213,7 @@ const Index = () => {
       <Content>
         <section style={{ paddingBottom: 50 }}>
           <div className={styles.top}>
-            <PoundBox onChange={handleChangeWeight} style={{ marginLeft: 10 }} />
+            <PoundBox onChange={handleChangeWeight} style={{ marginLeft: 10 }} ref={poundBoxRef} boxId={boxId}/>
           </div>
           <div>
             <ChildTitle style={{ margin: '24px 0 16px', fontWeight: 'bold' }}>重量信息</ChildTitle>
@@ -215,7 +242,7 @@ const Index = () => {
             truckInfo={truckInfo}
             routeInfo={routeInfo}
             onsubmit={val => setTruckerInfo(val)}
-            stationType={1}
+            stationType={3}
           />
           <div className={styles.block1} style={{ marginTop: 32, marginBottom: 32 }}>
             <span className={styles.lableText}>备注:</span>
@@ -227,7 +254,7 @@ const Index = () => {
         </section>
       </Content>
       <Modal title="装车单打印" footer={null} visible={showPrint} onCancel={() => setShowPrint(false)} footer={null}>
-        <PrintFrom onSubmit={handleOk} />
+        <PrintFrom onSubmit={handleOk} close={() => setShowPrint(false)}/>
       </Modal>
     </Layout>
   );
