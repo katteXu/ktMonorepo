@@ -44,14 +44,60 @@
     background-color: #477aef;
   }
 
+  //分页
+  .ant-pagination-item {
+    &:hover {
+      a {
+        color: #477aef;
+      }
+    }
+  }
+
+
+  .ant-pagination-item-active:focus-visible,
+  .ant-pagination-item-active:hover {
+    border-color: #477aef;
+  }
+
+  .ant-pagination-next:not(.ant-pagination-disabled):hover,
+  .ant-pagination-prev:not(.ant-pagination-disabled):hover {
+    span {
+      color: #477aef !important;
+    }
+  }
+
+  .ant-pagination-item-active {
+    border-color: #477aef;
+
+    a {
+      color: #477aef;
+    }
+  }
+
   .ant-table-container table>thead>tr:first-child th:first-child,
   .ant-table-container table>thead>tr:first-child th:last-child {
     border-radius: 0;
   }
 
+  table tr th.ant-table-selection-column,
+  table tr td.ant-table-selection-column {
+    text-align: unset;
+  }
+
   .ant-picker:hover,
   .ant-picker-focused {
     border-color: #477aef;
+  }
+
+  .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+  .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+  .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+    background-color: #477aef !important;
+  }
+
+  .ant-picker-cell-in-view,
+  .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner {
+    color: #333333 !important;
   }
 
   .ant-menu.ant-menu-dark,
@@ -143,7 +189,7 @@
 
   .ant-input::placeholder {
     color  : #000000a6 !important;
-    opacity: 0.4;
+    opacity: 0.4 !important;
   }
 
   .ant-input {
@@ -603,6 +649,15 @@
     &:focus {
       color: #477aef;
     }
+  }
+
+  .ant-btn-group .ant-btn-primary:first-child:not(:last-child) {
+    border-right-color: #477aef;
+  }
+
+  .ant-btn-group .ant-btn-primary:last-child:not(:first-child),
+  .ant-btn-group .ant-btn-primary+.ant-btn-primary {
+    border-left-color: #477aef;
   }
 
   // 表单

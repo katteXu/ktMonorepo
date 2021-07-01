@@ -163,7 +163,7 @@ const Index = ({ onSubmit }) => {
         background: '#F7F7F7',
         padding: 24,
         width: 800,
-        margin: '-20px 0 0 113px',
+        margin: '-20px 0 24px 113px',
       }}>
       <Search onSearch={handleSearch} onReset={handleReset} simple color="#f7f7f7">
         <Search.Item label="合同名称">
