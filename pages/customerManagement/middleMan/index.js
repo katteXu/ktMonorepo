@@ -113,7 +113,7 @@ const MiddleMan = props => {
       render: (value, record, index) => {
         const { id } = record;
         return (
-          <Button.Group style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Button.Group>
             <Button
               size="small"
               type="link"
@@ -135,7 +135,7 @@ const MiddleMan = props => {
               placement="topRight"
               icon={<QuestionCircleFilled />}
               onConfirm={() => delRow(record)}>
-              <Button size="small" type="link" danger>
+              <Button size="small" type="link" danger style={{ marginLeft: 8 }}>
                 删除
               </Button>
             </Popconfirm>

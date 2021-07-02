@@ -99,7 +99,7 @@ const Index = ({ onsubmit, fromRouteData, routeId, type }) => {
             </div>
           </div>
         ) : (
-          <Button onClick={() => setVisible(true)} block style={{ width: 264, marginLeft: 120 }} ghost type="primary">
+          <Button onClick={() => setVisible(true)} block style={{ width: 264, marginLeft: 168 }} ghost type="primary">
             <PlusOutlined />
             选择专线
           </Button>
