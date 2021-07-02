@@ -238,19 +238,19 @@ const Index = () => {
   };
 
   // 磅机重量变更
-  const handleChangeWeight = weight => {};
+  const handleChangeWeight = weight => { };
 
   return (
     <Layout {...routeView}>
       <Content>
         <section>
-          <PoundBox onChange={handleChangeWeight} style={{ marginLeft: 10 }} showWeight  boxId={boxId} />
+          <PoundBox onChange={handleChangeWeight} style={{ marginLeft: 10 }} showWeight boxId={boxId} />
           <div style={{ marginBottom: 16, marginTop: 16 }}>
             <Button.Group>
-              <Button type="primary" onClick={handleInByFrom}>
+              <Button type="primary" onClick={handleInByFrom} ghost>
                 发货
               </Button>
-              <Button type="primary" onClick={handleInByTo} style={{ marginLeft: 8 }}>
+              <Button type="primary" onClick={handleInByTo} style={{ marginLeft: 8 }} ghost>
                 收货
               </Button>
             </Button.Group>

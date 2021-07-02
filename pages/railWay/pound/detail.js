@@ -383,13 +383,13 @@ const RailWayDetail = () => {
       message.success('编辑成功');
       contactType === 'from'
         ? setFromInfo({
-            fromName: value.name,
-            fromMobilePhone: value.mobile,
-          })
+          fromName: value.name,
+          fromMobilePhone: value.mobile,
+        })
         : setReceiverInfo({
-            receiverName: value.name,
-            receiverMobilePhone: value.mobile,
-          });
+          receiverName: value.name,
+          receiverMobilePhone: value.mobile,
+        });
     } else {
       message.error(`编辑失败，原因：${res.detail ? res.detail : res.description}`);
     }
@@ -482,9 +482,8 @@ const RailWayDetail = () => {
                 <div className={styles.item}>
                   <span className={styles.label}>发货联系人：</span>
                   {dataInfo.fromName || fromInfo
-                    ? `${fromInfo.fromName || dataInfo.fromName} ${
-                        fromInfo.fromMobilePhone || dataInfo.fromMobilePhone
-                      }`
+                    ? `${fromInfo.fromName || dataInfo.fromName} ${fromInfo.fromMobilePhone || dataInfo.fromMobilePhone
+                    }`
                     : '-'}
                   {canEdit && (
                     <span
@@ -519,9 +518,8 @@ const RailWayDetail = () => {
                 <div className={styles.item}>
                   <span className={styles.label}>收货联系人：</span>
                   {dataInfo.receiverName || receiverInfo
-                    ? `${receiverInfo.receiverName || dataInfo.receiverName} ${
-                        receiverInfo.receiverMobilePhone || dataInfo.receiverMobilePhone
-                      }`
+                    ? `${receiverInfo.receiverName || dataInfo.receiverName} ${receiverInfo.receiverMobilePhone || dataInfo.receiverMobilePhone
+                    }`
                     : '-'}
                   {canEdit && (
                     <span
@@ -567,8 +565,8 @@ const RailWayDetail = () => {
                     <span>{unitPrice ? `${unitPrice} 元/${dataInfo.unitName}` : '-'}</span>
                   ) : (
                     <Input
-                      style={{ width: 110 }}
-                      suffix={`元/吨`}
+                      style={{ width: 120 }}
+                      addonAfter={<span style={{ color: '#BFBFBF' }}>元/吨</span>}
                       value={newUnitPrice ? newUnitPrice : unitPrice}
                       onChange={e => {
                         setNewUnitPrice(e.target.value);
