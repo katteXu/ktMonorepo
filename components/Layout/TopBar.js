@@ -53,7 +53,7 @@ const TopBar = () => {
   };
 
   const edit = () => {
-    setShowEditModal(true);
+    router.push('/personal/pwdEdit');
   };
 
   const menu = (

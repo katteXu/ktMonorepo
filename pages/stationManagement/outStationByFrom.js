@@ -1,5 +1,5 @@
 import { Layout, Content, ChildTitle } from '@components';
-import { useState, useCallback, useEffect ,useRef} from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { Steps } from '@components/Station';
 import { Input, Button, Select, Table, Popconfirm, message, Modal } from 'antd';
 import { station } from '@api';
@@ -275,7 +275,7 @@ const Index = () => {
   const warnInfo = text => {
     Modal.warn({
       title: text,
-      onOk() {},
+      onOk() { },
     });
   };
 
@@ -307,7 +307,7 @@ const Index = () => {
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <ChildTitle style={{ margin: '24px 0 16px', fontWeight: 'bold' }}>重量信息</ChildTitle>
               <span onClick={takeTareWeight} className={styles.takeWeight}>
-                 取毛重
+                取毛重
               </span>
             </div>
 
@@ -373,7 +373,7 @@ const Index = () => {
               value={remark}
             />
           </div>
-          <Button type="primary" style={{ width: 264, marginLeft: 120 }} onClick={newUploadInOneonClick}>
+          <Button type="primary" style={{ width: 264, marginLeft: 168 }} onClick={newUploadInOneonClick}>
             出站
           </Button>
         </section>

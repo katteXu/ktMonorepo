@@ -278,8 +278,8 @@ const Index = props => {
                     <img
                       src={
                         data.poundData &&
-                        data.poundData.connectionStatusZn &&
-                        data.poundData.connectionStatusZn != '未连接'
+                          data.poundData.connectionStatusZn &&
+                          data.poundData.connectionStatusZn != '未连接'
                           ? connection
                           : notConnected
                       }
@@ -324,8 +324,8 @@ const Index = props => {
                     className={`${styles.imgBox} ${styles.imgstyle1}`}
                     style={
                       data.poundData &&
-                      data.poundData.connectionStatusZn &&
-                      data.poundData.connectionStatusZn != '未连接'
+                        data.poundData.connectionStatusZn &&
+                        data.poundData.connectionStatusZn != '未连接'
                         ? {}
                         : { cursor: 'unset' }
                     }
@@ -342,8 +342,8 @@ const Index = props => {
                     <img
                       src={
                         data.poundData &&
-                        data.poundData.connectionStatusZn &&
-                        data.poundData.connectionStatusZn != '未连接'
+                          data.poundData.connectionStatusZn &&
+                          data.poundData.connectionStatusZn != '未连接'
                           ? dibang
                           : dibangGrey
                       }
@@ -361,8 +361,8 @@ const Index = props => {
                     <img
                       src={
                         data.beltInData &&
-                        data.beltInData.connectionStatusZn &&
-                        data.beltInData.connectionStatusZn != '未连接'
+                          data.beltInData.connectionStatusZn &&
+                          data.beltInData.connectionStatusZn != '未连接'
                           ? connection
                           : notConnected
                       }
@@ -413,8 +413,8 @@ const Index = props => {
                     className={`${styles.imgBox} ${styles.imgstyle1}`}
                     style={
                       data.beltInData &&
-                      data.beltInData.connectionStatusZn &&
-                      data.beltInData.connectionStatusZn != '未连接'
+                        data.beltInData.connectionStatusZn &&
+                        data.beltInData.connectionStatusZn != '未连接'
                         ? {}
                         : { cursor: 'unset' }
                     }
@@ -431,8 +431,8 @@ const Index = props => {
                     <img
                       src={
                         data.beltInData &&
-                        data.beltInData.connectionStatusZn &&
-                        data.beltInData.connectionStatusZn != '未连接'
+                          data.beltInData.connectionStatusZn &&
+                          data.beltInData.connectionStatusZn != '未连接'
                           ? chuansong
                           : chuansongGrey
                       }
@@ -448,8 +448,8 @@ const Index = props => {
                     <img
                       src={
                         data.jiggerData &&
-                        data.jiggerData.connectionStatusZn &&
-                        data.jiggerData.connectionStatusZn != '未连接'
+                          data.jiggerData.connectionStatusZn &&
+                          data.jiggerData.connectionStatusZn != '未连接'
                           ? connection
                           : notConnected
                       }
@@ -526,8 +526,8 @@ const Index = props => {
                     className={`${styles.imgBox} ${styles.imgstyle1}`}
                     style={
                       data.jiggerData &&
-                      data.jiggerData.connectionStatusZn &&
-                      data.jiggerData.connectionStatusZn != '未连接'
+                        data.jiggerData.connectionStatusZn &&
+                        data.jiggerData.connectionStatusZn != '未连接'
                         ? {}
                         : { cursor: 'unset' }
                     }
@@ -545,8 +545,8 @@ const Index = props => {
                     <img
                       src={
                         data.jiggerData &&
-                        data.jiggerData.connectionStatusZn &&
-                        data.jiggerData.connectionStatusZn != '未连接'
+                          data.jiggerData.connectionStatusZn &&
+                          data.jiggerData.connectionStatusZn != '未连接'
                           ? tiaotai
                           : tiaotaiGrey
                       }
@@ -571,8 +571,8 @@ const Index = props => {
                     className={`${styles.imgBox} ${styles.imgstyle1}`}
                     style={
                       data.beltOutData &&
-                      data.beltOutData.connectionStatusZn &&
-                      data.beltOutData.connectionStatusZn != '未连接'
+                        data.beltOutData.connectionStatusZn &&
+                        data.beltOutData.connectionStatusZn != '未连接'
                         ? {}
                         : { cursor: 'unset' }
                     }
@@ -589,8 +589,8 @@ const Index = props => {
                     <img
                       src={
                         data.beltOutData &&
-                        data.beltOutData.connectionStatusZn &&
-                        data.beltOutData.connectionStatusZn != '未连接'
+                          data.beltOutData.connectionStatusZn &&
+                          data.beltOutData.connectionStatusZn != '未连接'
                           ? chuansong
                           : chuansongGrey
                       }
@@ -601,8 +601,8 @@ const Index = props => {
                     <img
                       src={
                         data.beltOutData &&
-                        data.beltOutData.connectionStatusZn &&
-                        data.beltOutData.connectionStatusZn != '未连接'
+                          data.beltOutData.connectionStatusZn &&
+                          data.beltOutData.connectionStatusZn != '未连接'
                           ? connection
                           : notConnected
                       }
@@ -658,8 +658,8 @@ const Index = props => {
                     className={`${styles.imgBox} ${styles.imgstyle1}`}
                     style={
                       data.flotation_data &&
-                      data.flotation_data.connectionStatusZn &&
-                      data.flotation_data.connectionStatusZn != '未连接'
+                        data.flotation_data.connectionStatusZn &&
+                        data.flotation_data.connectionStatusZn != '未连接'
                         ? {}
                         : { cursor: 'unset' }
                     }
@@ -676,8 +676,8 @@ const Index = props => {
                     <img
                       src={
                         data.flotation_data &&
-                        data.flotation_data.connectionStatusZn &&
-                        data.flotation_data.connectionStatusZn != '未连接'
+                          data.flotation_data.connectionStatusZn &&
+                          data.flotation_data.connectionStatusZn != '未连接'
                           ? fuxuan
                           : fuxuanGrey
                       }
@@ -688,8 +688,8 @@ const Index = props => {
                     <img
                       src={
                         data.flotation_data &&
-                        data.flotation_data.connectionStatusZn &&
-                        data.flotation_data.connectionStatusZn != '未连接'
+                          data.flotation_data.connectionStatusZn &&
+                          data.flotation_data.connectionStatusZn != '未连接'
                           ? connection
                           : notConnected
                       }
@@ -731,8 +731,8 @@ const Index = props => {
                     className={`${styles.imgBox} ${styles.imgstyle1}`}
                     style={
                       data.master_data &&
-                      data.master_data.connectionStatusZn &&
-                      data.master_data.connectionStatusZn != '未连接'
+                        data.master_data.connectionStatusZn &&
+                        data.master_data.connectionStatusZn != '未连接'
                         ? {}
                         : { cursor: 'unset' }
                     }
@@ -749,8 +749,8 @@ const Index = props => {
                     <img
                       src={
                         data.master_data &&
-                        data.master_data.connectionStatusZn &&
-                        data.master_data.connectionStatusZn != '未连接'
+                          data.master_data.connectionStatusZn &&
+                          data.master_data.connectionStatusZn != '未连接'
                           ? zhuKong
                           : zhuKongGrey
                       }
@@ -761,8 +761,8 @@ const Index = props => {
                     <img
                       src={
                         data.master_data &&
-                        data.master_data.connectionStatusZn &&
-                        data.master_data.connectionStatusZn != '未连接'
+                          data.master_data.connectionStatusZn &&
+                          data.master_data.connectionStatusZn != '未连接'
                           ? connection
                           : notConnected
                       }
@@ -828,18 +828,18 @@ const Index = props => {
                   setVisible(false);
                 }}>
                 <Form form={form}>
-                  <Form.Item label="原煤名称" name="inventoryIn" style={{ marginLeft: 16, height: 32 }}>
+                  <Form.Item label="原煤名称" name="inventoryIn" style={{ height: 32 }}>
                     <AutoInputSelect
-                      style={{ width: 264, marginLeft: 8 }}
+                      style={{ width: 264 }}
                       placeholder="请选择原煤名称"
                       mode="goodsType"></AutoInputSelect>
                   </Form.Item>
                   <Form.Item
                     label="精煤名称"
                     name="inventoryOut"
-                    style={{ marginLeft: 16, height: 32, marginTop: 24, marginBottom: 8 }}>
+                    style={{ height: 32, marginTop: 24, marginBottom: 8 }}>
                     <AutoInputSelect
-                      style={{ width: 264, marginLeft: 8 }}
+                      style={{ width: 264 }}
                       placeholder="请选择精煤名称"
                       mode="goodsType"></AutoInputSelect>
                   </Form.Item>
@@ -859,10 +859,10 @@ const Index = props => {
                 }}>
                 <Form form={form1} className={s.editForm}>
                   <Form.Item style={{ height: 32 }} label="设备名称" name="name">
-                    <Input style={{ width: 200, marginLeft: 8 }} placeholder="请输入设备名称" />
+                    <Input style={{ width: 200 }} placeholder="请输入设备名称" />
                   </Form.Item>
                   <Form.Item style={{ marginTop: 24 }} label="备注" name="remark">
-                    <Input.TextArea style={{ marginLeft: 8, height: 80, width: 450 }} placeholder="请输入备注" />
+                    <Input.TextArea style={{ height: 80, width: 450 }} placeholder="请输入备注" />
                   </Form.Item>
                 </Form>
               </Modal>

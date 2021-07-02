@@ -236,7 +236,7 @@ const Index = () => {
   const warnInfo = text => {
     Modal.warn({
       title: text,
-      onOk() {},
+      onOk() { },
     });
   };
 
@@ -328,7 +328,7 @@ const Index = () => {
               onChange={e => setRemark(e.target.value)}
             />
           </div>
-          <Button type="primary" style={{ width: 264, marginLeft: 120 }} onClick={handleOutStation}>
+          <Button type="primary" style={{ width: 264, marginLeft: 168 }} onClick={handleOutStation}>
             出站
           </Button>
         </section>

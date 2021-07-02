@@ -7,7 +7,7 @@ const { Option } = Select;
 // 表单布局
 const formItemLayout = {
   labelAlign: 'left',
-  labelCol: { span: 6 },
+  // labelCol: { span: 6 },
   wrapperCol: { span: 18 },
 };
 

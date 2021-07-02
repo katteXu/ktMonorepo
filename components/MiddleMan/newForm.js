@@ -383,7 +383,7 @@ const NewForm = ({ onSubmit, onClose }) => {
                         type="primary"
                         ghost
                         disabled={time > 0}
-                        style={{ width: 88, padding: 0, marginLeft: -6 }}
+                        style={{ width: 88, padding: 0 }}
                         onClick={() => getPhoneSms()}>
                         {time === undefined ? '获取验证码' : time > 0 ? `${time}秒后重发` : '重新发送'}
                       </Button>

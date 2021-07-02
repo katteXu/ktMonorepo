@@ -371,6 +371,8 @@
   //   margin: 0 auto;
   // }
 
+ 
+
   .ant-progress-success-bg,
   .ant-progress-bg {
     transition: all 0.3s linear !important;
@@ -383,6 +385,10 @@
 
   .ant-drawer {
     transition: transform 300ms !important;
+  }
+  .ant-input-group-addon{
+    background-color: #f6f7f9 !important;
+    color: #bfbfbf !important;
   }
 
   .ant-drawer-body {
@@ -398,6 +404,19 @@
     height : 48px;
     width  : 48px;
     padding: 16px !important;
+  }
+
+  table tr th.ant-table-selection-column, table tr td.ant-table-selection-column{
+    text-align: unset;
+  }
+  // .ant-form .ant-form-item .ant-form-item-label{
+  //   margin-right: 0 !important;
+  // }
+  .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner{
+    border-color:#477aef;
+  }
+  .ant-checkbox-indeterminate .ant-checkbox-inner::after{
+    background-color:#477aef;
   }
 }
 
@@ -683,8 +702,8 @@
 
       // 错误信息
       .ant-form-item-explain {
-        position: absolute;
-        bottom  : 0;
+        // position: absolute;
+        // bottom  : 0;
       }
     }
 

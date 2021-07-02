@@ -105,7 +105,7 @@ const Index = ({ truckInfo, routeInfo, onsubmit, fromTruckerData, type, handleCh
           )}
         </div>
         {showInfo ? (
-          <Button onClick={chooseTrucker} block style={{ width: 264, marginLeft: 120 }} ghost type="primary">
+          <Button onClick={chooseTrucker} block style={{ width: 264, marginLeft: 168 }} ghost type="primary">
             <PlusOutlined />
             选择司机
           </Button>

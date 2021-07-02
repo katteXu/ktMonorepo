@@ -1,5 +1,5 @@
 import { Layout, Content, ChildTitle } from '@components';
-import { useState, useCallback, useEffect ,useRef} from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { Steps } from '@components/Station';
 import { Input, Button, Select, Table, Popconfirm, message, Modal } from 'antd';
 import { station } from '@api';
@@ -146,7 +146,7 @@ const Index = () => {
   const handleOk = async valuse => {
     const params = {
       ...allParams,
-      
+
       load_truck_type: valuse.load_truck_type,
       price: valuse.price * 100,
     };
@@ -220,7 +220,7 @@ const Index = () => {
                 onChange={onChangeWeight}
               />
               <span onClick={takeTareWeight} className={styles.take}>
-                 取皮重
+                取皮重
               </span>
             </div>
           </div>
@@ -231,7 +231,7 @@ const Index = () => {
             <span className={styles.lableText}>备注:</span>
             <Input placeholder="请输入备注" style={{ width: 264 }} onChange={e => setRemark(e.target.value)} />
           </div>
-          <Button type="primary" style={{ width: 264, marginLeft: 120 }} onClick={newUploadInOneonClick}>
+          <Button type="primary" style={{ width: 264, marginLeft: 168 }} onClick={newUploadInOneonClick}>
             进站
           </Button>
         </section>

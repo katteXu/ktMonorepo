@@ -11,7 +11,7 @@ const truckLoadInfo = [49, 46, 43, 42, 36, 35, 31, 27, 25, 18];
 // 表单布局
 const formItemLayout = {
   labelAlign: 'left',
-  labelCol: { span: 7 },
+  // labelCol: { span: 7 },
   wrapperCol: { span: 17 },
 };
 const Index = ({ truckDataInfo, onsubmit, onclose }) => {
@@ -71,7 +71,7 @@ const Index = ({ truckDataInfo, onsubmit, onclose }) => {
   };
 
   return (
-    <div className={styles.truckInfoError}>
+    <div className={styles.truckerInfoError}>
       <Form {...formItemLayout} onFinish={handleSubmit} autoComplete="off" form={form} initialValues={{}}>
         <Form.Item
           label={
