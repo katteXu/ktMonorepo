@@ -121,7 +121,7 @@ const ToSettlment = props => {
             placement="topRight"
             icon={<QuestionCircleFilled />}
             onConfirm={() => handleDelete(record.id)}>
-            <Button type="link" size="small" className="delete">
+            <Button type="link" size="small" className="delete" danger>
               删除
             </Button>
           </Popconfirm>

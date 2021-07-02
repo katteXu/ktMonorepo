@@ -9,7 +9,6 @@ import { customer } from '@api';
 import router from 'next/router';
 import { keepState, getState, clearState } from '@utils/common';
 import { QuestionCircleFilled } from '@ant-design/icons';
-import deleteBtn from './deleteBtn.less';
 class customerManagement extends PureComponent {
   static async getInitialProps(props) {
     const { isServer } = props;
@@ -76,7 +75,7 @@ class customerManagement extends PureComponent {
                 <Button type="link" size="small" onClick={() => this.toDetail(record)}>
                   详情
                 </Button>
-                <Button type="link" size="small" className={deleteBtn.delete} onClick={() => this.delData(record)}>
+                <Button type="link" size="small" danger onClick={() => this.delData(record)}>
                   删除
                 </Button>
               </Button.Group>

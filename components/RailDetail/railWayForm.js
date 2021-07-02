@@ -357,13 +357,12 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       eraseZero: { label: '运费个位抹零：', value: `${values.eraseZero ? '是' : '否'}` },
       payMethod: {
         label: '结算方式：',
-        value: `${
-          values.payMethod === '1'
+        value: `${values.payMethod === '1'
             ? '按发货净重结算'
             : values.payMethod === '0'
-            ? '按收货净重结算'
-            : '按原发与实收较小的结算'
-        }`,
+              ? '按收货净重结算'
+              : '按原发与实收较小的结算'
+          }`,
       },
     };
     // 其他收货人
@@ -404,11 +403,11 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   const settlementMethod = v => {
     v === '1'
       ? form.setFieldsValue({
-          payMethod: '0',
-        })
+        payMethod: '0',
+      })
       : form.setFieldsValue({
-          payMethod: '1',
-        });
+        payMethod: '1',
+      });
   };
 
   const onChangeContract = (e, val) => {
@@ -901,7 +900,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
               <Input placeholder="请输入运费单价" addonAfter={<span>元</span>} style={{ width: 264 }} />
             </Form.Item>
           </Col>
-          <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 397 }}>
+          <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 390 }}>
             <Form.Item name="unitName" style={{ position: 'relative', left: 32, top: -1 }}>
               <Select
                 style={{ width: 96 }}

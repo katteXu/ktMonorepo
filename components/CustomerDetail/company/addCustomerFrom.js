@@ -3,11 +3,12 @@ import { useState } from 'react';
 import { Status, ChildTitle } from '@components';
 import { customer } from '@api';
 import router from 'next/router';
+import styles from './styles.less';
 const { Option } = Select;
 // 表单布局
 const formItemLayout = {
   labelAlign: 'left',
-  labelCol: { span: 5 },
+  // labelCol: { span: 5 },
   wrapperCol: { span: 19 },
 };
 const tailFormItemLayout = {
@@ -62,7 +63,7 @@ const addCustomerForm = () => {
   };
 
   return (
-    <div style={{ marginLeft: 32 }}>
+    <div style={{ marginLeft: 32 }} className={styles.addCustomer}>
       <Form {...formItemLayout} onFinish={onFinish} onFinishFailed={onFinishFailed} initialValues={{}}>
         <Form.Item
           label="客户名称"

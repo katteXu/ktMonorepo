@@ -114,7 +114,7 @@ const UpdateForm = ({ onSubmit, onClose, initValue }) => {
                   message: '手机号格式不正确',
                 },
               ]}>
-              <Input placeholder="请输入专线负责人手机号" maxLength={11} style={{ width: 200 }} />
+              <Input placeholder="请输入专线负责人手机号" maxLength={11} style={{ width: 264 }} />
             </Form.Item>
           </div>
         ) : (

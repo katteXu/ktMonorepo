@@ -8,7 +8,6 @@ import { customer } from '@api';
 import router from 'next/router';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { keepState, getState, clearState } from '@utils/common';
-import deleteBtn from '../deleteBtn.less';
 
 const { Option } = Select;
 
@@ -101,7 +100,7 @@ const Company = props => {
               placement="topRight"
               icon={<QuestionCircleFilled />}
               onConfirm={() => delData(value)}>
-              <Button type="link" size="small" className={deleteBtn.delete}>
+              <Button type="link" size="small" danger>
                 删除
               </Button>
             </Popconfirm>

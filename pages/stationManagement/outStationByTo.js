@@ -318,14 +318,13 @@ const Index = () => {
             onsubmit={val => setTruckerInfo(val)}
             handleChangeDriver={val => handleChangeDriver(val)}
           />
-          <div className={styles.block1} style={{ marginTop: 32, marginBottom: 32 }}>
+          <div className={styles.block1} style={{ marginTop: 32, marginBottom: 32, paddingLeft: 48 }}>
             <span className={styles.lableText}>备注:</span>
-            <TextArea
-              rows={4}
+            <Input
               placeholder="请输入备注"
-              style={{ width: 264 }}
-              value={remark}
+              style={{ width: 480 }}
               onChange={e => setRemark(e.target.value)}
+              value={remark}
             />
           </div>
           <Button type="primary" style={{ width: 264, marginLeft: 168 }} onClick={handleOutStation}>

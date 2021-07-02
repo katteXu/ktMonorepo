@@ -74,6 +74,7 @@ const Index = props => {
           size="small"
           type="link"
           key="detail"
+          danger
           onClick={() => {
             handleDeleteGoods(record.id);
           }}>

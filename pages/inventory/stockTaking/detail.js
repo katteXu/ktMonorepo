@@ -147,7 +147,7 @@ const Index = props => {
           <header style={{ padding: '7px 16px', margin: '0 -16px' }}>
             盘点信息
             {(isSuperUser || permissions.includes('INVENTORY_CHECK_OPERATE')) && (
-              <Button className={styles.btn} style={{ float: 'right' }} onClick={handleDeleteStock}>
+              <Button className={styles.btn} style={{ float: 'right' }} onClick={handleDeleteStock} type="link">
                 删除盘点
               </Button>
             )}
