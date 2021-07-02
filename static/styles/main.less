@@ -239,10 +239,21 @@
 
   .ant-steps-item-process .ant-steps-item-icon {
     background: #477aef !important;
+    border-color: #477aef !important;
   }
 
   .ant-steps-item-finish .ant-steps-item-icon>.ant-steps-icon {
     color: #477aef !important;
+  }
+
+  .ant-radio-checked::after{
+    border: 1px solid #477aef;
+  }
+  .ant-radio-input:focus + .ant-radio-inner{
+    box-shadow: none;
+  }
+  .ant-radio-wrapper:hover .ant-radio, .ant-radio:hover .ant-radio-inner, .ant-radio-input:focus + .ant-radio-inner{
+    border-color: #477aef ;
   }
 
   .ant-table.ant-table-middle .ant-table-tbody>tr>td,
@@ -590,6 +601,8 @@
         background-color: #477aefd9;
         border-color    : #477aefd9;
         color           : #fff;
+        box-shadow: none;
+        border: 0;
       }
 
       &:active {
@@ -632,6 +645,11 @@
   .ant-btn:hover, .ant-btn:focus{
     color: #477aef;
     
+    border-color: #477aef;
+  }
+
+  .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector{
+    box-shadow:none;
     border-color: #477aef;
   }
 

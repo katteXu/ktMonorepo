@@ -179,6 +179,11 @@ i.yellow {
   }
 
   .form {
+    :global{
+      .ant-checkbox-disabled + span{
+        color:#333333
+      }
+    }
     :global(.info-row) {
       height     : auto;
       line-height: 40px;
