@@ -500,25 +500,26 @@ const RailWayForm = ({ onSubmit }) => {
         </Form.Item>
 
         {/* 货品名称 */}
-
-        <Form.Item name="goodsType" rules={rules} label="货品名称" style={{ marginLeft: 32 }}>
-          <Select
-            showSearch
-            style={{ width: 264 }}
-            allowClear
-            optionFilterProp="children"
-            placeholder="请选择货品名称"
-            disabled={contract && Object.keys(contract).length > 0 ? true : false}>
-            {goodList.map(item => (
-              <Option key={`${item}`} value={item}>
-                {item}
-              </Option>
-            ))}
-          </Select>
+        <div style={{ display: 'flex' }}>
+          <Form.Item name="goodsType" rules={rules} label="货品名称" style={{ marginLeft: 32 }}>
+            <Select
+              showSearch
+              style={{ width: 264 }}
+              allowClear
+              optionFilterProp="children"
+              placeholder="请选择货品名称"
+              disabled={contract && Object.keys(contract).length > 0 ? true : false}>
+              {goodList.map(item => (
+                <Option key={`${item}`} value={item}>
+                  {item}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
           <Button className={styles['btn-new']} type="link" onClick={() => setGoodModal(true)}>
             新增
           </Button>
-        </Form.Item>
+        </div>
 
         {isShowWarehouse && (
           <Form.Item

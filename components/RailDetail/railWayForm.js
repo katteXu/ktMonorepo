@@ -413,6 +413,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   const onChangeContract = (e, val) => {
     if (e) {
       const item = val.item;
+
       setContract(item);
       setFromCompany({
         id: item.fromAddressId,
@@ -595,15 +596,6 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
             name="loadTime"
             style={{ marginLeft: 32 }}
             rules={[{ required: true, message: '内容不可为空' }]}>
-            {/* <DatePicker.RangePicker
-              style={{ width: '100%' }}
-              disabledDate={date => date < moment().add(-1, 'day')}
-              showTime={{
-                defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')],
-              }}
-              format="YYYY-MM-DD HH:mm:ss"
-            /> */}
-
             <DatePicker
               style={{ width: 264 }}
               disabledDate={date => date < moment().add(diffTime)}
@@ -629,7 +621,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           <AutoInputRoute
             style={{ width: 264 }}
             mode="contract"
-            value={fromCompany.companyName}
+            value={contract.title}
             allowClear
             placeholder="请选择合同"
             onChange={(e, val) => {
@@ -667,32 +659,34 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
         </Form.Item>
 
         {/* 发货地址 */}
-        <Form.Item
-          label="发货地址"
-          name="fromAddressId"
-          style={{ marginLeft: 32 }}
-          rules={[{ required: true, message: '选项不能为空' }]}>
-          <Select
-            style={{ width: 480 }}
-            placeholder="请选择发货地址"
-            onChange={value => setFromAddressId(value)}
-            showSearch
-            allowClear
-            optionFilterProp="children">
-            {addressList
-              .filter(item => item.id !== toAddressId)
-              .map(({ province, city, district, detailAddress, id, loadAddressName }) => (
-                <Select.Option key={id} value={id}>
-                  {loadAddressName} {province}
-                  {city}
-                  {district} {detailAddress}
-                </Select.Option>
-              ))}
-          </Select>
+        <div style={{ display: 'flex' }}>
+          <Form.Item
+            label="发货地址"
+            name="fromAddressId"
+            style={{ marginLeft: 32 }}
+            rules={[{ required: true, message: '选项不能为空' }]}>
+            <Select
+              style={{ width: 480 }}
+              placeholder="请选择发货地址"
+              onChange={value => setFromAddressId(value)}
+              showSearch
+              allowClear
+              optionFilterProp="children">
+              {addressList
+                .filter(item => item.id !== toAddressId)
+                .map(({ province, city, district, detailAddress, id, loadAddressName }) => (
+                  <Select.Option key={id} value={id}>
+                    {loadAddressName} {province}
+                    {city}
+                    {district} {detailAddress}
+                  </Select.Option>
+                ))}
+            </Select>
+          </Form.Item>
           <Button className={styles['btn-new']} type="link" onClick={() => setAddressModal(true)}>
             新增
           </Button>
-        </Form.Item>
+        </div>
 
         {/* 发货人 */}
         <Form.Item
@@ -757,33 +751,34 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
         </Form.Item>
 
         {/* 收货地址 */}
-
-        <Form.Item
-          label="收货地址"
-          name="toAddressId"
-          style={{ marginLeft: 32 }}
-          rules={[{ required: true, message: '选项不能为空' }]}>
-          <Select
-            style={{ width: 480 }}
-            placeholder="请选择收货地址"
-            showSearch
-            allowClear
-            optionFilterProp="children"
-            onChange={value => setToAddressId(value)}>
-            {addressList
-              .filter(item => item.id !== fromAddressId)
-              .map(({ province, city, district, detailAddress, id, loadAddressName }) => (
-                <Select.Option key={id} value={id}>
-                  {loadAddressName} {province}
-                  {city}
-                  {district} {detailAddress}
-                </Select.Option>
-              ))}
-          </Select>
+        <div style={{ display: 'flex' }}>
+          <Form.Item
+            label="收货地址"
+            name="toAddressId"
+            style={{ marginLeft: 32 }}
+            rules={[{ required: true, message: '选项不能为空' }]}>
+            <Select
+              style={{ width: 480 }}
+              placeholder="请选择收货地址"
+              showSearch
+              allowClear
+              optionFilterProp="children"
+              onChange={value => setToAddressId(value)}>
+              {addressList
+                .filter(item => item.id !== fromAddressId)
+                .map(({ province, city, district, detailAddress, id, loadAddressName }) => (
+                  <Select.Option key={id} value={id}>
+                    {loadAddressName} {province}
+                    {city}
+                    {district} {detailAddress}
+                  </Select.Option>
+                ))}
+            </Select>
+          </Form.Item>
           <Button className={styles['btn-new']} type="link" onClick={() => setAddressModal(true)}>
             新增
           </Button>
-        </Form.Item>
+        </div>
 
         {/* 收货人 */}
         <Form.Item
@@ -832,25 +827,27 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           <span className={styles.line}></span>货物填写
         </div>
         {/* 货品名称 */}
-
-        <Form.Item name="goodsType" style={{ marginLeft: 32 }} rules={rules} label="货品名称">
-          <Select
-            style={{ width: 264 }}
-            placeholder="请选择货品名称"
-            showSearch
-            allowClear
-            optionFilterProp="children"
-            disabled={contract && Object.keys(contract).length > 0 ? true : false}>
-            {goodList.map(item => (
-              <Option key={`${item}`} value={item}>
-                {item}
-              </Option>
-            ))}
-          </Select>
+        <div style={{ display: 'flex' }}>
+          <Form.Item name="goodsType" style={{ marginLeft: 32 }} rules={rules} label="货品名称">
+            <Select
+              style={{ width: 264 }}
+              placeholder="请选择货品名称"
+              showSearch
+              allowClear
+              optionFilterProp="children"
+              disabled={contract && Object.keys(contract).length > 0 ? true : false}>
+              {goodList.map(item => (
+                <Option key={`${item}`} value={item}>
+                  {item}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
           <Button className={styles['btn-new']} type="link" onClick={() => setGoodModal(true)}>
             新增
           </Button>
-        </Form.Item>
+        </div>
+
         {isShowWarehouse && (
           <Form.Item
             label="预计仓库"

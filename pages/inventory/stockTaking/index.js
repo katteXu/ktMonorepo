@@ -73,14 +73,7 @@ const StockTaking = props => {
       align: 'right',
       width: 120,
       render: (value, record, index) => (
-        <Button
-          size="small"
-          type="link"
-          key="detail"
-          onClick={() => {
-            router.push(`/inventory/stockTaking/detail?id=${record.id}`);
-            // router.push(`/inventory/stockTaking/detail`);
-          }}>
+        <Button size="small" type="link" key="detail" onClick={() => handleToStockDetail(record)}>
           详情
         </Button>
       ),
