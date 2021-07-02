@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Row, Col, Input, Button, message, Form } from 'antd';
 import personalApi from '@api/personalCenter';
-import styles from './styles.less';
+import styles from '../../pages/personal/styles.less';
+import { User } from '@store';
 const STRONG = {
   1: <div style={{ color: '#FF0000' }}>弱</div>,
   2: <div style={{ color: '#FF9900' }}>中</div>,
@@ -10,17 +11,20 @@ const STRONG = {
 
 const formItemLayout = {
   labelAlign: 'left',
-  labelCol: { span: 4 },
-  wrapperCol: {
-    span: 20,
-  },
+  // labelCol: { span: 4 },
+  // wrapperCol: {
+  //   span: 20,
+  // },
 };
 
 // 空值验证
 const rules = [{ required: true, whitespace: true, message: '内容不可为空' }];
 
 const PwdForm = ({ onSubmit, onClose }) => {
+  const { userInfo } = User.useContainer();
   const [mobile, setMobile] = useState('');
+
+  const [form] = Form.useForm();
 
   const handleSubmit = async values => {
     if (typeof onSubmit === 'function') {
@@ -30,8 +34,7 @@ const PwdForm = ({ onSubmit, onClose }) => {
 
   // 初始化
   useEffect(() => {
-    const { username } = localStorage;
-    setMobile(username);
+    setMobile(userInfo.username);
   }, []);
   // 密码强度
   const [strong, setStrong] = useState();
@@ -93,74 +96,72 @@ const PwdForm = ({ onSubmit, onClose }) => {
   };
 
   return (
-    <Form {...formItemLayout} onFinish={handleSubmit} onFinishFailed={onFinishFailed}>
-      <Form.Item
-        label={
-          <div>
-            <span
-              style={{
-                display: 'inline-block',
-                marginRight: 4,
-                visibility: 'hidden',
-              }}>
-              *
-            </span>
-            手机号
-          </div>
-        }
-        // label="手机号"
-      >
-        <div>{mobile}</div>
+    <Form
+      form={form}
+      hideRequiredMark
+      {...formItemLayout}
+      onFinish={handleSubmit}
+      onFinishFailed={onFinishFailed}
+      className={styles.pwdEditForm}>
+      <Form.Item label="手机号">
+        <div style={{ color: '#333333' }}>{mobile}</div>
       </Form.Item>
-      <Form.Item label="验证码" name="sms" rules={rules}>
-        <Row gutter={8}>
-          <Col span={17}>
-            <Input placeholder="请输验证码" maxLength={6} />
-          </Col>
-          <Col span={7}>
-            <Button type="primary" ghost onClick={getCode} loading={send} style={{ width: '100%' }}>
-              {send ? `${countDown}s` : '获取验证码'}
-            </Button>
-          </Col>
-        </Row>
-      </Form.Item>
+      <div style={{ display: 'flex' }}>
+        <Form.Item label="验证码" name="sms" rules={[{ required: true, whitespace: true, message: '内容不可为空' }]}>
+          <Input placeholder="请输验证码" maxLength={6} style={{ width: 200 }} />
+        </Form.Item>
+
+        <Button
+          type="primary"
+          ghost
+          disabled={send}
+          style={{ width: 88, marginLeft: 12, padding: '4px 8px' }}
+          onClick={getCode}>
+          {!send ? '获取验证码' : countDown > 0 ? `${countDown}s` : '重新发送'}
+        </Button>
+      </div>
       <div style={{ marginBottom: 24 }}>
         <Form.Item
-          label="新密码"
+          label="设置密码"
           name="password"
+          rules={[{ required: true, whitespace: true, message: '内容不可为空' }]}>
+          <Input.Password
+            style={{ width: 300 }}
+            onChange={e => {
+              setStrong(getPassStrength(e.target.value));
+            }}
+            autoComplete="new-password"
+            placeholder="请输入新密码"
+          />
+        </Form.Item>
+        <Form.Item
+          label="确认密码"
+          name="confirmPassword"
           rules={[
             { required: true, whitespace: true, message: '内容不可为空' },
-            // {
-            //   validator: (rule, value, callback) => {
-            //     const strong = getPassStrength(value);
-            //     if (value && strong < 2) {
-            //       callback('密码强度不够');
-            //     } else {
-            //       callback();
-            //     }
-            //   },
-            // },
+            {
+              validator: (rule, value, callback) => {
+                if (value && value !== form.getFieldsValue().password) {
+                  callback('确认密码与设置密码不符，请重试');
+                } else {
+                  callback();
+                }
+              },
+            },
           ]}>
-          <Row gutter={8}>
-            <Col span={24}>
-              <Input.Password
-                onChange={e => {
-                  setStrong(getPassStrength(e.target.value));
-                }}
-                autoComplete="new-password"
-                placeholder="请输入新密码"
-              />
-            </Col>
-            {/* <Col span={7} style={{ lineHeight: '32px', height: '32px' }}>
-              {strong > 0 && showStrong(strong)}
-            </Col> */}
-          </Row>
+          <Input.Password
+            style={{ width: 300 }}
+            onChange={e => {
+              setStrong(getPassStrength(e.target.value));
+            }}
+            // autoComplete="new-password"
+            placeholder="请确认密码"
+          />
         </Form.Item>
       </div>
 
-      <div style={{ textAlign: 'right' }} className={styles['btn-bottom']}>
-        <Button onClick={onClose}>取消</Button>
-        <Button type="primary" htmlType="submit" style={{ marginLeft: 8 }}>
+      <div className={styles['btn-bottom']} style={{ height: 32 }}>
+        <Button type="primary" htmlType="submit">
           提交
         </Button>
       </div>

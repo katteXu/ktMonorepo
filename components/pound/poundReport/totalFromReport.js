@@ -490,7 +490,7 @@ const Index = props => {
               <Input value={query.companyName} allowClear placeholder="请输入收货企业" onChange={handleChangeCompany} />
             </Search.Item>
           </Search>
-          <div style={{ textAlign: 'right', margin: '16px 0' }}>
+          <div style={{ textAlign: 'right', margin: '4px 0' }}>
             {/* 表头设置 */}
             <TableHeaderConfig
               columns={columns}
@@ -500,7 +500,7 @@ const Index = props => {
               heightDefault={80}
             />
           </div>
-          <Msg style={{ marginTop: 16 }}>
+          <Msg>
             合计：
             <span>
               运输车数

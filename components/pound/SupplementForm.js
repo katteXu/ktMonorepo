@@ -411,7 +411,7 @@ const EditableTable = props => {
       render: (text, record) => {
         const editable = isEditing(record);
         return editable ? (
-          <span style={{ lineHeight: '32px' }}>
+          <div>
             <EditableContext.Consumer>
               {form => (
                 <Button type="link" size="small" onClick={() => save(form, record)}>
@@ -430,7 +430,7 @@ const EditableTable = props => {
                 </Button>
               </Popconfirm>
             )}
-          </span>
+          </div>
         ) : (
           <div>
             <a disabled={editingKey !== ''} onClick={() => setEditingKey(record.key)} style={{ marginRight: 8 }}>

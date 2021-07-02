@@ -12,7 +12,7 @@ const truckLoadInfo = [49, 46, 43, 42, 36, 35, 31, 27, 25, 18];
 // 表单布局
 const formItemLayout = {
   labelAlign: 'left',
-  labelCol: { span: 7 },
+  // labelCol: { span: 7 },
   wrapperCol: { span: 17 },
 };
 const Index = ({ truckDataInfo, onsubmit, onclose }) => {
@@ -68,7 +68,7 @@ const Index = ({ truckDataInfo, onsubmit, onclose }) => {
     });
   };
 
-  const handleOk = () => {};
+  const handleOk = () => { };
   return (
     <div className={styles.truckInfoError}>
       <Form

@@ -2,7 +2,7 @@
   :global {
     .ant-input-group-addon {
       background-color: #f6f7f9;
-      color           : #bfbfbf;
+      color: #bfbfbf;
     }
 
     .ant-form-item-has-error {
@@ -15,7 +15,7 @@
 
     .ant-form-item-explain-error,
     .ant-form-item-explain {
-      position   : absolute;
+      position: absolute;
       white-space: nowrap;
     }
 
@@ -23,32 +23,30 @@
       width: 142px;
     }
   }
-
   .title {
-    font-size  : 16px;
-    color      : #333333;
+    font-size: 16px;
+    color: #333333;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 600;
   }
 
   .row {
     padding-left: 32px;
-    display     : flex;
-    align-items : center;
-    width       : 860px;
+    display: flex;
+    align-items: center;
+    // justify-content: space-between;
+    width: 860px;
+    margin-top: 24px;
     margin-right: 48px;
-
     .col {
       // flex: 1;
-      font-size   : 14px;
+      font-size: 14px;
       margin-right: 48px;
-
       // margin-left: -20px;
       label {
         color: #333333 !important;
       }
-
-      &+.col {
+      & + .col {
         // margin-left: 19px;
       }
 
@@ -57,40 +55,37 @@
       }
 
       &.db-input {
-        display    : flex;
+        display: flex;
         align-items: center;
-
         input {
           width: 96px;
         }
 
-        >span {
-          margin        : 0 5px;
-          min-width     : 51px;
-          text-align    : center;
-          color         : #333333;
-          padding-bottom: 24px;
+        > span {
+          margin: 0 5px;
+          min-width: 51px;
+          text-align: center;
+          color: #333333;
         }
       }
     }
 
-    &+.title {
+    & + .title {
       margin-top: 30px;
     }
   }
 
   .bottom {
+    margin-top: 24px;
     margin-left: 183px;
   }
 
   .table {
     width: 100%;
     color: #333333;
-
     .header {
       background-color: #f6f7f9;
-      font-weight     : 600;
-
+      font-weight: 600;
       td {
         padding: 12px 24px;
       }
@@ -98,7 +93,6 @@
 
     .data-row {
       border-bottom: 1px solid #f0f0f0;
-
       td {
         padding: 8px 24px;
 
@@ -212,67 +206,74 @@
 
     .ant-form-item-explain-error,
     .ant-form-item-explain {
-      position   : absolute;
+      position: absolute;
       white-space: nowrap;
     }
 
     .ant-form-item-label {
-      width       : 143px;
+      width: 143px;
       margin-right: 8px;
     }
   }
-
   .title {
-    font-size  : 16px;
-    color      : #333333;
+    font-size: 16px;
+    color: #333333;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 600;
   }
 
   .row {
-    display        : flex;
-    align-items    : center;
+    display: flex;
+    align-items: center;
     justify-content: flex-start;
-    width          : 100%;
-    padding-left   : 32px;
-
+    width: 100%;
+    margin-top: 24px;
+    padding-left: 32px;
     .col {
+      // flex: 1;
       font-size: 14px;
-      color    : #333333;
-
+      // margin-left: -20px;
+      color: #333333;
       label {
         color: #333333 !important;
       }
 
       .label {
         padding-left: 8px;
-        line-height : 32px;
-        display     : inline-block;
-        text-align  : left;
-        font-size   : 14px;
-        font-family : PingFangSC-Regular, PingFang SC;
-        font-weight : 400;
-        color       : #848485;
+        // width: 139px;
+        line-height: 32px;
+        display: inline-block;
+        text-align: left;
+        font-size: 14px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #848485;
       }
 
-      &+.col {
+      & + .col {
         margin-left: 40px;
       }
+    }
+
+    & + .title {
+      margin-top: 30px;
     }
   }
 
   .bottom {
     width: 100%;
+    margin-top: 16px;
+    margin-bottom: 48px;
   }
 }
 
-.allData {
-  width        : 100%;
-  background   : #ffb7410d;
+.allData{
+  width: 100%;
+  background: #ffb7410d;
   border-radius: 2px;
-  border       : 1px solid #ffb74173;
-  font-size    : 14px;
-  color        : #333333;
-  padding      : 12px;
+  border: 1px solid #ffb74173;
+  font-size: 14px;
+  color: #333333;
+  padding: 12px;
   margin-bottom: 24px;
 }
