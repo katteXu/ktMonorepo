@@ -244,13 +244,14 @@ const Index = () => {
     <Layout {...routeView}>
       <Content>
         <section>
-          <PoundBox onChange={handleChangeWeight} style={{ marginLeft: 10 }} showWeight  boxId={boxId} />
+          <PoundBox onChange={handleChangeWeight} style={{ marginLeft: 10 }} showWeight boxId={boxId} />
           <div style={{ marginBottom: 16, marginTop: 16 }}>
             <Button.Group>
-              <Button type="primary" onClick={handleInByFrom}>
+              <Button block type="primary" onClick={handleInByFrom} ghost>
                 发货
               </Button>
-              <Button type="primary" onClick={handleInByTo} style={{ marginLeft: 8 }}>
+
+              <Button block type="primary" ghost onClick={handleInByTo} style={{ marginLeft: 8 }}>
                 收货
               </Button>
             </Button.Group>
