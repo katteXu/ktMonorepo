@@ -6,7 +6,6 @@ import { contract } from '@api';
 import router from 'next/router';
 import moment from 'moment';
 import { Format, keepState, getState, clearState } from '@utils/common';
-import deleteBtn from './deleteBtn.less';
 import { Permission } from '@store';
 
 // 合同状态
@@ -146,7 +145,7 @@ const Index = props => {
               placement="topRight"
               icon={<QuestionCircleFilled />}
               onConfirm={() => deleteData(record.id)}>
-              <Button danger type="link" size="small" className={deleteBtn.delete}>
+              <Button danger type="link" size="small" danger>
                 删除
               </Button>
             </Popconfirm>

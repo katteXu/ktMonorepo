@@ -218,7 +218,7 @@ const Index = props => {
               <span className={styles.label}>货品名称：</span>
               {dataInfo.goodsName || '-'}
             </div>
-            <div className={styles.item}>
+            <div className={styles.item} style={{ display: 'flex', alignItems: 'center' }}>
               <span className={styles.label}>货物总量：</span>
               {/* {`${Format.weight(totalWeight)}吨` || '-'} */}
               {showTotalWeight ? (

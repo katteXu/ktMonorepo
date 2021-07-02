@@ -238,7 +238,7 @@ const Index = () => {
   };
 
   // 磅机重量变更
-  const handleChangeWeight = weight => {};
+  const handleChangeWeight = weight => { };
 
   return (
     <Layout {...routeView}>

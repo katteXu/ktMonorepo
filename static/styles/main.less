@@ -239,10 +239,21 @@
 
   .ant-steps-item-process .ant-steps-item-icon {
     background: #477aef !important;
+    border-color: #477aef !important;
   }
 
   .ant-steps-item-finish .ant-steps-item-icon>.ant-steps-icon {
     color: #477aef !important;
+  }
+
+  .ant-radio-checked::after{
+    border: 1px solid #477aef;
+  }
+  .ant-radio-input:focus + .ant-radio-inner{
+    box-shadow: none;
+  }
+  .ant-radio-wrapper:hover .ant-radio, .ant-radio:hover .ant-radio-inner, .ant-radio-input:focus + .ant-radio-inner{
+    border-color: #477aef ;
   }
 
   .ant-table.ant-table-middle .ant-table-tbody>tr>td,
@@ -447,9 +458,7 @@
   }
 }
 
-:global(.ant-btn-link) {
-  color: #477aef !important;
-}
+
 
 // 列表统计数字 蓝色字体突显
 :global(.total-number) {
@@ -569,12 +578,12 @@
     text-shadow: none;
 
     &.ant-btn-dangerous {
-      color       : #e44040;
-      border-color: #e44040;
+      color       : #477aef;
+      // border-color: #e44040;
     }
 
     &.ant-btn-dangerous:hover {
-      color       : #e44040;
+      color       : #e44040 !important;
       border-color: #e44040;
     }
 
@@ -589,8 +598,11 @@
       color           : #fff;
 
       &:hover {
-        background-color: #477aef;
-        border-color    : #477aef;
+        background-color: #477aefd9;
+        border    :1px solid #477aefd9;
+        color           : #fff;
+        box-shadow: none;
+       
       }
 
       &:active {
@@ -599,9 +611,14 @@
 
       &.ant-btn-background-ghost {
         color     : #477aef;
+        border-color:#477aef;
         // &.ant-btn-primary[disabled] {
         //   color: #bfbfbf;
         // }
+      }
+
+      &.ant-btn-link {
+        color: #477aef ;
       }
 
       &[disabled] {
@@ -620,6 +637,20 @@
         border: none;
       }
     }
+  }
+
+  .ant-table-row-hover td, .ant-table-row:hover td{
+    background: #eaf3ff !important;
+  }
+  .ant-btn:hover, .ant-btn:focus{
+    color: #477aef;
+    
+    border-color: #477aef;
+  }
+
+  .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector{
+    box-shadow:none;
+    border-color: #477aef;
   }
 
   .ant-btn-background-ghost.ant-btn-danger-disabled,
@@ -654,14 +685,14 @@
     cursor : pointer;
     padding: 0;
     border : none;
-
+    color:#477aef;
     &+.ant-btn-link {
       margin-left: 12px;
     }
 
     &.delete {
       &:hover {
-        color: #e44040;
+        color: #e44040 !important;
       }
     }
 
@@ -746,5 +777,8 @@
         margin-left: 0 !important;
       }
     }
+  }
+  .ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after{
+    background-color: #477aef !important;
   }
 }

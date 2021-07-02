@@ -246,7 +246,7 @@ const CashOutForm = ({ onSubmit, amount }) => {
             style={{ width: 480 }}
           />
         </Form.Item>
-        <Form.Item {...tailFormItemLayout} style={{ marginLeft: 117 }}>
+        <Form.Item {...tailFormItemLayout} style={{ marginLeft: 87 }}>
           <Button htmlType="submit" type="primary" loading={loading}>
             发起提现
           </Button>

@@ -209,15 +209,32 @@
 
 .fromInfo {
   :global {
+   
     .ant-select {
       color: #333333;
+    }
+    .ant-form-item-label > label {
+      width: 109px;
+      margin-right: 8px;
+    }
+    .ant-form-horizontal .ant-form-item-label {
+      width: 109px;
+      margin-right: 8px;
     }
   }
 
   .noStar {
-    display     : inline-block;
+    display: inline-block;
     margin-right: 4px;
-    visibility  : hidden;
+    visibility: hidden;
+  }
+  .unitName_yan {
+    :global {
+      .ant-form-item {
+        width: 35px !important;
+        height: 30px !important;
+      }
+    }
   }
 }
 

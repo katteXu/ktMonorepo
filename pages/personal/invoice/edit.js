@@ -1,14 +1,14 @@
 /** @format */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Layout, Content, Image } from '@components';
-import { message } from 'antd';
+import { Row, Col, Button, message, Modal, Tooltip } from 'antd';
 import personalApi from '@api/personalCenter';
 import router from 'next/router';
 import Link from 'next/link';
-import { getQuery } from '@utils/common';
 import InvoiceForm from '@components/Personal/invoiceForm';
-
+import styles from './index.less';
+import { getQuery } from '@utils/common';
 const Edit = props => {
   const routeView = {
     title: '开票信息编辑',
@@ -16,14 +16,12 @@ const Edit = props => {
     longKey: 'personal',
     // breadNav: '个人中心.开票信息.信息编辑',
     breadNav: [
-      <Link href="/personal">
+      <Link href="/personalNew">
         <a>个人中心</a>
-      </Link>,
-      <Link href="/personal">
-        <a>开票信息</a>
       </Link>,
       '信息编辑',
     ],
+    useBack: true,
     pageTitle: '编辑开票信息',
   };
 
@@ -89,7 +87,7 @@ const Edit = props => {
     <Layout {...routeView}>
       <Content>
         <header>编辑开票信息</header>
-        <section style={{ position: 'relative' }}>
+        <section style={{ position: 'relative', paddingLeft: 48, paddingTop: 24 }}>
           <InvoiceForm onSubmit={handleSubmit} data={formData} />
           <div
             style={{
@@ -101,7 +99,8 @@ const Edit = props => {
               textAlign: 'center',
             }}>
             <img src={Image.InvoiceExample} style={{ width: '60%' }} alt="" />
-            <div style={{ textAlign: 'center', width: '60%', fontSize: 16, margin: '0 auto' }}>参考图</div>
+
+            <div style={{ textAlign: 'center', fontSize: 16, margin: '0 auto' }}>参考图</div>
           </div>
         </section>
       </Content>

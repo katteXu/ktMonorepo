@@ -119,7 +119,7 @@ const EditableTable = (props, ref) => {
               placement="topRight"
               icon={<QuestionCircleFilled />}
               onConfirm={() => handleRemove(record.key)}>
-              <Button type="link" danger style={{ padding: 0, border: 'none', margin: 0 }}>
+              <Button type="link" danger style={{ padding: 0, border: 'none', margin: 0 }} danger>
                 删除
               </Button>
             </Popconfirm>

@@ -6,7 +6,6 @@ import { Search, Msg, Ellipsis, TableHeaderConfig, AutoInput } from '@components
 import moment from 'moment';
 import { keepState, getState, clearState, Format } from '@utils/common';
 import { pound, vehicleRegister, downLoadFile, getColumnsByTable, setColumnsByTable } from '@api';
-import deleteBtn from './deleteBtn.less';
 import LoadingBtn from '@components/LoadingBtn';
 
 const { RangePicker } = DatePicker;
@@ -186,7 +185,7 @@ const PoundList = props => {
                 placement="topRight"
                 icon={<QuestionCircleFilled />}
                 onConfirm={() => handleChangeStatus(id, isDelete)}>
-                <Button size="small" type="link" className={deleteBtn.delete}>
+                <Button size="small" type="link" danger>
                   {!isDelete ? '删除' : '恢复'}
                 </Button>
               </Popconfirm>

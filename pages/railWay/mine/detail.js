@@ -463,8 +463,8 @@ const RailWayDetail = props => {
                     <span>{unitPrice ? `${unitPrice} 元/${dataInfo.unitName}` : '-'}</span>
                   ) : (
                     <Input
-                      style={{ width: 110 }}
-                      suffix={`元/吨`}
+                      style={{ width: 120 }}
+                      addonAfter={<span style={{ color: '#BFBFBF' }}>元/吨</span>}
                       value={newUnitPrice ? newUnitPrice : unitPrice}
                       onChange={e => {
                         setNewUnitPrice(e.target.value);

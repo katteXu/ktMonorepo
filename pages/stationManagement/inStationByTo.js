@@ -244,9 +244,9 @@ const Index = () => {
             onsubmit={val => setTruckerInfo(val)}
             stationType={3}
           />
-          <div className={styles.block1} style={{ marginTop: 32, marginBottom: 32 }}>
+          <div className={styles.block1} style={{ marginTop: 32, marginBottom: 32, paddingLeft: 48 }}>
             <span className={styles.lableText}>备注:</span>
-            <Input placeholder="请输入备注" style={{ width: 264 }} onChange={e => setRemark(e.target.value)} />
+            <Input placeholder="请输入备注" style={{ width: 480 }} onChange={e => setRemark(e.target.value)} />
           </div>
           <Button type="primary" style={{ width: 264, marginLeft: 168 }} onClick={newUploadInOneonClick}>
             进站

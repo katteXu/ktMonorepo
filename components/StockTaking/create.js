@@ -216,10 +216,12 @@ const Supplement = ({
         </Form>
       </div>
       <div className={styles.btnBox}>
-        <Button htmlType="submit" onClick={handleConfirm} type="primary" style={{ marginRight: 12 }}>
+        <Button onClick={handleCancel} style={{ marginRight: 12 }}>
+          取消
+        </Button>
+        <Button htmlType="submit" onClick={handleConfirm} type="primary">
           确认盘点
         </Button>
-        <Button onClick={handleCancel}>取消</Button>
       </div>
     </>
   );

@@ -164,6 +164,7 @@ const RemarkDetail = ({ onChange, formData = {}, id, mode }) => {
               <Checkbox
                 disabled={mode === 'view'}
                 checked={data.weightSumColumnCheck}
+                style={{ color: '#3333333' }}
                 onChange={e => onChangeCheckBox('weightSumColumnCheck', e.target.checked)}>
                 {(formData.weightSum / 1000).toFixed(2)} {formData.unitName}
               </Checkbox>
@@ -191,7 +192,7 @@ const RemarkDetail = ({ onChange, formData = {}, id, mode }) => {
               <div className={styles.errMsg}>{toCompanyError}</div>
             </div>
           </div> */}
-          <div className="info-row">
+          <div className="info-row" style={{ marginBottom: 11 }}>
             <div className="info-label">其他备注：</div>
             <div className="info-data">
               <Input.TextArea

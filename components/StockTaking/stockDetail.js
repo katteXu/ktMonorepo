@@ -7,7 +7,7 @@ import { clearState, Format } from '@utils/common';
 import { useRouter } from 'next/router';
 import { inventory } from '@api';
 import Link from 'next/link';
-// import styles from '@styles/inventory.less';
+import styles from './index.less';
 
 const Index = ({ props, id, handleCloseDrawer }) => {
   const router = useRouter();
@@ -82,8 +82,8 @@ const Index = ({ props, id, handleCloseDrawer }) => {
       icon: <ExclamationCircleFilled />,
       title: '删除盘点为高危操作，删除后不可恢复是否仍要删除',
       okText: '仍要删除',
-      cancelText: '我再想想',
-      okType: 'danger',
+      cancelText: '我再想想1',
+      // okType: 'danger',
       onOk: () => {
         DeleteStock();
       },
@@ -131,15 +131,16 @@ const Index = ({ props, id, handleCloseDrawer }) => {
       <section className={styles.main} style={{ paddingTop: 0 }}>
         <header style={{ padding: '7px 16px', margin: '0 -16px' }}>
           盘点信息
-          {(props.menu.isSuperUser || props.menu.permissions.includes('INVENTORY_CHECK_OPERATE')) && (
-            <Button
-              type="link"
-              className={styles.btn}
-              style={{ float: 'right', border: 'none', outline: 'none' }}
-              onClick={handleDeleteStock}>
-              删除盘点
-            </Button>
-          )}
+          {/* {(props.menu.isSuperUser || props.menu.permissions.includes('INVENTORY_CHECK_OPERATE')) && (
+           
+          )} */}
+          <Button
+            type="link"
+            className={styles.btn}
+            style={{ float: 'right', border: 'none', outline: 'none' }}
+            onClick={handleDeleteStock}>
+            删除盘点
+          </Button>
           {/* <Button className={styles.btn} style={{ float: 'right' }} onClick={handleDeleteStock}>
                 删除盘点
               </Button> */}
