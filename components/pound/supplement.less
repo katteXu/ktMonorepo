@@ -242,8 +242,13 @@
 
   :global {
     .ant-legacy-form-explain {
-      margin-top: 4px;
-      font-size : 14px;
+      margin-top : 4px;
+      font-size  : 14px;
+      white-space: normal;
+    }
+
+    .ant-form-item-explain {
+      white-space: normal;
     }
   }
 
@@ -301,4 +306,14 @@
       line-height: 32px;
     }
   }
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin            : 0;
 }

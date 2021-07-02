@@ -1,341 +1,16 @@
-import React, { useState } from 'react';
-import { Form } from '@ant-design/compatible';
+import React, { Component, useState, useImperativeHandle, forwardRef } from 'react';
+// import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Table, Input, Popconfirm, Button, Modal, DatePicker, message } from 'antd';
+import { Table, Input, Popconfirm, Button, Modal, DatePicker, message, Form } from 'antd';
 import moment from 'moment';
 import styles from './supplement.less';
 import { ChildTitle } from '@components';
 import { QuestionCircleFilled, PlusOutlined } from '@ant-design/icons';
 const EditableContext = React.createContext();
 
-const EditableCell = props => {
-  const renderCell = ({ getFieldDecorator, getFieldValue, setFieldsValue, validateFields }) => {
-    const { editing, dataIndex, title, inputType, record, index, children, ...restProps } = props;
-
-    const getFormItem = () => {
-      switch (dataIndex) {
-        case 'trailerPlateNumber':
-          return (
-            <Form.Item style={{ margin: 0 }}>
-              {getFieldDecorator('trailerPlateNumber', {
-                initialValue: record[dataIndex],
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入车牌号',
-                  },
-                  {
-                    pattern: /^(?:[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领 A-Z]{1}[A-HJ-NP-Z]{1}(?:(?:[0-9]{5}[DF])|(?:[DF](?:[A-HJ-NP-Z0-9])[0-9]{4})))|(?:[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领 A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9 挂学警港澳]{1})$/i,
-                    message: '车牌号格式输入有误',
-                  },
-                ],
-              })(<Input placeholder="请输入车牌号" />)}
-            </Form.Item>
-          );
-
-        case 'time':
-          return (
-            <Form.Item style={{ margin: 0 }}>
-              {getFieldDecorator('time', {
-                initialValue: record[dataIndex] ? moment(record[dataIndex]) : null,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择时间',
-                  },
-                ],
-              })(<DatePicker placeholder="请选择时间" showTime style={{ width: '100%' }} />)}
-            </Form.Item>
-          );
-
-        case 'mobilePhoneNumber':
-          return (
-            <Form.Item style={{ margin: 0 }}>
-              {getFieldDecorator('mobilePhoneNumber', {
-                initialValue: record[dataIndex],
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入司机手机号',
-                  },
-                  {
-                    pattern: /^(?:(?:\+|00)86)?1\d{10}$/,
-                    message: '手机号格式输入有误',
-                  },
-                ],
-              })(<Input placeholder="请输入司机手机号" />)}
-            </Form.Item>
-          );
-
-        case 'totalWeight':
-          return (
-            <Form.Item style={{ margin: 0 }}>
-              {getFieldDecorator('totalWeight', {
-                initialValue: record[dataIndex],
-                validateFirst: true,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入毛重',
-                  },
-                  {
-                    pattern: /^(\d+|\d+\.\d{1,2})$/,
-                    message: '毛重只能是数字，最多两位小数',
-                  },
-                  {
-                    validator: (rule, value, cb) => {
-                      let carWeight = getFieldValue('carWeight');
-                      carWeight && validateFields(['carWeight']);
-
-                      if (+value < 1) {
-                        setFieldsValue({
-                          goodsWeight: '',
-                        });
-                        cb('重量不可少于1吨');
-                      }
-
-                      if (+value > 50) {
-                        setFieldsValue({
-                          goodsWeight: '',
-                        });
-                        cb('重量不可超过50吨');
-                      }
-
-                      if (!value || !/^(\d+|\d+\.\d{1,2})$/.test(value) || !/^(\d+|\d+\.\d{1,2})$/.test(carWeight)) {
-                        setFieldsValue({
-                          goodsWeight: '',
-                        });
-                        cb();
-                      }
-
-                      if (value && +value <= 100 && /^(\d+|\d+\.\d{1,2})$/.test(carWeight)) {
-                        if (carWeight > +value) {
-                          setFieldsValue({
-                            goodsWeight: '',
-                          });
-                          cb('毛重必须大于皮重');
-                        } else if (!record.isSetting) {
-                          carWeight &&
-                            setFieldsValue({
-                              goodsWeight: (+value - carWeight).toFixed(2),
-                            });
-                          cb();
-                        }
-                      }
-
-                      cb();
-                    },
-                  },
-                ],
-              })(
-                <Input
-                  placeholder="请输入毛重"
-                  onChange={() => {
-                    record.isSetting = false;
-                  }}
-                />
-              )}
-            </Form.Item>
-          );
-
-        case 'carWeight':
-          return (
-            <Form.Item style={{ margin: 0 }}>
-              {getFieldDecorator('carWeight', {
-                initialValue: record[dataIndex],
-                validateFirst: true,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入皮重',
-                  },
-                  {
-                    pattern: /^(\d+|\d+\.\d{1,2})$/,
-                    message: '皮重只能是数字，最多两位小数',
-                  },
-                  {
-                    validator: (rule, value, cb) => {
-                      let totalWeight = getFieldValue('totalWeight');
-
-                      if (+value < 1) {
-                        setFieldsValue({
-                          goodsWeight: '',
-                        });
-                        cb('重量不可少于1吨');
-                      }
-
-                      if (+value > 50) {
-                        setFieldsValue({
-                          goodsWeight: '',
-                        });
-                        cb('重量不可超过50吨');
-                      }
-
-                      if (!value || !/^(\d+|\d+\.\d{1,2})$/.test(value) || !/^(\d+|\d+\.\d{1,2})$/.test(totalWeight)) {
-                        setFieldsValue({
-                          goodsWeight: '',
-                        });
-                        cb();
-                      }
-
-                      if (value && +value >= 1 && +value <= 100 && /^(\d+|\d+\.\d{1,2})$/.test(totalWeight)) {
-                        if (totalWeight < +value) {
-                          setFieldsValue({
-                            goodsWeight: '',
-                          });
-                          cb('皮重不应该大于毛重');
-                        } else if (!record.isSetting) {
-                          totalWeight &&
-                            setFieldsValue({
-                              goodsWeight: (totalWeight - +value).toFixed(2),
-                            });
-                          cb();
-                        }
-                      }
-
-                      cb();
-                    },
-                  },
-                ],
-              })(
-                <Input
-                  placeholder="请输入皮重"
-                  onChange={() => {
-                    record.isSetting = false;
-                  }}
-                />
-              )}
-            </Form.Item>
-          );
-
-        case 'goodsWeight':
-          return (
-            <Form.Item style={{ margin: 0 }}>
-              {getFieldDecorator('goodsWeight', {
-                initialValue: record[dataIndex],
-                validateFirst: true,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入净重',
-                  },
-                  {
-                    pattern: /^(\d+|\d+\.\d{1,2})$/,
-                    message: '净重只能是数字，最多两位小数',
-                  },
-                  {
-                    validator: (rule, value, cb) => {
-                      if (+value <= 50) {
-                        let fromGoodsWeight = getFieldValue('fromGoodsWeight');
-                        if (value && fromGoodsWeight && /^(\d+|\d+\.\d{1,2})$/.test(fromGoodsWeight)) {
-                          setFieldsValue({
-                            loss: fromGoodsWeight - +value > 0 ? (fromGoodsWeight - +value).toFixed(2) : '0.00',
-                          });
-                          cb();
-                        } else {
-                          setFieldsValue({
-                            loss: '',
-                          });
-                          cb();
-                        }
-                      } else {
-                        setFieldsValue({
-                          loss: '',
-                        });
-                        cb('重量不可超过50吨');
-                      }
-                    },
-                  },
-                ],
-              })(
-                <Input
-                  placeholder="请输入净重"
-                  onChange={e => handleGoodsWeightChange(e.target.value, getFieldValue, setFieldsValue, record)}
-                />
-              )}
-            </Form.Item>
-          );
-
-        case 'fromGoodsWeight':
-          return (
-            <Form.Item style={{ margin: 0 }}>
-              {getFieldDecorator('fromGoodsWeight', {
-                initialValue: record[dataIndex],
-                validateFirst: true,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入原发净重',
-                  },
-                  {
-                    pattern: /^(\d+|\d+\.\d{1,2})$/,
-                    message: '发货净重只能是数字，最多两位小数',
-                  },
-                  {
-                    validator: (rule, value, cb) => {
-                      let goodsWeight = getFieldValue('goodsWeight');
-                      if (value && +value >= 1 && +value <= 100 && /^(\d+|\d+\.\d{1,2})$/.test(goodsWeight)) {
-                        setFieldsValue({
-                          loss: +value - goodsWeight > 0 ? (+value - goodsWeight).toFixed(2) : '0.00',
-                        });
-                        cb();
-                      }
-
-                      if (value && +value < 1) {
-                        setFieldsValue({
-                          loss: '',
-                        });
-                        cb('重量不可少于1吨');
-                      }
-
-                      if (value && +value > 100) {
-                        setFieldsValue({
-                          loss: '',
-                        });
-                        cb('重量不可超过50吨');
-                      }
-
-                      if (!value || !/^(\d+|\d+\.\d{1,2})$/.test(goodsWeight)) {
-                        setFieldsValue({
-                          loss: '',
-                        });
-                        cb();
-                      }
-
-                      cb();
-                    },
-                  },
-                ],
-              })(<Input placeholder="请输入原发净重" />)}
-            </Form.Item>
-          );
-
-        case 'loss':
-          return <Form.Item style={{ margin: 0 }}>{getFieldDecorator('loss')(<Input disabled={true} />)}</Form.Item>;
-      }
-
-      return jsx;
-    };
-
-    return <td {...restProps}>{editing ? getFormItem() : children}</td>;
-  };
-
-  const handleGoodsWeightChange = (userSetValue, getFieldValue, setFieldsValue, record) => {
-    let minus = parseFloat((getFieldValue('totalWeight') - getFieldValue('carWeight')).toFixed(2));
-    setFieldsValue = parseFloat((+userSetValue).toFixed(2));
-
-    if (minus !== setFieldsValue) {
-      record.isSetting = true;
-    }
-  };
-
-  // render() {
-  return <EditableContext.Consumer>{renderCell}</EditableContext.Consumer>;
-  // }
-};
-
 // class EditableTable extends React.Component {
-const EditableTable = props => {
+const EditableTable = (props, ref) => {
+  const [form] = Form.useForm();
   const [data, setData] = useState([
     {
       key: 0,
@@ -411,14 +86,17 @@ const EditableTable = props => {
       render: (text, record) => {
         const editable = isEditing(record);
         return editable ? (
-          <div>
-            <EditableContext.Consumer>
+          <span>
+            {/* <EditableContext.Consumer>
               {form => (
                 <Button type="link" size="small" onClick={() => save(form, record)}>
                   保存
                 </Button>
               )}
-            </EditableContext.Consumer>
+            </EditableContext.Consumer> */}
+            <Button type="link" size="small" onClick={() => save(record)}>
+              保存
+            </Button>
             {!record.trailerPlateNumber ? (
               <Button danger type="link" size="small" onClick={() => handleRemove(record.key)}>
                 取消
@@ -430,10 +108,10 @@ const EditableTable = props => {
                 </Button>
               </Popconfirm>
             )}
-          </div>
+          </span>
         ) : (
-          <div>
-            <a disabled={editingKey !== ''} onClick={() => setEditingKey(record.key)} style={{ marginRight: 8 }}>
+          <span>
+            <a disabled={editingKey !== ''} onClick={() => handleEdit(record)} style={{ marginRight: 8 }}>
               修改
             </a>
             <Popconfirm
@@ -445,7 +123,7 @@ const EditableTable = props => {
                 删除
               </Button>
             </Popconfirm>
-          </div>
+          </span>
         );
       },
     },
@@ -453,16 +131,31 @@ const EditableTable = props => {
 
   const isEditing = record => record.key === editingKey;
 
+  //编辑
+  const handleEdit = record => {
+    form.setFieldsValue({
+      ...record,
+      name: {
+        goodsWeight: record.goodsWeight,
+        totalWeight: record.totalWeight,
+        carWeight: record.carWeight,
+        fromGoodsWeight: record.fromGoodsWeight,
+      },
+      time: moment(record['time']),
+    });
+    setEditingKey(record.key);
+  };
+
   // 取消新增一行/删除一行
   const cancel = ({ trailerPlateNumber }) => {
-    const { data, count } = this.state;
+    // const { data, count } = this.state;
     setEditingKey('');
 
-    if (!trailerPlateNumber) {
-      data.splice(count - 1, 1);
-      setCount(count - 1);
-      setData([...data]);
-    }
+    // if (!trailerPlateNumber) {
+    //   data.splice(count - 1, 1);
+    //   setCount(count - 1);
+    //   setData([...data]);
+    // }
   };
 
   // 统一两位数展示
@@ -498,38 +191,45 @@ const EditableTable = props => {
   };
 
   // 保存数据之前判断
-  const save = (form, record) => {
-    form.validateFields((err, row) => {
-      const { key } = record;
-      if (!err) {
-        const { totalWeight, carWeight, goodsWeight } = row;
-        if ((totalWeight - carWeight).toFixed(2) !== (+goodsWeight).toFixed(2)) {
-          Modal.confirm({
-            title: '当前输入净重和系统净重不符，是否继续补录？',
-            content: '点击取消，将按照系统净重进行补录',
-            icon: <QuestionCircleFilled />,
-            onCancel: () => {
-              row = {
-                ...row,
-                goodsWeight: (totalWeight - carWeight).toFixed(2),
-              };
-              handlePushInData(key, row);
-            },
-            onOk: () => handlePushInData(key, row),
-          });
-        } else {
-          handlePushInData(key, row);
-        }
+  const save = async record => {
+    const { key } = record;
+    try {
+      const row = await form.validateFields();
+      const { totalWeight, carWeight, goodsWeight } = row;
+      if ((totalWeight - carWeight).toFixed(2) !== (+goodsWeight).toFixed(2)) {
+        Modal.confirm({
+          title: '当前输入净重和系统净重不符，是否继续补录？',
+          content: '点击取消，将按照系统净重进行补录',
+          icon: <QuestionCircleFilled />,
+          onCancel: () => {
+            row = {
+              ...row,
+              goodsWeight: (totalWeight - carWeight).toFixed(2),
+            };
+            handlePushInData(key, row);
+          },
+          onOk: () => handlePushInData(key, row),
+        });
+      } else {
+        handlePushInData(key, row);
       }
-    });
+    } catch (errInfo) {
+      console.log('Validate Failed:', errInfo);
+    }
   };
 
   // 把数据保存在 state 中
   const handlePushInData = (key, row) => {
     const newData = [...data];
     const index = newData.findIndex(item => key === item.key);
-
-    row = formarRecord(row);
+    const rowVal = {
+      ...row,
+      goodsWeight: row.name.goodsWeight,
+      totalWeight: row.name.totalWeight,
+      carWeight: row.name.carWeight,
+      fromGoodsWeight: row.name.fromGoodsWeight,
+    };
+    row = formarRecord(rowVal);
     if (index > -1) {
       const item = newData[index];
       newData.splice(index, 1, {
@@ -551,9 +251,11 @@ const EditableTable = props => {
       // 上一个补录信息添加完成，才能继续添加
       let { trailerPlateNumber, mobilePhoneNumber, totalWeight, carWeight, goodsWeight } = data.slice(-1)[0];
       if (trailerPlateNumber && mobilePhoneNumber && totalWeight && carWeight && goodsWeight) {
+        form.resetFields();
         handleAdd();
       }
     } else {
+      form.resetFields();
       handleAdd();
     }
   };
@@ -591,6 +293,12 @@ const EditableTable = props => {
     setData([..._data]);
     setEditingKey('');
     setCount(count - 1);
+    // form.setFieldsValue({
+    //   goodsWeight: undefined,
+    //   carWeight: undefined,
+    //   totalWeight: undefined,
+    // });
+    form.resetFields();
   };
 
   const beforeSubmit = () => {
@@ -636,7 +344,7 @@ const EditableTable = props => {
   };
 
   // render() {
-  const { form, submiting } = props;
+  const { submiting } = props;
   // const { selectedRowKeys } = this.state;
   const components = {
     body: {
@@ -673,6 +381,346 @@ const EditableTable = props => {
     onChange: selectedRowKeys => setSelectedRowKeys(selectedRowKeys),
     fixed: 'left',
   };
+  const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
+    const handleGoodsWeightChange = (userSetValue, record) => {
+      let minus = parseFloat((record.totalWeight - record.carWeight).toFixed(2));
+      form.setFieldsValue({
+        goodsWeight: parseFloat((+userSetValue).toFixed(2)),
+      });
+      if (minus !== parseFloat((+userSetValue).toFixed(2))) {
+        record.isSetting = true;
+      }
+    };
+
+    const getFormItem = () => {
+      switch (dataIndex) {
+        case 'trailerPlateNumber':
+          return (
+            <Form.Item
+              name={dataIndex}
+              style={{ margin: 0 }}
+              rules={[
+                {
+                  required: true,
+                  message: '请输入车牌号',
+                },
+                {
+                  pattern: /^(?:[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领 A-Z]{1}[A-HJ-NP-Z]{1}(?:(?:[0-9]{5}[DF])|(?:[DF](?:[A-HJ-NP-Z0-9])[0-9]{4})))|(?:[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领 A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9 挂学警港澳]{1})$/i,
+                  message: '车牌号格式输入有误',
+                },
+              ]}>
+              <Input placeholder="请输入车牌号" />
+            </Form.Item>
+          );
+
+        case 'time':
+          return (
+            <Form.Item
+              name={dataIndex}
+              style={{ margin: 0 }}
+              rules={[
+                {
+                  type: 'object',
+                  required: true,
+                  message: '请选择时间',
+                },
+              ]}>
+              <DatePicker placeholder="请选择时间" showTime style={{ width: '100%' }} />
+            </Form.Item>
+          );
+
+        case 'mobilePhoneNumber':
+          return (
+            <Form.Item
+              name={dataIndex}
+              style={{ margin: 0 }}
+              rules={[
+                {
+                  required: true,
+                  message: '请输入司机手机号',
+                },
+                {
+                  pattern: /^(?:(?:\+|00)86)?1\d{10}$/,
+                  message: '手机号格式输入有误',
+                },
+              ]}>
+              <Input placeholder="请输入司机手机号" />
+            </Form.Item>
+          );
+
+        case 'totalWeight':
+          return (
+            <Form.Item
+              // name={dataIndex}
+              name={['name', dataIndex]}
+              style={{ margin: 0 }}
+              validateFirst={true}
+              rules={[
+                {
+                  required: true,
+                  message: '请输入毛重',
+                },
+                {
+                  pattern: /^(\d+|\d+\.\d{1,2})$/,
+                  message: '毛重只能是数字，最多两位小数',
+                },
+                {
+                  validator: (rule, value) => {
+                    const nameData = form.getFieldValue('name');
+                    let carWeight = nameData.carWeight;
+                    // carWeight && form.validateFields(['carWeight'], { force: true });
+                    if (+value < 1) {
+                      form.setFieldsValue({
+                        name: { ...nameData, goodsWeight: '' },
+                      });
+                      return Promise.reject('重量不可少于1吨');
+                    }
+                    if (+value > 50) {
+                      form.setFieldsValue({
+                        name: { ...nameData, goodsWeight: '' },
+                      });
+                      return Promise.reject('重量不可超过50吨');
+                    }
+                    if (!value || !/^(\d+|\d+\.\d{1,2})$/.test(value) || !/^(\d+|\d+\.\d{1,2})$/.test(carWeight)) {
+                      form.setFieldsValue({
+                        name: { ...nameData, goodsWeight: '' },
+                      });
+                      return Promise.resolve();
+                    }
+                    if (value && +value <= 100 && /^(\d+|\d+\.\d{1,2})$/.test(carWeight)) {
+                      if (carWeight > +value) {
+                        form.setFieldsValue({
+                          name: { ...nameData, goodsWeight: '' },
+                        });
+                        return Promise.reject('毛重必须大于皮重');
+                      } else if (!record.isSetting) {
+                        carWeight &&
+                          form.setFieldsValue({
+                            name: { ...nameData, goodsWeight: (+value - carWeight).toFixed(2) },
+                          });
+
+                        return Promise.resolve();
+                      }
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}>
+              <Input
+                placeholder="请输入毛重"
+                type="number"
+                onChange={() => {
+                  record.isSetting = false;
+                }}
+              />
+            </Form.Item>
+          );
+
+        case 'carWeight':
+          return (
+            <Form.Item
+              // name={dataIndex}
+              name={['name', dataIndex]}
+              // name="name.carWeight"
+              style={{ margin: 0 }}
+              validateFirst={true}
+              rules={[
+                {
+                  required: true,
+                  message: '请输入皮重',
+                },
+                {
+                  pattern: /^(\d+|\d+\.\d{1,2})$/,
+                  message: '皮重只能是数字，最多两位小数',
+                },
+                {
+                  validator: (rule, value) => {
+                    const nameData = form.getFieldValue('name');
+                    let totalWeight = nameData.totalWeight;
+                    if (+value < 1) {
+                      form.setFieldsValue({
+                        name: { ...nameData, goodsWeight: '' },
+                      });
+                      return Promise.reject('重量不可少于1吨');
+                    }
+                    if (+value > 50) {
+                      form.setFieldsValue({
+                        name: { ...nameData, goodsWeight: '' },
+                      });
+                      return Promise.reject('重量不可超过50吨');
+                    }
+                    if (!value || !/^(\d+|\d+\.\d{1,2})$/.test(value) || !/^(\d+|\d+\.\d{1,2})$/.test(totalWeight)) {
+                      form.setFieldsValue({
+                        name: { ...nameData, goodsWeight: '' },
+                      });
+                      return Promise.resolve();
+                    }
+                    if (value && +value >= 1 && +value <= 100 && /^(\d+|\d+\.\d{1,2})$/.test(totalWeight)) {
+                      if (totalWeight < +value) {
+                        form.setFieldsValue({
+                          name: { ...nameData, goodsWeight: '' },
+                        });
+                        return Promise.reject('皮重不应该大于毛重');
+                      } else if (!record.isSetting) {
+                        totalWeight &&
+                          form.setFieldsValue({
+                            name: { ...nameData, goodsWeight: (totalWeight - +value).toFixed(2) },
+                          });
+                        return Promise.resolve();
+                      }
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}>
+              <Input
+                placeholder="请输入皮重"
+                onChange={() => {
+                  record.isSetting = false;
+                }}
+              />
+            </Form.Item>
+          );
+
+        case 'goodsWeight':
+          return (
+            //  name:{goodsWeight:123}
+            // value.name.carWeight
+            <Form.Item
+              // name={dataIndex}
+              name={['name', dataIndex]}
+              style={{ margin: 0 }}
+              validateFirst={true}
+              rules={[
+                {
+                  required: true,
+                  message: '请输入净重',
+                },
+                {
+                  pattern: /^(\d+|\d+\.\d{1,2})$/,
+                  message: '净重只能是数字，最多两位小数',
+                },
+                {
+                  validator: (rule, value) => {
+                    const nameData = form.getFieldValue('name');
+                    if (+value <= 50) {
+                      let fromGoodsWeight = nameData.fromGoodsWeight;
+                      if (value && fromGoodsWeight && /^(\d+|\d+\.\d{1,2})$/.test(fromGoodsWeight)) {
+                        form.setFieldsValue({
+                          name: {
+                            ...nameData,
+                            loss: fromGoodsWeight - +value > 0 ? (fromGoodsWeight - +value).toFixed(2) : '0.00',
+                          },
+                        });
+                        return Promise.resolve();
+                      } else {
+                        form.setFieldsValue({
+                          name: {
+                            ...nameData,
+                            loss: '',
+                          },
+                        });
+                        return Promise.resolve();
+                      }
+                    } else {
+                      form.setFieldsValue({
+                        name: {
+                          ...nameData,
+                          loss: '',
+                        },
+                      });
+                      return Promise.reject('重量不可超过50吨');
+                    }
+                  },
+                },
+              ]}>
+              <Input placeholder="请输入净重" onChange={e => handleGoodsWeightChange(e.target.value, record)} />
+            </Form.Item>
+          );
+
+        case 'fromGoodsWeight':
+          return (
+            <Form.Item
+              // name={dataIndex}
+              name={['name', dataIndex]}
+              style={{ margin: 0 }}
+              validateFirst={true}
+              rules={[
+                {
+                  required: true,
+                  message: '请输入原发净重',
+                },
+                {
+                  pattern: /^(\d+|\d+\.\d{1,2})$/,
+                  message: '发货净重只能是数字，最多两位小数',
+                },
+                {
+                  validator: (rule, value) => {
+                    const nameData = form.getFieldValue('name');
+                    let goodsWeight = nameData.goodsWeight;
+                    if (value && +value >= 1 && +value <= 100 && /^(\d+|\d+\.\d{1,2})$/.test(goodsWeight)) {
+                      form.setFieldsValue({
+                        name: {
+                          ...nameData,
+                          loss: +value - goodsWeight > 0 ? (+value - goodsWeight).toFixed(2) : '0.00',
+                        },
+                      });
+                      return Promise.resolve();
+                    }
+                    if (value && +value < 1) {
+                      form.setFieldsValue({
+                        name: {
+                          ...nameData,
+                          loss: '',
+                        },
+                      });
+                      return Promise.reject('重量不可少于1吨');
+                    }
+                    if (value && +value > 100) {
+                      form.setFieldsValue({
+                        name: {
+                          ...nameData,
+                          loss: '',
+                        },
+                      });
+                      return Promise.reject('重量不可超过50吨');
+                    }
+                    if (!value || !/^(\d+|\d+\.\d{1,2})$/.test(goodsWeight)) {
+                      form.setFieldsValue({
+                        name: {
+                          ...nameData,
+                          loss: '',
+                        },
+                      });
+                      return Promise.resolve();
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}>
+              <Input placeholder="请输入原发净重" />
+            </Form.Item>
+          );
+
+        case 'loss':
+          return (
+            <Form.Item name={dataIndex} style={{ margin: 0 }}>
+              <Input disabled={true} />
+            </Form.Item>
+          );
+      }
+
+      return jsx;
+    };
+
+    return <td {...restProps}>{editing ? getFormItem() : children}</td>;
+  };
+
+  useImperativeHandle(ref, () => ({
+    resetForm: () => {
+      form.resetFields();
+    },
+  }));
 
   return (
     <div className={styles['table-info']}>
@@ -682,9 +730,16 @@ const EditableTable = props => {
         </div>
       </div>
       <div className={styles.body}>
-        <EditableContext.Provider value={form}>
+        {/* <EditableContext.Provider value={form}>
+          
+        </EditableContext.Provider> */}
+        <Form form={form} component={false}>
           <Table
-            components={components}
+            components={{
+              body: {
+                cell: EditableCell,
+              },
+            }}
             columns={_columns}
             dataSource={data}
             // rowKey={(record, index) => index}
@@ -693,7 +748,7 @@ const EditableTable = props => {
             pagination={false}
             scroll={{ x: 900 }}
           />
-        </EditableContext.Provider>
+        </Form>
       </div>
       <div className={styles['btn-add']}>
         <Button onClick={handleAddBefore} style={{ width: 400 }} block ghost>
@@ -711,4 +766,5 @@ const EditableTable = props => {
   );
 };
 
-export default Form.create()(EditableTable);
+// export default Form.create()(EditableTable);
+export default forwardRef(EditableTable);
