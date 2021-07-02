@@ -10,7 +10,6 @@ import CompanyForm from '@components/CustomerDetail/CompanyForm';
 import AddressForm from '@components/CustomerDetail/AddressForm';
 import { customer } from '@api';
 import { QuestionCircleFilled } from '@ant-design/icons';
-import deleteBtn from './deleteBtn.less';
 import { getQuery } from '@utils/common';
 class AddressList extends PureComponent {
   static async getInitialProps(props) {
@@ -84,7 +83,7 @@ class AddressList extends PureComponent {
                 <Button type="link" size="small" onClick={() => this.updateRow(record)}>
                   修改
                 </Button>
-                <Button className={deleteBtn.delete} type="link" size="small" onClick={() => this.deleteRow(record)}>
+                <Button danger type="link" size="small" onClick={() => this.deleteRow(record)}>
                   删除
                 </Button>
               </Button.Group>

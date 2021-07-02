@@ -447,9 +447,7 @@
   }
 }
 
-:global(.ant-btn-link) {
-  color: #477aef !important;
-}
+
 
 // 列表统计数字 蓝色字体突显
 :global(.total-number) {
@@ -569,12 +567,12 @@
     text-shadow: none;
 
     &.ant-btn-dangerous {
-      color       : #e44040;
-      border-color: #e44040;
+      color       : #477aef;
+      // border-color: #e44040;
     }
 
     &.ant-btn-dangerous:hover {
-      color       : #e44040;
+      color       : #e44040 !important;
       border-color: #e44040;
     }
 
@@ -589,8 +587,8 @@
       color           : #fff;
 
       &:hover {
-        background-color: #477aef;
-        border-color    : #477aef;
+        background-color: #477aefd9;
+        border-color    : #477aefd9;
       }
 
       &:active {
@@ -599,9 +597,14 @@
 
       &.ant-btn-background-ghost {
         color     : #477aef;
+        border-color:#477aef;
         // &.ant-btn-primary[disabled] {
         //   color: #bfbfbf;
         // }
+      }
+
+      &.ant-btn-link {
+        color: #477aef ;
       }
 
       &[disabled] {
@@ -654,14 +657,14 @@
     cursor : pointer;
     padding: 0;
     border : none;
-
+    color:#477aef;
     &+.ant-btn-link {
       margin-left: 12px;
     }
 
     &.delete {
       &:hover {
-        color: #e44040;
+        color: #e44040 !important;
       }
     }
 
@@ -746,5 +749,8 @@
         margin-left: 0 !important;
       }
     }
+  }
+  .ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after{
+    background-color: #477aef !important;
   }
 }

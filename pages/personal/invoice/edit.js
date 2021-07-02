@@ -24,6 +24,7 @@ const Edit = props => {
       </Link>,
       '信息编辑',
     ],
+    useBack: true,
     pageTitle: '编辑开票信息',
   };
 

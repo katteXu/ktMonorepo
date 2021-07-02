@@ -216,6 +216,8 @@ const GoodsDetail = ({ rowData = {}, setShowOutModal, setShowInModal, setGetList
                 <Button
                   size="default"
                   className={styles.btn}
+                  type="link"
+                  style={{ marginRight: -8 }}
                   onClick={() => {
                     // router.push('')
                     setShowOutModal(true);
@@ -223,6 +225,7 @@ const GoodsDetail = ({ rowData = {}, setShowOutModal, setShowInModal, setGetList
                   新增出库
                 </Button>
                 <Button
+                  type="link"
                   size="default"
                   className={styles.btn}
                   onClick={() => {

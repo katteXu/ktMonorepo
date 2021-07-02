@@ -5,7 +5,6 @@ import { pound } from '@api';
 import { Format } from '@utils/common';
 import { PoundRulesFrom, AllToPoundRulesFrom, AllFromPoundRulesFrom } from '@components/pound';
 import { QuestionCircleFilled } from '@ant-design/icons';
-import deleteBtn from '../deleteBtn.less';
 
 const { TabPane } = Tabs;
 const PoundManagement = props => {
@@ -280,7 +279,7 @@ const PoundManagement = props => {
             current: query.page,
             total: dataList.count,
           }}
-          // scroll={{ x: 'auto' }}
+        // scroll={{ x: 'auto' }}
         />
       </div>
 
