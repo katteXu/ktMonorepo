@@ -22,6 +22,7 @@ const Index = props => {
       '物料设置',
     ],
     pageTitle: '物料设置',
+    useBack: true,
   };
   const columns = [
     {
