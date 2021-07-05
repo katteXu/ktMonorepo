@@ -195,7 +195,7 @@ const EditableTable = (props, ref) => {
     const { key } = record;
     try {
       const row = await form.validateFields();
-      const { totalWeight, carWeight, goodsWeight } = row;
+      const { totalWeight, carWeight, goodsWeight } = row.name;
       if ((totalWeight - carWeight).toFixed(2) !== (+goodsWeight).toFixed(2)) {
         Modal.confirm({
           title: '当前输入净重和系统净重不符，是否继续补录？',
