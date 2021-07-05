@@ -128,7 +128,7 @@ const Index = ({ props, id, handleCloseDrawer }) => {
   }, [id]);
   return (
     <Content>
-      <section className={styles.main} style={{ paddingTop: 0 }}>
+      <section className={styles.main} style={{ padding: 0 }}>
         <header style={{ padding: '7px 16px', margin: '0 -16px', borderBottom: 'unset' }}>
           <span className={styles.title}>盘点信息</span>
           {/* {(props.menu.isSuperUser || props.menu.permissions.includes('INVENTORY_CHECK_OPERATE')) && (
@@ -147,7 +147,7 @@ const Index = ({ props, id, handleCloseDrawer }) => {
               </Button> */}
         </header>
         {/* <div className={styles.title}>货品信息</div> */}
-        <div className={styles.row1}>
+        <div className={styles.row1} style={{ marginTop: 0 }}>
           <div className={styles.col}>
             盘点时间：<span className={styles['col-data']}>{dataList.createdAt}</span>
           </div>

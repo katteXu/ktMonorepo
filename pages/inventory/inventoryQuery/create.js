@@ -190,7 +190,7 @@ const Index = props => {
           </Button>
         </div>
 
-        <section>
+        <section style={{ paddingTop: 0 }}>
           <Table
             loading={loading}
             dataSource={dataList.data}

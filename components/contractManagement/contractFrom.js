@@ -298,7 +298,7 @@ const Index = () => {
         </Form.Item>
         <div style={{ position: 'relative' }}>
           <Form.Item name="deliveryType" validateFirst={true} style={{ position: 'absolute', right: 402, zIndex: 10 }}>
-            <Select style={{ width: 85, position: 'relative', left: 18, top: -1 }} className={styles.deliveryType}>
+            <Select style={{ width: 85, position: 'relative', left: 18 }} className={styles.deliveryType}>
               <Select.Option value="DAY">吨/天</Select.Option>
               <Select.Option value="WEEK">吨/周</Select.Option>
               <Select.Option value="MONTH">吨/月</Select.Option>
