@@ -373,7 +373,7 @@ const Index = () => {
               value={remark}
             />
           </div>
-          <Button type="primary" style={{ width: 264, marginLeft: 168 }} onClick={newUploadInOneonClick}>
+          <Button type="primary" style={{ marginLeft: 168 }} onClick={newUploadInOneonClick}>
             出站
           </Button>
         </section>

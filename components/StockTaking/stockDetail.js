@@ -128,7 +128,7 @@ const Index = ({ props, id, handleCloseDrawer }) => {
   }, [id]);
   return (
     <Content>
-      <section className={styles.main} style={{ paddingTop: 0 }}>
+      <section className={styles.main} style={{ padding: 0 }}>
         <header style={{ padding: '7px 16px', margin: '0 -16px' }}>
           盘点信息
           {/* {(props.menu.isSuperUser || props.menu.permissions.includes('INVENTORY_CHECK_OPERATE')) && (

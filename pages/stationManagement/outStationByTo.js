@@ -327,7 +327,7 @@ const Index = () => {
               value={remark}
             />
           </div>
-          <Button type="primary" style={{ width: 264, marginLeft: 168 }} onClick={handleOutStation}>
+          <Button type="primary" style={{ marginLeft: 168 }} onClick={handleOutStation}>
             出站
           </Button>
         </section>

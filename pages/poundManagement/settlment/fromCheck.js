@@ -747,7 +747,6 @@ const FromCheck = () => {
           <div className={styles['ctrl-bottom']}>
             <Button
               type="primary"
-              ghost
               loading={checkSettlementLoading}
               onClick={handleAuditSettlement}
               style={{ marginRight: 8 }}>
