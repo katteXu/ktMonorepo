@@ -202,11 +202,25 @@ const EditableTable = (props, ref) => {
           content: '点击取消，将按照系统净重进行补录',
           icon: <QuestionCircleFilled />,
           onCancel: () => {
-            row = {
+            // row = {
+            //   ...row,
+            //   goodsWeight: (totalWeight - carWeight).toFixed(2),
+            // };
+            form.setFieldsValue({
               ...row,
-              goodsWeight: (totalWeight - carWeight).toFixed(2),
+              name: {
+                ...row.name,
+                goodsWeight: (totalWeight - carWeight).toFixed(2),
+              },
+            });
+            const resultRow = {
+              ...row,
+              name: {
+                ...row.name,
+                goodsWeight: (totalWeight - carWeight).toFixed(2),
+              },
             };
-            handlePushInData(key, row);
+            handlePushInData(key, resultRow);
           },
           onOk: () => handlePushInData(key, row),
         });
