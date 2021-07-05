@@ -82,8 +82,8 @@ const Index = ({ props, id, handleCloseDrawer }) => {
       icon: <ExclamationCircleFilled />,
       title: '删除盘点为高危操作，删除后不可恢复是否仍要删除',
       okText: '仍要删除',
-      cancelText: '我再想想1',
-      // okType: 'danger',
+      cancelText: '我再想想',
+      okType: 'danger',
       onOk: () => {
         DeleteStock();
       },
@@ -136,6 +136,7 @@ const Index = ({ props, id, handleCloseDrawer }) => {
           )} */}
           <Button
             type="link"
+            danger
             className={styles.btn}
             style={{ float: 'right', border: 'none', outline: 'none' }}
             onClick={handleDeleteStock}>

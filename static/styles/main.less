@@ -576,21 +576,18 @@
     color      : #333333; //无状态按钮默认颜色
     box-shadow : none;
     text-shadow: none;
-
     &.ant-btn-dangerous {
-      color       : #477aef;
-      // border-color: #e44040;
-    }
-
-    &.ant-btn-dangerous:hover {
       color       : #e44040 !important;
-      border-color: #e44040;
+      border-color: #e44040 !important;
     }
+ 
 
     &:hover {
       border: 1px solid #477aef;
-      color : #477aef;
+      color : #fff;
     }
+
+    
 
     &.ant-btn-primary {
       background-color: #477aef;
@@ -599,7 +596,7 @@
 
       &:hover {
         background-color: #477aefd9;
-        border    :1px solid #477aefd9;
+        border    :1px solid transparent;
         color           : #fff;
         box-shadow: none;
        
@@ -615,6 +612,11 @@
         // &.ant-btn-primary[disabled] {
         //   color: #bfbfbf;
         // }
+        &.active{
+          color     : #477aef;
+          border-color:#477aef;
+          box-shadow: none;
+        }
       }
 
       &.ant-btn-link {
@@ -643,7 +645,7 @@
     background: #eaf3ff !important;
   }
   .ant-btn:hover, .ant-btn:focus{
-    color: #477aef;
+    color: #fff;
     
     border-color: #477aef;
   }
@@ -689,6 +691,22 @@
     &+.ant-btn-link {
       margin-left: 12px;
     }
+
+    &.ant-btn-dangerous {
+      color       : #477aef ;
+      // border-color: #e44040;
+    }
+
+    &.ant-btn-dangerous:hover {
+      color       : #e44040 !important;
+      border-color: #e44040;
+    }
+    &:hover,  &:focus{
+      color: #477aef;
+      
+      border-color: #477aef;
+    }
+  
 
     &.delete {
       &:hover {
