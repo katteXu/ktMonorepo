@@ -898,7 +898,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
             </Form.Item>
           </Col>
           <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 390 }}>
-            <Form.Item name="unitName" style={{ position: 'relative', left: 32, top: -1 }}>
+            <Form.Item name="unitName" style={{ position: 'relative', left: 32 }}>
               <Select
                 style={{ width: 96 }}
                 onChange={value => {

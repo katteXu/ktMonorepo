@@ -8,6 +8,7 @@ import TableForm from '../SupplementForm';
 import { pound } from '@api';
 import { ChildTitle } from '@components';
 const Supplement = ({ poundType, onClose, onSubmit }) => {
+  const tableRef = useRef();
   const [visible, setVisible] = useState(false);
   const [railInfo, setRailInfo] = useState({});
 
@@ -117,6 +118,7 @@ const Supplement = ({ poundType, onClose, onSubmit }) => {
           const { status, detail, description } = await pound.insertPoundBill(params);
           if (status === 0) {
             message.success('磅单补录成功!');
+            tableRef.current.resetForm();
             Modal.destroyAll();
             let leaveData = data
               .filter(item => !selectedRowKeys.includes(item.key))
@@ -189,7 +191,7 @@ const Supplement = ({ poundType, onClose, onSubmit }) => {
         </div>
       </div>
 
-      <TableForm submit={handleSubmit} poundType={poundType} onClose={onClose} />
+      <TableForm submit={handleSubmit} ref={tableRef} poundType={poundType} onClose={onClose} />
 
       <Drawer title="选择专线" width={664} onClose={() => setVisible(false)} visible={visible}>
         <ChooseRouteModal handleSureChooseRoute={handleRailChange} userId={userId} />

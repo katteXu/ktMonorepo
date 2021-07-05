@@ -275,7 +275,7 @@ const Index = () => {
   const warnInfo = text => {
     Modal.warn({
       title: text,
-      onOk() { },
+      onOk() {},
     });
   };
 

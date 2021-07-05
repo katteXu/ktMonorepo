@@ -22,6 +22,7 @@ const Index = props => {
       '物料设置',
     ],
     pageTitle: '物料设置',
+    useBack: true,
   };
   const columns = [
     {
@@ -189,7 +190,7 @@ const Index = props => {
           </Button>
         </div>
 
-        <section>
+        <section style={{ paddingTop: 0 }}>
           <Table
             loading={loading}
             dataSource={dataList.data}

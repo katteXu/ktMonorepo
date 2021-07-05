@@ -175,7 +175,7 @@ const Index = props => {
         </div>
 
         <section>
-          <Msg style={{ marginTop: 16 }}>
+          <Msg>
             合计：
             <span style={{ marginLeft: 8 }}>当前库存</span>
             <span className={'total-num'}>{Format.weight(dataList.totalSum)}</span>吨
