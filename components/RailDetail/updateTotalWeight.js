@@ -1,5 +1,6 @@
 import { Input, Button, Form } from 'antd';
-// 表单布局
+import styles from './styles.less';
+// 表单布局z
 const formItemLayout = {
   labelAlign: 'left',
 
@@ -16,14 +17,14 @@ const UpdateForm = ({ onSubmit, onClose, initValue }) => {
   };
 
   return (
-    <div>
+    <div className={styles.formSendData}>
       <Form
         {...formItemLayout}
         onFinish={handleSubmit}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
         hideRequiredMark={true}>
-        <Form.Item label="已发货">
+        <Form.Item label="已发货" style={{ marginBottom: 12 }}>
           <span style={{ color: '#333333' }}>{initValue || '-'} 吨</span>
         </Form.Item>
         {/* 打印名称 */}
