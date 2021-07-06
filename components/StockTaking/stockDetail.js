@@ -130,7 +130,9 @@ const Index = ({ props, id, handleCloseDrawer }) => {
     <Content>
       <section className={styles.main} style={{ padding: 0 }}>
         <header style={{ padding: '7px 16px', margin: '0 -16px', borderBottom: 'unset' }}>
-          <span className={styles.title}>盘点信息</span>
+          <span className={styles.title} style={{ fontSize: 14 }}>
+            盘点信息
+          </span>
           {/* {(props.menu.isSuperUser || props.menu.permissions.includes('INVENTORY_CHECK_OPERATE')) && (
            
           )} */}
