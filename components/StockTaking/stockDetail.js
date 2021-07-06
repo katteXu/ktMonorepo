@@ -129,7 +129,7 @@ const Index = ({ props, id, handleCloseDrawer }) => {
   return (
     <Content>
       <section className={styles.main} style={{ padding: 0 }}>
-        <header style={{ padding: '7px 16px', margin: '0 -16px', borderBottom: 'unset' }}>
+        <header style={{ padding: '7px 16px', margin: '0 -16px', borderBottom: 'unset', marginTop: -16 }}>
           <span className={styles.title} style={{ fontSize: 14 }}>
             盘点信息
           </span>
