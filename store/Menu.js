@@ -110,7 +110,7 @@ const MENU_LIST = [
     icon: 'goods',
     name: '货品管理',
     key: 'goodsManagement',
-    permission: ['ROUTE_MANAGEMENT'],
+    permission: ['GOODS_MANAGEMENT'],
   },
   {
     module: 'inventory',
@@ -183,7 +183,7 @@ const MENU_LIST = [
         icon: 'audit',
         name: '质检管理',
         key: 'qualityManagement',
-        permission: ['INSPECTION_MANAGEMENT'],
+        permission: ['INVENTORY_CHECK_READ'],
       },
       {
         name: '生产监控',
@@ -192,6 +192,7 @@ const MENU_LIST = [
       {
         name: '全景VR',
         key: 'vriframe',
+        permission: ['VR_COMPANY'],
       },
     ],
   },
@@ -307,26 +308,26 @@ const useMenu = () => {
           ? AGENT_MENU_LIST
           : MENU_LIST
         : MENU_LIST.filter(item => {
-            // 权限配置
-            if (item.permission) {
-              return permissions.find(value => item.permission.includes(value));
-            }
-            // 只对主账号显示
-            if (item.isSuper) {
-              return is_boss;
-            }
-            // 过滤子模块
-            if (item.children) {
-              item.children = item.children.filter(citem => {
-                if (citem.permission) {
-                  return permissions.find(value => citem.permission.includes(value));
-                }
-                return true;
-              });
-            }
+          // 权限配置
+          if (item.permission) {
+            return permissions.find(value => item.permission.includes(value));
+          }
+          // 只对主账号显示
+          if (item.isSuper) {
+            return is_boss;
+          }
+          // 过滤子模块
+          if (item.children) {
+            item.children = item.children.filter(citem => {
+              if (citem.permission) {
+                return permissions.find(value => citem.permission.includes(value));
+              }
+              return true;
+            });
+          }
 
-            return true;
-          });
+          return true;
+        });
       setMenuList(menu);
     }
   };
