@@ -73,6 +73,7 @@ const Child = props => {
     const _col = isSuperUser ? [...defaultCol] : [...defaultCol.filter(column => column.key !== 'ctrl')];
     setColumns([..._col]);
   }, [isSuperUser]);
+  console.log(isSuperUser);
 
   const [loading, setLoading] = useState(true);
   const [dataSource, setDataSource] = useState({});

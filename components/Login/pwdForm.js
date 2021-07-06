@@ -6,13 +6,13 @@ import { login } from '@api';
 import { User } from '@store';
 import router from 'next/router';
 import Store from './store';
-
+import { Permission } from '@store';
 const PwdForm = () => {
   const { reload, generateIndex } = User.useContainer();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const { account, changeMode } = Store.useContainer();
-
+  const { reloadPermissions } = Permission.useContainer();
   const handleSubmit = async values => {
     setLoading(true);
     // 登录接口
@@ -26,6 +26,7 @@ const PwdForm = () => {
         setLoading(false);
         // 设置用户信息
         reload(id);
+        reloadPermissions();
       });
     } else {
       message.error(res.detail || res.description);

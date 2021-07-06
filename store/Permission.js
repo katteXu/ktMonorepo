@@ -11,6 +11,7 @@ const usePermission = (initialState = []) => {
 
   const getData = async () => {
     const { userId } = window.localStorage;
+    console.log(userId);
     if (userId) {
       const res = await getUserPermission();
       if (res.status === 0) {
@@ -23,6 +24,6 @@ const usePermission = (initialState = []) => {
   const reloadPermissions = () => {
     setPermissions([]);
   };
-  return { permissions, isSuperUser, reloadPermissions };
+  return { permissions, isSuperUser, reloadPermissions, reloadPermissions: () => getData() };
 };
 export default createContainer(usePermission);
