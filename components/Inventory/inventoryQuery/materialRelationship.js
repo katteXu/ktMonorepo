@@ -57,7 +57,7 @@ const Index = ({ close, formData, submit, type }) => {
   };
 
   return (
-    <div className={styles.form}>
+    <div className={type === 'add' ? styles.form : styles.formEdit}>
       <Form {...formItemLayout} onFinish={handleSubmit} autoComplete="off" form={form}>
         {type === 'add' && (
           <Form.Item label="实际货品名称" name="mainInventoryId" rules={[{ required: true, message: '选项不可为空' }]}>

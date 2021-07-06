@@ -80,7 +80,7 @@ const SettlmentSet = props => {
           eraseZeroType: '0',
         }}>
         <Tooltip title="可在此设置结算单中结算金额的抹零计算规则" placement="left">
-          <span className={styles.title}>
+          <span className={styles.title} style={{ marginBottom: 16, display: 'inline-block' }}>
             抹零设置
             <QuestionCircleFilled style={{ fontSize: 14, marginLeft: 5, color: '#D0D4DB' }} />:
           </span>
@@ -141,7 +141,7 @@ const SettlmentSet = props => {
         <Tooltip
           title="打开计算路耗开关，则审核时编辑货物单价后自动计算路耗，规则：结算运费=运费单价*净重-货物单价*（路损-允许路损）"
           placement="left">
-          <span className={styles.title}>
+          <span className={styles.title} style={{ marginBottom: 16, display: 'inline-block' }}>
             路耗设置
             <QuestionCircleFilled style={{ fontSize: 14, marginLeft: 5, color: '#D0D4DB' }} />:
           </span>

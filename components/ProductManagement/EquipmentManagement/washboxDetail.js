@@ -444,18 +444,18 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
         <div style={{ flex: 1 }}></div>
       </div>
 
-      <Form form={form} onSubmit={handleSubmit}>
-        <Modal
-          title="修改风阀控制"
-          visible={visible}
-          onCancel={() => {
-            setVisible(false);
-          }}
-          onOk={() => {
-            handleSubmit();
-            setVisible(false);
-          }}>
-          <div style={{ color: '#333333', paddingLeft: 16 }}>
+      <Modal
+        title="修改风阀控制"
+        visible={visible}
+        onCancel={() => {
+          setVisible(false);
+        }}
+        onOk={() => {
+          handleSubmit();
+          setVisible(false);
+        }}>
+        <div style={{ color: '#333333', paddingLeft: 16 }} className={styles.fengfaModal}>
+          <Form form={form} onSubmit={handleSubmit}>
             <div className={styles.row}>
               <div className={styles.col} style={{ flex: 'unset', width: 42, marginRight: 16 }}></div>
               <div className={styles.col}>进气期</div>
@@ -471,6 +471,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               <div className={styles.col}>
                 <Form.Item
                   name="intakeFirstValue"
+                  style={{ marginBottom: 0 }}
                   rules={[
                     {
                       validator: (rule, value) => {
@@ -489,6 +490,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               </div>
               <div className={styles.col}>
                 <Form.Item
+                  style={{ marginBottom: 0 }}
                   name="inflateFirstValue"
                   rules={[
                     {
@@ -508,6 +510,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               </div>
               <div className={styles.col}>
                 <Form.Item
+                  style={{ marginBottom: 0 }}
                   name="exhaustFirstValue"
                   rules={[
                     {
@@ -527,6 +530,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               </div>
               <div className={styles.col}>
                 <Form.Item
+                  style={{ marginBottom: 0 }}
                   name="restFirstValue"
                   rules={[
                     {
@@ -545,7 +549,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
                 </Form.Item>
               </div>
               <div className={styles.col}>
-                <Form.Item name="frequencyFirstValue">
+                <Form.Item name="frequencyFirstValue" style={{ marginBottom: 0 }}>
                   <Input addonAfter="Hz" type="number" onKeyDown={handleKeyPress} style={{ width: 64 }}></Input>
                 </Form.Item>
               </div>
@@ -557,6 +561,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               <div className={styles.col}>
                 <Form.Item
                   name="intakeSecondValue"
+                  style={{ marginBottom: 0 }}
                   rules={[
                     {
                       validator: (rule, value) => {
@@ -576,6 +581,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               <div className={styles.col}>
                 <Form.Item
                   name="inflateSecondValue"
+                  style={{ marginBottom: 0 }}
                   rules={[
                     {
                       validator: (rule, value) => {
@@ -595,6 +601,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               <div className={styles.col}>
                 <Form.Item
                   name="exhaustSecondValue"
+                  style={{ marginBottom: 0 }}
                   rules={[
                     {
                       validator: (rule, value) => {
@@ -614,6 +621,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               <div className={styles.col}>
                 <Form.Item
                   name="restSecondValue"
+                  style={{ marginBottom: 0 }}
                   rules={[
                     {
                       validator: (rule, value) => {
@@ -631,7 +639,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
                 </Form.Item>
               </div>
               <div className={styles.col}>
-                <Form.Item name="frequencySecondValue">
+                <Form.Item name="frequencySecondValue" style={{ marginBottom: 0 }}>
                   <Input addonAfter="Hz" type="number" onKeyDown={handleKeyPress} style={{ width: 64 }}></Input>
                 </Form.Item>
               </div>
@@ -643,6 +651,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               <div className={styles.col}>
                 <Form.Item
                   name="intakeThirdValue"
+                  style={{ marginBottom: 0 }}
                   rules={[
                     {
                       validator: (rule, value) => {
@@ -662,6 +671,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               <div className={styles.col}>
                 <Form.Item
                   name="inflateThirdValue"
+                  style={{ marginBottom: 0 }}
                   rules={[
                     {
                       validator: (rule, value) => {
@@ -681,6 +691,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               <div className={styles.col}>
                 <Form.Item
                   name="exhaustThirdValue"
+                  style={{ marginBottom: 0 }}
                   rules={[
                     {
                       validator: (rule, value) => {
@@ -700,6 +711,7 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
               <div className={styles.col}>
                 <Form.Item
                   name="restThirdValue"
+                  style={{ marginBottom: 0 }}
                   rules={[
                     {
                       validator: (rule, value) => {
@@ -717,14 +729,15 @@ const Index = ({ onSubmit, did, refreshData, data }) => {
                 </Form.Item>
               </div>
               <div className={styles.col}>
-                <Form.Item name="frequencyThirdValue">
+                <Form.Item name="frequencyThirdValue" style={{ marginBottom: 0 }}>
                   <Input addonAfter="Hz" type="number" onKeyDown={handleKeyPress} style={{ width: 64 }}></Input>
                 </Form.Item>
               </div>
             </div>
-          </div>
-        </Modal>
-      </Form>
+          </Form>
+        </div>
+      </Modal>
+
       <Modal
         title="修改床层厚度"
         visible={visible2}
