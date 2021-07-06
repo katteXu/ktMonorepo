@@ -60,6 +60,7 @@ const SiderMenu = ({ pageKey, longKey }) => {
                 ))}
               </Menu.SubMenu>
             );
+          } else if (item.children && item.children.length === 0) {
           } else {
             return (
               <Menu.Item key={item.key} url={item.url}>

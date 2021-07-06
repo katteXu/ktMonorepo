@@ -149,6 +149,7 @@ const PoundList = props => {
       align: 'right',
       render: (value, record) => {
         const { id, isDelete } = record;
+        console.log(isSuperUser || permissions.includes('POUND_STATISTICS_MANAGEMENT'));
         return (
           <div>
             <Button
