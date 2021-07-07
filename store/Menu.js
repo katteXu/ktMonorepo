@@ -183,7 +183,7 @@ const MENU_LIST = [
         icon: 'audit',
         name: '质检管理',
         key: 'qualityManagement',
-        permission: ['INVENTORY_CHECK_READ'],
+        permission: ['INSPECTION_MANAGEMENT'],
       },
       {
         name: '生产监控',
