@@ -1,6 +1,6 @@
 // 默认配置
 const DEFAULT = {
-  base_url: 'http://test.api.kachexiongdi.com',
+  base_url: 'http://pre.api.kachexiongdi.com',
   public_path: '',
   port: 9050,
 };
