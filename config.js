@@ -1,6 +1,6 @@
 // 默认配置
 const DEFAULT = {
-  base_url: 'http://pre.api.kachexiongdi.com',
+  base_url: 'http://test.api.kachexiongdi.com',
   public_path: '',
   port: 9050,
 };
@@ -12,7 +12,7 @@ const initConfig = () => {
   const BASE_URL = {
     pro: 'https://api2internal.kachexiongdi.com',
     pre: 'http://pre.api.kachexiongdi.com',
-    dev: 'http://pre.api.kachexiongdi.com',
+    dev: 'http://test.api.kachexiongdi.com',
   };
   // oss前缀
   const PUBLIC_PATH = {
