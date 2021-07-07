@@ -11,6 +11,7 @@ const Finance = `${publicRuntimeConfig.staticFolder}/image/finance.png`;
 
 // 财务中心
 const BgCard = `${publicRuntimeConfig.staticFolder}/image/bgcard.png`;
+const CarImg = `${publicRuntimeConfig.staticFolder}/image/carImg.png`;
 const ListEmpty = `${publicRuntimeConfig.staticFolder}/image/list-empty.png`;
 
 // 个人中心
@@ -131,4 +132,5 @@ export {
   ZhuKong,
   ZhuKongGray,
   EquipmentNo,
+  CarImg,
 };
