@@ -12,7 +12,7 @@ const initConfig = () => {
   const BASE_URL = {
     pro: 'https://api2internal.kachexiongdi.com',
     pre: 'http://pre.api.kachexiongdi.com',
-    dev: 'http://test.api.kachexiongdi.com',
+    dev: 'http://pre.api.kachexiongdi.com',
   };
   // oss前缀
   const PUBLIC_PATH = {
