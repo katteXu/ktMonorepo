@@ -193,6 +193,7 @@ const Index = () => {
   const onChangeWeight = e => {
     const { value } = e.target;
     let val;
+    console.log(value);
     val = value.replace(/^(-)*(\d+)\.(\d{1,2}).*$/, '$1$2.$3');
     if (val > 100) {
       return;
@@ -215,9 +216,10 @@ const Index = () => {
               <Input
                 placeholder="请输入皮重"
                 addonAfter="吨"
+                type="number"
                 style={{ width: 264 }}
                 value={weight}
-                onChange={onChangeWeight}
+                onChange={e => onChangeWeight(e)}
               />
               <span onClick={takeTareWeight} className={styles.take}>
                 取皮重
