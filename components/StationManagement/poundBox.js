@@ -68,6 +68,7 @@ const Index = (props, ref) => {
       message.error('连接异常');
       setLoading(false);
       setStatus(0);
+      setWeight(0);
     }
   };
 

@@ -222,6 +222,7 @@ const Index = () => {
               <Input
                 placeholder="请输入毛重"
                 addonAfter="吨"
+                type="number"
                 style={{ width: 264 }}
                 onChange={onChangeWeight}
                 value={weight}
