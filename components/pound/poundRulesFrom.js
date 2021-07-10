@@ -240,7 +240,7 @@ const Index = ({ formData, onSubmit, onClose, userId }) => {
             />
           </Form.Item>
           {form.getFieldsValue(['plusOrReduce']).plusOrReduce === 0 &&
-            form.getFieldsValue(['receiveOrSend']).receiveOrSend === 1 ? (
+          form.getFieldsValue(['receiveOrSend']).receiveOrSend === 1 ? (
             <Form.Item label="" name="abateMethod" valuePropName="checked">
               <Checkbox onChange={abateMethodCheckrules} checked={abateMethodCheck}>
                 当实收大于原发时,以原发净重进行扣减
@@ -251,7 +251,7 @@ const Index = ({ formData, onSubmit, onClose, userId }) => {
           )}
 
           {form.getFieldsValue(['plusOrReduce']).plusOrReduce === 0 &&
-            form.getFieldsValue(['receiveOrSend']).receiveOrSend === 1 ? (
+          form.getFieldsValue(['receiveOrSend']).receiveOrSend === 1 ? (
             <div style={{ display: 'flex', alignItems: 'baseline', flexWrap: 'wrap' }} className={styles.deductions}>
               <Checkbox onChange={reduceTules} checked={reduceCheck} style={{ marginRight: 8 }}></Checkbox>
               当原发净重减实收净重大于等于

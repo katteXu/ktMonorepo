@@ -30,13 +30,16 @@ const Index = (props, ref) => {
   }, []);
   // 更换磅机
   const handleChangePound = id => {
+    setLoading(true);
+    setWeight(0);
+    setStatus(0);
     const poundData = poundMachineList.find((item, index) => item.id === id);
     onChange && onChange(poundData);
 
     setPoundId(id);
     sessionStorage.setItem('isConnect', JSON.stringify(poundData));
 
-    getLocalNet(poundData.url);
+    getLocalNet(poundData.deviceId);
   };
 
   //获取磅机列表
@@ -50,25 +53,37 @@ const Index = (props, ref) => {
   };
 
   // 获取本地盒子地址
-  const getLocalNet = async url => {
+  const getLocalNet = async deviceId => {
     setLoading(true);
-    const res = await axios.get(url).then(res => res.data);
+    const params = {
+      mac: deviceId,
+    };
+    const res = await station.returnIp({ params });
+    if (res.status === 0) {
+      const url = `http://${res.result}:5000/`;
 
-    try {
-      const _url = res.match(/URL=([\s\S]*?)"/)[1];
-      const isConnect = await axios.get(_url).then(res => res.data);
+      // const resPound = await axios.get(url).then(res => res.data);
+      // console.log('======>', resPound);
+      // console.log('======>', url);
+      axios.defaults.timeout = 5000;
+      try {
+        // const _url = resPound.match(/URL=([\s\S]*?)"/)[1];
+        // const isConnect = await axios.get(_url).then(res => res.data);
+        const resPound = await axios.get(url).then(res => res.data);
+        setLoading(false);
 
-      setLoading(false);
-
-      // 模拟连接成功
-      setBoxUrl(isConnect.url);
-      setMac(isConnect.mac);
-      setStatus(1);
-    } catch (e) {
-      message.error('连接异常');
-      setLoading(false);
-      setStatus(0);
-      setWeight(0);
+        // 模拟连接成功
+        setBoxUrl(url);
+        setMac(deviceId);
+        setStatus(1);
+      } catch (e) {
+        message.error('连接异常');
+        setLoading(false);
+        setStatus(0);
+        setWeight(0);
+      }
+    } else {
+      message.error(`${res.detail || res.description}`);
     }
   };
 
@@ -84,6 +99,7 @@ const Index = (props, ref) => {
 
   // 获取重量
   const getWeight = async () => {
+    console.log(boxUrl);
     const res = await axios.get(`${boxUrl}weight`).then(res => res.data);
     setWeight(res.weight);
     onChange(res.weight);

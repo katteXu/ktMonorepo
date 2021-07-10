@@ -179,6 +179,8 @@ const PoundManagement = props => {
       amount: values.amount ? values.amount * 1000 : undefined,
       abateMethod: values.abateMethod ? 1 : 0,
       abateThreshold: values.abateThreshold * 1000 || 0,
+      abateThresholdMin: values.abateThresholdMin * 1000 || 0,
+      abateThresholdMax: values.abateThresholdMax * 1000 || 0,
     };
     const { status, result, detail, description } = await pound.setPoundWeightDiff(params);
     if (!status) {
@@ -198,6 +200,8 @@ const PoundManagement = props => {
       amount: values.amount ? values.amount * 1000 : undefined,
       abateMethod: values.abateMethod ? 1 : 0,
       abateThreshold: values.abateThreshold * 1000 || 0,
+      abateThresholdMin: values.abateThresholdMin * 1000 || 0,
+      abateThresholdMax: values.abateThresholdMax * 1000 || 0,
     };
     const { status, detail, description } = await pound.modifyPoundWeightDiff(params);
     if (!status) {
@@ -279,7 +283,7 @@ const PoundManagement = props => {
             current: query.page,
             total: dataList.count,
           }}
-        // scroll={{ x: 'auto' }}
+          // scroll={{ x: 'auto' }}
         />
       </div>
 
