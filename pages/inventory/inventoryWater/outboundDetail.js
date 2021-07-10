@@ -219,7 +219,7 @@ const Index = props => {
             </div>
           </div>
 
-          <ChildTitle style={{ margin: '16px 0' }}>已关联质检单</ChildTitle>
+          <ChildTitle style={{ margin: '16px 0', fontWeight: 500 }}>已关联质检单</ChildTitle>
           <Table loading={loading} dataSource={[]} columns={columns} pagination={null} />
         </section>
       </Content>

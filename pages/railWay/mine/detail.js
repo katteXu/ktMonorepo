@@ -429,7 +429,7 @@ const RailWayDetail = props => {
                   </Tooltip>
                 </div>
 
-                <div className={styles.item}>
+                <div className={styles.item} style={{ display: 'flex', alignItems: 'center' }}>
                   <span className={styles.label}>
                     运费单价
                     <Tooltip

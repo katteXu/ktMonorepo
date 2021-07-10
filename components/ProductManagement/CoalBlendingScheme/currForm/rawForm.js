@@ -50,7 +50,7 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
       <div className={styles.title} style={{ paddingLeft: 16 }}>
         原料煤{index + 1}
         {name > 2 && (
-          <Button type="link" size="small" onClick={() => handleRemove(name)} className={styles['btn-remove']}>
+          <Button type="link" size="small" onClick={() => handleRemove(name)} className={styles['btn-remove']} danger>
             移除
           </Button>
         )}

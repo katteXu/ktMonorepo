@@ -30,12 +30,13 @@ const Index = (props, ref) => {
   }, []);
   // 更换磅机
   const handleChangePound = id => {
-    const poundData = poundMachineList.find(item => item.id === id);
+    const poundData = poundMachineList.find((item, index) => item.id === id);
     onChange && onChange(poundData);
 
     setPoundId(id);
+    sessionStorage.setItem('isConnect', JSON.stringify(poundData));
 
-    getLocalNet(poundData.url, poundData);
+    getLocalNet(poundData.url);
   };
 
   //获取磅机列表
@@ -49,7 +50,7 @@ const Index = (props, ref) => {
   };
 
   // 获取本地盒子地址
-  const getLocalNet = async (url, poundData) => {
+  const getLocalNet = async url => {
     setLoading(true);
     const res = await axios.get(url).then(res => res.data);
 
@@ -63,11 +64,11 @@ const Index = (props, ref) => {
       setBoxUrl(isConnect.url);
       setMac(isConnect.mac);
       setStatus(1);
-      sessionStorage.setItem('isConnect', JSON.stringify(poundData));
     } catch (e) {
       message.error('连接异常');
       setLoading(false);
       setStatus(0);
+      setWeight(0);
     }
   };
 

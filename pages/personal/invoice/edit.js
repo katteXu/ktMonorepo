@@ -92,13 +92,13 @@ const Edit = props => {
           <div
             style={{
               position: 'absolute',
-              top: 15,
-              right: 50,
-              width: '50%',
-              maxWidth: 950,
+              top: 24,
+              left: 476,
+              width: 334,
+              height: 220,
               textAlign: 'center',
             }}>
-            <img src={Image.InvoiceExample} style={{ width: '60%' }} alt="" />
+            <img src={Image.InvoiceExample} style={{ width: '100%' }} alt="" />
 
             <div style={{ textAlign: 'center', fontSize: 16, margin: '0 auto' }}>参考图</div>
           </div>

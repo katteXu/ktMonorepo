@@ -24,7 +24,7 @@ const Index = ({ formData, onSubmit }) => {
   const [reduceCheck, setReduceCheck] = useState(false);
   const [abateMethodCheck, setAbateMethodCheck] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
-
+  const [valueType, setValueType] = useState();
   // 提交数据
   const onFinish = async values => {
     // values.abateMethod = values.abateMethod ? 1 : 0;
@@ -36,6 +36,8 @@ const Index = ({ formData, onSubmit }) => {
       amount: values.amount ? values.amount * 1000 : undefined,
       abateMethod: values.abateMethod ? 1 : 0,
       abateThreshold: values.abateThreshold * 1000 || 0,
+      abateThresholdMin: values.abateThresholdMin * 1000 || 0,
+      abateThresholdMax: values.abateThresholdMax * 1000 || 0,
     };
 
     const { status, result, detail, description } = await pound.setGlobalPoundWeightDiff({ params });
@@ -59,6 +61,8 @@ const Index = ({ formData, onSubmit }) => {
         amount: formData.amount ? (formData.amount / 1000).toFixed(2) : '',
         abateMethod: formData.abateMethod ? 1 : 0,
         abateThreshold: formData.abateThreshold ? (formData.abateThreshold / 1000).toFixed(2) : '',
+        abateThresholdMax: formData.abateThresholdMax ? (formData.abateThresholdMax / 1000).toFixed(2) : '',
+        abateThresholdMin: formData.abateThresholdMin ? (formData.abateThresholdMin / 1000).toFixed(2) : '',
       });
       formData.abateThreshold > 0 ? setReduceCheck(true) : setReduceCheck(false);
       setShowCheck(formData.plusOrReduce);
@@ -68,6 +72,8 @@ const Index = ({ formData, onSubmit }) => {
         amount: '',
         abateMethod: '',
         abateThreshold: '',
+        abateThresholdMin: '',
+        abateThresholdMax: '',
       });
       setReduceCheck(false);
       setShowCheck(true);
@@ -125,6 +131,8 @@ const Index = ({ formData, onSubmit }) => {
         amount: '',
         abateMethod: 0,
         abateThreshold: '',
+        abateThresholdMin: '',
+        abateThresholdMax: '',
       });
       setReduceCheck(false);
       setAbateMethodCheck(false);
@@ -175,13 +183,13 @@ const Index = ({ formData, onSubmit }) => {
             <Input
               placeholder="请输入0~1之间的数字"
               addonAfter={
-                <span
+                <soan
                   style={{
                     background: ' #F6F7F9',
                     color: '#BFBFBF',
                   }}>
                   吨
-                </span>
+                </soan>
               }
               disabled={reduceCheck ? true : false}
             />
@@ -196,41 +204,128 @@ const Index = ({ formData, onSubmit }) => {
         )}
 
         {!showCheck && (
-          <Form.Item label="" {...formRoute} rules={[]} style={{ marginLeft: 69 }}>
-            <Checkbox onChange={reduceTules} checked={reduceCheck}>
-              当原发净重减实收净重大于等于
-              <Form.Item
-                name="abateThreshold"
-                noStyle
-                validateFirst={true}
-                rules={[
-                  {
-                    required: reduceCheck ? true : false,
-                    message: '不可为空',
-                  },
-                  {
-                    validator: (rule, value) => {
-                      if (reduceCheck) {
-                        if (+value > 0) {
-                          if (/^((0\.((0[1-9])|([1-9]\d?)))|((\.[\d]{1,2})?)|(1(\.0{1,2})?))$/.test(value)) {
-                            return Promise.resolve();
-                          } else {
-                            return Promise.reject('请输入0~1之间的数字');
-                          }
+          <div style={{ display: 'flex', alignItems: 'baseline', marginLeft: 69 }} className={styles.deductions}>
+            <Checkbox onChange={reduceTules} checked={reduceCheck} style={{ marginRight: 8 }}></Checkbox>
+            当原发净重减实收净重大于等于
+            <Form.Item
+              name="abateThreshold"
+              validateFirst={true}
+              rules={[
+                {
+                  required: reduceCheck ? true : false,
+                  message: '不可为空',
+                },
+                {
+                  validator: (rule, value) => {
+                    if (reduceCheck) {
+                      if (+value > 0) {
+                        if (/^((0\.((0[1-9])|([1-9]\d?)))|((\.[\d]{1,2})?)|(1(\.0{1,2})?))$/.test(value)) {
+                          return Promise.resolve();
                         } else {
                           return Promise.reject('请输入0~1之间的数字');
                         }
                       } else {
-                        return Promise.resolve();
+                        return Promise.reject('请输入0~1之间的数字');
                       }
-                    },
+                    } else {
+                      return Promise.resolve();
+                    }
                   },
-                ]}>
-                <Input placeholder="" style={{ width: 96, margin: '0 4px' }} disabled={reduceCheck ? false : true} />
-              </Form.Item>
-              吨时,不再执行减扣规则,否则以设置的值进行减扣
-            </Checkbox>
-          </Form.Item>
+                },
+              ]}>
+              <Input placeholder="" style={{ width: 96, margin: '0 4px' }} disabled={reduceCheck ? false : true} />
+            </Form.Item>
+            吨时,不再执行减扣规则,否则在
+            <Form.Item
+              name="abateThresholdMin"
+              validateFirst={true}
+              rules={[
+                {
+                  required: reduceCheck ? true : false,
+                  message: '不可为空',
+                },
+                {
+                  validator: (rule, value) => {
+                    if (reduceCheck) {
+                      if (+value > 0) {
+                        if (/^((0\.((0[1-9])|([1-9]\d?)))|((\.[\d]{1,2})?)|(1(\.0{1,2})?))$/.test(value)) {
+                          const val = form.getFieldValue('abateThresholdMax');
+
+                          if (val && val * 100 < value * 100) {
+                            return Promise.reject('设置合理的扣减区间');
+                          }
+
+                          if (valueType === rule.field) {
+                            console.log(rule.field);
+                            form.validateFields(['abateThresholdMax'], { force: true });
+                          }
+
+                          return Promise.resolve();
+                        } else {
+                          return Promise.reject('请输入0~1之间的数字');
+                        }
+                      } else {
+                        return Promise.reject('请输入0~1之间的数字');
+                      }
+                    } else {
+                      return Promise.resolve();
+                    }
+                  },
+                },
+              ]}>
+              <Input
+                placeholder=""
+                style={{ width: 96, margin: '0 4px' }}
+                disabled={reduceCheck ? false : true}
+                onChange={() => setValueType('abateThresholdMin')}
+              />
+            </Form.Item>
+            ~
+            <Form.Item
+              name="abateThresholdMax"
+              validateFirst={true}
+              rules={[
+                {
+                  required: reduceCheck ? true : false,
+                  message: '不可为空',
+                },
+                {
+                  validator: (rule, value) => {
+                    if (reduceCheck) {
+                      if (+value > 0) {
+                        if (/^((0\.((0[1-9])|([1-9]\d?)))|((\.[\d]{1,2})?)|(1(\.0{1,2})?))$/.test(value)) {
+                          const val = form.getFieldValue('abateThresholdMin');
+
+                          if (val && val * 100 > value * 100) {
+                            return Promise.reject('设置合理的扣减区间');
+                          }
+                          if (valueType === rule.field) {
+                            console.log(rule.field);
+                            form.validateFields(['abateThresholdMin'], { force: true });
+                          }
+
+                          return Promise.resolve();
+                        } else {
+                          return Promise.reject('请输入0~1之间的数字');
+                        }
+                      } else {
+                        return Promise.reject('请输入0~1之间的数字');
+                      }
+                    } else {
+                      return Promise.resolve();
+                    }
+                  },
+                },
+              ]}>
+              <Input
+                placeholder=""
+                style={{ width: 96, margin: '0 4px' }}
+                disabled={reduceCheck ? false : true}
+                onChange={() => setValueType('abateThresholdMax')}
+              />
+            </Form.Item>
+            区间内进行随机减扣
+          </div>
         )}
         <div style={{ marginLeft: 69 }}>
           <Button type="primary" htmlType="submit" loading={loading}>

@@ -1,7 +1,7 @@
 import { Modal, Progress } from 'antd';
 import { useEffect, useState } from 'react';
 import styles from './styles.less';
-
+import { Image } from '@components';
 let timeout;
 const LoadingCarIcon = ({ progress, onSuccess }) => {
   const [show, setShow] = useState(progress > 0);
@@ -52,7 +52,7 @@ const LoadingCarIcon = ({ progress, onSuccess }) => {
       <div className={styles.centent_info}>
         <div className={styles.title_car}>正在为您生成专属充值账号</div>
         <div className={styles.block_style}>
-          <img src="./carImg.png" className={styles.carImg} style={{ left: 266 * (percent / 100) }} />
+          <img src={Image.CarImg} className={styles.carImg} style={{ left: 266 * (percent / 100) }} />
         </div>
         <Progress percent={percent} status="normal" />
       </div>

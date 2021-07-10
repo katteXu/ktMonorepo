@@ -755,7 +755,7 @@ const ToCheck = () => {
               style={{ marginRight: 8 }}>
               审核并结算
             </Button>
-            <Button type="primary" loading={checkLoading} onClick={handleAudit}>
+            <Button type="primary" loading={checkLoading} onClick={handleAudit} ghost>
               审核通过
             </Button>
           </div>

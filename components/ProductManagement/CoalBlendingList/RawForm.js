@@ -17,7 +17,7 @@ const Index = props => {
       <div className={styles['title-name']}>
         原料煤种{index}
         {index > 2 && !disabled && (
-          <Button type="link" size="small" onClick={() => handleRemove(index)} className={styles['btn-remove']}>
+          <Button type="link" size="small" onClick={() => handleRemove(index)} className={styles['btn-remove']} danger>
             移除
           </Button>
         )}

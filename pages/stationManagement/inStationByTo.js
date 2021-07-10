@@ -222,6 +222,7 @@ const Index = () => {
               <Input
                 placeholder="请输入毛重"
                 addonAfter="吨"
+                type="number"
                 style={{ width: 264 }}
                 onChange={onChangeWeight}
                 value={weight}
@@ -248,7 +249,7 @@ const Index = () => {
             <span className={styles.lableText}>备注:</span>
             <Input placeholder="请输入备注" style={{ width: 480 }} onChange={e => setRemark(e.target.value)} />
           </div>
-          <Button type="primary" style={{ width: 264, marginLeft: 168 }} onClick={newUploadInOneonClick}>
+          <Button type="primary" style={{ marginLeft: 168 }} onClick={newUploadInOneonClick}>
             进站
           </Button>
         </section>
