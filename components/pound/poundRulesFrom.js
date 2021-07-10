@@ -292,32 +292,6 @@ const Index = ({ formData, onSubmit, onClose, userId }) => {
                     required: reduceCheck ? true : false,
                     message: '不可为空',
                   },
-                  {
-                    validator: (rule, value) => {
-                      if (reduceCheck) {
-                        if (+value > 0) {
-                          if (/^((0\.((0[1-9])|([1-9]\d?)))|((\.[\d]{1,2})?)|(1(\.0{1,2})?))$/.test(value)) {
-                            const val = form.getFieldValue('abateThresholdMax');
-
-                            if (val && val * 100 < value * 100) {
-                              return Promise.reject('设置合理的扣减区间');
-                            }
-                            if (valueType === rule.field) {
-                              console.log(rule.field);
-                              form.validateFields(['abateThresholdMax'], { force: true });
-                            }
-                            return Promise.resolve();
-                          } else {
-                            return Promise.reject('请输入0~1之间的数字');
-                          }
-                        } else {
-                          return Promise.reject('请输入0~1之间的数字');
-                        }
-                      } else {
-                        return Promise.resolve();
-                      }
-                    },
-                  },
                 ]}>
                 <Input
                   placeholder=""
@@ -329,6 +303,7 @@ const Index = ({ formData, onSubmit, onClose, userId }) => {
               ~
               <Form.Item
                 name="abateThresholdMax"
+                dependencies={['abateThresholdMin']}
                 validateFirst={true}
                 rules={[
                   {
@@ -345,10 +320,10 @@ const Index = ({ formData, onSubmit, onClose, userId }) => {
                             if (val && val * 100 > value * 100) {
                               return Promise.reject('设置合理的扣减区间');
                             }
-                            if (valueType === rule.field) {
-                              console.log(rule.field);
-                              form.validateFields(['abateThresholdMin'], { force: true });
-                            }
+                            // if (valueType === rule.field) {
+                            //   console.log(rule.field);
+                            //   form.validateFields(['abateThresholdMin'], { force: true });
+                            // }
                             return Promise.resolve();
                           } else {
                             return Promise.reject('请输入0~1之间的数字');
