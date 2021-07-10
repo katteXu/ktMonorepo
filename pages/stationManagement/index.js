@@ -238,11 +238,11 @@ const Index = () => {
   };
 
   // 磅机重量变更
-  const handleChangeWeight = weight => { };
+  const handleChangeWeight = weight => {};
 
   return (
     <Layout {...routeView}>
-      <Content>
+      {/* <Content>
         <section>
           <PoundBox onChange={handleChangeWeight} style={{ marginLeft: 10 }} showWeight boxId={boxId} />
           <div style={{ marginBottom: 16, marginTop: 16 }}>
@@ -278,7 +278,8 @@ const Index = () => {
             scroll={{ x: 'auto' }}
           />
         </section>
-      </Content>
+      </Content> */}
+      <iframe src="http://localhost:3000/stationManagement" frameborder="0" width="100%" height="100%"></iframe>
     </Layout>
   );
 };
