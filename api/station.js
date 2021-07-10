@@ -124,6 +124,16 @@ const generate_pdf = ({ params }) => {
     data: params,
   });
 };
+
+//获取ip
+const returnIp = ({ params }) => {
+  return request({
+    method: 'get',
+    url: 'api/v1/pound/returnIp',
+    params,
+  });
+};
+
 export default {
   getStationList,
   deleteStationTruck,
@@ -139,5 +149,6 @@ export default {
   modifyInStationRecordV2,
   postOutStation,
   updateInStationTruckOrTrucker,
-  generate_pdf
+  generate_pdf,
+  returnIp,
 };
