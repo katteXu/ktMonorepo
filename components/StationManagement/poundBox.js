@@ -118,7 +118,7 @@ const Index = (props, ref) => {
 
         const res = await station.generate_pdf({ params });
         return res;
-      }
+      } else return false;
     },
     print: async params => {
       const res = axios.post(`${boxUrl}print_pdf`, params).then(res => res.data);

@@ -185,7 +185,7 @@ const Index = () => {
       };
       const resPdf = await poundBoxRef.current.initpdf(pdfParams);
 
-      if (resPdf.status === 0) {
+      if (resPdf && resPdf.status === 0) {
         const printPramas = resPdf.result;
         if (resPdf.result.printType === 3) {
           const PortPrint = await poundBoxRef.current.parallelPortPrint(printPramas);
@@ -196,6 +196,10 @@ const Index = () => {
           message.success('出站成功');
           router.push('/stationManagement');
         }
+      } else if (!resPdf) {
+        //盒子未连接
+        message.success('盒子未连接无法打印，出站成功');
+        router.push('/stationManagement');
       } else {
         message.error(resPdf.description || '生成失败。请重试');
       }
@@ -236,7 +240,7 @@ const Index = () => {
   const warnInfo = text => {
     Modal.warn({
       title: text,
-      onOk() { },
+      onOk() {},
     });
   };
 
