@@ -1,5 +1,5 @@
 import { Component, useEffect, useState } from 'react';
-import { Select, Input, Button, message, Modal, Form,Checkbox } from 'antd';
+import { Select, Input, Button, message, Modal, Form, Checkbox } from 'antd';
 import { station } from '../../api';
 
 const { Option } = Select;
@@ -37,8 +37,8 @@ const Index = ({ close, onSubmit }) => {
   };
 
   const onSelect = (e, key) => {
-    allType.map(item => {
-      if (item.id == e) {
+    allType.map((item, index) => {
+      if (index == e) {
         form.setFieldsValue({
           price: (item.price / 100).toFixed(0),
           load_truck_type: truckType[item.type],
@@ -61,9 +61,9 @@ const Index = ({ close, onSubmit }) => {
             // onChange={e => loadTruckType(e, price)}
             onSelect={onSelect}>
             {allType &&
-              allType.map((item, key) => {
+              allType.map((item, index) => {
                 return (
-                  <Option key={item.id} value={`${item.id}`} label={truckType[item.type]} labelInValue>
+                  <Option key={index} value={`${index}`} label={truckType[item.type]} labelInValue>
                     {`${truckType[item.type]}${(item.price / 100).toFixed(0)}`}
                   </Option>
                 );
