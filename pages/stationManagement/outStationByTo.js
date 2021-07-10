@@ -61,7 +61,6 @@ const Index = () => {
   //获取详情
   const getDetailInfo = async () => {
     const params = { id };
-    console.log(params);
     const res = await station.outStationDetail({ params });
     if (res.status === 0) {
       setReceiveInfo(res.result.weigh);
@@ -174,7 +173,7 @@ const Index = () => {
       ...receiveWeight,
       ...primaryWeight,
       ...driverInfo,
-      weight: weight ? weight * 1000 : 0,
+      weight: Object.keys(weight).length == 0 ? weight * 1000 : 0,
       routeId,
     };
     const res = await station.postOutStation({ params });
