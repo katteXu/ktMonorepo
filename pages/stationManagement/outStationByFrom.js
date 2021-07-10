@@ -165,7 +165,7 @@ const Index = () => {
       carWeight: fromCarWeight ? fromCarWeight * 1000 : 0,
       totalWeight: fromTotalWeight ? fromTotalWeight * 1000 : 0,
       ...driverInfo,
-      weight: weight ? weight * 1000 : 0,
+      weight: Object.keys(weight).length == 0 ? weight * 1000 : 0,
       routeId: routeInfo.id,
     };
     const res = await station.postOutStation({ params });
