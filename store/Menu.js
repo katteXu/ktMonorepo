@@ -146,13 +146,13 @@ const MENU_LIST = [
     name: '智慧工厂',
     key: 'productManagement',
     children: [
-      {
-        module: 'statistical',
-        icon: 'fundProjectionScreenOutlined',
-        name: '数据面板',
-        key: 'statistical',
-        permission: ['DATA_PANEL_READ'],
-      },
+      // {
+      //   module: 'statistical',
+      //   icon: 'fundProjectionScreenOutlined',
+      //   name: '数据面板',
+      //   key: 'statistical',
+      //   permission: ['DATA_PANEL_READ'],
+      // },
       {
         name: '设备管理',
         key: 'equipmentManagement',

@@ -7,8 +7,8 @@ import mqtt from 'mqtt';
 // import mqtt from '../../static/temp/mqtt.min.js';
 // const mqtt = require('../../static/temp/mqtt.min.js');
 const config = {
-  serverUri: 'ws://mqtt-cn-oew1v488w0d.mqtt.aliyuncs.com',
-  serverUriPro: 'ws://mqtt-cn-oew1v488w0d.mqtt.aliyuncs.com', //生产环境https 测试是ws  正式是wss
+  serverUri: 'wss://mqtt-cn-oew1v488w0d.mqtt.aliyuncs.com',
+  serverUriPro: 'wss://mqtt-cn-oew1v488w0d.mqtt.aliyuncs.com', //生产环境https 测试是ws  正式是wss
   instanceId: 'mqtt-cn-oew1v488w0d',
   accessKey: 'LTAI4G1BBMx6Z8WkZQisLusH',
   secretKey: 'b5JTFcgm4aSo2c0ZQ0U3hApDePyWdH',
