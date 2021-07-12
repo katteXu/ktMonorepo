@@ -44,12 +44,12 @@ const MENU_LIST = [
       },
     ],
   },
-  {
-    module: 'stationManagement',
-    icon: 'robot',
-    name: '站内管理',
-    key: 'stationManagement',
-  },
+  // {
+  //   module: 'stationManagement',
+  //   icon: 'robot',
+  //   name: '站内管理',
+  //   key: 'stationManagement',
+  // },
   {
     module: 'contractManagement',
     icon: 'book',
@@ -308,26 +308,26 @@ const useMenu = () => {
           ? AGENT_MENU_LIST
           : MENU_LIST
         : MENU_LIST.filter(item => {
-          // 权限配置
-          if (item.permission) {
-            return permissions.find(value => item.permission.includes(value));
-          }
-          // 只对主账号显示
-          if (item.isSuper) {
-            return is_boss;
-          }
-          // 过滤子模块
-          if (item.children) {
-            item.children = item.children.filter(citem => {
-              if (citem.permission) {
-                return permissions.find(value => citem.permission.includes(value));
-              }
-              return true;
-            });
-          }
+            // 权限配置
+            if (item.permission) {
+              return permissions.find(value => item.permission.includes(value));
+            }
+            // 只对主账号显示
+            if (item.isSuper) {
+              return is_boss;
+            }
+            // 过滤子模块
+            if (item.children) {
+              item.children = item.children.filter(citem => {
+                if (citem.permission) {
+                  return permissions.find(value => citem.permission.includes(value));
+                }
+                return true;
+              });
+            }
 
-          return true;
-        });
+            return true;
+          });
       setMenuList(menu);
     }
   };
