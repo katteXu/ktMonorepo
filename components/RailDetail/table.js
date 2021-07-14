@@ -73,7 +73,7 @@ const OrderTable = () => {
       },
     },
     {
-      title: '运费单价(元)',
+      title: '结算单价(元)',
       dataIndex: 'unitPrice',
       key: 'unitPrice',
       align: 'right',

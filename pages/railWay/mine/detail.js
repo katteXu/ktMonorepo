@@ -542,6 +542,23 @@ const RailWayDetail = props => {
                   {dataInfo.wareHouseName}
                 </div>
               </div>
+              {dataInfo.payPath === 1 && (
+                <div className={styles.row}>
+                  <div className={styles.item}>
+                    <span className={styles.label}>信息费单价：</span>
+                    {totalAmount
+                      ? `${(totalAmount / 1000).toFixed(dataInfo.unitName === '吨' ? 2 : 0)} ${dataInfo.unitName}`
+                      : '-'}
+                  </div>
+                  <div className={styles.item}>
+                    <span className={styles.label}>结算单价：</span>
+                    {totalAmount
+                      ? `${(totalAmount / 1000).toFixed(dataInfo.unitName === '吨' ? 2 : 0)} ${dataInfo.unitName}`
+                      : '-'}
+                  </div>
+                  <div className={styles.item}></div>
+                </div>
+              )}
             </div>
           </Skeleton>
           <Skeleton loading={!loading} paragraph={{ rows: 1 }}>

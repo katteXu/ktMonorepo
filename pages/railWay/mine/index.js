@@ -49,7 +49,7 @@ const RailWay = props => {
       render: value => <Ellipsis value={value} width={100} />,
     },
     {
-      title: '运费单价(元/吨)',
+      title: '结算单价(元/吨)',
       dataIndex: 'unitPrice',
       key: 'unitPriceid',
       align: 'right',

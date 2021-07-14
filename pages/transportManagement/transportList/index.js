@@ -129,7 +129,7 @@ const TransportList = props => {
       render: Format.weight,
     },
     {
-      title: '运费单价(元/吨)',
+      title: '结算单价(元/吨)',
       dataIndex: 'unitPrice',
       key: 'unitPrice',
       align: 'right',

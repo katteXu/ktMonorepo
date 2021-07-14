@@ -13,7 +13,7 @@ const FinishType = {
 };
 
 // 第一步
-const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, realPrice, unitName }) => {
+const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, realPrice, unitName, payPath }) => {
   return (
     <div>
       <div className={styles.totalPay}>
@@ -26,12 +26,29 @@ const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, realPrice, unitNam
           </div>
         </div>
       </div>
+      {payPath === 1 && (
+        <div className={styles.payFooter}>
+          <div className={styles.orderTotalNum}>
+            信息费: ￥
+            <span style={{ fontWeight: 600 }}>{realPrice ? (realPrice * 1).toFixed(2) : Format.price(price)}</span> 元
+          </div>
+        </div>
+      )}
+
       <div className={styles.payFooter}>
         <div className={styles.orderTotalNum}>
           结算费用: ￥
           <span style={{ fontWeight: 600 }}>{realPrice ? (realPrice * 1).toFixed(2) : Format.price(price)}</span> 元
         </div>
       </div>
+      {payPath === 1 && (
+        <div className={styles.payFooter}>
+          <div className={styles.orderTotalNum}>
+            合计: ￥
+            <span style={{ fontWeight: 600 }}>{realPrice ? (realPrice * 1).toFixed(2) : Format.price(price)}</span> 元
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -292,7 +309,7 @@ const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSet
       </Steps>
       {/* 详细信息 */}
       {step === 0 && (
-        <div className={styles['step-block']} style={{ height: 110 }}>
+        <div className={styles['step-block']} style={{ height: payInfo.payPath !== 1 && 110 }}>
           <DetailStep {...payInfo} />
           <div className={styles.bottom}>
             <Button onClick={() => settlement('pay')}>结算并支付</Button>

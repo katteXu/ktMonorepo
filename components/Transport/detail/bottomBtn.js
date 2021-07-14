@@ -47,8 +47,9 @@ const BottomBtn = props => {
     id,
     goodsWeight,
     arrivalGoodsWeight,
+    routeInfo,
   } = props.dataInfo;
-
+  console.log(props.dataInfo);
   // 获取用户信息
   const getUser = async () => {
     const { userId } = localStorage;
@@ -603,6 +604,7 @@ const BottomBtn = props => {
             deliverPoundPic: deliverPoundPic || '',
             receivePoundPic: receivePoundPic || '',
             transportFleetId: props.dataInfo.transportFleetId,
+            payPath: routeInfo.payPath,
           }}
           payId={id}
           onclose={() => {
