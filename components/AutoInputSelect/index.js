@@ -163,6 +163,7 @@ const Index = props => {
       {options.map((val, item) => (
         <Select.Option key={item} value={val.key} item={val}>
           {val.value}
+          {mode === 'goodsType' && `${12345}`}
         </Select.Option>
       ))}
     </Select>

@@ -4,6 +4,8 @@ import { Layout, Content, Search, Msg } from '@components';
 import { Format, keepState, getState } from '@utils/common';
 import { inventory } from '@api';
 import router from 'next/router';
+import RawMaterials from './rawMaterials';
+import FinishedGoods from './finishedGoods';
 
 const Index = props => {
   const routeView = {
@@ -62,78 +64,14 @@ const Index = props => {
     },
   ];
 
-  const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState({
-    goodsName: undefined,
-    isRawMaterial: undefined,
-    page: 1,
-    pageSize: 10,
+  const onChangeTab = useCallback(key => {
+    setCurrentTab(key);
+
+    // 设置存储
+    sessionStorage.orderTab = key;
   });
-  // 初始化
-  useEffect(() => {
-    const state = getState().query;
-    setQuery({ ...query, ...state });
-    getInventoryCheckList({ ...query, ...state });
-  }, []);
 
-  const [dataList, setDataList] = useState({});
-  const getInventoryCheckList = async ({ isRawMaterial, goodsName, page, pageSize }) => {
-    setLoading(true);
-    const params = {
-      isRawMaterial,
-      goodsName,
-      page,
-      limit: pageSize,
-    };
-    const res = await inventory.inventoryTotalSum({ params });
-    if (res.status === 0) {
-      setDataList(res.result);
-      keepState({
-        query: {
-          isRawMaterial,
-          goodsName,
-          page,
-          pageSize,
-        },
-      });
-    } else {
-      message.error(res.detail || res.description);
-    }
-    setLoading(false);
-  };
-  const handleSubmit = useCallback(() => {
-    setQuery({ ...query, page: 1 });
-    getInventoryCheckList({ ...query, page: 1 });
-  }, [query]);
-
-  const handleReset = () => {
-    const query = {
-      isRawMaterial: undefined,
-      goodsName: undefined,
-      page: 1,
-      pageSize: 10,
-    };
-    setQuery(query);
-    getInventoryCheckList(query);
-  };
-
-  // 分页
-  const onChangePage = useCallback(
-    (page, pageSize) => {
-      setQuery({ ...query, page, pageSize });
-      getInventoryCheckList({ ...query, page, pageSize });
-    },
-    [dataList]
-  );
-  // 切页码
-  const onChangePageSize = useCallback(
-    (current, pageSize) => {
-      setQuery({ ...query, page: 1, pageSize });
-      getInventoryCheckList({ ...query, page: 1, pageSize });
-    },
-    [dataList]
-  );
-
+  const [currentTab, setCurrentTab] = useState('1');
   return (
     <Layout {...routeView}>
       <Content
@@ -141,62 +79,27 @@ const Index = props => {
           fontFamily:
             '-apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,Roboto,Arial,PingFang SC,Hiragino Sans GB,Microsoft Yahei,SimSun,sans-serif',
         }}>
-        <div style={{ padding: '16px', paddingBottom: 0 }}>
+        <header className="tab-header" style={{ paddingLeft: 32, justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex' }}>
+            <div className={`tab-item ${currentTab === '1' ? 'active' : ''}`} onClick={() => onChangeTab('1')}>
+              原材料
+            </div>
+            <div className={`tab-item ${currentTab === '2' ? 'active' : ''}`} onClick={() => onChangeTab('2')}>
+              产成品
+            </div>
+          </div>
+
           <Button
+            ghost
             type="primary"
             onClick={() => router.push('/inventory/inventoryQuery/create')}
-            style={{ marginBottom: 16 }}>
+            style={{ marginBottom: 16, float: 'right' }}>
             物料设置
           </Button>
-          <Search onSearch={handleSubmit} onReset={handleReset}>
-            <Search.Item label="存货类别">
-              <Select
-                onChange={e => {
-                  setQuery({ ...query, isRawMaterial: e });
-                }}
-                value={query.isRawMaterial}
-                allowClear
-                placeholder="请输入存货类别">
-                <Select.Option value="1">原材料</Select.Option>
-                <Select.Option value="0">产成品</Select.Option>
-              </Select>
-            </Search.Item>
-            <Search.Item label="货品名称">
-              <Input
-                value={query.goodsName}
-                placeholder="请输入货品名称"
-                allowClear
-                onChange={e => {
-                  setQuery({ ...query, goodsName: e.target.value });
-                }}
-              />
-            </Search.Item>
-          </Search>
-        </div>
-
+        </header>
         <section>
-          <Msg>
-            合计：
-            <span style={{ marginLeft: 8 }}>当前库存</span>
-            <span className={'total-num'}>{Format.weight(dataList.totalSum)}</span>吨
-            <span style={{ marginLeft: 32 }}>累计入库</span>
-            <span className={'total-num'}>{Format.weight(dataList.totalInSum)}</span>吨
-            <span style={{ marginLeft: 32 }}>累计出库</span>
-            <span className={'total-num'}>{Format.weight(dataList.totalOutSum)}</span>吨
-          </Msg>
-          <Table
-            loading={loading}
-            dataSource={dataList.data}
-            columns={columns}
-            pagination={{
-              onChange: onChangePage,
-              showSizeChanger: true,
-              pageSize: query.pageSize,
-              current: query.page,
-              total: dataList.count,
-            }}
-            scroll={{ x: 'auto' }}
-          />
+          {currentTab === '1' && <RawMaterials />}
+          {currentTab === '2' && <FinishedGoods />}
         </section>
       </Content>
     </Layout>

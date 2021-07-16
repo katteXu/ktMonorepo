@@ -1,7 +1,9 @@
 import styles from './styles.less';
 import { Form, Input, Button, Select } from 'antd';
+import { WareHouseSelect } from '@components';
+
 const Index = props => {
-  const { index, onRemove, form, rawGoods = [], disabled } = props;
+  const { index, onRemove, form, rawGoods = [], disabled, isShowWarehouse } = props;
 
   // 移除
   const handleRemove = name => {
@@ -22,6 +24,24 @@ const Index = props => {
           </Button>
         )}
       </div>
+      {isShowWarehouse && (
+        <div className={styles.row}>
+          <Form.Item
+            label="原料煤仓库"
+            name={[index, 'wareHouseId']}
+            validateFirst={true}
+            initialValue={-1}
+            rules={[
+              {
+                required: true,
+                message: '请选择原料煤仓库',
+              },
+            ]}>
+            <WareHouseSelect allowClear placeholder="请选择原料煤仓库" style={{ width: 280 }} />
+          </Form.Item>
+        </div>
+      )}
+
       <div className={styles.row}>
         <Form.Item
           label="原料煤名称"
@@ -38,6 +58,7 @@ const Index = props => {
             {rawGoods.map(v => (
               <Select.Option key={v.id} value={v.id}>
                 {v.goodsName}
+                {123}
               </Select.Option>
             ))}
           </Select>

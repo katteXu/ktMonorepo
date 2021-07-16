@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Select, Input, Button, message, Modal, Form } from 'antd';
-import { railWay, getGoodsType } from '../../api';
+import { Select, Input, Button, message, Modal, Form, Radio } from 'antd';
+import { railWay, getGoodsType, getCommon } from '../../api';
 import { QuestionCircleFilled } from '@ant-design/icons';
+import { AutoInputSelect } from '@components';
+import { User } from '@store';
+import styles from './styles.less';
 const { Option } = Select;
 // 表单布局
 const formItemLayout = {
@@ -13,11 +16,35 @@ const formItemLayout = {
 const config = [{ required: true, whitespace: true, message: '选项不可为空' }];
 
 const CreateGoods = ({ close, onCreated }) => {
+  const { userInfo, loading: userLoading } = User.useContainer();
   const [form] = Form.useForm();
   const [goodsTypes, setGoodsTypes] = useState([]);
+  const [isShowWarehouse, setIsShowWarehouse] = useState(false);
+  const [radioRawMaterial, setRadioRawMaterial] = useState();
+  const [fromCompany, setFromCompany] = useState({});
+  const [newCompany, setNewCompany] = useState(false);
   useEffect(() => {
     getGoodsTypes();
   }, []);
+
+  useEffect(() => {
+    if (!userLoading) {
+      setHiddenDate();
+    }
+  }, [userLoading]);
+
+  const setHiddenDate = async () => {
+    const res = await getCommon();
+    if (res.status === 0) {
+      const currentUserName = userInfo.username;
+
+      const hiddenWarehouseName = res.result.find(item => item.key === 'isShowSupplier').url;
+      console.log(currentUserName);
+      if (hiddenWarehouseName.includes(currentUserName)) {
+        setIsShowWarehouse(true);
+      }
+    }
+  };
 
   const getGoodsTypes = async () => {
     const { status, result, detail, description } = await getGoodsType();
@@ -59,8 +86,35 @@ const CreateGoods = ({ close, onCreated }) => {
     }
   };
 
+  const onChangeFromCompany = (e, val) => {
+    if (e) {
+      const item = val.item;
+      setFromCompany({
+        id: item.key,
+        companyName: item.value,
+      });
+
+      form.setFieldsValue({
+        companyName: item.value,
+      });
+    } else {
+      setFromCompany({
+        companyName: undefined,
+      });
+
+      form.setFieldsValue({
+        companyName: undefined,
+      });
+      setNewCompany(true);
+      //搜索后需要重新调接口
+      setTimeout(() => {
+        setNewCompany(false);
+      }, 1000);
+    }
+  };
+
   return (
-    <div>
+    <div className={styles.createGoodsFrom}>
       <Form {...formItemLayout} onFinish={handleSubmit} autoComplete="off" form={form}>
         <Form.Item label="货物类型" name="goodsType" rules={config}>
           <Select placeholder="请选择货物类型" style={{ width: 264 }}>
@@ -82,6 +136,32 @@ const CreateGoods = ({ close, onCreated }) => {
           ]}>
           <Input placeholder="请输入货品名称" style={{ width: 264 }} />
         </Form.Item>
+        {isShowWarehouse && (
+          <Form.Item label="配煤原料" name="rawMaterial" rules={[{ required: true, message: '请选择配煤原料' }]}>
+            <Radio.Group style={{ width: 264 }} onChange={e => setRadioRawMaterial(e.target.value)}>
+              <Radio value={1}>是</Radio>
+              <Radio value={0} style={{ marginLeft: 24 }}>
+                否
+              </Radio>
+            </Radio.Group>
+          </Form.Item>
+        )}
+
+        {isShowWarehouse && radioRawMaterial === 1 && (
+          <Form.Item label="供应商" name="companyName" rules={[{ required: true, message: '请选择配煤原料' }]}>
+            <AutoInputSelect
+              mode="company"
+              allowClear
+              placeholder="请选择供应商"
+              value={fromCompany.companyName}
+              onChange={(e, val) => {
+                onChangeFromCompany(e, val);
+              }}
+              newCompany={newCompany}
+              style={{ width: 264 }}
+            />
+          </Form.Item>
+        )}
         <Form.Item
           name="goodsCode"
           label={

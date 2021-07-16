@@ -1,16 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Input, Button, Form, DatePicker, Radio, Select, message } from 'antd';
 import RawForm from './RawForm';
 import styles from './styles.less';
 import moment from 'moment';
-import { product } from '@api';
+import { product, getCommon } from '@api';
 import { QuestionCircleFilled, PlusOutlined } from '@ant-design/icons';
 import QualityList from '@components/ProductManagement/CoalBlendingList/QualityList';
-import { DrawerInfo } from '@components';
-
+import { DrawerInfo, WareHouseSelect } from '@components';
+import { User } from '@store';
 const Index = props => {
   const { onClose, onSubmit } = props;
   const [form] = Form.useForm();
+  const { userInfo, loading: userLoading } = User.useContainer();
   const [loading, setLoading] = useState(false);
   const [rawList, setRawList] = useState([1, 2]);
   const [disabled, setDisabled] = useState(false);
@@ -18,10 +19,34 @@ const Index = props => {
   const [GoodsType, setGoodsType] = useState([]);
   const [showQualityList, setShowQualityList] = useState(false);
   const [qualityInfo, setQualityInfo] = useState({});
+  const [isShowWarehouse, setIsShowWarehouse] = useState(false);
+  const wareHouseRef = useRef(null);
   useEffect(() => {
     initRawGoods();
     initTargetGoods();
+    form.setFieldsValue({
+      wareHouseId: -1,
+    });
   }, []);
+
+  useEffect(() => {
+    if (!userLoading) {
+      setHiddenDate();
+    }
+  }, [userLoading]);
+
+  const setHiddenDate = async () => {
+    const res = await getCommon();
+    if (res.status === 0) {
+      const currentUserName = userInfo.username;
+
+      const hiddenWarehouseName = res.result.find(item => item.key === 'HAS_WAREHOUSE').url;
+      console.log(currentUserName);
+      if (hiddenWarehouseName.includes(currentUserName)) {
+        setIsShowWarehouse(true);
+      }
+    }
+  };
 
   // 提交数据
   const handleSubmit = async values => {
@@ -185,6 +210,22 @@ const Index = props => {
             />
           </Form.Item>
         </div>
+        {isShowWarehouse && (
+          <div className={styles.row}>
+            <Form.Item
+              label="目标货品仓库"
+              name="wareHouseId"
+              validateFirst={true}
+              rules={[
+                {
+                  required: true,
+                  message: '请选择目标货品仓库',
+                },
+              ]}>
+              <WareHouseSelect allowClear placeholder="请选择目标货品仓库" style={{ width: 280 }} ref={wareHouseRef} />
+            </Form.Item>
+          </div>
+        )}
         <div className={styles.row}>
           <Form.Item
             label="目标货品煤名称"
@@ -229,6 +270,7 @@ const Index = props => {
             key={id}
             rawGoods={rawGoods}
             onRemove={() => handleRemove(id)}
+            isShowWarehouse={isShowWarehouse}
           />
         ))}
         {!disabled && (
