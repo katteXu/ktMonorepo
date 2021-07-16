@@ -134,7 +134,9 @@ const TransportList = props => {
       key: 'unitPrice',
       align: 'right',
       width: 150,
-      render: Format.price,
+      render: (value, record, index) => {
+        return <span>{Format.price((value + record.unitInfoFee).toFixed(0))}</span>;
+      },
     },
     {
       title: '运费(元)',

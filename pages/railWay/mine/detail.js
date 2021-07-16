@@ -13,9 +13,8 @@ import UpdateSendDate from '@components/RailDetail/updateSendDate';
 import UpdateTotalWeight from '@components/RailDetail/updateTotalWeight';
 import UpdateLeavingAmount from '@components/RailDetail/updateLeavingAmount';
 import { Permission } from '@store';
-import { getQuery } from '@utils/common';
+import { getQuery, Format } from '@utils/common';
 import moment from 'moment';
-
 const payMethodStatus = {
   1: '按发货净重结算',
   0: '按收货净重结算',
@@ -546,15 +545,12 @@ const RailWayDetail = props => {
                 <div className={styles.row}>
                   <div className={styles.item}>
                     <span className={styles.label}>信息费单价：</span>
-                    {totalAmount
-                      ? `${(totalAmount / 1000).toFixed(dataInfo.unitName === '吨' ? 2 : 0)} ${dataInfo.unitName}`
-                      : '-'}
+                    {dataInfo ? `${(dataInfo.unitInfoFee / 100).toFixed(0)} 元` : '-'}
                   </div>
                   <div className={styles.item}>
                     <span className={styles.label}>结算单价：</span>
-                    {totalAmount
-                      ? `${(totalAmount / 1000).toFixed(dataInfo.unitName === '吨' ? 2 : 0)} ${dataInfo.unitName}`
-                      : '-'}
+
+                    {Format.price((dataInfo.unitInfoFee + unitPrice * 100).toFixed(0))}
                   </div>
                   <div className={styles.item}></div>
                 </div>

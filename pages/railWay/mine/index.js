@@ -54,7 +54,9 @@ const RailWay = props => {
       key: 'unitPriceid',
       align: 'right',
       width: 120,
-      render: Format.price,
+      render: (value, record, index) => {
+        return <span>{Format.price((value + record.unitInfoFee).toFixed(0))}</span>;
+      },
     },
     {
       title: '付款方式',
@@ -117,7 +119,9 @@ const RailWay = props => {
       key: 'waitPayPrice',
       align: 'right',
       width: 150,
-      render: Format.price,
+      render: (value, record, index) => {
+        return <span>{Format.price((value + record.waitPayInfoFee).toFixed(0))}</span>;
+      },
     },
     {
       title: '已支付车次',
@@ -132,7 +136,9 @@ const RailWay = props => {
       key: 'payPrice',
       align: 'right',
       width: 150,
-      render: Format.price,
+      render: (value, record, index) => {
+        return <span>{Format.price((value + record.payInfoFee).toFixed(0))}</span>;
+      },
     },
     {
       title: '创建时间',

@@ -5,7 +5,7 @@ import Detail from '@components/Transport/detail';
 import router from 'next/router';
 import { railWay, downLoadFile } from '../../api';
 import moment from 'moment';
-import { getQuery } from '@utils/common';
+import { getQuery, Format } from '@utils/common';
 import LoadingBtn from '@components/LoadingBtn';
 
 const { RangePicker } = DatePicker;
@@ -78,7 +78,9 @@ const OrderTable = () => {
       key: 'unitPrice',
       align: 'right',
       width: 120,
-      render: formatPrice,
+      render: (value, record, index) => {
+        return <span>{Format.price((value + record.unitInfoFee).toFixed(0))}</span>;
+      },
     },
     {
       title: '运费(元)',
@@ -183,7 +185,7 @@ const OrderTable = () => {
 
     setExportByQuery(() => _exportByQuery);
   }, [dataList]);
-
+  const [dataInfoAll, setDataInfoAll] = useState({});
   // 获取数据
   const getData = async () => {
     setLoading(true);
@@ -203,7 +205,7 @@ const OrderTable = () => {
     };
 
     const res = await railWay.railWayTable({ params });
-
+    setDataInfoAll(res.result);
     setData(res.result.data);
     setTotal(res.result.count);
     setRealTotalPrice(res.result.realTotalPrice);
@@ -281,14 +283,14 @@ const OrderTable = () => {
               onChange={e => setTrailerPlateNumber(e.target.value)}
             />
           </Search.Item>
-          <Search.Item label="运费单价">
+          {/* <Search.Item label="运费单价">
             <Input
               allowClear
               placeholder="请输入运费单价"
               value={unitPrice}
               onChange={e => setUnitPrice(e.target.value)}
             />
-          </Search.Item>
+          </Search.Item> */}
           <Search.Item label="运单状态">
             <Select
               style={{ width: '100%' }}
@@ -318,10 +320,11 @@ const OrderTable = () => {
             运单总数<span className="total-num">{total}</span>单
           </span>
           <span style={{ marginLeft: 32 }}>
-            已支付运费 <span className="total-num">{(realTotalPrice / 100).toFixed(2)}</span>元
+            已支付运费{' '}
+            <span className="total-num">{Format.price((realTotalPrice + dataInfoAll.realInfoFee).toFixed(0))}</span>元
           </span>
           <span style={{ marginLeft: 32 }}>
-            待支付运费 <span className="total-num">{(price / 100).toFixed(2)}</span> 元
+            待支付运费 <span className="total-num">{Format.price((price + dataInfoAll.infoFee).toFixed(0))}</span> 元
           </span>
           <span style={{ marginLeft: 32 }}>
             发货净重<span className="total-num">{(goodsWeight / 1000).toFixed(2)}</span>吨
