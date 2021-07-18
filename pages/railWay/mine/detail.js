@@ -545,11 +545,11 @@ const RailWayDetail = props => {
                 <div className={styles.row}>
                   <div className={styles.item}>
                     <span className={styles.label}>信息费单价：</span>
-                    {dataInfo ? `${(dataInfo.unitInfoFee / 100).toFixed(0)} 元/${dataInfo.unitName}` : '-'}
+                    {dataInfo ? `${(dataInfo.unitInfoFee / 100).toFixed(2)} 元/${dataInfo.unitName}` : '-'}
                   </div>
                   <div className={styles.item}>
                     <span className={styles.label}>结算单价：</span>
-                    {Format.price((dataInfo.unitInfoFee + unitPrice * 100).toFixed(0))} 元/{dataInfo.unitName}
+                    {Format.price(dataInfo.unitInfoFee + unitPrice * 100)} 元/{dataInfo.unitName}
                   </div>
                   <div className={styles.item}></div>
                 </div>
