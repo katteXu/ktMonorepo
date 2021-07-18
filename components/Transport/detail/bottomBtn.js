@@ -481,9 +481,9 @@ const BottomBtn = props => {
     };
     // 获取结算信息
     const res = await transportStatistics.calculateWaitPayInfo({ params });
-
+    console.log('===>', res);
     if (res.status === 0) {
-      setTotalPrice(res.result.realPrice);
+      setTotalPrice(res.result.realPrice + res.result.totalInfoFee);
       setShowModal(true);
       setNowTime(res.result.nowTime);
     } else {

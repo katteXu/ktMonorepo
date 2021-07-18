@@ -87,7 +87,9 @@ const RailWaySettlement = props => {
       key: 'price',
       width: 130,
       align: 'right',
-      render: Format.price,
+      render: (value, record) => {
+        return Format.price(record.price + record.totalInfoFee);
+      },
     },
     {
       title: '承运时间',
@@ -756,7 +758,10 @@ const RailWaySettlement = props => {
           </div>
           <div style={{ marginTop: 16, color: '#333333' }}>
             结算运费：
-            <span style={{ color: '#477AEF', fontSize: 16 }}>{Format.price(settlementInfo.realPrice)}</span>元
+            <span style={{ color: '#477AEF', fontSize: 16 }}>
+              {Format.price(settlementInfo.realPrice + settlementInfo.totalInfoFee)}
+            </span>
+            元
           </div>
         </div>
       </Modal>

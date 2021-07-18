@@ -89,7 +89,9 @@ const RailWayPay = () => {
       key: 'price',
       width: 130,
       align: 'right',
-      render: Format.price,
+      render: (value, record) => {
+        return Format.price(record.price + record.totalInfoFee);
+      },
     },
     {
       title: '操作',
