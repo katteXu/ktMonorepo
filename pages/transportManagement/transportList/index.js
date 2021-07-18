@@ -144,8 +144,10 @@ const TransportList = props => {
       key: 'price',
       align: 'right',
       width: 150,
-      render: (value, { realPrice }) => {
-        return realPrice === 0 ? Format.price(value) : Format.price(realPrice);
+      render: (value, { realPrice, totalInfoFee }) => {
+        return realPrice === 0
+          ? Format.price((value + totalInfoFee).toFixed(0))
+          : Format.price((realPrice + totalInfoFee).toFixed(0));
       },
     },
     {

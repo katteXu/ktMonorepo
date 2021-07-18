@@ -13,7 +13,7 @@ const FinishType = {
 };
 
 // 第一步
-const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, realPrice, unitName, payPath }) => {
+const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, realPrice, unitName, payPath, totalInfoFee }) => {
   return (
     <div>
       <div className={styles.totalPay}>
@@ -29,8 +29,7 @@ const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, realPrice, unitNam
       {payPath === 1 && (
         <div className={styles.payFooter}>
           <div className={styles.orderTotalNum}>
-            信息费: ￥
-            <span style={{ fontWeight: 600 }}>{realPrice ? (realPrice * 1).toFixed(2) : Format.price(price)}</span> 元
+            信息费: ￥<span style={{ fontWeight: 600 }}>{Format.price(totalInfoFee)}</span> 元
           </div>
         </div>
       )}
@@ -45,7 +44,12 @@ const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, realPrice, unitNam
         <div className={styles.payFooter}>
           <div className={styles.orderTotalNum}>
             合计: ￥
-            <span style={{ fontWeight: 600 }}>{realPrice ? (realPrice * 1).toFixed(2) : Format.price(price)}</span> 元
+            <span style={{ fontWeight: 600 }}>
+              {realPrice
+                ? Format.addPrice(realPrice * 100 + totalInfoFee)
+                : Format.addPrice(price * 100 + totalInfoFee)}
+            </span>{' '}
+            元
           </div>
         </div>
       )}

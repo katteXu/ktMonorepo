@@ -3,11 +3,13 @@ import { Msg, Icon } from '@components';
 import router from 'next/router';
 import { transportStatistics } from '@api';
 import { Format } from '@utils/common';
+import { throttle } from 'echarts';
 
 const TopMsg = (props, ref) => {
   const [type, setType] = useState(props.type);
   const [waitPayPrice, setWaitPayPrice] = useState(); //待支付费用
   const [checkingPrice, setCheckingPrice] = useState(); // 待结算费用
+  const [total, setTotal] = useState({});
   const text = {
     transport: '显示司机抢单后的全部运单。待结算：核对运单费用，待支付：支付运单费用;',
     route: '对于车队单按专线批量结算、支付。',
@@ -18,6 +20,7 @@ const TopMsg = (props, ref) => {
     if (res.status === 0) {
       setWaitPayPrice(res.result.waitPayPrice);
       setCheckingPrice(res.result.checkingPrice);
+      setTotal(res.result);
     }
   };
 
@@ -110,14 +113,14 @@ const TopMsg = (props, ref) => {
             <span>
               您有待结算费用
               <span className="total-num" style={{ color: '#333333FF', fontSize: 16 }}>
-                {Format.price(checkingPrice)}
+                {Format.price((checkingPrice + total.checkingInfoFee).toFixed(0))}
               </span>
               元
             </span>
             <span style={{ marginLeft: 32 }}>
               待支付费用
               <span className="total-num" style={{ color: '#333333FF', fontSize: 16 }}>
-                {Format.price(waitPayPrice)}
+                {Format.price((waitPayPrice + total.waitPayInfoFee).toFixed(0))}
               </span>
               元
             </span>

@@ -48,6 +48,7 @@ const BottomBtn = props => {
     goodsWeight,
     arrivalGoodsWeight,
     routeInfo,
+    totalInfoFee,
   } = props.dataInfo;
   console.log(props.dataInfo);
   // 获取用户信息
@@ -605,6 +606,7 @@ const BottomBtn = props => {
             receivePoundPic: receivePoundPic || '',
             transportFleetId: props.dataInfo.transportFleetId,
             payPath: routeInfo.payPath,
+            totalInfoFee: totalInfoFee,
           }}
           payId={id}
           onclose={() => {

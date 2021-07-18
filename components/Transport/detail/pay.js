@@ -14,7 +14,18 @@ const PAY_STATUS = {
  * 支付信息
  */
 const Pay = props => {
-  const { truckerInfo, status, routeInfo, unitName, price, realPrice, id, payStatus } = props.dataInfo;
+  const {
+    truckerInfo,
+    status,
+    routeInfo,
+    unitName,
+    price,
+    realPrice,
+    id,
+    payStatus,
+    unitInfoFee,
+    totalInfoFee,
+  } = props.dataInfo;
   const { id: rid, payPath } = routeInfo;
   console.log(props.dataInfo);
   const [btnLoading, setBtnLoading] = useState(false);
@@ -76,15 +87,23 @@ const Pay = props => {
     <div className={styles.floor}>
       <div className={styles.title}>支付信息</div>
       <div className={styles.row}>
-        <div className={styles.label} style={{ minWidth: (status === 'WAIT_PAY' || status === 'CHECKING') && 84 }}>
-          {status === 'WAIT_PAY' || status === 'CHECKING' ? '运费' : '结算'}单价：
+        <div
+          className={styles.label}
+          style={{
+            minWidth:
+              (status === 'WAIT_PAY' || status === 'CHECKING' || status === 'DONE' || status === 'REJECT') && 84,
+          }}>
+          {(status === 'WAIT_PAY' || status === 'CHECKING' || status === 'DONE' || status === 'REJECT') && payPath === 1
+            ? '运费'
+            : '结算'}
+          单价：
         </div>
         <div className={styles.data} style={{ overflow: 'unset' }}>
           {editUnitPrice ? (
             <>
               <Select
                 style={{ width: 100, marginRight: 10 }}
-                placeholder={status === 'WAIT_PAY' || status === 'CHECKING' ? '运费单价' : '结算单价'}
+                placeholder={'单价'}
                 value={unitPrice}
                 size="small"
                 onChange={value => setUnitPrice(value)}
@@ -126,25 +145,25 @@ const Pay = props => {
           )}
         </div>
       </div>
-      {(status === 'WAIT_PAY' || status === 'CHECKING') && payPath === 1 && (
+      {(status === 'WAIT_PAY' || status === 'CHECKING' || status === 'DONE' || status === 'REJECT') && payPath === 1 && (
         <div>
           <div className={styles.row}>
             <div className={styles.label} style={{ minWidth: 84 }}>
               信息费单价：
             </div>
-            <div className={styles.data}>{Format.price(price)} 元/吨</div>
+            <div className={styles.data}>{Format.price(unitInfoFee)} 元/吨</div>
           </div>
           <div className={styles.row}>
             <div className={styles.label} style={{ minWidth: 84 }}>
               结算单价：
             </div>
-            <div className={styles.data}>{Format.price(price)} 元/吨</div>
+            <div className={styles.data}>{Format.addPrice(unitPrice * 100 + unitInfoFee)} 元/吨</div>
           </div>
           <div className={styles.row}>
             <div className={styles.label} style={{ minWidth: 84 }}>
               信息费：
             </div>
-            <div className={styles.data}>{Format.price(price)} 元</div>
+            <div className={styles.data}>{Format.price(totalInfoFee)} 元</div>
           </div>
         </div>
       )}
@@ -152,7 +171,12 @@ const Pay = props => {
         ''
       ) : (
         <div className={styles.row}>
-          <div className={styles.label} style={{ minWidth: (status === 'WAIT_PAY' || status === 'CHECKING') && 84 }}>
+          <div
+            className={styles.label}
+            style={{
+              minWidth:
+                (status === 'WAIT_PAY' || status === 'CHECKING' || status === 'DONE' || status === 'REJECT') && 84,
+            }}>
             预计运费：
           </div>
           <div className={styles.data}>{Format.price(price)} 元</div>
@@ -160,7 +184,12 @@ const Pay = props => {
       )}
 
       <div className={styles.row}>
-        <div className={styles.label} style={{ minWidth: (status === 'WAIT_PAY' || status === 'CHECKING') && 84 }}>
+        <div
+          className={styles.label}
+          style={{
+            minWidth:
+              (status === 'WAIT_PAY' || status === 'CHECKING' || status === 'DONE' || status === 'REJECT') && 84,
+          }}>
           结算运费：
         </div>
         <div className={styles.data}>
@@ -179,12 +208,16 @@ const Pay = props => {
           )}
         </div>
       </div>
-      {status === 'WAIT_PAY' && payPath === 1 && (
+      {(status === 'WAIT_PAY' || status === 'DONE' || status === 'REJECT') && payPath === 1 && (
         <div className={styles.row}>
-          <div className={styles.label} style={{ minWidth: (status === 'WAIT_PAY' || status === 'CHECKING') && 84 }}>
+          <div
+            className={styles.label}
+            style={{ minWidth: (status === 'WAIT_PAY' || status === 'DONE' || status === 'REJECT') && 84 }}>
             合计：
           </div>
-          <div className={styles.data}>{Format.price(price)} 元</div>
+          <div className={styles.data}>
+            {realPrice === 0 ? Format.addPrice(totalInfoFee + price) : Format.addPrice(realPrice + totalInfoFee)}元
+          </div>
         </div>
       )}
       {/* 支付方式  */}
