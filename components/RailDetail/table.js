@@ -88,8 +88,8 @@ const OrderTable = () => {
       key: 'price',
       align: 'right',
       width: 140,
-      render: (value, { realPrice }) => {
-        return realPrice === 0 ? formatPrice(value) : formatPrice(realPrice);
+      render: (value, { realPrice, totalInfoFee }) => {
+        return realPrice === 0 ? formatPrice(value + totalInfoFee) : formatPrice(realPrice + totalInfoFee);
       },
     },
     {
