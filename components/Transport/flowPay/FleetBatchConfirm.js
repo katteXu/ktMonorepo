@@ -24,7 +24,7 @@ const DetailStep = ({ totalGoodsWeight, totalArrivalGoodsWeight, transportCount,
       <div className={styles['data-row']}>
         结算运费：¥
         <span style={{ color: '#477AEF', fontSize: 16, padding: '0 4px', fontWeight: 600 }}>
-          {Format.price(realPrice + totalInfoFee)}
+          {Format.price(realPrice)}
         </span>
         元
       </div>
@@ -183,7 +183,7 @@ const FleetBatchConfirm = ({ payInfo, payId, onFinish, rides }) => {
   const submit = ({ password }) => {
     const params = {
       tides: payId.join(' '),
-      oldPrice: payInfo.realPrice + payInfo.totalInfoFee,
+      oldPrice: payInfo.realPrice,
       payPass: {
         passOne: password[0].value,
         passTwo: password[1].value,
@@ -221,7 +221,7 @@ const FleetBatchConfirm = ({ payInfo, payId, onFinish, rides }) => {
       {/* 支付密码 */}
       {step === 1 && (
         <div className={styles['step-block']} style={{ height: 163 }}>
-          <PayStep onChange={setPassword} price={payInfo.realPrice + payInfo.totalInfoFee} />
+          <PayStep onChange={setPassword} price={payInfo.realPrice} />
           <div className={styles['error-message']}>{errMsg}</div>
           <div className={styles.bottom}>
             <Button onClick={toPrev} disabled={payLoading}>

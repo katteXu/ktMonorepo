@@ -14,6 +14,7 @@ const PAY_STATUS = {
  * 支付信息
  */
 const Pay = props => {
+  console.log(props.dataInfo);
   const {
     truckerInfo,
     status,

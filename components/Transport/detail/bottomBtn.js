@@ -481,9 +481,8 @@ const BottomBtn = props => {
     };
     // 获取结算信息
     const res = await transportStatistics.calculateWaitPayInfo({ params });
-    console.log('===>', res);
     if (res.status === 0) {
-      setTotalPrice(res.result.realPrice + res.result.totalInfoFee);
+      setTotalPrice(res.result.realPrice);
       setShowModal(true);
       setNowTime(res.result.nowTime);
     } else {
@@ -622,7 +621,7 @@ const BottomBtn = props => {
 
       {/* 支付密码 */}
       <Modal
-        title="运单支付"
+        title="运单支付1"
         destroyOnClose
         maskClosable={false}
         footer={null}

@@ -87,9 +87,7 @@ const RailWaySettlement = props => {
       key: 'price',
       width: 130,
       align: 'right',
-      render: (value, record) => {
-        return Format.price(record.price + record.totalInfoFee);
-      },
+      render: Format.price,
     },
     {
       title: '承运时间',
