@@ -85,7 +85,9 @@ const Index = props => {
       key: 'unitPrice',
       width: 120,
       align: 'right',
-      render: Format.price,
+      render: (value, record) => {
+        return Format.price(record.unitPrice + record.unitInfoFee);
+      },
     },
     {
       title: '结算运费(元)',
@@ -93,7 +95,9 @@ const Index = props => {
       key: 'realPrice',
       width: 120,
       align: 'right',
-      render: Format.price,
+      render: (value, record) => {
+        return Format.price(record.realPrice + record.totalInfoFee);
+      },
     },
     {
       title: '承运时间',

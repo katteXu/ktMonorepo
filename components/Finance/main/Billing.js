@@ -230,7 +230,7 @@ const Billing = props => {
   const onChangePage = useCallback(
     (page, pageSize) => {
       setQuery({ ...query, page, pageSize });
-      getRemoteData({ ...query, page });
+      getRemoteData({ ...query, page, pageSize });
     },
     [query]
   );
@@ -302,7 +302,7 @@ const Billing = props => {
    * 查询数据
    * @param {Object} param0
    */
-  const getRemoteData = async ({ fromCompany, toCompany, goodsType, begin, end, page, pageSize = 10 }) => {
+  const getRemoteData = async ({ fromCompany, toCompany, goodsType, begin, end, page, pageSize }) => {
     setLoading(true);
     const params = {
       fromCompany,

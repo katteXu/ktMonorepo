@@ -13,7 +13,7 @@ const FinishType = {
 };
 
 // 第一步
-const DetailStep = ({ totalGoodsWeight, totalArrivalGoodsWeight, transportCount, realPrice }) => {
+const DetailStep = ({ totalGoodsWeight, totalArrivalGoodsWeight, transportCount, realPrice, totalInfoFee }) => {
   return (
     <div className={styles['detail-step']}>
       <div className={styles['data-row']}>运输车次：{transportCount || 0} 辆</div>

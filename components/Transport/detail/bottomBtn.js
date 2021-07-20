@@ -47,8 +47,10 @@ const BottomBtn = props => {
     id,
     goodsWeight,
     arrivalGoodsWeight,
+    routeInfo,
+    totalInfoFee,
   } = props.dataInfo;
-
+  console.log(props.dataInfo);
   // 获取用户信息
   const getUser = async () => {
     const { userId } = localStorage;
@@ -479,7 +481,6 @@ const BottomBtn = props => {
     };
     // 获取结算信息
     const res = await transportStatistics.calculateWaitPayInfo({ params });
-
     if (res.status === 0) {
       setTotalPrice(res.result.realPrice);
       setShowModal(true);
@@ -603,6 +604,8 @@ const BottomBtn = props => {
             deliverPoundPic: deliverPoundPic || '',
             receivePoundPic: receivePoundPic || '',
             transportFleetId: props.dataInfo.transportFleetId,
+            payPath: routeInfo.payPath,
+            totalInfoFee: totalInfoFee,
           }}
           payId={id}
           onclose={() => {
@@ -618,7 +621,7 @@ const BottomBtn = props => {
 
       {/* 支付密码 */}
       <Modal
-        title="运单支付"
+        title="运单支付1"
         destroyOnClose
         maskClosable={false}
         footer={null}

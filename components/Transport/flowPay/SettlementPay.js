@@ -13,7 +13,7 @@ const FinishType = {
 };
 
 // 第一步
-const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, realPrice, unitName }) => {
+const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, realPrice, unitName, payPath, totalInfoFee }) => {
   return (
     <div>
       <div className={styles.totalPay}>
@@ -26,23 +26,42 @@ const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, realPrice, unitNam
           </div>
         </div>
       </div>
+      {payPath === 1 && (
+        <div className={styles.payFooter}>
+          <div className={styles.orderTotalNum}>
+            信息费: ￥<span style={{ fontWeight: 600 }}>{Format.price(totalInfoFee)}</span> 元
+          </div>
+        </div>
+      )}
+
       <div className={styles.payFooter}>
         <div className={styles.orderTotalNum}>
           结算费用: ￥
           <span style={{ fontWeight: 600 }}>{realPrice ? (realPrice * 1).toFixed(2) : Format.price(price)}</span> 元
         </div>
       </div>
+      {payPath === 1 && (
+        <div className={styles.payFooter}>
+          <div className={styles.orderTotalNum}>
+            合计: ￥
+            <span style={{ fontWeight: 600 }}>
+              {realPrice ? Format.addPrice(realPrice * 100 + totalInfoFee) : Format.addPrice(price + totalInfoFee)}
+            </span>{' '}
+            元
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 // 第二步
-const PayStep = ({ onChange, price }) => {
+const PayStep = ({ onChange, price, totalInfoFee }) => {
   return (
     <div className={styles['pay-step']}>
       <div className={styles.title}>支付总额</div>
       <div className={styles.price}>
-        ￥<span className={styles.number}>{Format.price(price)}</span>元
+        ￥<span className={styles.number}>{Format.price(totalInfoFee + price)}</span>元
         <Tooltip
           overlayStyle={{ maxWidth: 'max-content', padding: '0 12px' }}
           title={<div>常见费用问题请联系客服核对并修改</div>}>
@@ -215,10 +234,11 @@ const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSet
 
   // 结算提交
   const settlement = async type => {
+    let _totalPrice = payInfo.realPrice ? parseInt(payInfo.realPrice * 100) : payInfo.price;
     const params = {
       tid: payId,
       isAgree: true,
-      realPrice: payInfo.realPrice ? parseInt(payInfo.realPrice * 100) : payInfo.price,
+      realPrice: _totalPrice,
       goodsWeight: payInfo.goodsWeight,
       arrivalGoodsWeight: payInfo.arrivalGoodsWeight,
       deliverPoundPic: payInfo.deliverPoundPic || '',
@@ -240,7 +260,7 @@ const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSet
         }
         // // 设置支付信息
         // setShowModal(true);
-        setTotalPrice(payInfo.realPrice ? parseInt(payInfo.realPrice * 100) : payInfo.price);
+        setTotalPrice(_totalPrice + payInfo.totalInfoFee);
         //去下一个状态
         setStep(1);
         // 获取当前时间
@@ -292,7 +312,7 @@ const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSet
       </Steps>
       {/* 详细信息 */}
       {step === 0 && (
-        <div className={styles['step-block']} style={{ height: 110 }}>
+        <div className={styles['step-block']} style={{ height: payInfo.payPath !== 1 && 110 }}>
           <DetailStep {...payInfo} />
           <div className={styles.bottom}>
             <Button onClick={() => settlement('pay')}>结算并支付</Button>
@@ -305,7 +325,11 @@ const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSet
       {/* 支付密码 */}
       {step === 1 && (
         <div className={styles['step-block']} style={{ height: 163 }}>
-          <PayStep onChange={setPassword} price={payInfo.realPrice ? payInfo.realPrice * 100 : payInfo.price} />
+          <PayStep
+            onChange={setPassword}
+            price={payInfo.realPrice ? payInfo.realPrice * 100 : payInfo.price}
+            totalInfoFee={payInfo.totalInfoFee}
+          />
           <div className={styles['error-message']}>{errMsg}</div>
           <div className={styles.bottom}>
             <Button onClick={onclose} disabled={payLoading}>

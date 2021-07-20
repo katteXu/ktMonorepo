@@ -129,12 +129,14 @@ const TransportList = props => {
       render: Format.weight,
     },
     {
-      title: '运费单价(元/吨)',
+      title: '结算单价(元/吨)',
       dataIndex: 'unitPrice',
       key: 'unitPrice',
       align: 'right',
       width: 150,
-      render: Format.price,
+      render: (value, record, index) => {
+        return <span>{Format.price((value + record.unitInfoFee).toFixed(0))}</span>;
+      },
     },
     {
       title: '运费(元)',
@@ -142,8 +144,10 @@ const TransportList = props => {
       key: 'price',
       align: 'right',
       width: 150,
-      render: (value, { realPrice }) => {
-        return realPrice === 0 ? Format.price(value) : Format.price(realPrice);
+      render: (value, { realPrice, totalInfoFee }) => {
+        return realPrice === 0
+          ? Format.price((value + totalInfoFee).toFixed(0))
+          : Format.price((realPrice + totalInfoFee).toFixed(0));
       },
     },
     {
