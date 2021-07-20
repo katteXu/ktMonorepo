@@ -29,6 +29,7 @@ const GoodsManagement = props => {
     const params = {
       goodsType: data.goodsType,
       goodsName: data.goodsName,
+      addressCompanyId: data.addressCompanyId,
       rawMaterial: data.rawMaterial,
       unitPrice: (data.unitPrice * 100).toFixed(0) * 1,
       waterContentMin: data.standard_mad.min ? (data.standard_mad.min * 100).toFixed(0) * 1 : 0,

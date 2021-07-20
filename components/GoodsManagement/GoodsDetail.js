@@ -245,7 +245,10 @@ const GoodsDetail = ({ rowData = {}, setShowOutModal, setShowInModal, setGetList
             </div>
             <div className={styles.col}>
               货品名称：
-              <span className={styles['col-data']}>{rowData.goodsName}</span>
+              <span className={styles['col-data']}>
+                {rowData.goodsName}
+                {' ' + rowData.addressCompany}
+              </span>
             </div>
             <div className={styles.col}>
               成本单价(元/吨)：

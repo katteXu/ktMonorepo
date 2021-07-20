@@ -26,10 +26,10 @@ const GoodsManagement = props => {
     },
     {
       title: '供应商',
-      dataIndex: 'supplyCompany',
-      key: 'supplyCompany',
+      dataIndex: 'addressCompany',
+      key: 'addressCompany',
       width: 200,
-      render: value => value || '-',
+      render: value => <Ellipsis value={value} width={180} />,
     },
     {
       title: '货物类型',
@@ -44,10 +44,10 @@ const GoodsManagement = props => {
 
     {
       title: '存货类别',
-      dataIndex: 'supplyCompany',
-      key: 'supplyCompany',
+      dataIndex: 'rawMaterial',
+      key: 'rawMaterial',
       width: 200,
-      render: value => value || '-',
+      render: value => (value === 1 ? '原材料' : '产成品' || '-'),
     },
     {
       title: '库存(吨)',
@@ -103,6 +103,7 @@ const GoodsManagement = props => {
     pageSize: 10,
     goodsName: '',
     goodsType: undefined,
+    isRawMaterial: undefined,
   });
 
   const [GoodsType, setGoodsType] = useState({});
@@ -214,6 +215,7 @@ const GoodsManagement = props => {
       pageSize: 10,
       goodsName: '',
       goodsType: undefined,
+      isRawMaterial: undefined,
     };
     setQuery(query);
     setSelectedRowKeys([]);
@@ -264,7 +266,7 @@ const GoodsManagement = props => {
    * 查询数据
    * @param {Object} param0
    */
-  const getRemoteData = async ({ page, pageSize, goodsType, goodsName }) => {
+  const getRemoteData = async ({ page, pageSize, goodsType, goodsName, isRawMaterial }) => {
     setLoading(true);
 
     const params = {
@@ -272,6 +274,7 @@ const GoodsManagement = props => {
       limit: pageSize,
       goodsType,
       goodsName,
+      isRawMaterial,
     };
 
     const res = await stock.getInventoryList({ params });
@@ -286,6 +289,7 @@ const GoodsManagement = props => {
           pageSize,
           goodsType,
           goodsName,
+          isRawMaterial,
         },
       });
     } else {

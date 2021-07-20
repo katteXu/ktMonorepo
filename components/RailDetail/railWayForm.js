@@ -76,9 +76,10 @@ const number_rules = [
 const getGoodsType = async () => {
   const res = await railWay.getGoodsType();
   if (res.status === 0) {
-    const result = res.result.map(({ goodsName }) => goodsName);
+    // const result = res.result.map(({ goodsName }) => goodsName);
     // 去重
-    return Array.from(new Set(result));
+    // return Array.from(new Set(result));
+    return res.result;
   } else {
     return [];
   }
@@ -530,7 +531,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   Object.keys(options).forEach(item => {
     selectChildren.push(<Option key={item}>{options[item]}</Option>);
   });
-
+  console.log(goodList);
   return (
     <div className={styles.fromInfoRailWay}>
       <Form
@@ -839,9 +840,13 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
               optionLabelProp="label"
               disabled={contract && Object.keys(contract).length > 0 ? true : false}>
               {goodList.map(item => (
-                <Option key={`${item}`} value={item} label={item} title={item}>
-                  {item}
-                  {123}
+                <Option
+                  key={`${item.id}`}
+                  value={item.goodsName}
+                  label={item.goodsName}
+                  title={`${item.goodsName} ${' ' + item.addressCompany}`}>
+                  {item.goodsName}
+                  {' ' + item.addressCompany}
                 </Option>
               ))}
             </Select>

@@ -58,7 +58,7 @@ const Index = props => {
             {rawGoods.map(v => (
               <Select.Option key={v.id} value={v.id}>
                 {v.goodsName}
-                {123}
+                {' ' + v.addressCompany}
               </Select.Option>
             ))}
           </Select>

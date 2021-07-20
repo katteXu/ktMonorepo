@@ -79,28 +79,28 @@ const EditableTable = ({ dataInfo, handleDetail, form, hasWareHouseId, handleDis
             rules={
               inputType === 'number'
                 ? [
-                  {
-                    validator: (rule, value) => {
-                      if (+value > 0) {
-                        const val = value && value.replace(/^(-)*(\d+)\.(\d{1,2}).*$/, '$1$2.$3');
+                    {
+                      validator: (rule, value) => {
+                        if (+value > 0) {
+                          const val = value && value.replace(/^(-)*(\d+)\.(\d{1,2}).*$/, '$1$2.$3');
 
-                        form.setFieldsValue({
-                          checkNum: val,
-                        });
-                        return Promise.resolve();
-                      } else {
-                        if (!value) {
-                          return Promise.reject('请输入盘点数量');
+                          form.setFieldsValue({
+                            checkNum: val,
+                          });
+                          return Promise.resolve();
+                        } else {
+                          if (!value) {
+                            return Promise.reject('请输入盘点数量');
+                          }
+                          const val = value && value.replace(/^(-)*(\d+)\.(\d{1,2}).*$/, '$1$2.$3');
+                          form.setFieldsValue({
+                            checkNum: val,
+                          });
+                          return Promise.reject('请输入大于0的数字');
                         }
-                        const val = value && value.replace(/^(-)*(\d+)\.(\d{1,2}).*$/, '$1$2.$3');
-                        form.setFieldsValue({
-                          checkNum: val,
-                        });
-                        return Promise.reject('请输入大于0的数字');
-                      }
+                      },
                     },
-                  },
-                ]
+                  ]
                 : [{ required: true, message: '请选择货品名称' }]
             }>
             {inputNode}
@@ -219,7 +219,7 @@ const EditableTable = ({ dataInfo, handleDetail, form, hasWareHouseId, handleDis
       dataIndex: 'goodsName',
       width: '25%',
       editable: true,
-      render: value => <span>{value || '--'}</span>,
+      render: (value, record) => <span>{`${value}${' ' + record.addressCompany}` || '--'}</span>,
     },
     {
       title: '盘点数量',

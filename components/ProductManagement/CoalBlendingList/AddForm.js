@@ -8,6 +8,7 @@ import { QuestionCircleFilled, PlusOutlined } from '@ant-design/icons';
 import QualityList from '@components/ProductManagement/CoalBlendingList/QualityList';
 import { DrawerInfo, WareHouseSelect } from '@components';
 import { User } from '@store';
+import { getConfirmLocale } from 'antd/lib/modal/locale';
 const Index = props => {
   const { onClose, onSubmit } = props;
   const [form] = Form.useForm();
@@ -51,7 +52,7 @@ const Index = props => {
   // 提交数据
   const handleSubmit = async values => {
     setLoading(true);
-    const { targetGoodId, date, weight, ...rawForm } = values;
+    const { targetGoodId, targetWareHouseId, date, weight, ...rawForm } = values;
 
     // 目标货品煤
     const targetGoods = GoodsType.find(item => item.id === targetGoodId);
@@ -66,6 +67,7 @@ const Index = props => {
         weight: (item.weight * 1000).toFixed(0) * 1,
         inventoryId: item.inventoryId,
         proportion: ((item.weight / totalWeight) * 10000).toFixed(0) * 1, // 百分比
+        wareHouseId: item.wareHouseId === -1 ? 0 : item.wareHouseId,
       };
       return params;
     });
@@ -76,9 +78,11 @@ const Index = props => {
         inventoryId: targetGoods.id,
         goodsName: targetGoods.goodsName,
         weight: (weight * 1000).toFixed(0) * 1,
+        targetWareHouseId: targetWareHouseId === -1 ? undefined : targetWareHouseId,
       },
       rawMaterial,
     };
+    console.log(params);
     if (qualityInfo.id) {
       params.reportId = qualityInfo.id;
       params.reportNo = qualityInfo.reportId;
@@ -214,7 +218,7 @@ const Index = props => {
           <div className={styles.row}>
             <Form.Item
               label="目标货品仓库"
-              name="wareHouseId"
+              name="targetWareHouseId"
               validateFirst={true}
               rules={[
                 {

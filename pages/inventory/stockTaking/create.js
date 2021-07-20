@@ -203,6 +203,7 @@ const Index = props => {
   };
 
   const onChangeGoodsType = (e, val) => {
+    console.log('12345');
     if (val) {
       const item = val.item;
 

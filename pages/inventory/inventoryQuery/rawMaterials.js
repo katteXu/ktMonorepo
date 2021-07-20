@@ -23,15 +23,15 @@ const Index = props => {
     },
     {
       title: '供应商',
-      dataIndex: 'supplyCompany',
-      key: 'supplyCompany',
+      dataIndex: 'addressCompany',
+      key: 'addressCompany',
       width: 200,
       render: value => value || '-',
     },
     {
       title: '期初库存(吨)',
-      dataIndex: 'supplyCompany',
-      key: 'supplyCompany',
+      dataIndex: 'startInventoryValue',
+      key: 'startInventoryValue',
       width: 150,
       align: 'right',
       render: value => <span>{Format.weight(value) || '-'}</span>,
@@ -63,8 +63,8 @@ const Index = props => {
     },
     {
       title: '期末库存(吨)',
-      dataIndex: 'supplyCompany',
-      key: 'supplyCompany',
+      dataIndex: 'endInventoryValue',
+      key: 'endInventoryValue',
       width: 150,
       align: 'right',
       render: value => <span>{Format.weight(value) || '-'}</span>,
@@ -88,10 +88,10 @@ const Index = props => {
   }, []);
 
   const [dataList, setDataList] = useState({});
-  const getInventoryCheckList = async ({ isRawMaterial, goodsName, page, pageSize, begin, end }) => {
+  const getInventoryCheckList = async ({ goodsName, page, pageSize, begin, end }) => {
     setLoading(true);
     const params = {
-      isRawMaterial,
+      isRawMaterial: 1,
       goodsName,
       page,
       limit: pageSize,
@@ -103,7 +103,6 @@ const Index = props => {
       setDataList(res.result);
       keepState({
         query: {
-          isRawMaterial,
           goodsName,
           page,
           pageSize,
@@ -184,13 +183,13 @@ const Index = props => {
       <Msg style={{ marginTop: 16 }}>
         合计：
         <span style={{ marginLeft: 8 }}>期初库存</span>
-        <span className={'total-num'}>{Format.weight(dataList.totalSum)}</span>吨
+        <span className={'total-num'}>{Format.weight(dataList.startTotalSum)}</span>吨
         <span style={{ marginLeft: 32 }}>累计入库</span>
         <span className={'total-num'}>{Format.weight(dataList.totalInSum)}</span>吨
         <span style={{ marginLeft: 32 }}>累计出库</span>
         <span className={'total-num'}>{Format.weight(dataList.totalOutSum)}</span>吨
         <span style={{ marginLeft: 32 }}>期末库存</span>
-        <span className={'total-num'}>{Format.weight(dataList.totalOutSum)}</span>吨
+        <span className={'total-num'}>{Format.weight(dataList.endTotalSum)}</span>吨
       </Msg>
       <Table
         loading={loading}

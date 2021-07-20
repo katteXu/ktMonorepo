@@ -61,7 +61,7 @@ const Index = () => {
       key: 'raw_goodsName',
       width: 120,
       render: value => {
-        return multipleRender(value.map(item => item.goodsName || '--'));
+        return multipleRender(value.map(item => `${item.goodsName}${' ' + item.addressCompany}` || '--'));
       },
     },
     {

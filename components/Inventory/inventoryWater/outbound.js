@@ -17,7 +17,12 @@ const Index = props => {
       dataIndex: 'goodsName',
       key: 'goodsName',
       width: 200,
-      render: value => value || '-',
+      render: (value, record, index) => (
+        <span>
+          {value}
+          {' ' + record.addressCompany}
+        </span>
+      ),
     },
     {
       title: '客户',
@@ -275,6 +280,7 @@ const Index = props => {
         loading={loading}
         dataSource={dataList.data}
         columns={columns}
+        scroll={{ x: 'auto' }}
         pagination={{
           onChange: onChangePage,
           showSizeChanger: true,

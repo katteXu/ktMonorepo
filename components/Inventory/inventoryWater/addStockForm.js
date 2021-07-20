@@ -57,10 +57,10 @@ const AddStockForm = ({ onClose, formData, onSubmit }) => {
 
   useEffect(() => {
     form.setFieldsValue({
-      goodsType: formData && formData.goodsType,
+      goodsType: formData && `${formData.goodsType}${formData.addressCompany}`,
     });
     setGoodsType({
-      goodsType: formData && formData.goodsType,
+      goodsType: formData && `${formData.goodsType}`,
       id: formData && formData.id,
     });
   }, [formData]);
@@ -96,11 +96,12 @@ const AddStockForm = ({ onClose, formData, onSubmit }) => {
   };
 
   const onChangeGoodsType = (e, val) => {
+    console.log(val);
     if (val) {
       const item = val.item;
 
       form.setFieldsValue({
-        goodsType: item.value,
+        goodsType: item.value + ' ' + item.addressCompany,
       });
       setGoodsType({
         goodsType: item.value,

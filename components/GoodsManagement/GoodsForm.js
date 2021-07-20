@@ -44,7 +44,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
   // 提交数据
   const handleSubmit = async values => {
     setLoading(true);
-    onSubmit && onSubmit({ ...values, id: formData.id });
+    onSubmit && onSubmit({ ...values, id: formData.id, addressCompanyId: fromCompany.id });
     setLoading(false);
   };
 
@@ -88,6 +88,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
         goodsName: formData.goodsName,
         rawMaterial: formData.rawMaterial,
         unitPrice: formData.unitPrice,
+
         standard_mad: {
           min: formData.waterContentMin && formData.waterContentMin / 100,
           max: formData.waterContentMax && formData.waterContentMax / 100,
@@ -137,8 +138,14 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
           min: formData.cleanCoalMin && formData.cleanCoalMin / 100,
           max: formData.cleanCoalMax && formData.cleanCoalMax / 100,
         },
+        companyName: formData.addressCompany,
       });
     }
+    setFromCompany({
+      id: formData.addressCompanyId,
+      companyName: formData.addressCompany,
+    });
+    setRadioRawMaterial(formData.rawMaterial);
     console.log(formData);
   }, [formData]);
 
@@ -167,6 +174,10 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
         setNewCompany(false);
       }, 1000);
     }
+  };
+
+  const radioOnchange = e => {
+    setRadioRawMaterial(e.target.value);
   };
 
   return (
@@ -220,7 +231,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
       <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item label="配煤原料" name="rawMaterial" rules={[{ required: true, message: '请选择配煤原料' }]}>
-            <Radio.Group style={{ width: 264 }} onChange={e => setRadioRawMaterial(e.target.value)}>
+            <Radio.Group style={{ width: 264 }} onChange={e => radioOnchange(e)}>
               <Radio value={1}>是</Radio>
               <Radio value={0} style={{ marginLeft: 24 }}>
                 否
@@ -232,7 +243,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
       {isShowWarehouse && radioRawMaterial === 1 && (
         <div className={styles.row}>
           <div className={styles.col}>
-            <Form.Item label="供应商" name="companyName" rules={[{ required: true, message: '请选择配煤原料' }]}>
+            <Form.Item label="供应商" name="companyName" rules={[{ required: true, message: '请选择供应商' }]}>
               <AutoInputSelect
                 mode="company"
                 allowClear

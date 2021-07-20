@@ -23,6 +23,7 @@ const Index = props => {
       const data = res.result.map((item, key) => ({
         value: item.goodsName,
         key: item.id,
+        addressCompany: item.addressCompany,
       }));
       setDataSource(unique(data));
       setOptions(unique(data));
@@ -156,14 +157,14 @@ const Index = props => {
       onChange={onChange}
       showSearch={true}
       onSearch={handleChange}
-      value={value}
+      value={options.length ? value : ''}
       optionFilterProp="children"
       allowClear={allowClear}
       onPopupScroll={loadMore}>
       {options.map((val, item) => (
         <Select.Option key={item} value={val.key} item={val}>
           {val.value}
-          {mode === 'goodsType' && `${12345}`}
+          {mode === 'goodsType' && `${' ' + val.addressCompany}`}
         </Select.Option>
       ))}
     </Select>

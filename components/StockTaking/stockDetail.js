@@ -25,7 +25,7 @@ const Index = ({ props, id, handleCloseDrawer }) => {
       dataIndex: 'goodsName',
       key: 'goodsName',
       width: 120,
-      render: value => <span>{value || '-'}</span>,
+      render: (value, record) => <span>{`${value}${' ' + record.addressCompany}` || '--'}</span>,
     },
     {
       title: '盘点数量(吨)',

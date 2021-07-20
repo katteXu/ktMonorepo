@@ -57,7 +57,11 @@ const CreateGoods = ({ close, onCreated }) => {
 
   const handleSubmit = async values => {
     const params = {
-      ...values,
+      goodsType: values.goodsType,
+      goodsName: values.goodsName,
+      addressCompanyId: fromCompany.id,
+      rawMaterial: values.rawMaterial,
+      goodsCode: values.goodsCode,
     };
 
     const res = await railWay.createGoods({ params });

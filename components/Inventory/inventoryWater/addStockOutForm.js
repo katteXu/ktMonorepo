@@ -55,7 +55,7 @@ const Index = ({ onClose, formData, onSubmit }) => {
 
   useEffect(() => {
     form.setFieldsValue({
-      goodsType: formData && formData.goodsType,
+      goodsType: formData && `${formData.goodsType}${formData.addressCompany}`,
     });
     setGoodsType({
       goodsType: formData && formData.goodsType,
@@ -99,7 +99,7 @@ const Index = ({ onClose, formData, onSubmit }) => {
       const item = val.item;
 
       form.setFieldsValue({
-        goodsType: item.value,
+        goodsType: item.value + ' ' + item.addressCompany,
       });
       setGoodsType({
         goodsType: item.value,
