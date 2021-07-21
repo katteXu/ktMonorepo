@@ -219,7 +219,7 @@ class PageDemo extends PureComponent {
             <span className={styles['total-num']}>{Format.price(invoiceTotal.taxPriceSum)}</span> 元
           </div>
           <div className={styles.item}>
-            不含税总金额：
+            运费总金额：
             <span className={styles['total-num']}>{Format.price(invoiceTotal.priceSum)}</span> 元
           </div>
           <div className={styles.item}>

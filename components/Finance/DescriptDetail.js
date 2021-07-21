@@ -225,7 +225,7 @@ const DescriptDetail = ({ detail, index, styles, mode }) => {
       <Descriptions.Item label="结算数量">
         {formatWeight(v.weightSum)} {v.unitName || '吨'}
       </Descriptions.Item>
-      <Descriptions.Item label="不含税金额">{formatPrice(v.priceSum)} 元</Descriptions.Item>
+      <Descriptions.Item label="运费金额">{formatPrice(v.priceSum)} 元</Descriptions.Item>
       <Descriptions.Item label="合计大写">{v.taxPriceSumZn}</Descriptions.Item>
       <Descriptions.Item label="含税金额">{formatPrice(v.taxPriceSum)} 元</Descriptions.Item>
     </Descriptions>
