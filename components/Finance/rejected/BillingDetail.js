@@ -427,25 +427,34 @@ const BillingDetail = props => {
               <Checkbox checked={checkedAll}></Checkbox>
               <span>全选(支持跨分页)</span>
             </span>
-            {!isEmpty && <span style={{ marginRight: 12 }}>已选</span>}
+            {(!isEmpty || checkedAll) && <span style={{ marginRight: 12 }}>已选</span>}
             <span>
-              运单数<span className="total-num">{isEmpty ? dataList.count || 0 : selectedRowKeys.length}</span>单
+              运单数
+              <span className="total-num">{isEmpty || checkedAll ? dataList.count || 0 : selectedRowKeys.length}</span>
+              单
             </span>
             <span style={{ marginLeft: 32 }}>
               总净重
               <span className="total-num">
-                {Format.weight(isEmpty ? dataList.arrivalGoodsWeight || 0 : total.weight)}
+                {Format.weight(isEmpty || checkedAll ? dataList.arrivalGoodsWeight || 0 : total.weight)}
               </span>
               吨
             </span>
             <span style={{ marginLeft: 32 }}>
               运费总额
-              <span className="total-num">{Format.price(isEmpty ? dataList.price || 0 : total.price)}</span>元
+              <span className="total-num">
+                {Format.price(isEmpty || checkedAll ? dataList.price || 0 : total.price)}
+              </span>
+              元
             </span>
             <span style={{ marginLeft: 32 }}>
               含税总额
               <span className="total-num">
-                {Format.price(isEmpty ? dataList.invoice_price || 0 : total.price * 1.09)}
+                {Format.price(
+                  isEmpty || checkedAll
+                    ? dataList.invoice_price || 0
+                    : parseInt(total.price + (total.price * dataList.taxPoint) / (1 - dataList.taxPoint))
+                )}
               </span>
               元
             </span>
