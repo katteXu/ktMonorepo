@@ -152,6 +152,7 @@ const InvoiceList = () => {
     UN_INVOICE: 0,
     INVOICED_PAYED: 0,
     ALL: 0,
+    INVOICED: 0,
   });
 
   const handleSearch = () => {
@@ -291,7 +292,7 @@ const InvoiceList = () => {
     const res = await finance.getInvoiceList({ params });
 
     if (res.status === 0) {
-      const { INVOICED_PAYED, REJECT_APPROVE, UN_APPROVE, UN_INVOICE, UN_PAY } = res.result;
+      const { INVOICED_PAYED, REJECT_APPROVE, UN_APPROVE, UN_INVOICE, UN_PAY, INVOICED } = res.result;
       setDataList(res.result);
       setTotal({
         price: res.result.totalPrice,
@@ -305,7 +306,8 @@ const InvoiceList = () => {
         UN_APPROVE,
         UN_INVOICE,
         UN_PAY,
-        ALL: INVOICED_PAYED * 1 + REJECT_APPROVE * 1 + UN_APPROVE * 1 + UN_INVOICE * 1 + UN_PAY * 1,
+        INVOICED,
+        ALL: INVOICED_PAYED * 1 + REJECT_APPROVE * 1 + UN_APPROVE * 1 + UN_INVOICE * 1 + UN_PAY * 1 + INVOICED * 1,
       });
     } else {
       message.error(`${res.detail || res.description}`);
@@ -398,7 +400,9 @@ const InvoiceList = () => {
             <TabPane tab={`待审核(${tabCount.UN_APPROVE})`} key="UN_APPROVE"></TabPane>
             <TabPane tab={`待支付(${tabCount.UN_PAY})`} key="UN_PAY"></TabPane>
             <TabPane tab={`待开票(${tabCount.UN_INVOICE})`} key="UN_INVOICE"></TabPane>
-            <TabPane tab={`已完成(${tabCount.INVOICED_PAYED})`} key="INVOICED_PAYED"></TabPane>
+            <TabPane
+              tab={`已完成(${tabCount.INVOICED_PAYED * 1 + tabCount.INVOICED * 1})`}
+              key="INVOICED_PAYED"></TabPane>
             <TabPane tab={`被驳回(${tabCount.REJECT_APPROVE})`} key="REJECT_APPROVE"></TabPane>
           </Tabs>
 
