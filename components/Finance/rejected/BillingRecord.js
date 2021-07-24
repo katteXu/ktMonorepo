@@ -220,7 +220,7 @@ class PageDemo extends PureComponent {
           batchId={getQuery().batchId}
           mode={mode}
           onChange={this.onChange}
-          detailUrl="/finance/applyInvoice/detail"
+          detailUrl="/finance/invoiceList/viewDetail"
           payType={payType}
           handleShowPayType={show => {
             this.setState({

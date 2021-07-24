@@ -197,7 +197,7 @@ const Record = ({ id, mode = 'view', onChange, detailUrl, payType, batchId, hand
           <Descriptions.Item label={<span className={styles['header-label']}>结算时间</span>}>
             {record.balanceDate}
           </Descriptions.Item>
-          <Descriptions.Item label={<span className={styles['header-label']}>不含税金额</span>}>
+          <Descriptions.Item label={<span className={styles['header-label']}>运费金额</span>}>
             {formatPrice(record.priceSum)} 元
           </Descriptions.Item>
           <Descriptions.Item label={<span className={styles['header-label']}>结算数量</span>}>

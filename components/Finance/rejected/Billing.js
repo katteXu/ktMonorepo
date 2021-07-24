@@ -501,7 +501,11 @@ const Billing = props => {
             <span className="total-num">{Format.price(checkedAll ? total.price : checkTotal.price)}</span>元
             <span style={{ marginLeft: 32 }}>含税总额</span>
             <span className="total-num">
-              {Format.price(checkedAll ? total.invoice_price : checkTotal.price * 1.09)}
+              {Format.price(
+                checkedAll
+                  ? total.invoice_price
+                  : parseInt(checkTotal.price + (checkTotal.price * dataList.taxPoint) / (1 - dataList.taxPoint))
+              )}
             </span>
             元
           </>
