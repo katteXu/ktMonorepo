@@ -140,13 +140,13 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
         },
         companyName: formData.addressCompany,
       });
+      setFromCompany({
+        id: formData.addressCompanyId,
+        companyName: formData.addressCompany,
+      });
+      setRadioRawMaterial(formData.rawMaterial);
+      console.log(formData);
     }
-    setFromCompany({
-      id: formData.addressCompanyId,
-      companyName: formData.addressCompany,
-    });
-    setRadioRawMaterial(formData.rawMaterial);
-    console.log(formData);
   }, [formData]);
 
   const onChangeFromCompany = (e, val) => {

@@ -383,7 +383,7 @@ const GoodsManagement = props => {
                 }}
                 value={query.isRawMaterial}
                 allowClear
-                placeholder="请输入存货类别">
+                placeholder="请选择存货类别">
                 <Select.Option value="1">原材料</Select.Option>
                 <Select.Option value="0">产成品</Select.Option>
               </Select>
