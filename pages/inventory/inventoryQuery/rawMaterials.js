@@ -37,14 +37,14 @@ const Index = props => {
       render: value => <span>{Format.weight(value) || '-'}</span>,
     },
 
-    {
-      title: '当前库存(吨)',
-      dataIndex: 'inventoryValue',
-      key: 'inventoryValue',
-      width: 120,
-      align: 'right',
-      render: value => <span>{Format.weight(value) || '-'}</span>,
-    },
+    // {
+    //   title: '当前库存(吨)',
+    //   dataIndex: 'inventoryValue',
+    //   key: 'inventoryValue',
+    //   width: 120,
+    //   align: 'right',
+    //   render: value => <span>{Format.weight(value) || '-'}</span>,
+    // },
     {
       title: '累计入库(吨)',
       dataIndex: 'inventoryInSum',
