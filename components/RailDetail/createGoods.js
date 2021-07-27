@@ -86,7 +86,7 @@ const CreateGoods = ({ close, onCreated }) => {
         onCreated();
       }
     } else {
-      message.error(detail || description);
+      message.error(res.detail || res.description);
     }
   };
 
@@ -152,7 +152,7 @@ const CreateGoods = ({ close, onCreated }) => {
         )}
 
         {isShowWarehouse && radioRawMaterial === 1 && (
-          <Form.Item label="供应商" name="companyName" rules={[{ required: true, message: '请选择配煤原料' }]}>
+          <Form.Item label="供应商" name="companyName" rules={[{ required: true, message: '供应商不可为空' }]}>
             <AutoInputSelect
               mode="company"
               allowClear
