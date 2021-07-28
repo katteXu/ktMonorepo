@@ -48,7 +48,7 @@ const Index = props => {
         map.set(item.value, item);
       }
     }
-    return [...map.values()];
+    return [...data];
   };
 
   // 设置企业数据源
@@ -149,6 +149,7 @@ const Index = props => {
     },
     { wait: 500 }
   );
+
   return (
     <Select
       loading={loading}
