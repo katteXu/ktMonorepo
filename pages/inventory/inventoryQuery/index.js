@@ -93,7 +93,7 @@ const Index = props => {
             ghost
             type="primary"
             onClick={() => router.push('/inventory/inventoryQuery/create')}
-            style={{ marginBottom: 16, float: 'right' }}>
+            style={{ float: 'right' }}>
             物料设置
           </Button>
         </header>

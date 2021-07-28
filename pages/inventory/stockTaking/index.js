@@ -36,11 +36,23 @@ const StockTaking = props => {
       render: value => <span>{value || '-'}</span>,
     },
     {
-      title: '盘点人',
-      dataIndex: 'operatorName',
-      key: 'operatorName',
+      title: '仓库名称',
+      dataIndex: 'wareHouseName',
+      key: 'wareHouseName',
       width: 120,
       render: value => <span>{value || '-'}</span>,
+    },
+    {
+      title: '货品名称',
+      dataIndex: 'goodsNames',
+      key: 'goodsNames',
+      width: 200,
+      render: value =>
+        value.indexOf('、') != -1 && value.split('、').length > 2 ? (
+          <Ellipsis value={value} width={200}></Ellipsis>
+        ) : (
+          <span>{value}</span>
+        ),
     },
     {
       title: '盘盈数量(吨)',
@@ -57,6 +69,13 @@ const StockTaking = props => {
       width: 120,
       align: 'right',
       render: value => <span>{Format.weight(value) || '-'}</span>,
+    },
+    {
+      title: '盘点人',
+      dataIndex: 'operatorName',
+      key: 'operatorName',
+      width: 120,
+      render: value => <span>{value || '-'}</span>,
     },
     {
       title: '备注',
