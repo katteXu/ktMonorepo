@@ -1,16 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Input, Button, Form, DatePicker, Radio, Select, message } from 'antd';
 import RawForm from './RawForm';
 import styles from './styles.less';
 import moment from 'moment';
-import { product } from '@api';
+import { product, getCommon } from '@api';
 import { QuestionCircleFilled, PlusOutlined } from '@ant-design/icons';
 import QualityList from '@components/ProductManagement/CoalBlendingList/QualityList';
-import { DrawerInfo } from '@components';
-
+import { DrawerInfo, WareHouseSelect } from '@components';
+import { User } from '@store';
+import { getConfirmLocale } from 'antd/lib/modal/locale';
 const Index = props => {
   const { onClose, onSubmit } = props;
   const [form] = Form.useForm();
+  const { userInfo, loading: userLoading } = User.useContainer();
   const [loading, setLoading] = useState(false);
   const [rawList, setRawList] = useState([1, 2]);
   const [disabled, setDisabled] = useState(false);
@@ -18,15 +20,40 @@ const Index = props => {
   const [GoodsType, setGoodsType] = useState([]);
   const [showQualityList, setShowQualityList] = useState(false);
   const [qualityInfo, setQualityInfo] = useState({});
+  const [isShowWarehouse, setIsShowWarehouse] = useState(false);
+  const wareHouseRef = useRef(null);
   useEffect(() => {
     initRawGoods();
     initTargetGoods();
+    form.setFieldsValue({
+      wareHouseId: -1,
+      targetWareHouseId: -1,
+    });
   }, []);
+
+  useEffect(() => {
+    if (!userLoading) {
+      setHiddenDate();
+    }
+  }, [userLoading]);
+
+  const setHiddenDate = async () => {
+    const res = await getCommon();
+    if (res.status === 0) {
+      const currentUserName = userInfo.username;
+
+      const hiddenWarehouseName = res.result.find(item => item.key === 'HAS_WAREHOUSE').url;
+      console.log(currentUserName);
+      if (hiddenWarehouseName.includes(currentUserName)) {
+        setIsShowWarehouse(true);
+      }
+    }
+  };
 
   // 提交数据
   const handleSubmit = async values => {
     setLoading(true);
-    const { targetGoodId, date, weight, ...rawForm } = values;
+    const { targetGoodId, targetWareHouseId, date, weight, ...rawForm } = values;
 
     // 目标货品煤
     const targetGoods = GoodsType.find(item => item.id === targetGoodId);
@@ -41,6 +68,7 @@ const Index = props => {
         weight: (item.weight * 1000).toFixed(0) * 1,
         inventoryId: item.inventoryId,
         proportion: ((item.weight / totalWeight) * 10000).toFixed(0) * 1, // 百分比
+        wareHouseId: item.wareHouseId === -1 ? 0 : item.wareHouseId,
       };
       return params;
     });
@@ -51,9 +79,11 @@ const Index = props => {
         inventoryId: targetGoods.id,
         goodsName: targetGoods.goodsName,
         weight: (weight * 1000).toFixed(0) * 1,
+        targetWareHouseId: targetWareHouseId === -1 ? undefined : targetWareHouseId,
       },
       rawMaterial,
     };
+    console.log(params);
     if (qualityInfo.id) {
       params.reportId = qualityInfo.id;
       params.reportNo = qualityInfo.reportId;
@@ -158,87 +188,112 @@ const Index = props => {
         scrollToFirstError
         onFinish={handleSubmit}
         onFinishFailed={onFinishFailed}>
-        <div className={styles.row} style={{ marginTop: 0 }}>
-          {qualityInfo.id ? (
-            <>
-              <span style={{ width: 143, display: 'inline-block', color: '#333333' }}>　化验单：</span>
-              {qualityInfo.reportId}
-            </>
-          ) : (
-            <Button type="primary" onClick={() => setShowQualityList(true)}>
-              关联化验单
-            </Button>
+        <div style={{ paddingBottom: 63, width: '100%' }}>
+          <div className={styles.row} style={{ marginTop: 0 }}>
+            {qualityInfo.id ? (
+              <>
+                <span style={{ width: 143, display: 'inline-block', color: '#333333' }}>　化验单：</span>
+                {qualityInfo.reportId}
+              </>
+            ) : (
+              <Button type="primary" onClick={() => setShowQualityList(true)}>
+                关联化验单
+              </Button>
+            )}
+          </div>
+          <div className={styles.row}>
+            <Form.Item
+              label="配煤时间"
+              name="date"
+              validateFirst={true}
+              rules={[{ required: true, message: '内容不可为空' }]}>
+              <DatePicker
+                style={{ width: 280 }}
+                showTime={{
+                  defaultValue: moment('23:59:59', 'HH:mm:ss'),
+                }}
+                format="YYYY-MM-DD HH:mm:ss"
+              />
+            </Form.Item>
+          </div>
+          {isShowWarehouse && (
+            <div className={styles.row}>
+              <Form.Item
+                label="目标货品仓库"
+                name="targetWareHouseId"
+                validateFirst={true}
+                rules={[
+                  {
+                    required: true,
+                    message: '请选择目标货品仓库',
+                  },
+                ]}>
+                <WareHouseSelect
+                  allowClear
+                  placeholder="请选择目标货品仓库"
+                  style={{ width: 280 }}
+                  ref={wareHouseRef}
+                />
+              </Form.Item>
+            </div>
+          )}
+          <div className={styles.row}>
+            <Form.Item
+              label="目标货品煤名称"
+              name="targetGoodId"
+              validateFirst={true}
+              rules={[{ required: true, message: '请输入目标货品煤名称' }]}>
+              <Select
+                allowClear
+                placeholder="请选择目标货品煤名称"
+                style={{ width: 280 }}
+                disabled={disabled}
+                optionFilterProp="children"
+                showSearch>
+                {GoodsType.map(v => (
+                  <Select.Option key={v.id} value={v.id}>
+                    {v.goodsName}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </div>
+          <div className={styles.row}>
+            <Form.Item
+              label="目标货品产出量"
+              name="weight"
+              validateFirst={true}
+              rules={[
+                { required: true, message: '请输入目标货品产出量' },
+                {
+                  pattern: /^\d+(\.?\d{1,2})?$/,
+                  message: '内容只能是数字，最多两位小数',
+                },
+              ]}>
+              <Input style={{ width: 280 }} addonAfter="吨" placeholder="请输入目标货品产出量" />
+            </Form.Item>
+          </div>
+          {rawList.map(id => (
+            <RawForm
+              disabled={disabled}
+              form={form}
+              index={id}
+              key={id}
+              rawGoods={rawGoods}
+              onRemove={() => handleRemove(id)}
+              isShowWarehouse={isShowWarehouse}
+            />
+          ))}
+          {!disabled && (
+            <div className={styles['btn-add']} onClick={handleNew}>
+              <span>
+                <PlusOutlined style={{ marginRight: 4 }} />
+                新增原料煤种
+              </span>
+            </div>
           )}
         </div>
-        <div className={styles.row}>
-          <Form.Item
-            label="配煤时间"
-            name="date"
-            validateFirst={true}
-            rules={[{ required: true, message: '内容不可为空' }]}>
-            <DatePicker
-              style={{ width: 280 }}
-              showTime={{
-                defaultValue: moment('23:59:59', 'HH:mm:ss'),
-              }}
-              format="YYYY-MM-DD HH:mm:ss"
-            />
-          </Form.Item>
-        </div>
-        <div className={styles.row}>
-          <Form.Item
-            label="目标货品煤名称"
-            name="targetGoodId"
-            validateFirst={true}
-            rules={[{ required: true, message: '请输入目标货品煤名称' }]}>
-            <Select
-              allowClear
-              placeholder="请选择目标货品煤名称"
-              style={{ width: 280 }}
-              disabled={disabled}
-              optionFilterProp="children"
-              showSearch>
-              {GoodsType.map(v => (
-                <Select.Option key={v.id} value={v.id}>
-                  {v.goodsName}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </div>
-        <div className={styles.row}>
-          <Form.Item
-            label="目标货品产出量"
-            name="weight"
-            validateFirst={true}
-            rules={[
-              { required: true, message: '请输入目标货品产出量' },
-              {
-                pattern: /^\d+(\.?\d{1,2})?$/,
-                message: '内容只能是数字，最多两位小数',
-              },
-            ]}>
-            <Input style={{ width: 280 }} addonAfter="吨" placeholder="请输入目标货品产出量" />
-          </Form.Item>
-        </div>
-        {rawList.map(id => (
-          <RawForm
-            disabled={disabled}
-            form={form}
-            index={id}
-            key={id}
-            rawGoods={rawGoods}
-            onRemove={() => handleRemove(id)}
-          />
-        ))}
-        {!disabled && (
-          <div className={styles['btn-add']} onClick={handleNew}>
-            <span>
-              <PlusOutlined style={{ marginRight: 4 }} />
-              新增原料煤种
-            </span>
-          </div>
-        )}
+
         <div className={styles.bottom}>
           <Button size="default" onClick={() => onClose && onClose()}>
             取消

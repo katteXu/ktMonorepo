@@ -38,6 +38,8 @@ const Index = props => {
         id: record.id,
         goodsType: record.goodsType,
         goodsName: record.goodsName,
+        addressCompany: record.addressCompany,
+        addressCompanyId: record.addressCompanyId,
         rawMaterial: goodsComponent.rawMaterial,
         unitPrice: Format.price(goodsComponent.unitPrice),
         waterContentMin: goodsComponent.waterContentMin,
@@ -78,6 +80,7 @@ const Index = props => {
     const params = {
       goodsType: data.goodsType,
       goodsName: data.goodsName,
+      addressCompanyId: data.rawMaterial === 0 ? '' : data.addressCompanyId,
       rawMaterial: data.rawMaterial,
       unitPrice: (data.unitPrice * 100).toFixed(0) * 1,
       waterContentMin: data.standard_mad.min ? (data.standard_mad.min * 100).toFixed(0) * 1 : 0,

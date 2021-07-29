@@ -184,6 +184,7 @@ const Index = props => {
             <div className={styles.item}>
               <span className={styles.label}>货品名称：</span>
               {dataInfo.goodsName}
+              {' ' + dataInfo.addressCompany}
             </div>
             <div className={styles.item}>
               <span className={styles.label}>入库数量：</span>

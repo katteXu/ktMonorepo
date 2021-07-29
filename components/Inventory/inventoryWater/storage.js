@@ -16,7 +16,13 @@ const Index = props => {
       dataIndex: 'goodsName',
       key: 'goodsName',
       width: 200,
-      render: value => value || '-',
+
+      render: (value, record, index) => (
+        <span>
+          {value}
+          {' ' + record.addressCompany}
+        </span>
+      ),
     },
     {
       title: '供应商',

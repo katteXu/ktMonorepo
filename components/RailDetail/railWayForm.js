@@ -76,9 +76,10 @@ const number_rules = [
 const getGoodsType = async () => {
   const res = await railWay.getGoodsType();
   if (res.status === 0) {
-    const result = res.result.map(({ goodsName }) => goodsName);
+    // const result = res.result.map(({ goodsName }) => goodsName);
     // 去重
-    return Array.from(new Set(result));
+    // return Array.from(new Set(result));
+    return res.result;
   } else {
     return [];
   }
@@ -357,12 +358,13 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       eraseZero: { label: '运费个位抹零：', value: `${values.eraseZero ? '是' : '否'}` },
       payMethod: {
         label: '结算方式：',
-        value: `${values.payMethod === '1'
+        value: `${
+          values.payMethod === '1'
             ? '按发货净重结算'
             : values.payMethod === '0'
-              ? '按收货净重结算'
-              : '按原发与实收较小的结算'
-          }`,
+            ? '按收货净重结算'
+            : '按原发与实收较小的结算'
+        }`,
       },
     };
     // 其他收货人
@@ -403,11 +405,11 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   const settlementMethod = v => {
     v === '1'
       ? form.setFieldsValue({
-        payMethod: '0',
-      })
+          payMethod: '0',
+        })
       : form.setFieldsValue({
-        payMethod: '1',
-      });
+          payMethod: '1',
+        });
   };
 
   const onChangeContract = (e, val) => {
@@ -529,7 +531,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   Object.keys(options).forEach(item => {
     selectChildren.push(<Option key={item}>{options[item]}</Option>);
   });
-
+  console.log(goodList);
   return (
     <div className={styles.fromInfoRailWay}>
       <Form
@@ -835,10 +837,16 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
               showSearch
               allowClear
               optionFilterProp="children"
+              optionLabelProp="label"
               disabled={contract && Object.keys(contract).length > 0 ? true : false}>
               {goodList.map(item => (
-                <Option key={`${item}`} value={item}>
-                  {item}
+                <Option
+                  key={`${item.id}`}
+                  value={item.goodsName}
+                  label={item.goodsName}
+                  title={`${item.goodsName} ${' ' + item.addressCompany}`}>
+                  {item.goodsName}
+                  {' ' + item.addressCompany}
                 </Option>
               ))}
             </Select>

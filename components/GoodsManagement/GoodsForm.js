@@ -1,25 +1,50 @@
 import { Input, Button, Form, Radio, Select } from 'antd';
 import { useState, useEffect, useCallback } from 'react';
 import styles from './goodsForm.less';
-import { getGoodsType } from '@api';
-import { ChildTitle } from '@components';
+import { getGoodsType, getCommon } from '@api';
+import { ChildTitle, AutoInputSelect } from '@components';
+import { User } from '@store';
 // 表单布局
 const formItemLayout = {
   labelAlign: 'left',
 };
 
 const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
+  const { userInfo, loading: userLoading } = User.useContainer();
   const [form] = Form.useForm();
   const [GoodsType, setGoodsType] = useState([]);
+  const [isShowWarehouse, setIsShowWarehouse] = useState(false);
+  const [radioRawMaterial, setRadioRawMaterial] = useState();
+  const [fromCompany, setFromCompany] = useState({});
+  const [newCompany, setNewCompany] = useState(false);
   useEffect(() => {
     initGoodsType();
   }, []);
+
+  useEffect(() => {
+    if (!userLoading) {
+      setHiddenDate();
+    }
+  }, [userLoading]);
+
+  const setHiddenDate = async () => {
+    const res = await getCommon();
+    if (res.status === 0) {
+      const currentUserName = userInfo.username;
+
+      const hiddenWarehouseName = res.result.find(item => item.key === 'isShowSupplier').url;
+      console.log(currentUserName);
+      if (hiddenWarehouseName.includes(currentUserName)) {
+        setIsShowWarehouse(true);
+      }
+    }
+  };
 
   const [loading, setLoading] = useState(false);
   // 提交数据
   const handleSubmit = async values => {
     setLoading(true);
-    onSubmit && onSubmit({ ...values, id: formData.id });
+    onSubmit && onSubmit({ ...values, id: formData.id, addressCompanyId: fromCompany.id });
     setLoading(false);
   };
 
@@ -63,6 +88,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
         goodsName: formData.goodsName,
         rawMaterial: formData.rawMaterial,
         unitPrice: formData.unitPrice,
+
         standard_mad: {
           min: formData.waterContentMin && formData.waterContentMin / 100,
           max: formData.waterContentMax && formData.waterContentMax / 100,
@@ -112,10 +138,47 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
           min: formData.cleanCoalMin && formData.cleanCoalMin / 100,
           max: formData.cleanCoalMax && formData.cleanCoalMax / 100,
         },
+        companyName: formData.addressCompany,
       });
+      setFromCompany({
+        id: formData.addressCompanyId,
+        companyName: formData.addressCompany,
+      });
+      setRadioRawMaterial(formData.rawMaterial);
+      console.log(formData);
     }
-    console.log(formData);
   }, [formData]);
+
+  const onChangeFromCompany = (e, val) => {
+    if (e) {
+      const item = val.item;
+      setFromCompany({
+        id: item.key,
+        companyName: item.value,
+      });
+
+      form.setFieldsValue({
+        companyName: item.value,
+      });
+    } else {
+      setFromCompany({
+        companyName: undefined,
+      });
+
+      form.setFieldsValue({
+        companyName: undefined,
+      });
+      setNewCompany(true);
+      //搜索后需要重新调接口
+      setTimeout(() => {
+        setNewCompany(false);
+      }, 1000);
+    }
+  };
+
+  const radioOnchange = e => {
+    setRadioRawMaterial(e.target.value);
+  };
 
   return (
     <Form
@@ -168,7 +231,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
       <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item label="配煤原料" name="rawMaterial" rules={[{ required: true, message: '请选择配煤原料' }]}>
-            <Radio.Group style={{ width: 264 }}>
+            <Radio.Group style={{ width: 264 }} onChange={e => radioOnchange(e)}>
               <Radio value={1}>是</Radio>
               <Radio value={0} style={{ marginLeft: 24 }}>
                 否
@@ -177,6 +240,25 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
           </Form.Item>
         </div>
       </div>
+      {isShowWarehouse && radioRawMaterial === 1 && (
+        <div className={styles.row}>
+          <div className={styles.col}>
+            <Form.Item label="供应商" name="companyName" rules={[{ required: true, message: '请选择供应商' }]}>
+              <AutoInputSelect
+                mode="company"
+                allowClear
+                placeholder="请选择供应商"
+                value={fromCompany.companyName}
+                onChange={(e, val) => {
+                  onChangeFromCompany(e, val);
+                }}
+                newCompany={newCompany}
+                style={{ width: 264 }}
+              />
+            </Form.Item>
+          </div>
+        </div>
+      )}
 
       <div className={styles.title} style={{ marginTop: 24 }}>
         <ChildTitle style={{ height: 26 }}>指标标准</ChildTitle>

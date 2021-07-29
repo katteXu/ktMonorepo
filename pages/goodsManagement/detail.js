@@ -66,6 +66,7 @@ const GoodsManagement = props => {
       id,
       goodsType: res.result.goodsType || '-',
       goodsName: res.result.goodsName,
+      addressCompany: res.result.addressCompany || '',
       inventoryValue: res.result.inventoryValue,
       unitPrice: unitPrice ? (unitPrice / 100).toFixed(2) : '-',
       materials: rawMaterial === 1 ? '是' : '否',
@@ -85,7 +86,7 @@ const GoodsManagement = props => {
     };
 
     setRowData(data);
-    setFormData({ id: id, goodsType: res.result.goodsName });
+    setFormData({ id: id, goodsType: res.result.goodsName, addressCompany: res.result.addressCompany });
   };
   useEffect(() => {
     getGoods();

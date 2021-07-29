@@ -23,6 +23,7 @@ const Index = props => {
       const data = res.result.map((item, key) => ({
         value: item.goodsName,
         key: item.id,
+        addressCompany: item.addressCompany,
       }));
       setDataSource(unique(data));
       setOptions(unique(data));
@@ -47,7 +48,7 @@ const Index = props => {
         map.set(item.value, item);
       }
     }
-    return [...map.values()];
+    return [...data];
   };
 
   // 设置企业数据源
@@ -148,6 +149,7 @@ const Index = props => {
     },
     { wait: 500 }
   );
+
   return (
     <Select
       loading={loading}
@@ -156,13 +158,14 @@ const Index = props => {
       onChange={onChange}
       showSearch={true}
       onSearch={handleChange}
-      value={value}
+      value={options.length ? value : ''}
       optionFilterProp="children"
       allowClear={allowClear}
       onPopupScroll={loadMore}>
       {options.map((val, item) => (
         <Select.Option key={item} value={val.key} item={val}>
           {val.value}
+          {mode === 'goodsType' && `${' ' + val.addressCompany}`}
         </Select.Option>
       ))}
     </Select>

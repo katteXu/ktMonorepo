@@ -18,6 +18,20 @@ const GoodsManagement = props => {
   // 列数据
   const columns = [
     {
+      title: '货品名称',
+      dataIndex: 'goodsName',
+      key: 'goodsName',
+      width: 120,
+      render: value => <Ellipsis value={value} width={130} />,
+    },
+    {
+      title: '供应商',
+      dataIndex: 'addressCompany',
+      key: 'addressCompany',
+      width: 200,
+      render: value => <Ellipsis value={value} width={180} />,
+    },
+    {
       title: '货物类型',
       dataIndex: 'goodsType',
       key: 'goodsType',
@@ -27,12 +41,13 @@ const GoodsManagement = props => {
         return v ? <Ellipsis value={v} width={130} /> : '-';
       },
     },
+
     {
-      title: '货品名称',
-      dataIndex: 'goodsName',
-      key: 'goodsName',
-      width: 120,
-      render: value => <Ellipsis value={value} width={130} />,
+      title: '存货类别',
+      dataIndex: 'rawMaterial',
+      key: 'rawMaterial',
+      width: 200,
+      render: value => (value === 1 ? '原材料' : '产成品' || '-'),
     },
     {
       title: '库存(吨)',
@@ -41,149 +56,6 @@ const GoodsManagement = props => {
       width: 80,
       align: 'right',
       render: value => <Ellipsis value={Format.weight(value)} />,
-    },
-    {
-      title: '水分(% Mad)',
-      dataIndex: 'goodsComponent',
-      key: 'mad',
-      align: 'right',
-      width: 80,
-      render: value => {
-        const { waterContentMin = 0, waterContentMax = 0 } = value;
-        return Format.range(waterContentMin, waterContentMax);
-      },
-    },
-    {
-      title: '灰分(% Ad)',
-      dataIndex: 'goodsComponent',
-      key: 'ad',
-      align: 'right',
-      width: 80,
-      render: value => {
-        const { ashContentMin = 0, ashContentMax = 0 } = value;
-        return Format.range(ashContentMin, ashContentMax);
-      },
-    },
-    {
-      title: '挥发(% Vdaf)',
-      dataIndex: 'goodsComponent',
-      key: 'vdaf',
-      align: 'right',
-      width: 80,
-      render: value => {
-        const { volatilizationMin = 0, volatilizationMax = 0 } = value;
-        return Format.range(volatilizationMin, volatilizationMax);
-      },
-    },
-    {
-      title: '焦渣特征(1-8 CRC)',
-      dataIndex: 'goodsComponent',
-      key: 'crc',
-      align: 'right',
-      width: 80,
-      render: value => {
-        const { cinder = 0 } = value;
-        return (cinder / 100).toFixed(0);
-      },
-    },
-    {
-      title: '全硫(% Std)',
-      dataIndex: 'goodsComponent',
-      key: 'std',
-      align: 'right',
-      width: 80,
-      render: value => {
-        const { sulfurMin = 0, sulfurMax = 0 } = value;
-        return Format.range(sulfurMin, sulfurMax);
-      },
-    },
-    {
-      title: '固定碳(% FCd)',
-      dataIndex: 'goodsComponent',
-      key: 'fcd',
-      align: 'right',
-      width: 80,
-      render: value => {
-        const { carbonMin = 0, carbonMax = 0 } = value;
-        return Format.range(carbonMin, carbonMax);
-      },
-    },
-    {
-      title: '回收(% r)',
-      dataIndex: 'goodsComponent',
-      key: 'r',
-      align: 'right',
-      width: 80,
-      render: value => {
-        const { recoveryMin = 0, recoveryMax = 0 } = value;
-        return Format.range(recoveryMin, recoveryMax);
-      },
-    },
-    {
-      title: '全水分(% Mt)',
-      dataIndex: 'goodsComponent',
-      key: 'mt',
-      align: 'right',
-      width: 80,
-      render: value => {
-        const { totalWaterContentMin = 0, totalWaterContentMax = 0 } = value;
-        return Format.range(totalWaterContentMin, totalWaterContentMax);
-      },
-    },
-    {
-      title: '粘结指数(GRI)',
-      dataIndex: 'goodsComponent',
-      key: 'gri',
-      align: 'right',
-      width: 80,
-      render: value => {
-        const { bondMin = 0, bondMax = 0 } = value;
-        return Format.range(bondMin, bondMax);
-      },
-    },
-    {
-      title: '胶质层(Y)',
-      dataIndex: 'goodsComponent',
-      key: 'y',
-      align: 'right',
-      width: 80,
-      render: value => {
-        const { colloidMin = 0, colloidMax = 0 } = value;
-        return Format.range(colloidMin, colloidMax);
-      },
-    },
-    {
-      title: '含矸石(%)',
-      dataIndex: 'goodsComponent',
-      key: 'gangue',
-      align: 'right',
-      width: 80,
-      render: value => {
-        const { stoneMin = 0, stoneMax = 0 } = value;
-        return Format.range(stoneMin, stoneMax);
-      },
-    },
-    {
-      title: '含中煤(%)',
-      dataIndex: 'goodsComponent',
-      key: 'middle',
-      align: 'right',
-      width: 80,
-      render: value => {
-        const { midCoalMin = 0, midCoalMax = 0 } = value;
-        return Format.range(midCoalMin, midCoalMax);
-      },
-    },
-    {
-      title: '含精煤(%)',
-      dataIndex: 'goodsComponent',
-      key: 'coal',
-      align: 'right',
-      width: 80,
-      render: value => {
-        const { cleanCoalMin = 0, cleanCoalMax = 0 } = value;
-        return Format.range(cleanCoalMin, cleanCoalMax);
-      },
     },
 
     {
@@ -231,6 +103,7 @@ const GoodsManagement = props => {
     pageSize: 10,
     goodsName: '',
     goodsType: undefined,
+    isRawMaterial: undefined,
   });
 
   const [GoodsType, setGoodsType] = useState({});
@@ -342,6 +215,7 @@ const GoodsManagement = props => {
       pageSize: 10,
       goodsName: '',
       goodsType: undefined,
+      isRawMaterial: undefined,
     };
     setQuery(query);
     setSelectedRowKeys([]);
@@ -392,7 +266,7 @@ const GoodsManagement = props => {
    * 查询数据
    * @param {Object} param0
    */
-  const getRemoteData = async ({ page, pageSize, goodsType, goodsName }) => {
+  const getRemoteData = async ({ page, pageSize, goodsType, goodsName, isRawMaterial }) => {
     setLoading(true);
 
     const params = {
@@ -400,6 +274,7 @@ const GoodsManagement = props => {
       limit: pageSize,
       goodsType,
       goodsName,
+      isRawMaterial,
     };
 
     const res = await stock.getInventoryList({ params });
@@ -414,6 +289,7 @@ const GoodsManagement = props => {
           pageSize,
           goodsType,
           goodsName,
+          isRawMaterial,
         },
       });
     } else {
@@ -498,6 +374,18 @@ const GoodsManagement = props => {
                     </Select.Option>
                   );
                 })}
+              </Select>
+            </Search.Item>
+            <Search.Item label="存货类别">
+              <Select
+                onChange={e => {
+                  setQuery({ ...query, isRawMaterial: e });
+                }}
+                value={query.isRawMaterial}
+                allowClear
+                placeholder="请选择存货类别">
+                <Select.Option value="1">原材料</Select.Option>
+                <Select.Option value="0">产成品</Select.Option>
               </Select>
             </Search.Item>
           </Search>
