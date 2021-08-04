@@ -278,6 +278,8 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       goodsType: values.goodsType,
       goodsUnitPrice: values.goodsUnitPrice ? values.goodsUnitPrice * 100 : undefined,
       onlyPound: '0',
+      // 车队单默认即时付
+      payPath: values.fleet === '1' ? '0' : undefined,
       lossMark: values.lossMark ? '1' : '0',
       lossAmount: values.lossAmount ? values.lossAmount * 1000 : undefined,
       receiverName: values.receiverName,
