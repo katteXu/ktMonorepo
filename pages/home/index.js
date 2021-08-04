@@ -4,9 +4,37 @@ import { Radio, Button } from 'antd';
 import styles from './styles.less';
 import Trace from '@components/Home/trace';
 import Message from '@components/Home/message';
-import { getProcessTruckers } from '@api';
+import { getProcessTruckers, getPendingTransport, getPoundOverview, getTransportOverview } from '@api';
 import router from 'next/router';
+import moment from 'moment';
+import { Format } from '@utils/common';
 import { Menu, User } from '@store';
+
+const DateRange = {
+  yesterday: {
+    begin: moment().subtract(1, 'days').format('YYYY-MM-DD 00:00:00'),
+    end: moment().subtract(1, 'days').format('YYYY-MM-DD 23:59:59'),
+  },
+  lastweek: {
+    begin: moment()
+      .subtract(+moment().format('E') + 7 - 1, 'days')
+      .format('YYYY-MM-DD 00:00:00'),
+    end: moment()
+      .subtract(+moment().format('E'), 'days')
+      .format('YYYY-MM-DD 23:59:59'),
+  },
+  lastmonth: {
+    begin: moment()
+      .month(moment().month() - 1)
+      .startOf('month')
+      .format('YYYY-MM-DD HH:mm:ss'),
+    end: moment()
+      .month(moment().month() - 1)
+      .endOf('month')
+      .format('YYYY-MM-DD HH:mm:ss'),
+  },
+};
+
 const Home = () => {
   const routeView = {
     title: '概览',
@@ -21,6 +49,12 @@ const Home = () => {
 
   // 余额显示
   const [showMoney, setShowMoney] = useState(true);
+  // 待办
+  const [pending, setPending] = useState({
+    check: 0,
+    pay: 0,
+  });
+  // 概况缓存
   const [cache, setCache] = useState(() => {
     return {
       pound: {
@@ -43,10 +77,11 @@ const Home = () => {
   }, []);
 
   const setDataList = async () => {
-    const [truckers] = await Promise.all([_getProcessTruckers()]);
+    const [truckers, resPending] = await Promise.all([_getProcessTruckers(), _getPendingTransport()]);
 
     if (truckers.status === 0) setTruckers(truckers.result);
-
+    if (resPending.status === 0)
+      setPending({ check: resPending.result.checkingCount, pay: resPending.result.waitPayCount });
     setLoading(false);
   };
 
@@ -56,6 +91,11 @@ const Home = () => {
       status: 'HOME',
     };
     return getProcessTruckers({ params });
+  };
+
+  // 获取待办事项
+  const _getPendingTransport = () => {
+    return getPendingTransport();
   };
 
   // 过磅概况
@@ -69,7 +109,15 @@ const Home = () => {
     setPoundDate(date);
   };
   const getPoundData = async date => {
-    return {};
+    const { begin, end } = DateRange[date];
+    const params = {
+      begin,
+      end,
+    };
+    const res = await getPoundOverview({ params });
+    if (res.status === 0) {
+      return res.result;
+    }
   };
   useEffect(() => {
     // 获取缓存的数据
@@ -79,9 +127,20 @@ const Home = () => {
       setPound(cache_pound);
     } else {
       // todo 接口赋值
-      // getPoundData.then(res => {
-      //   setPound(res);
-      // });
+      getPoundData(poundDate).then(res => {
+        pound.from = {
+          num: res.sendCount,
+          weight: Format.weight(res.sendGoodsWeight),
+        };
+
+        pound.to = {
+          num: res.receiveCount,
+          loseWeight: Format.weight(res.receiveLoss),
+          fromWeight: Format.weight(res.receiveFromGoodsWeight),
+          toWeight: Format.weight(res.receiveGoodsWeight),
+        };
+        setPound({ ...pound });
+      });
     }
   }, [poundDate]);
 
@@ -97,7 +156,35 @@ const Home = () => {
     const date = e.target.value;
     setTransportDate(date);
   };
-  useEffect(() => {}, [transportDate]);
+
+  const getTransportData = async date => {
+    const { begin, end } = DateRange[date];
+    const params = {
+      begin,
+      end,
+    };
+    const res = await getTransportOverview({ params });
+    if (res.status === 0) {
+      return res.result;
+    }
+  };
+  useEffect(() => {
+    // 获取缓存的数据
+    const cache_transport = cache.transport[transportDate];
+    // 如果有缓存的数据则直接赋值
+    if (cache_transport) {
+      setTransport(cache_transport);
+    } else {
+      // todo 接口赋值
+      getTransportData(transportDate).then(res => {
+        transport.fromWeight = Format.weight(res.goodsWeight);
+        transport.num = res.count;
+        transport.price = Format.price(res.totalPrice);
+        transport.toWeight = Format.weight(res.arrivalGoodsWeight);
+        setTransport({ ...transport });
+      });
+    }
+  }, [transportDate]);
 
   return (
     <Layout {...routeView}>
@@ -125,13 +212,17 @@ const Home = () => {
         <div className={styles.col}>
           <Block title="待办事项">
             <div className={styles.content1}>
-              <div className={styles.ctx}>
+              <div
+                className={styles.ctx}
+                onClick={() => router.push('/transportManagement/transportList?tab=CHECKING')}>
                 <div className={styles.title}>待结算运单(单)</div>
-                <div className={styles.num}>30</div>
+                <div className={styles.num}>{pending.check}</div>
               </div>
-              <div className={styles.ctx}>
+              <div
+                className={styles.ctx}
+                onClick={() => router.push('/transportManagement/transportList?tab=WAIT_PAY')}>
                 <div className={styles.title}>待支付运单(单)</div>
-                <div className={styles.num}>30</div>
+                <div className={styles.num}>{pending.pay}</div>
               </div>
             </div>
           </Block>
@@ -260,7 +351,7 @@ const Home = () => {
               <img src={Icon.TransportViewIcon} alt="" />
               运单查看
             </div>
-            <div className={styles.item} onClick={() => router.push('/transportManagement/routeList')}>
+            <div className={styles.item} onClick={() => router.push('/transportManagement/routeList?tab=CHECKING')}>
               <img src={Icon.RailWayIcon} alt="" />
               按专线结算
             </div>
