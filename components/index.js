@@ -62,3 +62,6 @@ export { default as UploadToOSS } from './UploadToOSS';
 
 //仓库下拉选择
 export { default as WareHouseSelect } from './WareHouseSelect';
+
+// 概览内容块
+export { default as Block } from './Block';
