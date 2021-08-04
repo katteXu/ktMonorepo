@@ -1,0 +1,138 @@
+.row {
+  display: flex;
+  flex-direction: row;
+
+  & + .row {
+    margin-top: 16px;
+  }
+
+  .col {
+    flex: 1;
+    & + .col {
+      margin-left: 16px;
+    }
+  }
+}
+
+.content1 {
+  background: #f6f7f9;
+  height: 116px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+
+  .money {
+    font-size: 28px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    line-height: 32px;
+  }
+
+  .ctx {
+    flex: 1;
+    .title {
+      font-size: 14px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #666666;
+      line-height: 22px;
+    }
+    .num {
+      margin-top: 12px;
+      font-size: 24px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #477aef;
+      line-height: 24px;
+    }
+  }
+}
+
+.dbcontent {
+  display: flex;
+  flex-direction: row;
+
+  .with-header {
+    flex: 1;
+    background: #f6f7f9;
+    // height: 220px;
+    padding: 16px 24px;
+    & + .with-header {
+      margin-left: 14px;
+    }
+
+    .header {
+      font-size: 16px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #333333;
+      line-height: 24px;
+    }
+  }
+}
+
+.no-header {
+  display: flex;
+  flex-direction: column;
+  background: #f6f7f9;
+  height: 100%;
+  padding: 0 24px;
+}
+
+.content2 {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  & + .content2 {
+    margin-top: 27px;
+  }
+
+  .ctx {
+    flex: 1;
+
+    .title {
+      font-size: 14px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #848485;
+      line-height: 22px;
+    }
+
+    .num {
+      margin-top: 15px;
+      font-size: 24px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #333333;
+      line-height: 32px;
+    }
+  }
+}
+
+.show-btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.date-btn {
+  flex: 1;
+  label {
+    border-radius: 2px;
+    color: #bfbfbf;
+    & + label {
+      margin-left: 8px;
+    }
+
+    &:hover {
+      color: #bfbfbf;
+    }
+    &:global(.ant-radio-button-wrapper-checked) {
+      border-color: #477aef !important;
+      color: #477aef !important;
+    }
+  }
+}
