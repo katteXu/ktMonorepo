@@ -806,6 +806,34 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
           <Form.Item
             label={
               <div>
+                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>发热量(卡)
+              </div>
+            }
+            name="standard_crc1"
+            validateFirst={true}
+            rules={[
+              {
+                pattern: /^[0-8]\d*$/,
+                message: '请输入正确的数值',
+              },
+              {
+                whitespace: true,
+                type: 'number',
+                transform: value => Number(value) || 0,
+                // max: 8,
+                message: '请输入正确的数值',
+              },
+            ]}>
+            <Input style={{ width: 96 }} placeholder="请输入" />
+          </Form.Item>
+        </div>
+      </div>
+
+      <div className={styles.row}>
+        <div className={`${styles.col} ${styles['db-input']}`}>
+          <Form.Item
+            label={
+              <div>
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>含中煤(%)
               </div>
             }
@@ -852,9 +880,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
-      </div>
 
-      <div className={styles.row}>
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
             label={
@@ -905,7 +931,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
-        <div className={`${styles.col} ${styles['db-input']}`}></div>
       </div>
 
       <div className={styles.bottom}>

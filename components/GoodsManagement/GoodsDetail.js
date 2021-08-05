@@ -345,24 +345,28 @@ const GoodsDetail = ({ rowData = {}, setShowOutModal, setShowInModal, setGetList
                   胶质层(Y)：
                   <span className={styles['col-data']}>{rowData.standard_y}</span>
                 </div>
+                {/* 发热量*/}
+                <div className={styles.col}>
+                  发热量(卡)：
+                  <span className={styles['col-data']}>{rowData.standard_middle}</span>
+                </div>
                 {/* 含矸石 */}
                 <div className={styles.col}>
                   含矸石(%)：
                   <span className={styles['col-data']}>{rowData.standard_gangue}</span>
                 </div>
-                {/* 含中煤 */}
+              </div>
+              <div className={styles.row}>
                 <div className={styles.col}>
                   含中煤(%)：
                   <span className={styles['col-data']}>{rowData.standard_middle}</span>
                 </div>
-              </div>
-              <div className={styles.row}>
                 {/* 含精煤 */}
                 <div className={styles.col}>
                   含精煤(%)：
                   <span className={styles['col-data']}>{rowData.standard_coal}</span>
                 </div>
-                <div className={styles.col}></div>
+
                 <div className={styles.col}></div>
               </div>
 

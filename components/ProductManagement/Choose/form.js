@@ -140,7 +140,7 @@ const FormComponent = ({ handleToStep, dataSource, handleDataInfo, changeLoading
       }
     }
   };
-
+  console.log(list);
   return (
     <Content style={{ marginTop: 16 }}>
       <header>原料煤配比设置</header>
