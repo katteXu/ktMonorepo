@@ -104,8 +104,8 @@ const Home = () => {
     from: { num: '10', weight: '10.00' },
     to: { num: '10', loseWeight: '10.00', fromWeight: '10.00', toWeight: '10.00' },
   });
-  const handleChangePound = e => {
-    const date = e.target.value;
+  const handleChangePound = value => {
+    const date = value;
     setPoundDate(date);
   };
   const getPoundData = async date => {
@@ -152,8 +152,8 @@ const Home = () => {
     fromWeight: '123.45',
     toWeight: '321.22',
   });
-  const handleChangeTransport = e => {
-    const date = e.target.value;
+  const handleChangeTransport = value => {
+    const date = value;
     setTransportDate(date);
   };
 
@@ -381,13 +381,29 @@ const Home = () => {
 // 日期选择组件
 const DateBtnGroup = props => {
   const { options, onChange } = props;
-
+  const [active, setActive] = useState('yesterday');
+  // return (
+  //   <Radio.Group onChange={onChange} size="small" defaultValue="yesterday">
+  //     {options.map(item => (
+  //       <Radio.Button value={item.value}>{item.text}</Radio.Button>
+  //     ))}
+  //   </Radio.Group>
+  // );
+  const handleChange = value => {
+    setActive(value);
+    onChange(value);
+  };
   return (
-    <Radio.Group onChange={onChange} size="small" defaultValue="yesterday">
+    <div className={styles['date-list']}>
       {options.map(item => (
-        <Radio.Button value={item.value}>{item.text}</Radio.Button>
+        <div
+          className={`${styles.item} ${active === item.value && styles.active}`}
+          onClick={() => handleChange(item.value)}
+          value={item.value}>
+          {item.text}
+        </div>
       ))}
-    </Radio.Group>
+    </div>
   );
 };
 export default Home;
