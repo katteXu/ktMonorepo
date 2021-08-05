@@ -128,7 +128,7 @@ const Supplement = ({
     };
     const res = await inventory.getWaitInventoryChecklist({ params });
     if (res.status === 0) {
-      onChange(res.result.wareHouseId ? res.result.wareHouseId : undefined);
+      onChange(res.result.wareHouseId ? res.result.wareHouseId : -1);
       if (res.result.data.length) setDataInfo(res.result.data);
       else setDataInfo(initData);
       checkIsHasAdd(res.result.data);
@@ -167,6 +167,7 @@ const Supplement = ({
   useEffect(() => {
     getList({ ...query });
   }, [drawerVisible]);
+  console.log(wareHouseId);
   return (
     <>
       <div className={styles['stock_taking']}>
