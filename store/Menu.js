@@ -176,7 +176,7 @@ const MENU_LIST = [
       {
         name: '配煤列表',
         key: 'coalBlendingList',
-        permission: ['COAL_BLENDING_LIST'],
+        // permission: ['COAL_BLENDING_LIST'],
       },
       {
         module: 'qualityManagement',
