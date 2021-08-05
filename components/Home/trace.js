@@ -69,7 +69,6 @@ const Trace = ({ truckers = {}, loading }) => {
               <List.Item
                 className={`${styles['item-box']} ${index === truckerIndex ? `${styles.active}` : ''}`}
                 onClick={() => selectItem(index)}>
-                {/* <Avatar size={44} src={ICON[index % 4]}></Avatar> */}
                 <div className={styles.item}>
                   <img src={Icon.PointIcon} />
                   {item.trailerPlateNumber && <div className={styles.number}>{item.trailerPlateNumber}</div>}
