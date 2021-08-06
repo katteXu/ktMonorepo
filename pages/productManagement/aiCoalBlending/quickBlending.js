@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Content, Image, ChildTitle } from '@components';
-import { Button, Table, Input, Select } from 'antd';
+import { Button, Table, Input, Select, message } from 'antd';
 import router from 'next/router';
 import { getGoodsType, product } from '@api';
 import style from './styles.less';
 import { Format } from '@utils/common';
+
 const Index = () => {
   const routeView = {
     title: '智能配煤',
@@ -73,11 +74,11 @@ const Index = () => {
     },
     {
       title: '发热量(卡)',
-      dataIndex: 'colloid',
-      key: 'colloid',
+      dataIndex: 'heat',
+      key: 'heat',
       align: 'right',
       width: 120,
-      // render: Format.percent,
+      render: Format.percent,
     },
   ];
 
@@ -133,11 +134,11 @@ const Index = () => {
     },
     {
       title: '发热量(卡)',
-      dataIndex: 'colloid1',
+      dataIndex: 'heat',
       key: 'colloid',
       align: 'right',
       width: 120,
-      // render: Format.percent,
+      render: Format.percent,
     },
   ];
 
@@ -149,17 +150,21 @@ const Index = () => {
     sulfur: 0,
     bond: 0,
     colloid: 0,
-    colloid1: 0,
+    heat: 0,
   });
   const [status, setStatus] = useState({});
   const [GoodsType, setGoodsType] = useState([]);
   const [total, setTotal] = useState(0);
   const [infoValue, setInfoValue] = useState([]);
+  const [goodsDetail, setGoodsDetail] = useState('');
   useEffect(() => {
     const list = sessionStorage.getItem('blendingList');
-    console.log(JSON.parse(list));
+
     setList(JSON.parse(list));
     initGoodsType();
+    // return () => {
+    //   sessionStorage.removeItem('blendingList');
+    // };
   }, []);
 
   const initGoodsType = async () => {
@@ -173,7 +178,38 @@ const Index = () => {
   };
 
   const submit = () => {
-    delete console.log(status);
+    if (Object.keys(status).length >= 2) {
+      console.log(goodsDetail);
+      console.log(total);
+      console.log(status);
+      let arr = [];
+      list.forEach(item => {
+        if (status[item.inventoryId]) {
+          arr.push({
+            inventoryId: item.inventoryId,
+            proportion: status[item.inventoryId] / total,
+            goodsName: item.goodsName,
+          });
+        }
+      });
+      let params = {
+        material: arr,
+        predictUnitPrice: predictedList.unitPrice,
+        predictAshContent: predictedList.ashContent,
+        predictVolatilization: predictedList.volatilization,
+        predictSulfur: predictedList.sulfur,
+        predictBond: predictedList.bond,
+        predictColloid: predictedList.colloid,
+        predictHeat: predictedList.heat,
+        inventoryId: goodsDetail.value,
+        goodsName: goodsDetail.label,
+      };
+      console.log(arr);
+      console.log(Object.keys(status).length);
+      console.log(params);
+    } else {
+      message.error('请输入原料配比');
+    }
   };
 
   const onChangeInput = (value, inventoryId, index) => {
@@ -182,17 +218,23 @@ const Index = () => {
     } else {
       delete status[inventoryId];
     }
-    infoValue[index] = value.replace(/^(-)*(\d+)\.(\d{1,2}).*$/, '$1$2.$3');
+    infoValue[index] = value.replace(/^(-)*(\d+)\.(\d{1,1}).*$/, '$1$2.$3');
+
     console.log(infoValue);
     setInfoValue([...infoValue]);
     setStatus({ ...status });
   };
 
+  const handleKeyPress = event => {
+    if ([189, 187, 69].includes(event.keyCode)) {
+      event.preventDefault();
+    }
+  };
+
   // 目标货品
   const handleChangeGoodsType = value => {
+    console.log(value);
     setGoodsDetail(value);
-    const targetGood = GoodsType.find(item => item.id === value);
-    onChangeGoods && onChangeGoods(targetGood);
   };
 
   useEffect(() => {
@@ -208,7 +250,7 @@ const Index = () => {
     let sulfur = 0;
     let bond = 0;
     let colloid = 0;
-    let colloid1 = 0;
+    let heat = 0;
     list.forEach(item => {
       unitPrice += item.unitPrice * (status[item.inventoryId] ? status[item.inventoryId] / total : 0);
       volatilization += item.volatilization * (status[item.inventoryId] ? status[item.inventoryId] / total : 0);
@@ -216,9 +258,9 @@ const Index = () => {
       sulfur += item.sulfur * (status[item.inventoryId] ? status[item.inventoryId] / total : 0);
       bond += item.bond * (status[item.inventoryId] ? status[item.inventoryId] / total : 0);
       colloid += item.colloid * (status[item.inventoryId] ? status[item.inventoryId] / total : 0);
-      colloid1 += item.colloid1 * (status[item.inventoryId] ? status[item.inventoryId] / total : 0);
+      heat += item.heat * (status[item.inventoryId] ? status[item.inventoryId] / total : 0);
     });
-    setPredictedList({ ...predictedList, unitPrice, volatilization, ashContent, sulfur, bond, colloid, colloid1 });
+    setPredictedList({ ...predictedList, unitPrice, volatilization, ashContent, sulfur, bond, colloid, heat });
     setTotal(total);
   }, [status]);
 
@@ -237,7 +279,7 @@ const Index = () => {
             </div>
             {list.map((item, index) => {
               return (
-                <div className={style.boxCol}>
+                <div className={style.boxCol} key={index}>
                   <div>{item.goodsName}</div>
                   <div>
                     <Input
@@ -245,6 +287,7 @@ const Index = () => {
                       style={{ width: '80%', height: 30 }}
                       type="number"
                       min={0}
+                      onKeyDown={handleKeyPress}
                       onChange={e => onChangeInput(e.target.value, item.inventoryId, index)}
                     />
                   </div>
@@ -275,7 +318,7 @@ const Index = () => {
               <div>{Format.percent(predictedList.sulfur)}</div>
               <div>{Format.percent(predictedList.bond)}</div>
               <div>{Format.percent(predictedList.colloid)}</div>
-              <div>{Format.percent(predictedList.colloid)}</div>
+              <div>{Format.percent(predictedList.heat)}</div>
             </div>
           </div>
         </div>
@@ -288,9 +331,10 @@ const Index = () => {
           className={style.ipt}
           optionFilterProp="children"
           showSearch
+          labelInValue
           onChange={handleChangeGoodsType}>
           {GoodsType.map(({ id, goodsName }) => (
-            <Select.Option value={id} key={id}>
+            <Select.Option value={id} key={id} label={goodsName}>
               {goodsName}
             </Select.Option>
           ))}

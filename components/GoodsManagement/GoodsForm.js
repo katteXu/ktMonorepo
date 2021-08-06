@@ -44,6 +44,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
   // 提交数据
   const handleSubmit = async values => {
     setLoading(true);
+    console.log(values);
     onSubmit && onSubmit({ ...values, id: formData.id, addressCompanyId: fromCompany.id });
     setLoading(false);
   };
@@ -137,6 +138,10 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
         standard_coal: {
           min: formData.cleanCoalMin && formData.cleanCoalMin / 100,
           max: formData.cleanCoalMax && formData.cleanCoalMax / 100,
+        },
+        standard_heat: {
+          min: formData.heatMin && formData.heatMin / 100,
+          max: formData.heatMax && formData.heatMax / 100,
         },
         companyName: formData.addressCompany,
       });
@@ -756,6 +761,57 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
           <Form.Item
             label={
               <div>
+                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>发热量(卡)
+              </div>
+            }
+            name={['standard_heat', 'min']}
+            validateFirst={true}
+            rules={[
+              {
+                pattern: /^[0-8]\d*$/,
+                message: '请输入正确的数值',
+              },
+              {
+                whitespace: true,
+                type: 'number',
+                transform: value => Number(value) || 0,
+                // max: 8,
+                message: '请输入正确的数值',
+              },
+              {
+                validator: () => validateMin('heat'),
+              },
+            ]}>
+            <Input style={{}} placeholder="请输入" />
+          </Form.Item>
+          <span>≤%≤</span>
+          <Form.Item
+            label=""
+            colon={false}
+            name={['standard_heat', 'max']}
+            validateFirst={true}
+            rules={[
+              {
+                pattern: /^[0-8]\d*$/,
+                message: '请输入正确的数值',
+              },
+              {
+                whitespace: true,
+                type: 'number',
+                transform: value => Number(value) || 0,
+                // max: 8,
+                message: '请输入正确的数值',
+              },
+            ]}
+            onChange={() => validateMax('heat')}>
+            <Input placeholder="请输入" />
+          </Form.Item>
+        </div>
+
+        <div className={`${styles.col} ${styles['db-input']}`}>
+          <Form.Item
+            label={
+              <div>
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>含矸石(%)
               </div>
             }
@@ -800,31 +856,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
             ]}
             onChange={() => validateMax('gangue')}>
             <Input placeholder="请输入" />
-          </Form.Item>
-        </div>
-        <div className={`${styles.col} ${styles['db-input']}`}>
-          <Form.Item
-            label={
-              <div>
-                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>发热量(卡)
-              </div>
-            }
-            name="standard_crc1"
-            validateFirst={true}
-            rules={[
-              {
-                pattern: /^[0-8]\d*$/,
-                message: '请输入正确的数值',
-              },
-              {
-                whitespace: true,
-                type: 'number',
-                transform: value => Number(value) || 0,
-                // max: 8,
-                message: '请输入正确的数值',
-              },
-            ]}>
-            <Input style={{ width: 96 }} placeholder="请输入" />
           </Form.Item>
         </div>
       </div>

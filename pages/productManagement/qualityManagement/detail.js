@@ -147,7 +147,7 @@ const QualityDetail = props => {
                 </div>
                 <div className={styles.item}>
                   <span className={styles.label}>发热量：</span>
-                  {HOT[data.heat] || '-'}
+                  {Format.percent(data.heat) || '-'}
                 </div>
               </div>
               <div className={styles.row}>

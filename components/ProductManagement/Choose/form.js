@@ -77,7 +77,7 @@ const FormComponent = ({ handleToStep, dataSource, handleDataInfo, changeLoading
 
     if (res.status === 0) {
       // message.success('配煤完成');
-      handleToStep(4);
+      // handleToStep(4);
       handleDataInfo(res.result);
     } else {
       changeLoading(false);

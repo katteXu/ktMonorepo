@@ -97,11 +97,11 @@ const QualityManagement = props => {
     },
     {
       title: '发热量(卡)',
-      dataIndex: 'colloid',
-      key: 'colloid',
+      dataIndex: 'heat',
+      key: 'heat',
       align: 'right',
       width: 140,
-      // render: Format.percent,
+      render: Format.percent,
     },
 
     {

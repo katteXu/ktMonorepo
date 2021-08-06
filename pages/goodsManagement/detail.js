@@ -60,6 +60,8 @@ const GoodsManagement = props => {
       cleanCoalMax,
       rawMaterial,
       unitPrice,
+      heatMin,
+      heatMax,
     } = res.result.goodsComponent;
 
     const data = {
@@ -83,6 +85,7 @@ const GoodsManagement = props => {
       standard_gangue: Format.range(stoneMin, stoneMax),
       standard_middle: Format.range(midCoalMin, midCoalMax),
       standard_coal: Format.range(cleanCoalMin, cleanCoalMax),
+      standard_heat: Format.range(heatMin, heatMax),
     };
 
     setRowData(data);

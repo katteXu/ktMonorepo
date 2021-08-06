@@ -348,7 +348,7 @@ const GoodsDetail = ({ rowData = {}, setShowOutModal, setShowInModal, setGetList
                 {/* 发热量*/}
                 <div className={styles.col}>
                   发热量(卡)：
-                  <span className={styles['col-data']}>{rowData.standard_middle}</span>
+                  <span className={styles['col-data']}>{rowData.standard_heat}</span>
                 </div>
                 {/* 含矸石 */}
                 <div className={styles.col}>
