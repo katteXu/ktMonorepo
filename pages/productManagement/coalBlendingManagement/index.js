@@ -349,7 +349,6 @@ const CoalBlendingManagement = props => {
       targetGoodsName,
       rawGoodsName,
       isAI: ai,
-      aaa: plan === 1 ? 3 : undefined,
     };
 
     const res = await product.getCoalBlendingList({ params });

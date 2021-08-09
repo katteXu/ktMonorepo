@@ -82,66 +82,6 @@ const Index = () => {
     },
   ];
 
-  const columns1 = [
-    {
-      title: '成本(元)',
-      dataIndex: 'unitPrice',
-      key: 'unitPrice',
-      width: 120,
-      render: Format.price,
-    },
-
-    {
-      title: '灰分(% Ad)',
-      dataIndex: 'ashContent',
-      key: 'ashContent',
-      align: 'right',
-      width: 120,
-      render: Format.percent,
-    },
-    {
-      title: '挥发(% Vdaf)',
-      dataIndex: 'volatilization',
-      key: 'volatilization',
-      align: 'right',
-      width: 120,
-      render: Format.percent,
-    },
-    {
-      title: '全硫(% Std)',
-      dataIndex: 'sulfur',
-      key: 'sulfur',
-      align: 'right',
-      width: 120,
-      render: Format.percent,
-    },
-
-    {
-      title: '粘结指数(GRI)',
-      dataIndex: 'bond',
-      key: 'bond',
-      align: 'right',
-      width: 120,
-      render: Format.percent,
-    },
-    {
-      title: '胶质层(Y)',
-      dataIndex: 'colloid',
-      key: 'colloid',
-      align: 'right',
-      width: 120,
-      render: Format.percent,
-    },
-    {
-      title: '发热量(卡)',
-      dataIndex: 'heat',
-      key: 'colloid',
-      align: 'right',
-      width: 120,
-      render: Format.percent,
-    },
-  ];
-
   const [list, setList] = useState([]);
   const [predictedList, setPredictedList] = useState({
     unitPrice: 0,
@@ -154,7 +94,7 @@ const Index = () => {
   });
   const [status, setStatus] = useState({});
   const [GoodsType, setGoodsType] = useState([]);
-  const [total, setTotal] = useState(0);
+
   const [infoValue, setInfoValue] = useState([]);
   const [goodsDetail, setGoodsDetail] = useState('');
   useEffect(() => {
@@ -177,51 +117,69 @@ const Index = () => {
     }
   };
 
-  const submit = () => {
-    if (Object.keys(status).length >= 2) {
-      console.log(goodsDetail);
-      console.log(total);
-      console.log(status);
+  const submit = async () => {
+    if (Object.keys(status).filter(item => !!item).length >= 2) {
       let arr = [];
       list.forEach(item => {
-        if (status[item.inventoryId]) {
+        if (status[item.inventoryId] && status[item.inventoryId].value !== 0) {
           arr.push({
             inventoryId: item.inventoryId,
-            proportion: status[item.inventoryId] / total,
+            proportion: status[item.inventoryId].percent * 100,
             goodsName: item.goodsName,
           });
         }
       });
       let params = {
         material: arr,
-        predictUnitPrice: predictedList.unitPrice,
-        predictAshContent: predictedList.ashContent,
-        predictVolatilization: predictedList.volatilization,
-        predictSulfur: predictedList.sulfur,
-        predictBond: predictedList.bond,
-        predictColloid: predictedList.colloid,
-        predictHeat: predictedList.heat,
+        predictUnitPrice: parseInt(predictedList.unitPrice),
+        predictAshContent: parseInt(predictedList.ashContent),
+        predictVolatilization: parseInt(predictedList.volatilization),
+        predictSulfur: parseInt(predictedList.sulfur),
+        predictBond: parseInt(predictedList.bond),
+        predictColloid: parseInt(predictedList.colloid),
+        predictHeat: parseInt(predictedList.heat),
         inventoryId: goodsDetail.value,
         goodsName: goodsDetail.label,
       };
-      console.log(arr);
-      console.log(Object.keys(status).length);
-      console.log(params);
+
+      const res = await product.add_forward_coal_blending_scheme({ params });
+
+      if (res.status === 0) {
+        router.push('/productManagement/coalBlendingManagement');
+      } else {
+        message.error(`${res.detail || res.description}`);
+      }
     } else {
       message.error('请输入原料配比');
     }
   };
 
   const onChangeInput = (value, inventoryId, index) => {
-    if (+value) {
-      status[inventoryId] = value;
-    } else {
-      delete status[inventoryId];
-    }
     infoValue[index] = value.replace(/^(-)*(\d+)\.(\d{1,1}).*$/, '$1$2.$3');
-
-    console.log(infoValue);
     setInfoValue([...infoValue]);
+
+    const total = eval(infoValue.filter(item => !!item).join('+'));
+    if (true) {
+      status[inventoryId] = { value: +value };
+      Object.keys(status).forEach((key, index) => {
+        const value = status[key].value;
+        if (index === Object.keys(status).length - 1 && index !== 0) {
+          status[key].percent = (
+            100 -
+            eval(
+              Object.keys(status)
+                .filter(k => key !== k)
+                .map(item => status[item].percent)
+                .join('+')
+            )
+          ).toFixed(2);
+        } else {
+          status[key].percent = ((value / total) * 100).toFixed(2);
+        }
+      });
+    }
+    console.log(status);
+
     setStatus({ ...status });
   };
 
@@ -238,11 +196,11 @@ const Index = () => {
   };
 
   useEffect(() => {
-    const total = eval(
-      Object.keys(status)
-        .map(id => status[id] || 0)
-        .join('+')
-    );
+    // const total = eval(
+    //   Object.keys(status)
+    //     .map(id => status[id] || 0)
+    //     .join('+')
+    // );
 
     let unitPrice = 0;
     let ashContent = 0;
@@ -252,16 +210,16 @@ const Index = () => {
     let colloid = 0;
     let heat = 0;
     list.forEach(item => {
-      unitPrice += item.unitPrice * (status[item.inventoryId] ? status[item.inventoryId] / total : 0);
-      volatilization += item.volatilization * (status[item.inventoryId] ? status[item.inventoryId] / total : 0);
-      ashContent += item.ashContent * (status[item.inventoryId] ? status[item.inventoryId] / total : 0);
-      sulfur += item.sulfur * (status[item.inventoryId] ? status[item.inventoryId] / total : 0);
-      bond += item.bond * (status[item.inventoryId] ? status[item.inventoryId] / total : 0);
-      colloid += item.colloid * (status[item.inventoryId] ? status[item.inventoryId] / total : 0);
-      heat += item.heat * (status[item.inventoryId] ? status[item.inventoryId] / total : 0);
+      unitPrice += item.unitPrice * (status[item.inventoryId] ? status[item.inventoryId].percent / 100 : 0);
+      volatilization += item.volatilization * (status[item.inventoryId] ? status[item.inventoryId].percent / 100 : 0);
+      ashContent += item.ashContent * (status[item.inventoryId] ? status[item.inventoryId].percent / 100 : 0);
+      sulfur += item.sulfur * (status[item.inventoryId] ? status[item.inventoryId].percent / 100 : 0);
+      bond += item.bond * (status[item.inventoryId] ? status[item.inventoryId].percent / 100 : 0);
+      colloid += item.colloid * (status[item.inventoryId] ? status[item.inventoryId].percent / 100 : 0);
+      heat += item.heat * (status[item.inventoryId] ? status[item.inventoryId].percent / 100 : 0);
     });
     setPredictedList({ ...predictedList, unitPrice, volatilization, ashContent, sulfur, bond, colloid, heat });
-    setTotal(total);
+    // setTotal(total);
   }, [status]);
 
   return (
@@ -292,7 +250,10 @@ const Index = () => {
                     />
                   </div>
                   <div>
-                    {+status[item.inventoryId] ? ((status[item.inventoryId] / total) * 100).toFixed(2) + '%' : ''}
+                    {/* {+status[item.inventoryId] ? ((status[item.inventoryId] / total) * 100).toFixed(2) + '%' : ''} */}
+                    {status[item.inventoryId] && status[item.inventoryId].percent * 1
+                      ? `${status[item.inventoryId].percent}%`
+                      : ''}
                   </div>
                 </div>
               );

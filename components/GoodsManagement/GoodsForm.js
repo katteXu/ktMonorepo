@@ -784,7 +784,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
             ]}>
             <Input style={{}} placeholder="请输入" />
           </Form.Item>
-          <span>≤%≤</span>
+          <span>≤卡≤</span>
           <Form.Item
             label=""
             colon={false}
