@@ -20,6 +20,16 @@ const Red = `${publicRuntimeConfig.staticFolder}/icon/icon-red.svg`;
 const Yellow = `${publicRuntimeConfig.staticFolder}/icon/icon-yellow.svg`;
 const Green = `${publicRuntimeConfig.staticFolder}/icon/icon-green.svg`;
 
+const ShowIcon = `${publicRuntimeConfig.staticFolder}/icon/show.svg`;
+const HideIcon = `${publicRuntimeConfig.staticFolder}/icon/hide.svg`;
+const FromIcon = `${publicRuntimeConfig.staticFolder}/icon/fromIcon.svg`;
+const ToIcon = `${publicRuntimeConfig.staticFolder}/icon/toIcon.svg`;
+const DeployIcon = `${publicRuntimeConfig.staticFolder}/icon/deploy-icon.svg`;
+const TransportViewIcon = `${publicRuntimeConfig.staticFolder}/icon/transport-view-icon.svg`;
+const RailWayIcon = `${publicRuntimeConfig.staticFolder}/icon/rail-way-icon.svg`;
+const RecordIcon = `${publicRuntimeConfig.staticFolder}/icon/record-icon.svg`;
+const BillIcon = `${publicRuntimeConfig.staticFolder}/icon/bill-icon.svg`;
+const PointIcon = `${publicRuntimeConfig.staticFolder}/icon/point.svg`;
 // 运单管理
 const TransportIcon = `${publicRuntimeConfig.staticFolder}/icon/transportIcon.svg`;
 const RouteIcon = `${publicRuntimeConfig.staticFolder}/icon/routeIcon.svg`;
@@ -81,4 +91,14 @@ export {
   Blending,
   ConnectionIcon,
   NoConnectionIcon,
+  ShowIcon,
+  HideIcon,
+  FromIcon,
+  ToIcon,
+  DeployIcon,
+  TransportViewIcon,
+  RailWayIcon,
+  RecordIcon,
+  BillIcon,
+  PointIcon,
 };

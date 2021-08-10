@@ -448,3 +448,29 @@ export const getUseRoute = ({ params } = {}) => {
     },
   });
 };
+
+// 待办事项
+export const getPendingTransport = () => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/transport/SaaSPendingTransport',
+  });
+};
+
+// 运单概况
+export const getTransportOverview = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/transport/SaaSTransportOverview',
+    params,
+  });
+};
+
+// 过磅概况
+export const getPoundOverview = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/poundReport/SaaSPoundBillOverview',
+    params,
+  });
+};

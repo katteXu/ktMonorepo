@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Map, { setMarker } from '../Map';
-import styles from '../../static/styles/home.less';
+import styles from './styles.less';
 import { List, Avatar } from 'antd';
 import { Icon } from '@components';
 const ICON = [Icon.Blue, Icon.Red, Icon.Yellow, Icon.Green];
@@ -23,8 +23,6 @@ const COLOR = [
 const Trace = ({ truckers = {}, loading }) => {
   // item state
   const [truckerIndex, changeTrucker] = useState(0);
-  // map state
-  const [mapData, changeMapData] = useState(false);
   // map 实例
   const [mapIntance, setMapIntance] = useState(false);
 
@@ -58,7 +56,7 @@ const Trace = ({ truckers = {}, loading }) => {
       </div>
       <div className={styles.list}>
         <div className={styles.header}>
-          <span className={styles.txt}>运送中运单：</span>
+          <span className={styles.txt}>运送中订单</span>
           <span className={styles.number}>{truckers.count || 0}</span>
           <span className={styles.unit}>单</span>
         </div>
@@ -70,11 +68,9 @@ const Trace = ({ truckers = {}, loading }) => {
             renderItem={(item, index) => (
               <List.Item
                 className={`${styles['item-box']} ${index === truckerIndex ? `${styles.active}` : ''}`}
-                onClick={() => selectItem(index)}
-                // style={{ width: '48%', background: '#fff' }}
-              >
-                <Avatar size={44} src={ICON[index % 4]}></Avatar>
+                onClick={() => selectItem(index)}>
                 <div className={styles.item}>
+                  <img src={Icon.PointIcon} />
                   {item.trailerPlateNumber && <div className={styles.number}>{item.trailerPlateNumber}</div>}
                   <div className={styles.name}>{item.name}</div>
                   <div className={styles.phone}>{item.mobilePhoneNumber}</div>
