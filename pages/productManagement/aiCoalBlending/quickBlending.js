@@ -129,25 +129,29 @@ const Index = () => {
           });
         }
       });
-      let params = {
-        material: arr,
-        predictUnitPrice: parseInt(predictedList.unitPrice),
-        predictAshContent: parseInt(predictedList.ashContent),
-        predictVolatilization: parseInt(predictedList.volatilization),
-        predictSulfur: parseInt(predictedList.sulfur),
-        predictBond: parseInt(predictedList.bond),
-        predictColloid: parseInt(predictedList.colloid),
-        predictHeat: parseInt(predictedList.heat),
-        inventoryId: goodsDetail.value,
-        goodsName: goodsDetail.label,
-      };
+      if (arr.length >= 2) {
+        let params = {
+          material: arr,
+          predictUnitPrice: parseInt(predictedList.unitPrice),
+          predictAshContent: parseInt(predictedList.ashContent),
+          predictVolatilization: parseInt(predictedList.volatilization),
+          predictSulfur: parseInt(predictedList.sulfur),
+          predictBond: parseInt(predictedList.bond),
+          predictColloid: parseInt(predictedList.colloid),
+          predictHeat: parseInt(predictedList.heat),
+          inventoryId: goodsDetail.value,
+          goodsName: goodsDetail.label,
+        };
 
-      const res = await product.add_forward_coal_blending_scheme({ params });
+        const res = await product.add_forward_coal_blending_scheme({ params });
 
-      if (res.status === 0) {
-        router.push('/productManagement/coalBlendingManagement');
+        if (res.status === 0) {
+          router.push('/productManagement/coalBlendingManagement');
+        } else {
+          message.error(`${res.detail || res.description}`);
+        }
       } else {
-        message.error(`${res.detail || res.description}`);
+        message.error('请输入原料配比');
       }
     } else {
       message.error('请输入原料配比');
@@ -285,23 +289,27 @@ const Index = () => {
         </div>
 
         <ChildTitle style={{ margin: '16px 0 16px', fontWeight: 'bold' }}>目标货品</ChildTitle>
-        <Select
-          style={{ width: 200 }}
-          allowClear
-          placeholder="请选择目标货品"
-          className={style.ipt}
-          optionFilterProp="children"
-          showSearch
-          labelInValue
-          onChange={handleChangeGoodsType}>
-          {GoodsType.map(({ id, goodsName }) => (
-            <Select.Option value={id} key={id} label={goodsName}>
-              {goodsName}
-            </Select.Option>
-          ))}
-        </Select>
+        <div style={{ marginLeft: 10 }}>
+          <label>货品名称：</label>
+          <Select
+            style={{ width: 200 }}
+            allowClear
+            placeholder="请选择目标货品"
+            className={style.ipt}
+            optionFilterProp="children"
+            showSearch
+            labelInValue
+            onChange={handleChangeGoodsType}>
+            {GoodsType.map(({ id, goodsName }) => (
+              <Select.Option value={id} key={id} label={goodsName}>
+                {goodsName}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+
         <div>
-          <Button onClick={submit} type="primary" style={{ margin: '16px 0 48px 0' }}>
+          <Button onClick={submit} type="primary" style={{ margin: '16px 0 48px 10px' }}>
             保存
           </Button>
         </div>
