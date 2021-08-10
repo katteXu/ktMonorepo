@@ -94,7 +94,7 @@ const ResultStep = ({ title, content, icon }) => {
   );
 };
 
-const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSettlement, onclose }) => {
+const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSettlement, onclose, payRemark }) => {
   // 当前步骤
   const [step, setStep] = useState(0);
   // 最终步骤文案
@@ -243,8 +243,9 @@ const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSet
       arrivalGoodsWeight: payInfo.arrivalGoodsWeight,
       deliverPoundPic: payInfo.deliverPoundPic || '',
       receivePoundPic: payInfo.receivePoundPic || '',
+      payRemark: payRemark || '',
     };
-
+    console.log(params);
     const res = await transportStatistics.checkTransport({ params });
     if (res.status === 0) {
       if (type === 'pay') {

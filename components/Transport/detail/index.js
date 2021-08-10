@@ -55,6 +55,7 @@ const Detail = props => {
   const [loading, setLoading] = useState(true);
   // 结算金额
   const [checkPrice, setCheckPrice] = useState();
+  const [payRemark, setPayRemark] = useState();
 
   useEffect(() => {
     getDetail();
@@ -97,7 +98,7 @@ const Detail = props => {
           {dataInfo.status && <Route dataInfo={dataInfo} />}
           {/* 支付信息 */}
           {showPayInfo.includes(dataInfo.status) && (
-            <Pay dataInfo={dataInfo} reload={reload} onChangePrice={setCheckPrice} />
+            <Pay dataInfo={dataInfo} reload={reload} onChangePrice={setCheckPrice} handleChangeRemark={setPayRemark} />
           )}
           {/* 运输信息 */}
           {showTransportInfo.includes(dataInfo.status) && <Transport dataInfo={dataInfo} />}
@@ -110,6 +111,7 @@ const Detail = props => {
               reload={reload}
               close={props.close}
               checkPrice={checkPrice}
+              payRemark={payRemark}
               userInfo={props.userInfo}
             />
           )}

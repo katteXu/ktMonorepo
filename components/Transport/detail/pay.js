@@ -4,7 +4,7 @@ import { Button, Select, message, Input } from 'antd';
 import { Format } from '@utils/common';
 import { transportStatistics } from '@api';
 import ValidateTruckrBack from './validateTruckerBack';
-
+const { TextArea } = Input;
 // TODO: 结算测试  reload函数
 const PAY_STATUS = {
   ONLINE_PAY: '线上支付',
@@ -34,6 +34,7 @@ const Pay = props => {
   const [unitPrice, setUnitPrice] = useState(Format.price(props.dataInfo.unitPrice));
   const [unitPriceList, setUnitPriceList] = useState([]);
   const [unitPriceStatus, setUnitPriceStatus] = useState(props.dataInfo.unitPriceStatus);
+  const [payRemark, setPayRemark] = useState('');
 
   useEffect(() => {
     setHistoryUnitPrice();
@@ -83,7 +84,11 @@ const Pay = props => {
   const handleChangePrice = e => {
     props.onChangePrice && props.onChangePrice(e.target.value);
   };
-  console.log(status !== 'WAIT_PAY' && payPath !== 1);
+  // 结算时备注
+  const handleChangeRemark = e => {
+    props.handleChangeRemark && props.handleChangeRemark(e.target.value);
+  };
+
   return (
     <div className={styles.floor}>
       <div className={styles.title}>支付信息</div>
@@ -209,6 +214,16 @@ const Pay = props => {
           )}
         </div>
       </div>
+      {status === 'CHECKING' && (
+        <div className={styles.row}>
+          <div className={styles.label} style={{ minWidth: 84 }}>
+            备注：
+          </div>
+          <div className={styles.data}>
+            <TextArea maxLength={20} onChange={handleChangeRemark} />
+          </div>
+        </div>
+      )}
       {(status === 'WAIT_PAY' || status === 'DONE' || status === 'REJECT') && payPath === 1 && (
         <div className={styles.row}>
           <div
