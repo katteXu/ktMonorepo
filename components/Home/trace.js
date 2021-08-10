@@ -56,7 +56,7 @@ const Trace = ({ truckers = {}, loading }) => {
       </div>
       <div className={styles.list}>
         <div className={styles.header}>
-          <span className={styles.txt}>运送中运单：</span>
+          <span className={styles.txt}>运送中订单</span>
           <span className={styles.number}>{truckers.count || 0}</span>
           <span className={styles.unit}>单</span>
         </div>

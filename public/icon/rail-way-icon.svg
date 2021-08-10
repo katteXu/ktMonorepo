@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>01.概览备份 3</title>
-    <g id="概览" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="01.概览备份-4" transform="translate(-1076.000000, -680.000000)">
+    <g id="页面优化" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="01.概览2" transform="translate(-1076.000000, -680.000000)">
             <g id="编组-31" transform="translate(1076.000000, 680.000000)">
-                <rect id="矩形备份-17" fill="#F4FAF6" x="0" y="0" width="40" height="40" rx="4"></rect>
+                <rect id="矩形备份-17" fill-opacity="0.15" fill="#66BD7E" x="0" y="0" width="40" height="40" rx="4"></rect>
                 <rect id="形状结合备份-2" fill="#66BD7E" x="7" y="6" width="26" height="28" rx="1.66666667"></rect>
                 <rect id="矩形备份-31" fill="#FFFFFF" opacity="0.6" x="12" y="24" width="16" height="2"></rect>
                 <rect id="矩形备份-33" fill="#FFFFFF" opacity="0.6" x="12" y="28" width="16" height="2"></rect>
