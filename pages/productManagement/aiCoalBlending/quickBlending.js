@@ -164,9 +164,8 @@ const Index = () => {
     // infoValue[index] = value.replace(/^(-)*(\d+)\.(\d{1,1}).*$/, '$1$2.$3');  //可以输入0
     infoValue[index] = value.replace(/^\D*([1-9]\d*\.?\d{0,1})?.*$/, '$1'); //不等于0
     setInfoValue([...infoValue]);
-    console.log(infoValue);
+
     const total = eval(infoValue.filter(item => !!item).join('+'));
-    console.log(total);
 
     data[inventoryId] = { value: +value.replace(/^\D*([1-9]\d*\.?\d{0,1})?.*$/, '$1') };
     Object.keys(data).forEach((key, index) => {

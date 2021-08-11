@@ -357,7 +357,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 whitespace: true,
                 type: 'number',
                 transform: value => Number(value) || 0,
-                // max: 8,
+                max: 10000,
                 message: '请输入正确的数值',
               },
             ]}>
