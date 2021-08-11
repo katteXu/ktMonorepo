@@ -343,6 +343,31 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
           <Form.Item
             label={
               <div>
+                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>发热量(cal)
+              </div>
+            }
+            name="standard_heat"
+            validateFirst={true}
+            rules={[
+              {
+                pattern: /^[0-9]\d*$/,
+                message: '请输入正确的数值',
+              },
+              {
+                whitespace: true,
+                type: 'number',
+                transform: value => Number(value) || 0,
+                // max: 8,
+                message: '请输入正确的数值',
+              },
+            ]}>
+            <Input placeholder="请输入" style={{ width: 200 }} />
+          </Form.Item>
+        </div>
+        <div className={styles.col}>
+          <Form.Item
+            label={
+              <div>
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>含矸石(%)
               </div>
             }
@@ -364,6 +389,8 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
             <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
+      </div>
+      <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
             label={
@@ -389,8 +416,6 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
             <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
-      </div>
-      <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
             label={

@@ -72,6 +72,7 @@ const EditMaterial = props => {
         standard_std: record.sulfur && (record.sulfur / 100).toFixed(2),
         standard_vdaf: record.volatilization && (record.volatilization / 100).toFixed(2),
         standard_y: record.colloid && (record.colloid / 100).toFixed(2),
+        standard_heat: record.heat && (record.heat / 100).toFixed(2),
       };
       setCurrentFormData(_form);
     }
@@ -97,6 +98,7 @@ const EditMaterial = props => {
       stone: (data.standard_gangue * 100).toFixed(0) * 1, //#含矸石值
       midCoal: (data.standard_middle * 100).toFixed(0) * 1, //# 含中煤值
       cleanCoal: (data.standard_coal * 100).toFixed(0) * 1, //#含精煤值
+      heat: (data.standard_heat * 100).toFixed(0) * 1, //#发热量
     };
     const res = await product.saveRawMaterial({ params });
     if (res.status === 0) {

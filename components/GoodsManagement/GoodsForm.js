@@ -784,7 +784,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
             ]}>
             <Input style={{}} placeholder="请输入" />
           </Form.Item>
-          <span>≤卡≤</span>
+          <span>≤cal≤</span>
           <Form.Item
             label=""
             colon={false}
@@ -792,7 +792,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
             validateFirst={true}
             rules={[
               {
-                pattern: /^[0-8]\d*$/,
+                pattern: /^[0-9]\d*$/,
                 message: '请输入正确的数值',
               },
               {

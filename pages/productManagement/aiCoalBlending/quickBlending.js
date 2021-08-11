@@ -92,7 +92,7 @@ const Index = () => {
     colloid: 0,
     heat: 0,
   });
-  const [status, setStatus] = useState({});
+  const [data, setData] = useState({});
   const [GoodsType, setGoodsType] = useState([]);
 
   const [infoValue, setInfoValue] = useState([]);
@@ -112,19 +112,19 @@ const Index = () => {
       coalBlend: 1,
     };
     const res = await product.getGoodsList({ params });
-    if (res.status === 0) {
+    if (res.data === 0) {
       setGoodsType(res.result);
     }
   };
 
   const submit = async () => {
-    if (Object.keys(status).filter(item => !!item).length >= 2) {
+    if (Object.keys(data).filter(item => !!item).length >= 2) {
       let arr = [];
       list.forEach(item => {
-        if (status[item.inventoryId] && status[item.inventoryId].value !== 0) {
+        if (data[item.inventoryId] && data[item.inventoryId].value !== 0) {
           arr.push({
             inventoryId: item.inventoryId,
-            proportion: status[item.inventoryId].percent * 100,
+            proportion: data[item.inventoryId].percent * 100,
             goodsName: item.goodsName,
           });
         }
@@ -145,7 +145,7 @@ const Index = () => {
 
         const res = await product.add_forward_coal_blending_scheme({ params });
 
-        if (res.status === 0) {
+        if (res.data === 0) {
           router.push('/productManagement/coalBlendingManagement');
         } else {
           message.error(`${res.detail || res.description}`);
@@ -159,32 +159,34 @@ const Index = () => {
   };
 
   const onChangeInput = (value, inventoryId, index) => {
+    // console.log(value.test('/^(-)*(d+).(d{1,1}).*$/'));
     infoValue[index] = value.replace(/^(-)*(\d+)\.(\d{1,1}).*$/, '$1$2.$3');
     setInfoValue([...infoValue]);
-
+    console.log(infoValue);
     const total = eval(infoValue.filter(item => !!item).join('+'));
-    if (true) {
-      status[inventoryId] = { value: +value };
-      Object.keys(status).forEach((key, index) => {
-        const value = status[key].value;
-        if (index === Object.keys(status).length - 1 && index !== 0) {
-          status[key].percent = (
-            100 -
-            eval(
-              Object.keys(status)
-                .filter(k => key !== k)
-                .map(item => status[item].percent)
-                .join('+')
-            )
-          ).toFixed(2);
-        } else {
-          status[key].percent = ((value / total) * 100).toFixed(2);
-        }
-      });
-    }
-    console.log(status);
+    console.log(total);
 
-    setStatus({ ...status });
+    data[inventoryId] = { value: +value.replace(/^(-)*(\d+)\.(\d{1,1}).*$/, '$1$2.$3') };
+    Object.keys(data).forEach((key, index) => {
+      const value = data[key].value;
+      if (index === Object.keys(data).length - 1 && index !== 0) {
+        data[key].percent = (
+          100 -
+          eval(
+            Object.keys(data)
+              .filter(k => key !== k)
+              .map(item => data[item].percent)
+              .join('+')
+          )
+        ).toFixed(2);
+      } else {
+        data[key].percent = ((value / total) * 100).toFixed(2);
+      }
+    });
+
+    console.log(data);
+
+    setData({ ...data });
   };
 
   const handleKeyPress = event => {
@@ -201,8 +203,8 @@ const Index = () => {
 
   useEffect(() => {
     // const total = eval(
-    //   Object.keys(status)
-    //     .map(id => status[id] || 0)
+    //   Object.keys(data)
+    //     .map(id => data[id] || 0)
     //     .join('+')
     // );
 
@@ -214,22 +216,22 @@ const Index = () => {
     let colloid = 0;
     let heat = 0;
     list.forEach(item => {
-      unitPrice += item.unitPrice * (status[item.inventoryId] ? status[item.inventoryId].percent / 100 : 0);
-      volatilization += item.volatilization * (status[item.inventoryId] ? status[item.inventoryId].percent / 100 : 0);
-      ashContent += item.ashContent * (status[item.inventoryId] ? status[item.inventoryId].percent / 100 : 0);
-      sulfur += item.sulfur * (status[item.inventoryId] ? status[item.inventoryId].percent / 100 : 0);
-      bond += item.bond * (status[item.inventoryId] ? status[item.inventoryId].percent / 100 : 0);
-      colloid += item.colloid * (status[item.inventoryId] ? status[item.inventoryId].percent / 100 : 0);
-      heat += item.heat * (status[item.inventoryId] ? status[item.inventoryId].percent / 100 : 0);
+      unitPrice += item.unitPrice * (data[item.inventoryId] ? data[item.inventoryId].percent / 100 : 0);
+      volatilization += item.volatilization * (data[item.inventoryId] ? data[item.inventoryId].percent / 100 : 0);
+      ashContent += item.ashContent * (data[item.inventoryId] ? data[item.inventoryId].percent / 100 : 0);
+      sulfur += item.sulfur * (data[item.inventoryId] ? data[item.inventoryId].percent / 100 : 0);
+      bond += item.bond * (data[item.inventoryId] ? data[item.inventoryId].percent / 100 : 0);
+      colloid += item.colloid * (data[item.inventoryId] ? data[item.inventoryId].percent / 100 : 0);
+      heat += item.heat * (data[item.inventoryId] ? data[item.inventoryId].percent / 100 : 0);
     });
     setPredictedList({ ...predictedList, unitPrice, volatilization, ashContent, sulfur, bond, colloid, heat });
     // setTotal(total);
-  }, [status]);
+  }, [data]);
 
   return (
     <Layout {...routeView}>
       <Content style={{ padding: '0 16px' }}>
-        <ChildTitle style={{ margin: '16px 0 16px', fontWeight: 'bold' }}>原料煤信息表</ChildTitle>
+        <ChildTitle style={{ margin: '16px 0 16px', fontWeight: 'bold' }}>原料信息表</ChildTitle>
         <Table columns={columns} rowKey="inventoryId" pagination={false} dataSource={list} scroll={{ x: 'auto' }} />
         <ChildTitle style={{ margin: '16px 0 16px', fontWeight: 'bold' }}>配方信息</ChildTitle>
         <div className={style.blendingBox}>
@@ -248,15 +250,15 @@ const Index = () => {
                       value={infoValue[index]}
                       style={{ width: '80%', height: 30 }}
                       type="number"
-                      min={0}
+                      min={1}
                       onKeyDown={handleKeyPress}
                       onChange={e => onChangeInput(e.target.value, item.inventoryId, index)}
                     />
                   </div>
                   <div>
-                    {/* {+status[item.inventoryId] ? ((status[item.inventoryId] / total) * 100).toFixed(2) + '%' : ''} */}
-                    {status[item.inventoryId] && status[item.inventoryId].percent * 1
-                      ? `${status[item.inventoryId].percent}%`
+                    {/* {+data[item.inventoryId] ? ((data[item.inventoryId] / total) * 100).toFixed(2) + '%' : ''} */}
+                    {data[item.inventoryId] && data[item.inventoryId].percent * 1
+                      ? `${data[item.inventoryId].percent}%`
                       : ''}
                   </div>
                 </div>
