@@ -358,7 +358,7 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
                 type: 'number',
                 transform: value => Number(value) || 0,
                 max: 10000,
-                message: '请输入正确的数值',
+                message: '请输入小于等于10000数值',
               },
             ]}>
             <Input placeholder="请输入" style={{ width: 200 }} />
