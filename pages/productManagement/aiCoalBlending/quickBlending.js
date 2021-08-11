@@ -112,7 +112,7 @@ const Index = () => {
       coalBlend: 1,
     };
     const res = await product.getGoodsList({ params });
-    if (res.data === 0) {
+    if (res.status === 0) {
       setGoodsType(res.result);
     }
   };
@@ -145,7 +145,7 @@ const Index = () => {
 
         const res = await product.add_forward_coal_blending_scheme({ params });
 
-        if (res.data === 0) {
+        if (res.status === 0) {
           router.push('/productManagement/coalBlendingManagement');
         } else {
           message.error(`${res.detail || res.description}`);
