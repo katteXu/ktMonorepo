@@ -72,7 +72,7 @@ const EditMaterial = props => {
         standard_std: record.sulfur && (record.sulfur / 100).toFixed(2),
         standard_vdaf: record.volatilization && (record.volatilization / 100).toFixed(2),
         standard_y: record.colloid && (record.colloid / 100).toFixed(2),
-        standard_heat: record.heat && (record.heat / 100).toFixed(2),
+        standard_heat: record.heat && (record.heat / 100).toFixed(0),
       };
       setCurrentFormData(_form);
     }
