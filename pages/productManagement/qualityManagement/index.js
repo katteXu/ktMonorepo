@@ -101,7 +101,7 @@ const QualityManagement = props => {
       key: 'heat',
       align: 'right',
       width: 140,
-      render: Format.percent,
+      render: value => (value / 100).toFixed(0),
     },
 
     {
