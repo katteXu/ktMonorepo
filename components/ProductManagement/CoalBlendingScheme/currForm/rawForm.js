@@ -39,6 +39,7 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
         volatilization: item.volatilization && (item.volatilization / 100).toFixed(2),
         warningValue: item.warningValue && (item.warningValue / 100).toFixed(2),
         waterContent: item.waterContent && (item.waterContent / 100).toFixed(2),
+        heat: item.heat && (item.heat / 100).toFixed(0),
       },
     };
 
@@ -387,6 +388,33 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
           <Form.Item
             label={
               <div>
+                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>发热量(cal)
+              </div>
+            }
+            name={[name, 'heat']}
+            validateFirst={true}
+            rules={[
+              {
+                pattern: /^[0-9]\d*$/,
+                message: '请输入正确的数值',
+              },
+              {
+                whitespace: true,
+                type: 'number',
+                transform: value => Number(value) || 0,
+                max: 10000,
+                message: '请输入小于等于10000数值',
+              },
+            ]}>
+            <Input placeholder="请输入" style={{ width: 200 }} />
+          </Form.Item>
+        </div>
+      </div>
+      <div className={styles.row}>
+        <div className={styles.col}>
+          <Form.Item
+            label={
+              <div>
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>含矸石(%)
               </div>
             }
@@ -408,8 +436,7 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
             <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
-      </div>
-      <div className={styles.row}>
+
         <div className={styles.col}>
           <Form.Item
             label={
@@ -435,6 +462,8 @@ const RawForm = ({ onRemove, name, index, rawGoods = [], form }) => {
             <Input style={{ width: 200 }} placeholder="请输入" />
           </Form.Item>
         </div>
+      </div>
+      <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
             label={

@@ -69,6 +69,14 @@ const Scheme = props => {
       width: 120,
       align: 'right',
     },
+    {
+      title: '发热量(cal)',
+      dataIndex: 'data9',
+      key: 'data9',
+      align: 'right',
+      width: 120,
+      align: 'right',
+    },
   ];
   const [AIPieData, setAIPieData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -125,6 +133,7 @@ const Scheme = props => {
         data6: inventory && Format.range(inventory.recoveryMin, inventory.recoveryMax),
         data7: inventory && Format.range(inventory.bondMin, inventory.bondMax),
         data8: inventory && Format.range(inventory.colloidMin, inventory.colloidMax),
+        data9: inventory && Format.range(inventory.heatMin, inventory.heatMax),
       },
       {
         name: 'AI预测',
@@ -136,6 +145,7 @@ const Scheme = props => {
         data6: (dataInfo.predictRecovery / 100).toFixed(2),
         data7: (dataInfo.predictBond / 100).toFixed(2),
         data8: (dataInfo.predictColloid / 100).toFixed(2),
+        data9: (dataInfo.predictHeat / 100).toFixed(0),
       },
       {
         name: '实际产出',
@@ -147,6 +157,7 @@ const Scheme = props => {
         data6: (dataInfo.recovery / 100).toFixed(2),
         data7: (dataInfo.bond / 100).toFixed(2),
         data8: (dataInfo.colloid / 100).toFixed(2),
+        data9: (dataInfo.heat / 100).toFixed(0),
       },
     ];
     setDataSource(dataSource);

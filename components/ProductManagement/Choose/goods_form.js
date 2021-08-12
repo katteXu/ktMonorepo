@@ -105,14 +105,11 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
         {/* 灰分 */}
         <div className={styles.col}>
           <Form.Item
-            label={
-              <div>
-                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>灰分(% Ad)
-              </div>
-            }
+            label="灰分(% Ad)"
             name="standard_ad"
             validateFirst={true}
             rules={[
+              { required: true, message: '内容不可为空' },
               {
                 pattern: /^[0-9]+(.?[0-9]{1,2})?$/,
                 message: '最多输入两位小数',
@@ -132,14 +129,11 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
       <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
-            label={
-              <div>
-                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>挥发(% Vdaf)
-              </div>
-            }
+            label="挥发(% Vdaf)"
             name="standard_vdaf"
             validateFirst={true}
             rules={[
+              { required: true, message: '内容不可为空' },
               {
                 pattern: /^[0-9]+(.?[0-9]{1,2})?$/,
                 message: '最多输入两位小数',
@@ -185,14 +179,11 @@ const GoodsForm = ({ formData = {}, onSubmit, onClose }) => {
         {/* 全硫 */}
         <div className={styles.col}>
           <Form.Item
-            label={
-              <div>
-                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>全硫(% Std)
-              </div>
-            }
+            label="全硫(% Std)"
             name="standard_std"
             validateFirst={true}
             rules={[
+              { required: true, message: '内容不可为空' },
               {
                 pattern: /^[0-9]+(.?[0-9]{1,2})?$/,
                 message: '最多输入两位小数',
