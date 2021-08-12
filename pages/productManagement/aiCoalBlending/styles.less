@@ -14,3 +14,43 @@
     height: 242px;
   }
 }
+
+.blendingBox {
+  overflow-x: auto;
+  .box {
+    display: flex;
+    .boxCol {
+      text-align: center;
+
+      div {
+        border: 1px solid #d8d8d8;
+        line-height: 32px;
+        height: 32px;
+        width: 142px;
+      }
+    }
+  }
+  .boxBottom {
+    .boxBottomCol {
+      text-align: center;
+      display: flex;
+      div {
+        border: 1px solid #d8d8d8;
+        line-height: 32px;
+        height: 32px;
+        width: 142px;
+      }
+    }
+  }
+}
+.btn {
+  margin-bottom: 48px;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}

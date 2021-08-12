@@ -259,6 +259,15 @@ const deleteCoalBlendingRecord = ({ params } = {}) => {
   });
 };
 
+// 快速配煤
+const add_forward_coal_blending_scheme = ({ params } = {}) => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/production/add_forward_coal_blending_scheme',
+    data: params,
+  });
+};
+
 export default {
   getDataList,
   saveRawMaterial,
@@ -290,4 +299,5 @@ export default {
   start_or_stop,
   modify_sub_device_name,
   device_regulation,
+  add_forward_coal_blending_scheme,
 };

@@ -95,6 +95,14 @@ const QualityManagement = props => {
       width: 140,
       render: Format.percent,
     },
+    {
+      title: '发热量(卡)',
+      dataIndex: 'heat',
+      key: 'heat',
+      align: 'right',
+      width: 140,
+      render: Format.percent,
+    },
 
     {
       title: '化验类型',

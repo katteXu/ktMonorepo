@@ -67,6 +67,8 @@ const Index = props => {
         midCoalMax: goodsComponent.midCoalMax,
         cleanCoalMin: goodsComponent.cleanCoalMin,
         cleanCoalMax: goodsComponent.cleanCoalMax,
+        heatMax: goodsComponent.heatMax,
+        heatMin: goodsComponent.heatMin,
       };
       console.log(_form);
       setCurrentFormData(_form);
@@ -108,6 +110,8 @@ const Index = props => {
       midCoalMax: data.standard_middle.max ? (data.standard_middle.max * 100).toFixed(0) * 1 : 0,
       cleanCoalMin: data.standard_coal.min ? (data.standard_coal.min * 100).toFixed(0) * 1 : 0,
       cleanCoalMax: data.standard_coal.max ? (data.standard_coal.max * 100).toFixed(0) * 1 : 0,
+      heatMin: data.standard_heat.min ? (data.standard_heat.min * 100).toFixed(0) * 1 : 0,
+      heatMax: data.standard_heat.max ? (data.standard_heat.max * 100).toFixed(0) * 1 : 0,
     };
 
     // 如果存在id

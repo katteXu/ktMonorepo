@@ -186,6 +186,7 @@ const CoalBlendingManagement = props => {
   const [dataList, setDataList] = useState({});
   const [showScheme, setShowScheme] = useState(false);
   const [showCurr, setShowCurr] = useState(false);
+  const [plan, setPlan] = useState('0'); //判断智慧工厂进入页面增加搜索条件
 
   // 目标货品
   const [targetGood, setTargetGood] = useState({});
@@ -196,11 +197,38 @@ const CoalBlendingManagement = props => {
     if (isServer) {
       clearState();
     }
+    const plan = sessionStorage.getItem('plan');
+
+    if (plan === '1') {
+      countDown();
+    }
     // 获取持久化数据
     const state = getState().query;
     setQuery({ ...query, ...state });
-    getRemoteData({ ...query, ...state });
+    getRemoteData({ ...query, ...state, plan: plan === '1' ? 1 : undefined });
+    sessionStorage.removeItem('plan');
   }, []);
+
+  useEffect(() => {}, []);
+
+  const countDown = () => {
+    let secondsToGo = 5;
+    const modal = Modal.success({
+      title: '本次配比为您推荐以下优化方案，以供参考',
+
+      okText: `好的(${secondsToGo})`,
+    });
+    const timer = setInterval(() => {
+      secondsToGo -= 1;
+      modal.update({
+        okText: `好的(${secondsToGo})`,
+      });
+      if (secondsToGo === 0) {
+        clearInterval(timer);
+        modal.destroy();
+      }
+    }, 1000);
+  };
 
   // 配比方案
   const handleChangeIsAI = useCallback(value => {
@@ -311,7 +339,7 @@ const CoalBlendingManagement = props => {
    * 查询数据
    * @param {Object} param0
    */
-  const getRemoteData = async ({ page, pageSize = 10, targetGoodsName, rawGoodsName, isAI }) => {
+  const getRemoteData = async ({ page, pageSize = 10, targetGoodsName, rawGoodsName, isAI, plan }) => {
     setLoading(true);
 
     const ai = isAI === '1' ? true : isAI === '0' ? false : undefined;
@@ -341,7 +369,7 @@ const CoalBlendingManagement = props => {
     } else {
       message.error(`${res.detail || res.description}`);
     }
-
+    setPlan('0');
     setLoading(false);
   };
   return (

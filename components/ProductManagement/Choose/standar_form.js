@@ -588,11 +588,15 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
         {/* 粘结指数 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
-            label="粘结指数(GRI)"
+            label={
+              <div>
+                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>粘结指数(GRI)
+              </div>
+            }
             name={['standard_gri', 'min']}
             validateFirst={true}
             rules={[
-              { required: true, message: '内容不可为空' },
+              { required: false, message: '内容不可为空' },
               {
                 pattern: /^[0-9]+(.?[0-9]{1,2})?$/,
                 message: '最多输入两位小数',
@@ -617,7 +621,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
             name={['standard_gri', 'max']}
             validateFirst={true}
             rules={[
-              { required: true, message: '内容不可为空' },
+              { required: false, message: '内容不可为空' },
               {
                 pattern: /^[0-9]+(.?[0-9]{1,2})?$/,
                 message: '最多输入两位小数',

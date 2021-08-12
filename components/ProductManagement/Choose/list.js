@@ -33,14 +33,14 @@ const List = ({ onCoalBlending, isServer, GoodsType }) => {
       width: 120,
       render: Format.price,
     },
-    {
-      title: '水分(% Mad)',
-      dataIndex: 'waterContent',
-      key: 'waterContent',
-      align: 'right',
-      width: 120,
-      render: Format.percent,
-    },
+    // {
+    //   title: '水分(% Mad)',
+    //   dataIndex: 'waterContent',
+    //   key: 'waterContent',
+    //   align: 'right',
+    //   width: 120,
+    //   render: Format.percent,
+    // },
     {
       title: '灰分(% Ad)',
       dataIndex: 'ashContent',
@@ -65,14 +65,14 @@ const List = ({ onCoalBlending, isServer, GoodsType }) => {
       width: 120,
       render: Format.percent,
     },
-    {
-      title: '回收(% r)',
-      dataIndex: 'recovery',
-      key: 'recovery',
-      align: 'right',
-      width: 120,
-      render: Format.percent,
-    },
+    // {
+    //   title: '回收(% r)',
+    //   dataIndex: 'recovery',
+    //   key: 'recovery',
+    //   align: 'right',
+    //   width: 120,
+    //   render: Format.percent,
+    // },
     {
       title: '粘结指数(GRI)',
       dataIndex: 'bond',
@@ -85,6 +85,14 @@ const List = ({ onCoalBlending, isServer, GoodsType }) => {
       title: '胶质层(Y)',
       dataIndex: 'colloid',
       key: 'colloid',
+      align: 'right',
+      width: 120,
+      render: Format.percent,
+    },
+    {
+      title: '发热量(卡)',
+      dataIndex: 'heat',
+      key: 'heat',
       align: 'right',
       width: 120,
       render: Format.percent,
@@ -172,6 +180,20 @@ const List = ({ onCoalBlending, isServer, GoodsType }) => {
 
         onCoalBlending && onCoalBlending(selectedRows);
       }
+    } else {
+      message.warn('当前可用原料煤种类少于两种，请添加原料煤后重试');
+    }
+  };
+
+  const quickBlending = async () => {
+    if (dataList.data.length > 0) {
+      if (selectedRows.length < 2) {
+        message.warn('请选择至少两种原料煤');
+        return;
+      }
+
+      sessionStorage.setItem('blendingList', JSON.stringify(selectedRows));
+      router.push('/productManagement/aiCoalBlending/quickBlending');
     } else {
       message.warn('当前可用原料煤种类少于两种，请添加原料煤后重试');
     }
@@ -324,7 +346,7 @@ const List = ({ onCoalBlending, isServer, GoodsType }) => {
   // 可选判断
   const canCheck = record => {
     const { unitPrice, waterContent, ashContent, volatilization, sulfur, recovery, bond, colloid } = record;
-    const disabled = !(unitPrice && ashContent && volatilization && sulfur && bond);
+    const disabled = !(unitPrice && ashContent && volatilization && sulfur);
     return { disabled };
   };
   return (
@@ -352,7 +374,10 @@ const List = ({ onCoalBlending, isServer, GoodsType }) => {
           </Search.Item>
         </Search>
         <Button style={{ marginTop: 16 }} type="primary" onClick={handleCoalBlending}>
-          智能配煤
+          智能配煤(倒推)
+        </Button>
+        <Button style={{ marginTop: 16, marginLeft: 8 }} type="primary" onClick={quickBlending}>
+          快捷配煤(正算)
         </Button>
         <div style={{ marginTop: 16 }}>
           <Table

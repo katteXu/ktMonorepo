@@ -607,6 +607,7 @@ const BottomBtn = props => {
             payPath: routeInfo.payPath,
             totalInfoFee: totalInfoFee,
           }}
+          payRemark={props.payRemark}
           payId={id}
           onclose={() => {
             setVisible(false);

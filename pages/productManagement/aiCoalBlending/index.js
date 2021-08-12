@@ -90,26 +90,29 @@ const AICoalBlending = props => {
           handleDataInfo={data => {
             setDataInfo(data), console.log(data);
             setLoading(false);
+            sessionStorage.setItem('plan', 1);
+            router.push('/productManagement/coalBlendingManagement');
           }}
         />
       )}
-      {loading ? (
-        <div className={style.loadingBox}>
-          <img src={Image.LoadingScheme} className={style.loadingImg} />
-        </div>
-      ) : (
-        step === 4 && (
-          <Content style={{ marginTop: 16 }}>
-            <header>输出方案</header>
-            <section>
-              <ChooseScheme dataInfo={dataInfo} />
-              <Button style={{ marginTop: 8 }} type="primary" onClick={handleSubmit}>
-                完成
-              </Button>
-            </section>
-          </Content>
-        )
-      )}
+      {
+        loading ? (
+          <div className={style.loadingBox}>
+            <img src={Image.LoadingScheme} className={style.loadingImg} />
+          </div>
+        ) : null
+        // step === 4 && (
+        //   <Content style={{ marginTop: 16 }}>
+        //     <header>输出方案</header>
+        //     <section>
+        //       <ChooseScheme dataInfo={dataInfo} />
+        //       <Button style={{ marginTop: 8 }} type="primary" onClick={handleSubmit}>
+        //         完成
+        //       </Button>
+        //     </section>
+        //   </Content>
+        // )
+      }
     </Layout>
   );
 };
