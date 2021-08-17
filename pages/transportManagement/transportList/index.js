@@ -799,6 +799,8 @@ const TransportList = props => {
           isAll: '1',
           ...query,
           payTime: stamp,
+          begin: query.begin ? query.begin : undefined,
+          end: query.end ? query.end : undefined,
         })
       : (params = {
           tides: (selectedRowKeys + '').replace(/,/g, ' '),
