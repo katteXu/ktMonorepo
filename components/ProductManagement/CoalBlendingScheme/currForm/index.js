@@ -49,6 +49,7 @@ const CurrentForm = ({ onSubmit, onClose }) => {
         volatilization: item.volatilization ? (item.volatilization * 100).toFixed(0) * 1 : 0,
         waterContent: item.waterContent ? (item.waterContent * 100).toFixed(0) * 1 : 0,
         proportion: item.proportion ? (item.proportion * 100).toFixed(0) * 1 : 0,
+        heat: item.heat ? (item.heat * 100).toFixed(0) * 1 : 0,
       };
       return params;
     });

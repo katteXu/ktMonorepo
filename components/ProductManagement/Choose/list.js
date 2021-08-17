@@ -95,7 +95,7 @@ const List = ({ onCoalBlending, isServer, GoodsType }) => {
       key: 'heat',
       align: 'right',
       width: 120,
-      render: Format.percent,
+      render: value => (value / 100).toFixed(0),
     },
     {
       title: '操作',

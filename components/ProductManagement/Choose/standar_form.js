@@ -83,6 +83,10 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
           min: goodsComponent.cleanCoalMin && (goodsComponent.cleanCoalMin / 100).toFixed(2),
           max: goodsComponent.cleanCoalMax && (goodsComponent.cleanCoalMax / 100).toFixed(2),
         },
+        standard_heat: {
+          min: goodsComponent.heatMin && goodsComponent.heatMin / 100,
+          max: goodsComponent.heatMax && goodsComponent.heatMax / 100,
+        },
       };
 
       form.setFieldsValue(formData);
@@ -696,6 +700,57 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
         </div>
       </div>
       <div className={styles.row}>
+        <div className={`${styles.col} ${styles['db-input']}`}>
+          <Form.Item
+            label={
+              <div>
+                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>发热量(卡)
+              </div>
+            }
+            name={['standard_heat', 'min']}
+            validateFirst={true}
+            rules={[
+              {
+                pattern: /^[0-8]\d*$/,
+                message: '请输入正确的数值',
+              },
+              {
+                whitespace: true,
+                type: 'number',
+                transform: value => Number(value) || 0,
+                max: 10000,
+                message: '请输入小于等于10000数值',
+              },
+              {
+                validator: () => validateMin('heat'),
+              },
+            ]}>
+            <Input style={{}} placeholder="请输入" />
+          </Form.Item>
+          <span>≤cal≤</span>
+          <Form.Item
+            label=""
+            colon={false}
+            name={['standard_heat', 'max']}
+            validateFirst={true}
+            rules={[
+              {
+                pattern: /^[0-9]\d*$/,
+                message: '请输入正确的数值',
+              },
+              {
+                whitespace: true,
+                type: 'number',
+                transform: value => Number(value) || 0,
+                max: 10000,
+                message: '请输入小于等于10000数值',
+              },
+            ]}
+            onChange={() => validateMax('heat')}>
+            <Input placeholder="请输入" />
+          </Form.Item>
+        </div>
+
         {/* 含矸石 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
@@ -750,6 +805,8 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
+      </div>
+      <div className={styles.row}>
         {/* 含中煤 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item
@@ -804,8 +861,7 @@ const FormCompnent = ({ formData, onSubmit, onChangeGoods }, ref) => {
             <Input placeholder="请输入" />
           </Form.Item>
         </div>
-      </div>
-      <div className={styles.row}>
+
         {/* 含精煤 */}
         <div className={`${styles.col} ${styles['db-input']}`}>
           <Form.Item

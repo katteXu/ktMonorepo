@@ -57,7 +57,7 @@ export const Format = {
   range: (min, max) => {
     return max !== undefined && min != undefined ? `${(min / 100).toFixed(2)} ~ ${(max / 100).toFixed(2)}` : '-';
   },
-  percent: value => ((value || 0) / 100).toFixed(2),
+  percent: value => Math.round(((value + Number.EPSILON) * 100) / 100) / 100,
 
   addPrice: value => `${((value || 0).toFixed(0) / 100).toFixed(2)}`,
 };

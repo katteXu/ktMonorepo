@@ -60,6 +60,7 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
         totalWaterContent: values.totalWaterContent && (values.totalWaterContent * 100).toFixed(0) * 1,
         volatilization: values.volatilization && (values.volatilization * 100).toFixed(0) * 1,
         waterContent: values.waterContent && (values.waterContent * 100).toFixed(0) * 1,
+        heat: values.heat && (values.heat * 100).toFixed(0) * 1,
       },
     };
 
@@ -312,11 +313,15 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
       <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
-            label="粘结指数(GRI)"
+            label={
+              <div>
+                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>粘结指数(GRI)
+              </div>
+            }
             name="bond"
             validateFirst={true}
             rules={[
-              { required: true, message: `内容不可为空` },
+              { required: false, message: `内容不可为空` },
               {
                 pattern: /^[0-9]+(.?[0-9]{1,2})?$/,
                 message: '最多输入两位小数',
@@ -363,6 +368,31 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
           <Form.Item
             label={
               <div>
+                <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>发热量(cal)
+              </div>
+            }
+            name="heat"
+            validateFirst={true}
+            rules={[
+              {
+                pattern: /^[0-9]\d*$/,
+                message: '请输入正确的数值',
+              },
+              {
+                whitespace: true,
+                type: 'number',
+                transform: value => Number(value) || 0,
+                max: 10000,
+                message: '请输入小于等于10000数值',
+              },
+            ]}>
+            <Input placeholder="请输入" style={{ width: 200 }} />
+          </Form.Item>
+        </div>
+        <div className={styles.col}>
+          <Form.Item
+            label={
+              <div>
                 <span style={{ display: 'inline-block', marginRight: 4, visibility: 'hidden' }}>*</span>含矸石(%)
               </div>
             }
@@ -384,6 +414,8 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
             <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
+      </div>
+      <div className={styles.row}>
         <div className={styles.col}>
           <Form.Item
             label={
@@ -409,8 +441,7 @@ const SchemeForm = ({ formData = {}, onSubmit, onClose, targetGood, rawGoods }) 
             <Input placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
         </div>
-      </div>
-      <div className={styles.row}>
+
         {/* 含精煤 */}
         <div className={styles.col}>
           <Form.Item
