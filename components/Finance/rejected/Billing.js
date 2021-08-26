@@ -1,7 +1,7 @@
 // 驳回待申请开票
 import React, { useState, useCallback, useEffect } from 'react';
 import styles from './styles.less';
-import { finance } from '@api';
+import { finance, getCommon } from '@api';
 import { Search, Msg, Ellipsis, DrawerInfo } from '@components';
 import { Format, keepState, getState, clearState, getQuery } from '@utils/common';
 import { Input, Button, Table, message, DatePicker, Checkbox } from 'antd';
@@ -9,7 +9,7 @@ import moment from 'moment';
 import router from 'next/router';
 import Steps from '@components/Finance/main/Steps';
 import Detail from '@components/Finance/rejected/BillingDetail';
-
+import { User } from '@store';
 const Billing = props => {
   const columns = [
     {
@@ -93,7 +93,7 @@ const Billing = props => {
     begin: undefined,
     end: undefined,
   });
-
+  const { userInfo } = User.useContainer();
   // 选择数据
   /**
    * 数据结构：
@@ -103,7 +103,7 @@ const Billing = props => {
    * }
    */
   const [checkedData, setCheckedData] = useState({});
-
+  const [whiteList, setWhiteList] = useState(false); //税率白名单
   // 按运单开票组
   const [orderDetail, setOrderDetail] = useState({
     fromCompany: '',
@@ -167,7 +167,20 @@ const Billing = props => {
     const state = getState().query;
     setQuery({ ...query, ...state });
     getRemoteData({ ...query, ...state });
+    setHiddenDate();
   }, []);
+
+  //白名单接口
+  const setHiddenDate = async () => {
+    const res = await getCommon();
+    if (res.status === 0) {
+      const userId = userInfo.id;
+      const HE_SHUN_ID = res.result.find(item => item.key === 'HE_SUN_GOODSOWNER_ID_WHITE').url;
+      if (HE_SHUN_ID && HE_SHUN_ID.includes(userId)) {
+        setWhiteList(true);
+      }
+    }
+  };
 
   /**
    * 查询事件
@@ -504,6 +517,8 @@ const Billing = props => {
               {Format.price(
                 checkedAll
                   ? total.invoice_price
+                  : whiteList
+                  ? checkTotal.price * 1.09
                   : parseInt(checkTotal.price + (checkTotal.price * dataList.taxPoint) / (1 - dataList.taxPoint))
               )}
             </span>
