@@ -149,7 +149,7 @@ const EditForm = ({ data, onSubmit }) => {
           },
           {
             validator: (rule, value) => {
-              const mobile = /^1[3|4|5|7|8][0-9]{9}$/;
+              const mobile = /^1[3|4|5|6|7|8|9][0-9]{9}$/;
               const telephone = /^(\d{3,4}-)\d{7,8}$/;
               if (mobile.test(value) || telephone.test(value)) {
                 return Promise.resolve();
