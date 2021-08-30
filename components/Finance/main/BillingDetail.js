@@ -267,7 +267,12 @@ const BillingDetail = props => {
 
   const handleUnBilling = async ids => {
     await props.onUnBilling(`${ids}`);
-    getRemoteData(query);
+    let { page } = query;
+    if (page > 1 && dataList.data.length === 1) {
+      page -= 1;
+    }
+    setQuery({ ...query, page });
+    getRemoteData({ ...query, page });
   };
 
   /**
