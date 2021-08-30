@@ -13,6 +13,13 @@ const DescriptDetail = ({ detail, index, styles, mode }) => {
   const [v, setV] = useState(detail);
   useEffect(() => {
     setV(detail);
+    setData({
+      remarkFromAddress: detail.remarkFromAddress || detail.fromAddress,
+      remarkFromCompany: detail.remarkFromCompany || detail.fromCompany,
+      remarkToAddress: detail.remarkToAddress || detail.toAddress,
+      remarkToCompany: detail.remarkToCompany || detail.toCompany,
+      remarkGoodsType: detail.remarkGoodsType || detail.goodsType,
+    });
   }, [detail]);
   // 对应编辑字段
   const [modify, setModify] = useState();
