@@ -132,12 +132,17 @@ const BillingDetail = props => {
   }, [query.pageSize]);
 
   useEffect(() => {
-    const { checkedData } = orderDetail;
+    const { checkedData, priceSum, weightSum } = orderDetail;
     // 获取数据
     getRemoteData({});
     if (checkedData) {
       // 回写选中项
       setSelectedRowKeys(checkedData.ids.split(',').map(item => item * 1));
+      setTotal({
+        ...total,
+        price: priceSum,
+        weight: weightSum,
+      });
     }
   }, []);
 
