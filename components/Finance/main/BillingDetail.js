@@ -8,7 +8,7 @@ import { finance, getCommon } from '@api';
 import { Format, getQuery } from '@utils/common';
 import Detail from '@components/Transport/detail';
 import router from 'next/router';
-import { User } from '@store';
+import { WhiteList } from '@store';
 const errorCompute = record => {
   if (record.arrivalGoodsWeight / 1000 > 40) {
     return 1;
@@ -92,7 +92,7 @@ const BillingDetail = props => {
       },
     },
   ];
-  const { userInfo } = User.useContainer();
+  const { whiteList } = WhiteList.useContainer();
   const [query, setQuery] = useState({
     page: 1,
     pageSize: 10,
@@ -126,7 +126,7 @@ const BillingDetail = props => {
     price: 0,
     errorCount: 0,
   });
-  const [whiteList, setWhiteList] = useState(false); //税率白名单
+
   // 生成索引数组
   useEffect(() => {
     if (query.pageSize) {
@@ -142,20 +142,7 @@ const BillingDetail = props => {
       // 回写选中项
       setSelectedRowKeys(checkedData.ids.split(',').map(item => item * 1));
     }
-    setHiddenDate();
   }, []);
-
-  //白名单接口
-  const setHiddenDate = async () => {
-    const res = await getCommon();
-    if (res.status === 0) {
-      const userId = userInfo.id;
-      const HE_SHUN_ID = res.result.find(item => item.key === 'HE_SUN_GOODSOWNER_ID_WHITE').url;
-      if (HE_SHUN_ID && HE_SHUN_ID.includes(userId)) {
-        setWhiteList(true);
-      }
-    }
-  };
 
   // 选中单一值
   const onSelectRow = (record, selected, selectedRows, nativeEvent) => {
@@ -402,7 +389,7 @@ const BillingDetail = props => {
 
   // 判断选中项是否为空
   const isEmpty = selectedRowKeys.length === 0 ? true : false;
-
+  console.log(whiteList.heShun);
   return (
     <div className={styles.detail}>
       <div className={styles.content}>
@@ -474,7 +461,7 @@ const BillingDetail = props => {
                 {Format.price(
                   isEmpty || checkedAll
                     ? dataList.invoice_price || 0
-                    : whiteList
+                    : whiteList.heShun
                     ? total.price * 1.09
                     : parseInt(total.price + (total.price * dataList.taxPoint) / (1 - dataList.taxPoint))
                 )}

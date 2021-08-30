@@ -6,3 +6,5 @@ export { default as Message } from './Message';
 export { default as User } from './User';
 
 export { default as Permission } from './Permission';
+
+export { default as WhiteList } from './WhiteList';
