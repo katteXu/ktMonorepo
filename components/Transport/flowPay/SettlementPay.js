@@ -234,7 +234,10 @@ const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSet
 
   // 结算提交
   const settlement = async type => {
-    let _totalPrice = payInfo.realPrice ? parseInt(payInfo.realPrice * 100) : payInfo.price;
+    let _totalPrice = payInfo.realPrice
+      ? Math.round((payInfo.realPrice * 100 + Number.EPSILON) * 100) / 100
+      : payInfo.price;
+
     const params = {
       tid: payId,
       isAgree: true,
@@ -245,7 +248,7 @@ const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSet
       receivePoundPic: payInfo.receivePoundPic || '',
       payRemark: payRemark || '',
     };
-    console.log(params);
+
     const res = await transportStatistics.checkTransport({ params });
     if (res.status === 0) {
       if (type === 'pay') {
