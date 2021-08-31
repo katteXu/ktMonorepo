@@ -248,43 +248,43 @@ const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSet
       receivePoundPic: payInfo.receivePoundPic || '',
       payRemark: payRemark || '',
     };
-    console.log(params);
-    // const res = await transportStatistics.checkTransport({ params });
-    // if (res.status === 0) {
-    //   if (type === 'pay') {
-    //     // 未设置支付密码 提示去设置
-    //     const hasPayPass = await getUser();
-    //     if (!hasPayPass) {
-    //       Modal.warn({
-    //         title: '未设置支付密码',
-    //         content:
-    //           '尚未设置支付密码, 请前往方向物流app设置，进入方向物流app -> 登录账号 -> 点击”我的”-> 点击”设置” -> 点击”密码管理” ->点击”修改支付密码” -> 设置密码 ->，设置完成后重新点击”线上支付”',
-    //       });
-    //       return;
-    //     }
-    //     // // 设置支付信息
-    //     // setShowModal(true);
-    //     setTotalPrice(_totalPrice + payInfo.totalInfoFee);
-    //     //去下一个状态
-    //     setStep(1);
-    //     // 获取当前时间
-    //     setTimeout(async () => {
-    //       const params = {
-    //         tides: payId,
-    //       };
-    //       // 获取结算信息
-    //       const res = await transportStatistics.calculateWaitPayInfo({ params });
-    //       if (!res.status) {
-    //         setNowTime(res.result.nowTime);
-    //       }
-    //     }, 500);
-    //   } else {
-    //     message.success('运单结算成功');
-    //     onclose();
-    //   }
-    // } else {
-    //   message.error(`${res.detail || res.description}`);
-    // }
+
+    const res = await transportStatistics.checkTransport({ params });
+    if (res.status === 0) {
+      if (type === 'pay') {
+        // 未设置支付密码 提示去设置
+        const hasPayPass = await getUser();
+        if (!hasPayPass) {
+          Modal.warn({
+            title: '未设置支付密码',
+            content:
+              '尚未设置支付密码, 请前往方向物流app设置，进入方向物流app -> 登录账号 -> 点击”我的”-> 点击”设置” -> 点击”密码管理” ->点击”修改支付密码” -> 设置密码 ->，设置完成后重新点击”线上支付”',
+          });
+          return;
+        }
+        // // 设置支付信息
+        // setShowModal(true);
+        setTotalPrice(_totalPrice + payInfo.totalInfoFee);
+        //去下一个状态
+        setStep(1);
+        // 获取当前时间
+        setTimeout(async () => {
+          const params = {
+            tides: payId,
+          };
+          // 获取结算信息
+          const res = await transportStatistics.calculateWaitPayInfo({ params });
+          if (!res.status) {
+            setNowTime(res.result.nowTime);
+          }
+        }, 500);
+      } else {
+        message.success('运单结算成功');
+        onclose();
+      }
+    } else {
+      message.error(`${res.detail || res.description}`);
+    }
   };
 
   // 支付提交
