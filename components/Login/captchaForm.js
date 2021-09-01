@@ -6,7 +6,7 @@ import { loginByCaptcha, personalCenter } from '@api';
 import { User } from '@store';
 import router from 'next/router';
 import Store from './store';
-import { Permission } from '@store';
+import { Permission, WhiteList } from '@store';
 // 电话验证
 const phone_rules = [
   {
@@ -31,6 +31,7 @@ const CaptchaForm = () => {
   // 发送
   const [send, setSend] = useState(false);
   const { reloadPermissions } = Permission.useContainer();
+  const { reloadWhiteList } = WhiteList.useContainer();
 
   const handleSubmit = async values => {
     setLoading(true);
@@ -45,6 +46,7 @@ const CaptchaForm = () => {
         // 设置用户信息
         reload(id);
         reloadPermissions();
+        reloadWhiteList();
       });
     } else {
       message.error(res.detail || res.description);

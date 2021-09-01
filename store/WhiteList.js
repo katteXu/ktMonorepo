@@ -19,9 +19,6 @@ const useWhiteList = () => {
       const { userId } = localStorage;
 
       const HE_SHUN_ID = res.result.find(item => item.key === 'HE_SHUN_GOODSOWNER_ID_WHITE').url;
-      console.log(HE_SHUN_ID);
-      console.log(userId);
-      console.log(HE_SHUN_ID && HE_SHUN_ID.includes(userId));
       if (HE_SHUN_ID && HE_SHUN_ID.includes(userId)) {
         setWhiteList({
           ...whiteList,
@@ -30,7 +27,10 @@ const useWhiteList = () => {
       }
     }
   };
+  const reloadWhiteList = () => {
+    setWhiteList([]);
+  };
   console.log(whiteList);
-  return { whiteList, reloadHeShun: () => setHiddenDate };
+  return { whiteList, reloadWhiteList, reloadWhiteList: () => setHiddenDate() };
 };
 export default createContainer(useWhiteList);
