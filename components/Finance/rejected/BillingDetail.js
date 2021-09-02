@@ -4,11 +4,11 @@ import { Msg, DrawerInfo, ChildTitle } from '@components';
 import { Button, Table, message, Modal, Input, Form, Checkbox } from 'antd';
 import Title from '@components/Finance/Title';
 import styles from './styles.less';
-import { finance } from '@api';
+import { finance, getCommon } from '@api';
 import { Format, getQuery } from '@utils/common';
 import Detail from '@components/Transport/detail';
 import router from 'next/router';
-
+import { WhiteList } from '@store';
 const errorCompute = record => {
   if (record.arrivalGoodsWeight / 1000 > 40) {
     return 1;
@@ -89,7 +89,7 @@ const BillingDetail = props => {
       },
     },
   ];
-
+  const { whiteList } = WhiteList.useContainer();
   const [query, setQuery] = useState({
     page: 1,
     pageSize: 10,
@@ -132,12 +132,17 @@ const BillingDetail = props => {
   }, [query.pageSize]);
 
   useEffect(() => {
-    const { checkedData } = orderDetail;
+    const { checkedData, priceSum, weightSum } = orderDetail;
     // 获取数据
     getRemoteData({});
     if (checkedData) {
       // 回写选中项
       setSelectedRowKeys(checkedData.ids.split(',').map(item => item * 1));
+      setTotal({
+        ...total,
+        price: priceSum,
+        weight: weightSum,
+      });
     }
   }, []);
 
@@ -453,6 +458,8 @@ const BillingDetail = props => {
                 {Format.price(
                   isEmpty || checkedAll
                     ? dataList.invoice_price || 0
+                    : whiteList.heShun
+                    ? total.price * 1.09
                     : parseInt(total.price + (total.price * dataList.taxPoint) / (1 - dataList.taxPoint))
                 )}
               </span>

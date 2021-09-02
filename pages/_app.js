@@ -1,6 +1,6 @@
 import 'antd/dist/antd.css';
 import '@styles/main.less';
-import { User, Menu, Permission, Message } from '@store';
+import { User, Menu, Permission, Message, WhiteList } from '@store';
 import { ConfigProvider, Table, Pagination, Modal, DatePicker, message } from 'antd';
 import zh_cn from 'antd/lib/locale/zh_CN';
 import NProgress from 'nprogress';
@@ -58,10 +58,13 @@ function MyApp({ Component, pageProps }) {
         <Message.Provider>
           {/* 权限数据 */}
           <Permission.Provider>
-            {/* antd配置 */}
-            <ConfigProvider locale={zh_cn}>
-              <Component {...pageProps} />
-            </ConfigProvider>
+            {/* 白名单 */}
+            <WhiteList.Provider>
+              {/* antd配置 */}
+              <ConfigProvider locale={zh_cn}>
+                <Component {...pageProps} />
+              </ConfigProvider>
+            </WhiteList.Provider>
           </Permission.Provider>
         </Message.Provider>
       </Menu.Provider>

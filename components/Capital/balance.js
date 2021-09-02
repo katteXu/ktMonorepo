@@ -2,7 +2,10 @@ import styles from './styles.less';
 import { Button } from 'antd';
 import router from 'next/router';
 import { Image } from '@components';
+import { WhiteList } from '@store';
 const Balance = ({ children, wallet, exclusiveRechargeAccount, prepaid, prepaidFreight }) => {
+  const { whiteList } = WhiteList.useContainer();
+
   return (
     <div className={styles.wallet} style={{ backgroundImage: `url(${Image.BgCard})`, backgroundPosition: '-2px 0' }}>
       <div style={{ fontSize: 16, fontWeight: 'bold' }}>{children}</div>
@@ -18,9 +21,12 @@ const Balance = ({ children, wallet, exclusiveRechargeAccount, prepaid, prepaidF
           </Button>
         ) : (
           <div>
-            <Button type="primary" ghost onClick={() => exclusiveRechargeAccount()}>
-              专属充值账号
-            </Button>
+            {!whiteList.heShun && (
+              <Button type="primary" ghost onClick={() => exclusiveRechargeAccount()}>
+                专属充值账号
+              </Button>
+            )}
+
             <Button className={styles.btn} type="primary" ghost onClick={() => router.push('/finance/fund/cashOut')}>
               提现
             </Button>
