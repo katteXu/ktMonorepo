@@ -459,7 +459,7 @@ const BillingDetail = props => {
                   isEmpty || checkedAll
                     ? dataList.invoice_price || 0
                     : whiteList.heShun
-                    ? total.price * 1.09
+                    ? total.price * 1.1
                     : parseInt(total.price + (total.price * dataList.taxPoint) / (1 - dataList.taxPoint))
                 )}
               </span>
