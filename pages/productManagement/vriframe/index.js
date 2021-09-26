@@ -14,7 +14,7 @@ const config = {
   84338: 'laiyuan', //来源正式
 };
 const VRIframe = props => {
-  const { userInfo } = User.useContainer();
+  const { userInfo, loading } = User.useContainer();
   const routeView = {
     title: '全景VR',
     pageKey: 'vriframe',
@@ -25,11 +25,8 @@ const VRIframe = props => {
 
   const [company, setCompany] = useState('');
   useEffect(() => {
-    console.log(userInfo);
-    const bossId = window.localStorage.getItem('bossId');
-    setCompany(config[bossId]);
-  }, []);
-
+    setCompany(config[userInfo.bossId]);
+  }, [loading]);
   return (
     <Layout {...routeView}>
       {company ? (

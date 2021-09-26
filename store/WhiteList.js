@@ -30,7 +30,6 @@ const useWhiteList = () => {
   const reloadWhiteList = () => {
     setWhiteList([]);
   };
-  console.log(whiteList);
   return { whiteList, reloadWhiteList, reloadWhiteList: () => setHiddenDate() };
 };
 export default createContainer(useWhiteList);
