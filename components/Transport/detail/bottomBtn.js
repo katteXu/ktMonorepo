@@ -49,6 +49,7 @@ const BottomBtn = props => {
     arrivalGoodsWeight,
     routeInfo,
     totalInfoFee,
+    tag,
   } = props.dataInfo;
   console.log(props.dataInfo);
   // 获取用户信息
@@ -493,51 +494,59 @@ const BottomBtn = props => {
   return (
     <>
       {/* 底部按钮 */}
-      <div className={styles['bottom-btn']}>
-        {showCancelBtn.includes(status) && (
-          <>
-            {/* {applyCancelType != 0 ? (
-           <Button onClick={handleRevokeCancel}>撤回取消申请</Button>
-         ) : (
-           <Button onClick={handleCancel}>取消运单</Button>
-         )} */}
+      {(tag === 0 ||
+        showCheckBtn.includes(status) ||
+        (showCancelBtn.includes(status) && tag === 0) ||
+        showPayBtn.includes(status)) && (
+        <div className={styles['bottom-btn']}>
+          {showCancelBtn.includes(status) && (
+            <>
+              {/* {applyCancelType != 0 ? (
+         <Button onClick={handleRevokeCancel}>撤回取消申请</Button>
+       ) : (
+         <Button onClick={handleCancel}>取消运单</Button>
+       )} */}
 
-            {(applyCancelType === 2 || applyCancelType === 3) && (
-              <Button onClick={handleRevokeCancel}>撤回取消申请</Button>
-            )}
+              {(applyCancelType === 2 || applyCancelType === 3) && (
+                <Button onClick={handleRevokeCancel}>撤回取消申请</Button>
+              )}
 
-            {applyCancelType === 1 && (
-              <>
-                <Button onClick={handleReject}>拒绝取消</Button>
-                <Button type="primary" onClick={handleArgee}>
-                  同意取消
-                </Button>
-              </>
-            )}
+              {applyCancelType === 1 && (
+                <>
+                  <Button onClick={handleReject}>拒绝取消</Button>
+                  <Button type="primary" onClick={handleArgee}>
+                    同意取消
+                  </Button>
+                </>
+              )}
 
-            {applyCancelType === 0 && <Button onClick={handleCancel}>取消运单</Button>}
-          </>
-        )}
+              {applyCancelType === 0 && tag === 0 && <Button onClick={handleCancel}>取消运单</Button>}
+            </>
+          )}
 
-        {showCheckBtn.includes(status) && applyCancelType == 0 && (
-          <>
-            <Button onClick={() => setShowRejectModal(true)} loading={rejectBtnLoading}>
-              驳回
+          {showCheckBtn.includes(status) && applyCancelType == 0 && (
+            <>
+              <Button onClick={() => setShowRejectModal(true)} loading={rejectBtnLoading}>
+                驳回
+              </Button>
+              <Button type="primary" loading={settlementBtnLoading} onClick={handlePass}>
+                通过
+              </Button>
+            </>
+          )}
+
+          {showWaitConfirmed.includes(status) && tag === 0 && (
+            <Button onClick={handleCancelWaitConfirmed}>取消运单</Button>
+          )}
+
+          {showPayBtn.includes(status) && (
+            <Button type="primary" onClick={props.dataInfo.transportFleetId ? fleetPay : onLinePay}>
+              支付
             </Button>
-            <Button type="primary" loading={settlementBtnLoading} onClick={handlePass}>
-              通过
-            </Button>
-          </>
-        )}
+          )}
+        </div>
+      )}
 
-        {showWaitConfirmed.includes(status) && <Button onClick={handleCancelWaitConfirmed}>取消运单</Button>}
-
-        {showPayBtn.includes(status) && (
-          <Button type="primary" onClick={props.dataInfo.transportFleetId ? fleetPay : onLinePay}>
-            支付
-          </Button>
-        )}
-      </div>
       {/* 底部按钮占位 */}
       <div className={styles['bottom-btn-wrap']}></div>
 

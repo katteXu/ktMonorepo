@@ -57,6 +57,9 @@ const RailWayDetail = props => {
   const [isMyRoute, setIsMyRoute] = useState(false);
   const [newUnitPrice, setNewUnitPrice] = useState(0);
 
+  // 专线标识，tag为1时为二码融合后新加入专线
+  const [tag, setTag] = useState();
+
   useEffect(() => {
     setRailWayDetail();
   }, []);
@@ -83,6 +86,8 @@ const RailWayDetail = props => {
 
       setRuleLeavingAmount(res.result.ruleLeavingAmount);
       setRouteContactMobile(res.result.routeContactMobile);
+
+      setTag(res.result.tag);
     } else {
       message.error(`${res.detail || res.description}`);
     }
@@ -281,7 +286,7 @@ const RailWayDetail = props => {
               {dataInfo.payPathZn}
             </Tag>
           )}
-          {canEdit && (
+          {canEdit && tag === 0 && (
             <div style={{ float: 'right' }}>
               <Button
                 style={{ padding: '4px 0', color: '#477AEF', border: 'none', boxShadow: 'none' }}
