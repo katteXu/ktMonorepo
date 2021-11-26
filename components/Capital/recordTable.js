@@ -60,7 +60,29 @@ const Index = props => {
       },
     },
     {
-      title: '交易金额(元)',
+      title: '运费金额',
+      dataIndex: 'amount',
+      key: 'amount',
+      width: '50px',
+      align: 'right',
+      render(v) {
+        const value = v > 0 ? `+${(v / 100).toFixed(2)}` : `${(v / 100).toFixed(2)}`;
+        return <span>{value}</span> || '-';
+      },
+    },
+    {
+      title: '补差运费金额',
+      dataIndex: 'amount',
+      key: 'amount',
+      width: '50px',
+      align: 'right',
+      render(v) {
+        const value = v > 0 ? `+${(v / 100).toFixed(2)}` : `${(v / 100).toFixed(2)}`;
+        return <span>{value}</span> || '-';
+      },
+    },
+    {
+      title: '合计金额',
       dataIndex: 'amount',
       key: 'amount',
       width: '50px',

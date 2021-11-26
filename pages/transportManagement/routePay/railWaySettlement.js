@@ -754,12 +754,18 @@ const RailWaySettlement = props => {
               <span>{Format.weight(settlementInfo.totalArrivalGoodsWeight)}</span>吨
             </div>
           </div>
-          <div style={{ marginTop: 16, color: '#333333' }}>
-            结算运费：
-            <span style={{ color: '#477AEF', fontSize: 16 }}>
-              {Format.price(settlementInfo.realPrice + settlementInfo.totalInfoFee)}
-            </span>
-            元
+          <div style={{ marginTop: 16, color: '#333333', display: 'flex' }}>
+            <div style={{ marginRight: 24 }}>
+              结算运费：
+              <span style={{ color: '#477AEF', fontSize: 16 }}>
+                {Format.price(settlementInfo.realPrice + settlementInfo.totalInfoFee)}
+              </span>
+              元
+            </div>
+            <div>
+              结算税费：
+              <span style={{ color: '#477AEF', fontSize: 16 }}>{Format.price(settlementInfo.realPrice / 10)}</span>元
+            </div>
           </div>
         </div>
       </Modal>

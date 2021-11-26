@@ -8,6 +8,7 @@ import { Format, getQuery } from '@utils/common';
 import PayPasswordInput from '@components/common/PayPasswordInput';
 import styles from '../styles.less';
 import moment from 'moment';
+import { WhiteList } from '@store';
 
 const { TabPane } = Tabs;
 const routeView = {
@@ -154,6 +155,9 @@ const InvoiceList = () => {
     ALL: 0,
     INVOICED: 0,
   });
+
+  // whiteList 用于判断用户是否属于和顺
+  const { whiteList } = WhiteList.useContainer();
 
   const handleSearch = () => {
     setQuery({ ...query, page: 1 });
@@ -398,7 +402,7 @@ const InvoiceList = () => {
           <Tabs onChange={handleChangeTabs} type="card" activeKey={query.status} style={{ marginTop: 16 }}>
             <TabPane tab={`全部(${tabCount.ALL || 0})`} key="All"></TabPane>
             <TabPane tab={`待审核(${tabCount.UN_APPROVE})`} key="UN_APPROVE"></TabPane>
-            <TabPane tab={`待支付(${tabCount.UN_PAY})`} key="UN_PAY"></TabPane>
+            {!whiteList.heShun && <TabPane tab={`待支付(${tabCount.UN_PAY})`} key="UN_PAY"></TabPane>}
             <TabPane tab={`待开票(${tabCount.UN_INVOICE})`} key="UN_INVOICE"></TabPane>
             <TabPane
               tab={`已完成(${tabCount.INVOICED_PAYED * 1 + tabCount.INVOICED * 1})`}

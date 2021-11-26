@@ -151,6 +151,18 @@ const TransportList = props => {
       },
     },
     {
+      title: '补差运费金额(元)',
+      dataIndex: 'price',
+      key: 'price',
+      align: 'right',
+      width: 150,
+      render: (value, { realPrice, totalInfoFee }) => {
+        return realPrice === 0
+          ? Format.price((value + totalInfoFee).toFixed(0))
+          : Format.price((realPrice + totalInfoFee).toFixed(0));
+      },
+    },
+    {
       title: '付款方式',
       dataIndex: 'payPath',
       key: 'payPath',

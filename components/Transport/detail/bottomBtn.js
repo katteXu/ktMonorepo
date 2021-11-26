@@ -606,6 +606,7 @@ const BottomBtn = props => {
         <SettlementPay
           payInfo={{
             price: props.dataInfo.price,
+            taxes: realPrice ? Math.ceil(realPrice * 10) : props.dataInfo.price / 10,
             realPrice: realPrice,
             goodsWeight: goodsWeight,
             arrivalGoodsWeight: arrivalGoodsWeight,
