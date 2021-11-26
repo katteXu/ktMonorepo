@@ -182,6 +182,11 @@ const RailWayDetail = props => {
 
   // 修改运费单价
   const modifyUnitPrice = async () => {
+    if (!/^[0-9]+(.?[0-9]{1,2})?$/.test(newUnitPrice)) {
+      message.error('最多输入两位小数');
+      return;
+    }
+
     const params = {
       rid: getQuery().id,
       unitPrice: ((newUnitPrice ? newUnitPrice : unitPrice) * 100).toFixed(),
