@@ -127,6 +127,7 @@ const UnBilling = props => {
     price: 0,
     weight: 0,
     invoice_price: 0,
+    taxAmount: 0,
   });
 
   // 初始化
@@ -231,6 +232,7 @@ const UnBilling = props => {
         weight: res.result.arrivalGoodsWeight,
         price: res.result.price,
         invoice_price: res.result.invoice_price,
+        taxAmount: res.result.taxAmount,
       });
 
       // 持久化状态

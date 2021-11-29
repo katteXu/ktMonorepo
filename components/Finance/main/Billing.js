@@ -159,6 +159,7 @@ const Billing = props => {
     price: 0,
     weight: 0,
     invoice_price: 0,
+    taxAmount: 0,
   });
 
   // 已选总统计数据
@@ -337,6 +338,7 @@ const Billing = props => {
         weight: res.result.arrivalGoodsWeight,
         price: res.result.price,
         invoice_price: res.result.invoice_price,
+        taxAmount: res.result.taxAmount,
       });
       setInvoiceTotal({
         ...res.result.askInvoiceData,
@@ -513,7 +515,7 @@ const Billing = props => {
             <span className="total-num">
               {Format.price(
                 checkedAll
-                  ? total.invoice_price
+                  ? total.taxAmount
                   : whiteList.heShun
                   ? // ? checkTotal.price * 1.1
                     // 仅对和顺用户含税总额显示逻辑进行修改
@@ -533,7 +535,7 @@ const Billing = props => {
             <span style={{ marginLeft: 32 }}>运费总额</span>
             <span className="total-num">{Format.price(total.price)}</span>元
             <span style={{ marginLeft: 32 }}>含税总额</span>
-            <span className="total-num">{Format.price(total.invoice_price)}</span>元
+            <span className="total-num">{Format.price(total.taxAmount)}</span>元
           </>
         )}
       </Msg>
