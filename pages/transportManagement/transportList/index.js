@@ -152,7 +152,7 @@ const TransportList = props => {
       },
     },
     {
-      title: '补差运费金额(元)',
+      title: '补差运费(元)',
       dataIndex: 'taxCharge',
       key: 'taxCharge',
       align: 'right',
