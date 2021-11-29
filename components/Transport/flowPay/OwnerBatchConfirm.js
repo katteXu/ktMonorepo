@@ -1,7 +1,7 @@
 // 个人批量结算
 import { useState, useEffect, useRef, forwardRef } from 'react';
 import { Steps, Button, Tooltip } from 'antd';
-import { CloseCircleFilled, InfoCircleFilled, CheckCircleFilled } from '@ant-design/icons';
+import { CloseCircleFilled, InfoCircleFilled, CheckCircleFilled, ExclamationCircleFilled } from '@ant-design/icons';
 import { Format } from '@utils/common';
 import styles from './styles.less';
 import PayPasswordInput from '@components/common/PayPasswordInput';
@@ -123,6 +123,20 @@ const OwnerBatchConfirm = ({ payInfo, payId, onFinish, rides }) => {
       // 密码输入错误展示
       setErrMsg(result.description);
       clear();
+    } else if (result.status === 17) {
+      // 余额不足
+      setResultInfo({
+        status: 'fail',
+        title: '暂时无法支付',
+        icon: <ExclamationCircleFilled style={{ color: '#FFB741', fontSize: 47 }} />,
+        content: (
+          <div style={{ textAlign: 'center' }}>
+            本次支付还需再充值<span style={{ color: '#477AEF' }}>{Format.price(result.amount)}</span>元
+          </div>
+        ),
+      });
+      // 支付完成去下一步
+      toNext();
     } else if (result.status === 18) {
       // 支付中
       setResultInfo({

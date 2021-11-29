@@ -64,6 +64,14 @@ const Billing = props => {
       render: Format.price,
     },
     {
+      title: '补差运费(元)',
+      dataIndex: 'taxSum',
+      key: 'taxSum',
+      width: 100,
+      align: 'right',
+      render: Format.price,
+    },
+    {
       title: '操作',
       dataIndex: 'rowkKey',
       key: 'rowkKey',
@@ -158,6 +166,7 @@ const Billing = props => {
     price: 0,
     weight: 0,
     count: 0,
+    tax: 0,
   });
 
   // 初始化
@@ -241,8 +250,9 @@ const Billing = props => {
     const key = record.ids;
     const price = record.priceSum;
     const weight = record.weightSum;
+    const taxSum = record.taxSum;
     if (selected) {
-      setCheckedData({ ...checkedData, [key]: { price, weight, ids: key } });
+      setCheckedData({ ...checkedData, [key]: { price, weight, taxSum, ids: key } });
     } else {
       delete checkedData[key];
       setCheckedData({ ...checkedData });
@@ -255,8 +265,9 @@ const Billing = props => {
       const key = record.ids;
       const price = record.priceSum;
       const weight = record.weightSum;
+      const taxSum = record.taxSum;
       if (selected) {
-        checkedData[key] = { price, weight, ids: key };
+        checkedData[key] = { price, weight, taxSum, ids: key };
       } else {
         delete checkedData[key];
       }
@@ -280,16 +291,19 @@ const Billing = props => {
     const data = Object.entries(checkedData);
     let price = 0;
     let weight = 0;
+    let tax = 0;
     if (data.length > 0) {
       data.forEach(item => {
         price += item[1].price;
         weight += item[1].weight;
+        tax += item[1].taxSum;
       });
     }
     setCheckTotal({
       count: data.length,
       price,
       weight,
+      tax,
     });
   }, [checkedData]);
   // 部分从表数据选择
@@ -440,6 +454,7 @@ const Billing = props => {
       price: 0,
       weight: 0,
       count: 0,
+      tax: 0,
     });
   };
 
@@ -500,7 +515,9 @@ const Billing = props => {
                 checkedAll
                   ? total.invoice_price
                   : whiteList.heShun
-                  ? checkTotal.price * 1.1
+                  ? // ? checkTotal.price * 1.1
+                    // 仅对和顺用户含税总额显示逻辑进行修改
+                    checkTotal.tax
                   : parseInt(checkTotal.price + (checkTotal.price * dataList.taxPoint) / (1 - dataList.taxPoint))
               )}
             </span>

@@ -63,6 +63,14 @@ const UnBilling = props => {
       render: Format.price,
     },
     {
+      title: '补差运费(元)',
+      dataIndex: 'taxSum',
+      key: 'taxSum',
+      width: 100,
+      align: 'right',
+      render: Format.price,
+    },
+    {
       title: '操作',
       dataIndex: 'rowkKey',
       key: 'rowkKey',

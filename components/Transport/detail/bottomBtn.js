@@ -97,6 +97,7 @@ const BottomBtn = props => {
   const [result, setResult] = useState();
   const [totalPrice, setTotalPrice] = useState();
   const [confirmaPay, setConfirmaPay] = useState({});
+  const [taxSum, setTaxSum] = useState();
 
   const [isModal, setIsModal] = useState(false);
   // 取消运单
@@ -457,6 +458,7 @@ const BottomBtn = props => {
 
     if (res.status === 0) {
       setTotalPrice(res.result.realPrice);
+      setTaxSum(res.result.taxSum);
       setShowModal(true);
       setNowTime(res.result.nowTime);
     } else {
@@ -484,6 +486,7 @@ const BottomBtn = props => {
     const res = await transportStatistics.calculateWaitPayInfo({ params });
     if (res.status === 0) {
       setTotalPrice(res.result.realPrice);
+      setTaxSum(res.result.taxSum);
       setShowModal(true);
       setNowTime(res.result.nowTime);
     } else {
@@ -606,7 +609,7 @@ const BottomBtn = props => {
         <SettlementPay
           payInfo={{
             price: props.dataInfo.price,
-            taxes: realPrice ? Math.ceil(realPrice * 10) : props.dataInfo.price / 10,
+            taxes: realPrice ? Math.ceil(realPrice * 10) : props.dataInfo.taxCharge,
             realPrice: realPrice,
             goodsWeight: goodsWeight,
             arrivalGoodsWeight: arrivalGoodsWeight,
@@ -645,7 +648,7 @@ const BottomBtn = props => {
           DetailComponent={() =>
             ConfirmDetail({ fromWeight: goodsWeight, toWeight: arrivalGoodsWeight, unitName: unitName })
           }
-          price={Format.price(totalPrice)}
+          price={Format.addPrice(totalPrice + taxSum)}
         />
       </Modal>
     </>

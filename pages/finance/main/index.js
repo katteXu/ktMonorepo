@@ -54,7 +54,7 @@ const InvoiceList = () => {
       render: Format.price,
     },
     {
-      title: '补充运费(元)',
+      title: '补差运费(元)',
       dataIndex: 'difference',
       key: 'difference',
       align: 'right',
@@ -351,7 +351,7 @@ const InvoiceList = () => {
           </div>
           <div className={styles.item}>
             <div className={styles.title}>
-              <span className={styles.txt}>待支付补充运费</span>
+              <span className={styles.txt}>待支付补差运费</span>
             </div>
             <div className={styles.price}>￥{Format.price(totalData.waitPayInvoicePrice)}</div>
             <Button onClick={() => handleChangeTabs('UN_PAY')}>查看明细</Button>
@@ -418,7 +418,7 @@ const InvoiceList = () => {
             <span className={'total-num'}>{Format.price(total.price)}</span>元
             <span style={{ marginLeft: 32 }}>含税总额</span>
             <span className={'total-num'}>{Format.price(total.invoicePrice)}</span>元
-            <span style={{ marginLeft: 32 }}>补充运费</span>
+            <span style={{ marginLeft: 32 }}>补差运费</span>
             <span className={'total-num'}>{Format.price(total.difference)}</span>元
           </Msg>
           <Table

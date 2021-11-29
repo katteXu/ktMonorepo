@@ -4,6 +4,7 @@ import { Button, Select, message, Input } from 'antd';
 import { Format } from '@utils/common';
 import { transportStatistics } from '@api';
 import ValidateTruckrBack from './validateTruckerBack';
+import { WhiteList } from '@store';
 const { TextArea } = Input;
 // TODO: 结算测试  reload函数
 const PAY_STATUS = {
@@ -26,7 +27,7 @@ const Pay = props => {
     payStatus,
     unitInfoFee,
     totalInfoFee,
-    realTaxes = realPrice / 10,
+    taxCharge,
   } = props.dataInfo;
   const { id: rid, payPath } = routeInfo;
   console.log(props.dataInfo);
@@ -36,6 +37,9 @@ const Pay = props => {
   const [unitPriceList, setUnitPriceList] = useState([]);
   const [unitPriceStatus, setUnitPriceStatus] = useState(props.dataInfo.unitPriceStatus);
   const [payRemark, setPayRemark] = useState('');
+
+  // whiteList 用于判断用户是否属于和顺
+  const { whiteList } = WhiteList.useContainer();
 
   // 输入结算运费时显示的补差运费
   const [taxes, setTaxes] = useState();
@@ -199,6 +203,14 @@ const Pay = props => {
         </div>
       )}
 
+      {(status === 'WAIT_PAY' || status === 'DONE' || status === 'CHECKING') && (
+        <div className={styles.row}>
+          <div className={styles.label} style={{ minWidth: 84 }}>
+            费用合计：
+          </div>
+          <div className={styles.data}>{Format.addPrice(price + totalInfoFee)} 元</div>
+        </div>
+      )}
       <div className={styles.row}>
         <div
           className={styles.label}
@@ -206,7 +218,7 @@ const Pay = props => {
             minWidth:
               (status === 'WAIT_PAY' || status === 'CHECKING' || status === 'DONE' || status === 'REJECT') && 84,
           }}>
-          结算运费：
+          结算费用：
         </div>
         <div className={styles.data}>
           {status === 'CHECKING' ? (
@@ -215,7 +227,7 @@ const Pay = props => {
               size="small"
               style={{ width: 120, marginRight: 10 }}
               addonAfter={<span>元</span>}
-              placeholder="结算运费"
+              placeholder="结算费用"
             />
           ) : (
             <span style={{ display: 'inline-block' }}>
@@ -224,12 +236,14 @@ const Pay = props => {
           )}
         </div>
       </div>
-      {status === 'CHECKING' && taxes && (
+      {status === 'CHECKING' && (
         <div className={styles.row}>
           <div className={styles.label} style={{ minWidth: 84 }}>
             补差运费：
           </div>
-          <div className={styles.data}>{Format.price(taxes)} 元</div>
+          <div className={styles.data}>
+            {taxes && whiteList.heShun ? Format.price(taxes) : Format.price(taxCharge)} 元
+          </div>
         </div>
       )}
       {status === 'CHECKING' && (
@@ -242,27 +256,29 @@ const Pay = props => {
           </div>
         </div>
       )}
-      {(status === 'WAIT_PAY' || status === 'DONE' || status === 'REJECT') && payPath === 1 && (
+      {(status === 'WAIT_PAY' || status === 'DONE' || status === 'REJECT') && (
         <div>
           <div className={styles.row}>
             <div className={styles.label} style={{ minWidth: 84 }}>
               补差运费：
             </div>
-            <div className={styles.data}>{Format.price(realTaxes)} 元</div>
+            <div className={styles.data}>{Format.price(taxCharge)} 元</div>
           </div>
-          <div className={styles.row}>
-            <div
-              className={styles.label}
-              style={{ minWidth: (status === 'WAIT_PAY' || status === 'DONE' || status === 'REJECT') && 84 }}>
-              合计：
+          {payPath === 1 && (
+            <div className={styles.row}>
+              <div
+                className={styles.label}
+                style={{ minWidth: (status === 'WAIT_PAY' || status === 'DONE' || status === 'REJECT') && 84 }}>
+                合计：
+              </div>
+              <div className={styles.data}>
+                {realPrice === 0
+                  ? Format.addPrice(totalInfoFee + price + taxCharge)
+                  : Format.addPrice(realPrice + totalInfoFee + taxCharge)}
+                {} 元
+              </div>
             </div>
-            <div className={styles.data}>
-              {realPrice === 0
-                ? Format.addPrice(totalInfoFee + price + realTaxes)
-                : Format.addPrice(realPrice + totalInfoFee + realTaxes)}
-              {} 元
-            </div>
-          </div>
+          )}
         </div>
       )}
       {/* 支付方式  */}

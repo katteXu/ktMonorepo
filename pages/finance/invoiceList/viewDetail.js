@@ -63,7 +63,7 @@ class OrderDetail extends PureComponent {
           title: '运费单价(元/吨)',
           dataIndex: 'unitPrice',
           key: 'unitPrice',
-          width: 210,
+          width: 150,
           align: 'right',
           render: formatPrice,
         },
@@ -71,6 +71,14 @@ class OrderDetail extends PureComponent {
           title: '运费(元)',
           dataIndex: 'realPrice',
           key: 'realPrice',
+          width: 150,
+          align: 'right',
+          render: formatPrice,
+        },
+        {
+          title: '补差运费(元)',
+          dataIndex: 'taxCharge',
+          key: 'taxCharge',
           width: 150,
           align: 'right',
           render: formatPrice,
@@ -288,11 +296,11 @@ class OrderDetail extends PureComponent {
               rowSelection={
                 getQuery().mode === 'edit'
                   ? {
-                    selectedRowKeys: selectedRowKeys,
-                    onSelect: this.onSelectRow,
-                    onSelectAll: this.onSelectAll,
-                    // onChange: this.onSelectRow,
-                  }
+                      selectedRowKeys: selectedRowKeys,
+                      onSelect: this.onSelectRow,
+                      onSelectAll: this.onSelectAll,
+                      // onChange: this.onSelectRow,
+                    }
                   : false
               }
               pagination={{

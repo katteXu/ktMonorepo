@@ -92,8 +92,8 @@ const RailWayList = props => {
     },
     {
       title: '补差运费金额(元)',
-      dataIndex: 'waitPayPrice',
-      key: 'waitPayPrice',
+      dataIndex: 'taxSum',
+      key: 'taxSum',
       width: 150,
       align: 'right',
       render: Format.price,

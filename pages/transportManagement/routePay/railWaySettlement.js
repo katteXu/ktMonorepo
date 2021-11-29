@@ -90,6 +90,14 @@ const RailWaySettlement = props => {
       render: Format.price,
     },
     {
+      title: '补差运费(元)',
+      dataIndex: 'taxCharge',
+      key: 'taxCharge',
+      width: 130,
+      align: 'right',
+      render: Format.price,
+    },
+    {
       title: '承运时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
@@ -764,7 +772,7 @@ const RailWaySettlement = props => {
             </div>
             <div>
               结算税费：
-              <span style={{ color: '#477AEF', fontSize: 16 }}>{Format.price(settlementInfo.realPrice / 10)}</span>元
+              <span style={{ color: '#477AEF', fontSize: 16 }}>{Format.price(settlementInfo.taxSum)}</span>元
             </div>
           </div>
         </div>

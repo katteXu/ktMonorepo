@@ -65,6 +65,14 @@ const BillingDetail = props => {
       render: Format.price,
     },
     {
+      title: '补差运费(元)',
+      dataIndex: 'taxCharge',
+      key: 'taxCharge',
+      align: 'right',
+      width: 160,
+      render: Format.price,
+    },
+    {
       title: '承运时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
@@ -125,6 +133,7 @@ const BillingDetail = props => {
     weight: 0,
     price: 0,
     errorCount: 0,
+    tax: 0,
   });
 
   // 生成索引数组
@@ -277,6 +286,7 @@ const BillingDetail = props => {
       weight: 0,
       price: 0,
       errorCount: 0,
+      tax: 0,
     });
   };
   /**
@@ -336,6 +346,7 @@ const BillingDetail = props => {
           weight: 0,
           price: 0,
           errorCount: 0,
+          tax: 0,
         });
         return;
       }
@@ -354,6 +365,7 @@ const BillingDetail = props => {
           weight: res.result.weightSum,
           price: res.result.priceSum,
           errorCount: res.result.errorCount,
+          tax: res.result.taxPriceSum,
         });
         message.success('运单选择成功');
       } else {
@@ -468,7 +480,9 @@ const BillingDetail = props => {
                   isEmpty || checkedAll
                     ? dataList.invoice_price || 0
                     : whiteList.heShun
-                    ? total.price * 1.1
+                    ? // total.price * 1.1
+                      // 仅对和顺用户含税总额显示逻辑进行修改
+                      total.tax
                     : parseInt(total.price + (total.price * dataList.taxPoint) / (1 - dataList.taxPoint))
                 )}
               </span>
@@ -513,6 +527,7 @@ const BillingDetail = props => {
               total: dataList.count,
             }}
             style={{ minHeight: 400 }}
+            scroll={{ x: 'auto' }}
           />
         </section>
       </div>

@@ -92,6 +92,14 @@ const RailWayPay = () => {
       render: Format.price,
     },
     {
+      title: '补差运费(元)',
+      dataIndex: 'taxCharge',
+      key: 'taxCharge',
+      width: 130,
+      align: 'right',
+      render: Format.price,
+    },
+    {
       title: '操作',
       dataIndex: 'id',
       key: 'id',

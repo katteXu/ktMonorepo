@@ -1,7 +1,7 @@
 // 车队全部结算
 import { useState, useEffect } from 'react';
 import { Steps, Button, Tooltip } from 'antd';
-import { CloseCircleFilled, InfoCircleFilled, CheckCircleFilled } from '@ant-design/icons';
+import { CloseCircleFilled, InfoCircleFilled, CheckCircleFilled, ExclamationCircleFilled } from '@ant-design/icons';
 import { Format } from '@utils/common';
 import styles from './styles.less';
 import PayPasswordInput from '@components/common/PayPasswordInput';
@@ -13,7 +13,7 @@ const FinishType = {
 };
 
 // 第一步
-const DetailStep = ({ totalGoodsWeight, totalArrivalGoodsWeight, transportCount, realPrice, totalInfoFee }) => {
+const DetailStep = ({ totalGoodsWeight, totalArrivalGoodsWeight, transportCount, realPrice, taxSum, totalInfoFee }) => {
   return (
     <div className={styles['detail-step']}>
       <div className={styles['data-row']}>运输车次：{transportCount || 0} 辆</div>
@@ -21,24 +21,33 @@ const DetailStep = ({ totalGoodsWeight, totalArrivalGoodsWeight, transportCount,
         <div className={styles['inline']}>发货净重：{Format.weight(totalGoodsWeight)} 吨</div>
         <div className={styles['inline']}>收货净重：{Format.weight(totalArrivalGoodsWeight)} 吨</div>
       </div>
-      <div className={styles['data-row']}>
-        结算运费：¥
-        <span style={{ color: '#477AEF', fontSize: 16, padding: '0 4px', fontWeight: '500' }}>
-          {Format.price(realPrice)}
-        </span>
-        元
+      <div className={styles['data-row']} style={{ display: 'flex' }}>
+        <div style={{ marginRight: 24 }}>
+          结算运费：¥
+          <span style={{ color: '#477AEF', fontSize: 16, padding: '0 4px', fontWeight: 600 }}>
+            {Format.price(realPrice)}
+          </span>
+          元
+        </div>
+        <div>
+          结算税费：¥
+          <span style={{ color: '#477AEF', fontSize: 16, padding: '0 4px', fontWeight: 600 }}>
+            {Format.price(taxSum)}
+          </span>
+          元
+        </div>
       </div>
     </div>
   );
 };
 
 // 第二步
-const PayStep = ({ onChange, price }) => {
+const PayStep = ({ onChange, price, tax }) => {
   return (
     <div className={styles['pay-step']}>
       <div className={styles.title}>支付总额</div>
       <div className={styles.price}>
-        ￥<span className={styles.number}>{Format.price(price)}</span>元
+        ￥<span className={styles.number}>{Format.addPrice(price + tax)}</span>元
         <Tooltip
           overlayStyle={{ maxWidth: 'max-content', padding: '0 12px' }}
           title={<div>常见费用问题请联系客服核对并修改</div>}>
@@ -122,6 +131,20 @@ const FleetAllConfirm = ({ payInfo, rides, payAllFilter, onFinish }) => {
     } else if (result.status === 16) {
       // 密码输入错误展示
       setErrMsg(result.detail);
+    } else if (result.status === 17) {
+      // 余额不足
+      setResultInfo({
+        status: 'fail',
+        title: '暂时无法支付',
+        icon: <ExclamationCircleFilled style={{ color: '#FFB741', fontSize: 47 }} />,
+        content: (
+          <div style={{ textAlign: 'center' }}>
+            本次支付还需再充值<span style={{ color: '#477AEF' }}>{Format.price(result.amount)}</span>元
+          </div>
+        ),
+      });
+      // 支付完成去下一步
+      toNext();
     } else if (result.status === 18) {
       // 支付中
       setResultInfo({
@@ -225,7 +248,7 @@ const FleetAllConfirm = ({ payInfo, rides, payAllFilter, onFinish }) => {
       {/* 支付密码 */}
       {step === 1 && (
         <div className={styles['step-block']} style={{ height: 163 }}>
-          <PayStep onChange={setPassword} price={payInfo.realPrice} />
+          <PayStep onChange={setPassword} price={payInfo.realPrice} tax={payInfo.taxSum} />
           <div className={styles['error-message']}>{errMsg}</div>
           <div className={styles.bottom}>
             <Button onClick={toPrev} disabled={payLoading}>
