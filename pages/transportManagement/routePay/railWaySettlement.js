@@ -10,7 +10,7 @@ import Detail from '@components/Transport/detail';
 import router from 'next/router';
 import Link from 'next/link';
 import moment from 'moment';
-import { ExclamationCircleFilled } from '@ant-design/icons';
+import { ExclamationCircleFilled, CloseCircleFilled } from '@ant-design/icons';
 import { transportStatistics } from '@api';
 import { getQuery } from '@utils/common';
 const RailWaySettlement = props => {
@@ -345,6 +345,38 @@ const RailWaySettlement = props => {
       return;
     } else if (selectedRowKeys.length <= 0) {
       message.warn('请选择要结算的运单');
+      return;
+    }
+
+    // 判断是否存在预计运费为 0 的运单
+    let flag = false;
+
+    for (let i = 0; i < dataList.data.length; i++) {
+      if (selectedRowKeys.includes(dataList.data[i].id) && dataList.data[i].price === 0) {
+        flag = true;
+      }
+    }
+
+    if (flag) {
+      const { id } = getQuery();
+
+      Modal.confirm({
+        title: '结算失败',
+        icon: <CloseCircleFilled style={{ color: '#E44040' }} />,
+        content: <p>运费为0，请前往专线中修改运费单价。</p>,
+        cancelText: '前往',
+        cancelButtonProps: {
+          type: 'primary',
+        },
+        onCancel: () => {
+          router.push(`/railWay/mine/detail/?id=${id}`);
+        },
+        okText: '稍后再去',
+        okButtonProps: {
+          type: 'default',
+        },
+      });
+
       return;
     }
 

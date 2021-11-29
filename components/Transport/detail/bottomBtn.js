@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styles from './styles.less';
 import { Button, Modal, message, Radio, Input, Checkbox } from 'antd';
 import { Format } from '@utils/common';
-import { ExclamationCircleFilled, QuestionCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleFilled, QuestionCircleOutlined, CloseCircleFilled } from '@ant-design/icons';
 import { transportStatistics, getUserInfo, getCommon } from '@api';
 import PayDetailConfirm from '@components/Transport/flowPay/PayDetailConfirm.js';
 import SettlementPay from '@components/Transport/flowPay/SettlementPay.js';
+import router from 'next/router';
 
 // 取消按钮
 const showCancelBtn = ['PROCESS', 'CHECKING', 'APPLY_CANCEL', 'REJECT'];
@@ -287,27 +288,47 @@ const BottomBtn = props => {
     const price = props.checkPrice || '';
     // 未输入结算金额
     if (price === '') {
-      // 不再提醒
-      const { settlementChecked } = localStorage;
-
-      if (settlementChecked === 'true') {
-        confirmSettlement();
-      } else {
-        // 提醒
+      // 如果预计运费为 0
+      if (props.dataInfo.price === 0) {
         Modal.confirm({
-          title: '未填写结算运费，按预计运费结算?',
-          icon: <ExclamationCircleFilled />,
-          content: <Checkbox onChange={e => setSettlementChecked(e.target.checked)}>不再提示</Checkbox>,
-          onOk: async () => {
-            setIsModal(true);
-            confirmSettlement();
-            setTimeout(() => {
-              setIsModal(false);
-            }, 1000);
+          title: '结算失败',
+          icon: <CloseCircleFilled style={{ color: '#E44040' }} />,
+          content: <p>运费为0，请前往专线中修改运费单价。</p>,
+          cancelText: '前往',
+          cancelButtonProps: {
+            type: 'primary',
           },
-          cancelText: '取消',
-          okText: '确定',
+          onCancel: () => {
+            router.push(`/railWay/mine/detail/?id=${props.dataInfo.routeInfo.id}`);
+          },
+          okText: '稍后再去',
+          okButtonProps: {
+            type: 'default',
+          },
         });
+      } else {
+        // 不再提醒
+        const { settlementChecked } = localStorage;
+
+        if (settlementChecked === 'true') {
+          confirmSettlement();
+        } else {
+          // 提醒
+          Modal.confirm({
+            title: '未填写结算运费，按预计运费结算?',
+            icon: <ExclamationCircleFilled />,
+            content: <Checkbox onChange={e => setSettlementChecked(e.target.checked)}>不再提示</Checkbox>,
+            onOk: async () => {
+              setIsModal(true);
+              confirmSettlement();
+              setTimeout(() => {
+                setIsModal(false);
+              }, 1000);
+            },
+            cancelText: '取消',
+            okText: '确定',
+          });
+        }
       }
     } else {
       if (!/^(\d+)(\.\d{1,2})?$/.test(price)) {
