@@ -396,10 +396,10 @@ class OwnerList extends PureComponent {
             运单总数<span className="total-num"></span>单
           </span>
           <span style={{ marginLeft: 32 }}>
-            已结算运费<span className="total-num"></span>吨
+            已结算费用<span className="total-num"></span>吨
           </span>
           <span style={{ marginLeft: 32 }}>
-            待结算运费<span className="total-num"></span>元
+            待结算费用<span className="total-num"></span>元
           </span>
           <span style={{ marginLeft: 32 }}>
             原发总净重<span className="total-num"></span>元

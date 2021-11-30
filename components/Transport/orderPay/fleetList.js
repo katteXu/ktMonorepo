@@ -42,7 +42,7 @@ class FleetList extends PureComponent {
           width: 110,
         },
         {
-          title: '待结算运费(元)',
+          title: '待结算费用(元)',
           dataIndex: 'price',
           key: 'price',
           width: 120,

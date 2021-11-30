@@ -41,7 +41,7 @@ const Pay = props => {
   // whiteList 用于判断用户是否属于和顺
   const { whiteList } = WhiteList.useContainer();
 
-  // 输入结算运费时显示的补差运费
+  // 输入结算费用时显示的补差运费
   const [taxes, setTaxes] = useState();
 
   useEffect(() => {
@@ -88,10 +88,10 @@ const Pay = props => {
     }
   };
 
-  // 结算运费变更
+  // 结算费用变更
   const handleChangePrice = e => {
     props.onChangePrice && props.onChangePrice(e.target.value);
-    // 验证结算运费格式，通过验证则按结算运费显示 10% 补差运费
+    // 验证结算费用格式，通过验证则按结算费用显示 10% 补差运费
     if (/^(\d+)(\.\d{1,2})?$/.test(e.target.value)) {
       setTaxes(Math.ceil(e.target.value * 10));
     } else {
@@ -203,7 +203,7 @@ const Pay = props => {
         </div>
       )}
 
-      {(status === 'WAIT_PAY' || status === 'DONE' || status === 'CHECKING') && (
+      {(status === 'WAIT_PAY' || status === 'DONE' || status === 'CHECKING' || status === 'REJECT') && (
         <div className={styles.row}>
           <div className={styles.label} style={{ minWidth: 84 }}>
             费用合计：
@@ -256,29 +256,27 @@ const Pay = props => {
           </div>
         </div>
       )}
-      {(status === 'WAIT_PAY' || status === 'DONE' || status === 'REJECT') && (
-        <div>
-          <div className={styles.row}>
-            <div className={styles.label} style={{ minWidth: 84 }}>
-              补差运费：
-            </div>
-            <div className={styles.data}>{Format.price(taxCharge)} 元</div>
+      {status !== 'WAIT_CONFIRMED' && status !== 'PROCESS' && status !== 'CHECKING' && (
+        <div className={styles.row}>
+          <div className={styles.label} style={{ minWidth: 84 }}>
+            补差运费：
           </div>
-          {payPath === 1 && (
-            <div className={styles.row}>
-              <div
-                className={styles.label}
-                style={{ minWidth: (status === 'WAIT_PAY' || status === 'DONE' || status === 'REJECT') && 84 }}>
-                合计：
-              </div>
-              <div className={styles.data}>
-                {realPrice === 0
-                  ? Format.addPrice(totalInfoFee + price + taxCharge)
-                  : Format.addPrice(realPrice + totalInfoFee + taxCharge)}
-                {} 元
-              </div>
-            </div>
-          )}
+          <div className={styles.data}>{Format.price(taxCharge)} 元</div>
+        </div>
+      )}
+      {(status === 'WAIT_PAY' || status === 'DONE' || status === 'REJECT') && payPath === 1 && (
+        <div className={styles.row}>
+          <div
+            className={styles.label}
+            style={{ minWidth: (status === 'WAIT_PAY' || status === 'DONE' || status === 'REJECT') && 84 }}>
+            合计：
+          </div>
+          <div className={styles.data}>
+            {realPrice === 0
+              ? Format.addPrice(totalInfoFee + price + taxCharge)
+              : Format.addPrice(realPrice + totalInfoFee + taxCharge)}
+            {} 元
+          </div>
         </div>
       )}
       {/* 支付方式  */}

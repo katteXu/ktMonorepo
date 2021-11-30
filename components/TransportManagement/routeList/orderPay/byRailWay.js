@@ -84,7 +84,7 @@ const RailWayList = props => {
       width: 150,
     },
     {
-      title: '结算运费(元)',
+      title: '结算费用(元)',
       dataIndex: 'waitPayPrice',
       key: 'waitPayPrice',
       width: 150,

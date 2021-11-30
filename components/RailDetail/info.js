@@ -429,7 +429,7 @@ export default class extends Component {
 
                 <div className="info-row">
                   <span className="info-label" style={{ padding: 0 }}>
-                    已结算运费总额：
+                    已结算费用总额：
                     <Tooltip placement="right" title="所有已完成状态的实际支付金额总和">
                       <QuestionCircleFilled style={{ cursor: 'pointer' }} />
                     </Tooltip>

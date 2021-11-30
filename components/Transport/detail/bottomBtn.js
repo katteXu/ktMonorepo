@@ -315,7 +315,7 @@ const BottomBtn = props => {
         } else {
           // 提醒
           Modal.confirm({
-            title: '未填写结算运费，按预计运费结算?',
+            title: '未填写结算费用，按预计运费结算?',
             icon: <ExclamationCircleFilled />,
             content: <Checkbox onChange={e => setSettlementChecked(e.target.checked)}>不再提示</Checkbox>,
             onOk: async () => {
@@ -332,27 +332,27 @@ const BottomBtn = props => {
       }
     } else {
       if (!/^(\d+)(\.\d{1,2})?$/.test(price)) {
-        message.warn('结算运费格式有误，且最多输入两位小数');
+        message.warn('结算费用格式有误，且最多输入两位小数');
         return;
       }
       if (price * 1 === 0) {
-        message.warn('结算运费不能为0');
+        message.warn('结算费用不能为0');
         return;
       }
       if (price > 100000) {
-        message.warn('结算运费最多为10万元');
+        message.warn('结算费用最多为10万元');
         return;
       }
 
       // 验证浮动
       if (!validatePrice()) {
         Modal.confirm({
-          title: '当前结算运费与预计运费相差过大，是否仍要继续',
+          title: '当前结算费用与预计运费相差过大，是否仍要继续',
           icon: <QuestionCircleOutlined />,
           content: (
             <div>
               <div style={{ marginBottom: 6 }}>
-                结算运费：<span style={{ color: '#477AEF' }}>{(price * 1).toFixed(2)}</span> 元
+                结算费用：<span style={{ color: '#477AEF' }}>{(price * 1).toFixed(2)}</span> 元
               </div>
               <div>
                 预计运费：<span style={{ color: '#477AEF' }}>{Format.price(props.dataInfo.price)}</span> 元

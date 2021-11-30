@@ -22,7 +22,7 @@ const DetailStep = ({ totalGoodsWeight, totalArrivalGoodsWeight, transportCount,
         <div className={styles['inline']}>收货净重：{Format.weight(totalArrivalGoodsWeight)} 吨</div>
       </div>
       <div className={styles['data-row']}>
-        结算运费：¥
+        结算费用：¥
         <span style={{ color: '#477AEF', fontSize: 20, padding: '0 4px', fontWeight: 600 }}>
           {Format.price(realPrice)}
         </span>

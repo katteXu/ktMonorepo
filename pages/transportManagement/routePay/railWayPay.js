@@ -84,7 +84,7 @@ const RailWayPay = () => {
       render: Format.price,
     },
     {
-      title: '结算运费(元)',
+      title: '结算费用(元)',
       dataIndex: 'price',
       key: 'price',
       width: 130,

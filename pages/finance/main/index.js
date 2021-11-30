@@ -212,10 +212,11 @@ const InvoiceList = () => {
   const getTotalData = async () => {
     const res = await finance.getTotalInvoiceData();
     if (res.status === 0) {
-      const { waitApproveInvoicePrice, waitPayInvoicePrice } = res.result;
+      const { waitApproveInvoicePrice, waitPayInvoicePrice, payedTaxSum } = res.result;
       setTotalData({
         waitApproveInvoicePrice,
         waitPayInvoicePrice,
+        payedTaxSum,
       });
     }
   };
@@ -351,9 +352,9 @@ const InvoiceList = () => {
           </div>
           <div className={styles.item}>
             <div className={styles.title}>
-              <span className={styles.txt}>待支付补差运费</span>
+              <span className={styles.txt}>已支付补差运费</span>
             </div>
-            <div className={styles.price}>￥{Format.price(totalData.waitPayInvoicePrice)}</div>
+            <div className={styles.price}>￥{Format.price(totalData.payedTaxSum)}</div>
             <Button onClick={() => handleChangeTabs('UN_PAY')}>查看明细</Button>
           </div>
         </div>

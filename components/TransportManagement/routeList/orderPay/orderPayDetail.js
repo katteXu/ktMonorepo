@@ -183,7 +183,7 @@ const OrderPayDetail = props => {
                   {Format.price(dataList.price)} 元
                 </div>
                 <div className={styles.item}>
-                  <span className={styles.label}>结算运费：</span>
+                  <span className={styles.label}>结算费用：</span>
                   <span style={{ display: 'inline-block' }}>
                     {dataList.realPrice === 0 ? Format.price(dataList.price) : Format.price(dataList.realPrice)}元
                   </span>
