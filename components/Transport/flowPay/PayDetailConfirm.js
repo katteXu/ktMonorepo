@@ -10,6 +10,7 @@ import { Button, Tooltip, message } from 'antd';
 import PayPasswordInput from '@components/common/PayPasswordInput';
 import { useState, useEffect, useRef } from 'react';
 import styles from './styles.less';
+import { Format } from '@utils/common';
 
 // 结果组件
 const Result = ({ icon, title, content }) => {
