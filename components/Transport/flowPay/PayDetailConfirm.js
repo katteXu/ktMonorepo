@@ -96,7 +96,7 @@ const PayDetailConfirm = ({ onSubmit, onFinish, result, price, DetailComponent }
           icon: <ExclamationCircleFilled style={{ color: '#FFB741', fontSize: 47 }} />,
           content: (
             <div style={{ textAlign: 'center' }}>
-              本次支付还需再充值<span style={{ color: '#477AEF' }}>{Format.price(result.amount)}</span>元
+              本次支付还需再充值<span style={{ color: '#477AEF' }}>{Format.price(result.detail.amount)}</span>元
             </div>
           ),
         });
