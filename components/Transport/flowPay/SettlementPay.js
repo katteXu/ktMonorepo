@@ -286,7 +286,7 @@ const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSet
         }
         // // 设置支付信息
         // setShowModal(true);
-        setTotalPrice(_totalPrice + payInfo.totalInfoFee + payInfo.taxes);
+        setTotalPrice(_totalPrice + payInfo.totalInfoFee);
         //去下一个状态
         setStep(1);
         // 获取当前时间
