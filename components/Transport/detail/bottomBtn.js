@@ -7,6 +7,7 @@ import { transportStatistics, getUserInfo, getCommon } from '@api';
 import PayDetailConfirm from '@components/Transport/flowPay/PayDetailConfirm.js';
 import SettlementPay from '@components/Transport/flowPay/SettlementPay.js';
 import router from 'next/router';
+import { WhiteList } from '@store';
 
 // 取消按钮
 const showCancelBtn = ['PROCESS', 'CHECKING', 'APPLY_CANCEL', 'REJECT'];
@@ -53,6 +54,7 @@ const BottomBtn = props => {
     tag,
   } = props.dataInfo;
   console.log(props.dataInfo);
+  const { whiteList } = WhiteList.useContainer();
   // 获取用户信息
   const getUser = async () => {
     const { userId } = localStorage;
@@ -630,7 +632,11 @@ const BottomBtn = props => {
         <SettlementPay
           payInfo={{
             price: props.dataInfo.price,
-            taxes: realPrice ? Math.ceil(realPrice * 10) : props.dataInfo.taxCharge,
+            taxes: whiteList.heShun
+              ? realPrice
+                ? Math.ceil(realPrice * 10)
+                : props.dataInfo.taxCharge
+              : props.dataInfo.taxCharge,
             realPrice: realPrice,
             goodsWeight: goodsWeight,
             arrivalGoodsWeight: arrivalGoodsWeight,
