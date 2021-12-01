@@ -33,7 +33,7 @@ const Billing = props => {
           <div className={`tab-item ${status === 'billing' ? 'active' : ''}`} onClick={() => changeTab('billing')}>
             待申请开票
           </div>
-          {(!whiteList.heShun || step === 0) && (
+          {step === 0 && (
             <div
               className={`tab-item ${status === 'un_billing' ? 'active' : ''}`}
               onClick={() => changeTab('un_billing')}>

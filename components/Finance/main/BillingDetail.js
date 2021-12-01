@@ -144,7 +144,7 @@ const BillingDetail = props => {
   }, [query.pageSize]);
 
   useEffect(() => {
-    const { checkedData, priceSum, weightSum, taxAmount } = orderDetail;
+    const { checkedData } = orderDetail;
 
     // 获取数据
     getRemoteData({});
@@ -153,9 +153,9 @@ const BillingDetail = props => {
       setSelectedRowKeys(checkedData.ids.split(',').map(item => item * 1));
       setTotal({
         ...total,
-        price: priceSum,
-        weight: weightSum,
-        tax: taxAmount,
+        price: checkedData.price,
+        weight: checkedData.weight,
+        tax: checkedData.taxSum,
       });
     }
   }, []);
@@ -204,7 +204,7 @@ const BillingDetail = props => {
       price: selected ? price + _totalPrice : price - _totalPrice,
       weight: selected ? weight + _totalWeight : weight - _totalWeight,
       errorCount: selected ? errorCount + _errorCount : errorCount - _errorCount,
-      tax: selected ? tax + _tax : price - _tax,
+      tax: selected ? tax + _tax : tax - _tax,
     });
   };
 
@@ -399,12 +399,14 @@ const BillingDetail = props => {
         ids: selectedRowKeys.join(','),
         price: total.price,
         weight: total.weight,
+        taxSum: total.tax,
       };
     } else if (checkedAll) {
       params = {
         ids: orderDetail.ids,
         price: dataList.price,
         weight: dataList.arrivalGoodsWeight,
+        taxSum: dataList.taxAmount,
       };
     } else {
       message.warn('请选择要开票的运单');
