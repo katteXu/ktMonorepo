@@ -484,7 +484,7 @@ const BillingDetail = props => {
               元
             </span>
             <span style={{ marginLeft: 32 }}>
-              含税总额
+              {`${whiteList.heShun ? '补差运费' : '含税总额'}`}
               <span className="total-num">
                 {Format.price(
                   isEmpty || checkedAll

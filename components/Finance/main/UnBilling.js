@@ -307,7 +307,7 @@ const UnBilling = props => {
         <span style={{ marginLeft: 32 }}>总净重</span>
         <span className="total-num">{Format.weight(total.weight)}</span>吨
         <span style={{ marginLeft: 32 }}>运费总额</span>
-        <span className="total-num">{Format.price(total.price)}</span>元<span style={{ marginLeft: 32 }}>含税总额</span>
+        <span className="total-num">{Format.price(total.price)}</span>元<span style={{ marginLeft: 32 }}>补差运费</span>
         <span className="total-num">{Format.price(total.taxAmount)}</span>元
       </Msg>
 
