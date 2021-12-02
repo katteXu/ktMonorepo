@@ -363,7 +363,7 @@ const OrderSettlementList = props => {
           运单数<span className="total-num">{dataList.count}</span>单
         </span>
         <span style={{ marginRight: 32 }}>
-          待结算费用<span className="total-num">{Format.price(dataList.waitPayNum || 0)}</span>元
+          待结算运费<span className="total-num">{Format.price(dataList.waitPayNum || 0)}</span>元
         </span>
         <span style={{ marginRight: 32 }}>
           发货净重<span className="total-num">{Format.weight(dataList.goodsWeight || 0)}</span>吨

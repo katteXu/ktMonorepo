@@ -39,7 +39,7 @@ const DetailStep = ({ t_num, t_price, f_num, f_price, realPrice, taxSum }) => {
       <div style={{ display: 'flex' }}>
         <div className={styles.payFooter} style={{ width: 240 }}>
           <div className={styles.orderTotalNum}>
-            结算费用: ￥ <span style={{ fontWeight: 600 }}>{Format.price(realPrice)}</span> 元
+            结算运费: ￥ <span style={{ fontWeight: 600 }}>{Format.price(realPrice)}</span> 元
           </div>
         </div>
         <div className={styles.payFooter} style={{ width: 240 }}>

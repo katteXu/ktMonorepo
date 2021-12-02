@@ -139,7 +139,7 @@ const SettlmentSet = props => {
           </div>
         )}
         <Tooltip
-          title="打开计算路耗开关，则审核时编辑货物单价后自动计算路耗，规则：结算费用=运费单价*净重-货物单价*（路损-允许路损）"
+          title="打开计算路耗开关，则审核时编辑货物单价后自动计算路耗，规则：结算运费=运费单价*净重-货物单价*（路损-允许路损）"
           placement="left">
           <span className={styles.title} style={{ marginBottom: 16, display: 'inline-block' }}>
             路耗设置

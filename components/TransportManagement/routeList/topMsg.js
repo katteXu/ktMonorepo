@@ -8,7 +8,7 @@ import { throttle } from 'echarts';
 const TopMsg = (props, ref) => {
   const [type, setType] = useState(props.type);
   const [waitPayPrice, setWaitPayPrice] = useState(); //待支付费用
-  const [checkingPrice, setCheckingPrice] = useState(); // 待结算费用
+  const [checkingPrice, setCheckingPrice] = useState(); // 待结算运费
   const [total, setTotal] = useState({});
   const text = {
     transport: '显示司机抢单后的全部运单。待结算：核对运单费用，待支付：支付运单费用;',
@@ -111,7 +111,7 @@ const TopMsg = (props, ref) => {
               }}
               src={Icon.SpeakerIcon}></img>
             <span>
-              您有待结算费用
+              您有待结算运费
               <span className="total-num" style={{ color: '#333333FF', fontSize: 16 }}>
                 {Format.price((checkingPrice + total.checkingInfoFee).toFixed(0))}
               </span>

@@ -100,7 +100,7 @@ const FromSettlment = props => {
       render: Format.price,
     },
     {
-      title: '结算费用(元)',
+      title: '结算运费(元)',
       dataIndex: 'totalPrice',
       key: 'totalPrice',
       width: '120px',

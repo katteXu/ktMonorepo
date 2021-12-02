@@ -38,7 +38,7 @@ const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, taxes, realPrice, 
         <div className={styles.orderTotalNum}>
           <div style={{ display: 'flex' }}>
             <div>
-              结算费用: ￥
+              结算运费: ￥
               <span style={{ fontWeight: 600 }}>{realPrice ? (realPrice * 1).toFixed(2) : Format.price(price)}</span> 元
             </div>
             <div style={{ marginLeft: 20 }}>

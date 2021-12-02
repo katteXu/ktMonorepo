@@ -76,7 +76,7 @@ const OrderList = props => {
     },
     {
       //运费总额
-      title: '结算费用(元)',
+      title: '结算运费(元)',
       dataIndex: 'realPrice',
       key: 'realPrice',
       width: 120,

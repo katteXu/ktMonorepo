@@ -23,7 +23,7 @@ const DetailStep = ({ totalGoodsWeight, totalArrivalGoodsWeight, transportCount,
       </div>
       <div className={styles['data-row']} style={{ display: 'flex' }}>
         <div style={{ marginRight: 24 }}>
-          结算费用：¥
+          结算运费：¥
           <span style={{ color: '#477AEF', fontSize: 16, padding: '0 4px', fontWeight: 600 }}>
             {Format.price(realPrice)}
           </span>

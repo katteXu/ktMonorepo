@@ -397,7 +397,7 @@ const RailWaySettlementList = props => {
           单
         </span>
         <span style={{ marginLeft: 32 }}>
-          待结算费用
+          待结算运费
           <span className="total-num">
             {!loading ? Format.price(total.waitPaySum) : <LoadingOutlined style={{ fontSize: 20 }} />}
           </span>

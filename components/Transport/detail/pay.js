@@ -41,7 +41,7 @@ const Pay = props => {
   // whiteList 用于判断用户是否属于和顺
   const { whiteList } = WhiteList.useContainer();
 
-  // 输入结算费用时显示的补差运费
+  // 输入结算运费时显示的补差运费
   const [taxes, setTaxes] = useState();
 
   useEffect(() => {
@@ -88,12 +88,12 @@ const Pay = props => {
     }
   };
 
-  // 结算费用变更
+  // 结算运费变更
   const handleChangePrice = e => {
     props.onChangePrice && props.onChangePrice(e.target.value);
-    // 验证结算费用格式，通过验证则按结算费用显示 10% 补差运费
+    // 验证结算运费格式，通过验证则按结算运费显示 10% 补差运费
     if (/^(\d+)(\.\d{1,2})?$/.test(e.target.value)) {
-      setTaxes(Math.ceil(e.target.value * 10));
+      setTaxes(Math.ceil(e.target.value * 10 + totalInfoFee / 10));
     } else {
       setTaxes();
     }
@@ -203,14 +203,14 @@ const Pay = props => {
         </div>
       )}
 
-      {(status === 'WAIT_PAY' || status === 'DONE' || status === 'CHECKING' || status === 'REJECT') && (
+      {/* {(status === 'WAIT_PAY' || status === 'DONE' || status === 'CHECKING' || status === 'REJECT') && (
         <div className={styles.row}>
           <div className={styles.label} style={{ minWidth: 84 }}>
             费用合计：
           </div>
           <div className={styles.data}>{Format.addPrice(price + totalInfoFee)} 元</div>
         </div>
-      )}
+      )} */}
       <div className={styles.row}>
         <div
           className={styles.label}
@@ -218,7 +218,7 @@ const Pay = props => {
             minWidth:
               (status === 'WAIT_PAY' || status === 'CHECKING' || status === 'DONE' || status === 'REJECT') && 84,
           }}>
-          结算费用：
+          结算运费：
         </div>
         <div className={styles.data}>
           {status === 'CHECKING' ? (
@@ -227,7 +227,7 @@ const Pay = props => {
               size="small"
               style={{ width: 120, marginRight: 10 }}
               addonAfter={<span>元</span>}
-              placeholder="结算费用"
+              placeholder="结算运费"
             />
           ) : (
             <span style={{ display: 'inline-block' }}>

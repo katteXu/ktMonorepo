@@ -796,7 +796,7 @@ const RailWaySettlement = props => {
           </div>
           <div style={{ marginTop: 16, color: '#333333', display: 'flex' }}>
             <div style={{ marginRight: 24 }}>
-              结算费用：
+              结算运费：
               <span style={{ color: '#477AEF', fontSize: 16 }}>
                 {Format.price(settlementInfo.realPrice + settlementInfo.totalInfoFee)}
               </span>
