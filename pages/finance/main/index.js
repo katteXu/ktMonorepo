@@ -352,10 +352,12 @@ const InvoiceList = () => {
           </div>
           <div className={styles.item}>
             <div className={styles.title}>
-              <span className={styles.txt}>已支付补差运费</span>
+              <span className={styles.txt}>{`${whiteList.heShun ? '已' : '未'}支付补差运费`}</span>
             </div>
-            <div className={styles.price}>￥{Format.price(totalData.payedTaxSum)}</div>
-            <Button onClick={() => handleChangeTabs('UN_PAY')}>查看明细</Button>
+            <div className={styles.price}>
+              ￥{whiteList.heShun ? Format.price(totalData.payedTaxSum) : Format.price(totalData.waitPayInvoicePrice)}
+            </div>
+            {!whiteList.heShun && <Button onClick={() => handleChangeTabs('UN_PAY')}>查看明细</Button>}
           </div>
         </div>
         <div className={styles.right}>
