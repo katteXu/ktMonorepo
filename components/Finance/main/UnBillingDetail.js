@@ -199,7 +199,7 @@ const UnBillingDetail = props => {
               <span className="total-num">{Format.price(dataList.price || 0)}</span>元
             </span>
             <span style={{ marginLeft: 32 }}>
-              含税总额
+              补差运费
               <span className="total-num">{Format.price(dataList.taxAmount || 0)}</span>元
             </span>
           </Msg>
