@@ -47,6 +47,14 @@ const UnBillingDetail = props => {
       render: Format.price,
     },
     {
+      title: '补差运费(元)',
+      dataIndex: 'taxCharge',
+      key: 'taxCharge',
+      align: 'right',
+      width: 160,
+      render: Format.price,
+    },
+    {
       title: '承运时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
@@ -192,7 +200,7 @@ const UnBillingDetail = props => {
             </span>
             <span style={{ marginLeft: 32 }}>
               含税总额
-              <span className="total-num">{Format.price(dataList.invoice_price || 0)}</span>元
+              <span className="total-num">{Format.price(dataList.taxAmount || 0)}</span>元
             </span>
           </Msg>
 
