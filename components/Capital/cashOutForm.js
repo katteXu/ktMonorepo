@@ -90,7 +90,7 @@ const CashOutForm = ({ onSubmit, amount }) => {
     setLoading(true);
     const params = {
       ...formData,
-      amount: formData.amount * 100,
+      amount: (formData.amount * 100).toFixed(0),
       payPass: {
         passOne: password[0].value,
         passTwo: password[1].value,
