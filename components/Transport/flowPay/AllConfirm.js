@@ -196,8 +196,8 @@ const BatchConfirm = ({ payInfo, onFinish, payAllFilter }) => {
   const submit = ({ password }) => {
     const params = {
       isAll: 1,
-      begin: payAllFilter.begin,
-      end: payAllFilter.end,
+      begin: payAllFilter.begin ? payAllFilter.begin : undefined,
+      end: payAllFilter.end ? payAllFilter.end : undefined,
       trailerPlateNumber: payAllFilter.trailerPlateNumber,
       name: payAllFilter.name,
       isFleet: payAllFilter.isFleet,

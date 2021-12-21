@@ -184,8 +184,8 @@ const FleetAllConfirm = ({ payInfo, rides, payAllFilter, onFinish }) => {
     const params = {
       // isAll: 1,
       oldPrice: payInfo.realPrice,
-      begin: payAllFilter.begin,
-      end: payAllFilter.end,
+      begin: payAllFilter.begin ? payAllFilter.begin : undefined,
+      end: payAllFilter.end ? payAllFilter.end : undefined,
       trailerPlateNumber: payAllFilter.trailerPlateNumber,
       name: payAllFilter.name,
       payPass: {
