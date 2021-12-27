@@ -22,11 +22,13 @@ import TopMsg from '@components/TransportManagement/routeList/topMsg';
 import styles from './styles.less';
 import BatchConfirm from '@components/Transport/flowPay/BatchConfirm';
 import AllConfirm from '@components/Transport/flowPay/AllConfirm';
+import { User } from '@store';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
 
 const TransportList = props => {
+  const { userInfo } = User.useContainer();
   const routeView = {
     title: '运单列表',
     pageKey: 'transportList',
@@ -1059,7 +1061,7 @@ const TransportList = props => {
             close={() => {
               setShowDetail(false);
             }}
-            userInfo={props.userInfo}
+            userInfo={userInfo}
           />
         )}
       </DrawerInfo>
