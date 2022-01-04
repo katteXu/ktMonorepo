@@ -90,6 +90,14 @@ const RailWayList = props => {
       align: 'right',
       render: Format.price,
     },
+    {
+      title: '补差运费(元)',
+      dataIndex: 'taxSum',
+      key: 'taxSum',
+      width: 150,
+      align: 'right',
+      render: Format.price,
+    },
 
     {
       title: '创建时间',

@@ -65,6 +65,14 @@ const BillingDetail = props => {
       render: Format.price,
     },
     {
+      title: '补差运费(元)',
+      dataIndex: 'taxCharge',
+      key: 'taxCharge',
+      align: 'right',
+      width: 160,
+      render: Format.price,
+    },
+    {
       title: '承运时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
@@ -125,6 +133,7 @@ const BillingDetail = props => {
     weight: 0,
     price: 0,
     errorCount: 0,
+    tax: 0,
   });
 
   // 生成索引数组
@@ -135,7 +144,7 @@ const BillingDetail = props => {
   }, [query.pageSize]);
 
   useEffect(() => {
-    const { checkedData, priceSum, weightSum } = orderDetail;
+    const { checkedData } = orderDetail;
 
     // 获取数据
     getRemoteData({});
@@ -144,8 +153,9 @@ const BillingDetail = props => {
       setSelectedRowKeys(checkedData.ids.split(',').map(item => item * 1));
       setTotal({
         ...total,
-        price: priceSum,
-        weight: weightSum,
+        price: checkedData.price,
+        weight: checkedData.weight,
+        tax: checkedData.taxSum,
       });
     }
   }, []);
@@ -165,10 +175,11 @@ const BillingDetail = props => {
 
   // 选中所有
   const onSelectAll = (selected, selectedRows, changeRows) => {
-    let { price, weight, errorCount } = total;
+    let { price, weight, errorCount, tax } = total;
     let _totalPrice = 0;
     let _totalWeight = 0;
     let _errorCount = 0;
+    let _tax = 0;
     changeRows.forEach(record => {
       const key = record.id;
       const i = selectedRowKeys.indexOf(key);
@@ -178,12 +189,14 @@ const BillingDetail = props => {
           _totalPrice += record.realPrice;
           _totalWeight += record.arrivalGoodsWeight;
           _errorCount += errorCompute(record);
+          _tax += record.taxCharge;
         }
       } else {
         selectedRowKeys.splice(i, 1);
         _totalPrice += record.realPrice;
         _totalWeight += record.arrivalGoodsWeight;
         _errorCount += errorCompute(record);
+        _tax += record.taxCharge;
       }
     });
     setSelectedRowKeys([...selectedRowKeys]);
@@ -191,6 +204,7 @@ const BillingDetail = props => {
       price: selected ? price + _totalPrice : price - _totalPrice,
       weight: selected ? weight + _totalWeight : weight - _totalWeight,
       errorCount: selected ? errorCount + _errorCount : errorCount - _errorCount,
+      tax: selected ? tax + _tax : tax - _tax,
     });
   };
 
@@ -199,23 +213,26 @@ const BillingDetail = props => {
    */
   const rowCompute = (selectRow, selected) => {
     onSelectRow(selectRow, selected);
-    let { price, weight, errorCount } = total;
-    const { realPrice, arrivalGoodsWeight } = selectRow;
+    let { price, weight, errorCount, tax } = total;
+    const { realPrice, arrivalGoodsWeight, taxCharge } = selectRow;
     const hasError = errorCompute(selectRow);
     if (selected) {
       price += realPrice;
       weight += arrivalGoodsWeight;
       errorCount += hasError;
+      tax += taxCharge;
     } else {
       price -= realPrice;
       weight -= arrivalGoodsWeight;
       errorCount -= hasError;
+      tax -= taxCharge;
     }
     setTotal({
       ...total,
       price,
       weight,
       errorCount,
+      tax,
     });
   };
 
@@ -277,6 +294,7 @@ const BillingDetail = props => {
       weight: 0,
       price: 0,
       errorCount: 0,
+      tax: 0,
     });
   };
   /**
@@ -336,6 +354,7 @@ const BillingDetail = props => {
           weight: 0,
           price: 0,
           errorCount: 0,
+          tax: 0,
         });
         return;
       }
@@ -354,6 +373,7 @@ const BillingDetail = props => {
           weight: res.result.weightSum,
           price: res.result.priceSum,
           errorCount: res.result.errorCount,
+          tax: res.result.taxAmount,
         });
         message.success('运单选择成功');
       } else {
@@ -379,12 +399,14 @@ const BillingDetail = props => {
         ids: selectedRowKeys.join(','),
         price: total.price,
         weight: total.weight,
+        taxSum: total.tax,
       };
     } else if (checkedAll) {
       params = {
         ids: orderDetail.ids,
         price: dataList.price,
         weight: dataList.arrivalGoodsWeight,
+        taxSum: dataList.taxAmount,
       };
     } else {
       message.warn('请选择要开票的运单');
@@ -462,13 +484,15 @@ const BillingDetail = props => {
               元
             </span>
             <span style={{ marginLeft: 32 }}>
-              含税总额
+              {`${whiteList.heShun ? '补差运费' : '含税总额'}`}
               <span className="total-num">
                 {Format.price(
                   isEmpty || checkedAll
-                    ? dataList.invoice_price || 0
+                    ? dataList.taxAmount || 0
                     : whiteList.heShun
-                    ? total.price * 1.1
+                    ? // total.price * 1.1
+                      // 仅对和顺用户含税总额显示逻辑进行修改
+                      total.tax
                     : parseInt(total.price + (total.price * dataList.taxPoint) / (1 - dataList.taxPoint))
                 )}
               </span>
@@ -513,6 +537,7 @@ const BillingDetail = props => {
               total: dataList.count,
             }}
             style={{ minHeight: 400 }}
+            scroll={{ x: 'auto' }}
           />
         </section>
       </div>

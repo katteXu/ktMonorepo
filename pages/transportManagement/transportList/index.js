@@ -42,6 +42,7 @@ const TransportList = props => {
     'goodsWeight',
     'arrivalGoodsWeight',
     'price',
+    'taxCharge',
     'fromCompany',
     'toCompany',
     'goodsType',
@@ -151,6 +152,14 @@ const TransportList = props => {
           ? Format.price((value + totalInfoFee).toFixed(0))
           : Format.price((realPrice + totalInfoFee).toFixed(0));
       },
+    },
+    {
+      title: '补差运费(元)',
+      dataIndex: 'taxCharge',
+      key: 'taxCharge',
+      align: 'right',
+      width: 150,
+      render: value => Format.price(value),
     },
     {
       title: '付款方式',

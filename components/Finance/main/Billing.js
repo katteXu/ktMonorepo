@@ -64,6 +64,14 @@ const Billing = props => {
       render: Format.price,
     },
     {
+      title: '补差运费(元)',
+      dataIndex: 'taxSum',
+      key: 'taxSum',
+      width: 100,
+      align: 'right',
+      render: Format.price,
+    },
+    {
       title: '操作',
       dataIndex: 'rowkKey',
       key: 'rowkKey',
@@ -151,6 +159,7 @@ const Billing = props => {
     price: 0,
     weight: 0,
     invoice_price: 0,
+    taxAmount: 0,
   });
 
   // 已选总统计数据
@@ -158,6 +167,7 @@ const Billing = props => {
     price: 0,
     weight: 0,
     count: 0,
+    tax: 0,
   });
 
   // 初始化
@@ -241,8 +251,9 @@ const Billing = props => {
     const key = record.ids;
     const price = record.priceSum;
     const weight = record.weightSum;
+    const taxSum = record.taxSum;
     if (selected) {
-      setCheckedData({ ...checkedData, [key]: { price, weight, ids: key } });
+      setCheckedData({ ...checkedData, [key]: { price, weight, taxSum, ids: key } });
     } else {
       delete checkedData[key];
       setCheckedData({ ...checkedData });
@@ -255,8 +266,9 @@ const Billing = props => {
       const key = record.ids;
       const price = record.priceSum;
       const weight = record.weightSum;
+      const taxSum = record.taxSum;
       if (selected) {
-        checkedData[key] = { price, weight, ids: key };
+        checkedData[key] = { price, weight, taxSum, ids: key };
       } else {
         delete checkedData[key];
       }
@@ -280,16 +292,19 @@ const Billing = props => {
     const data = Object.entries(checkedData);
     let price = 0;
     let weight = 0;
+    let tax = 0;
     if (data.length > 0) {
       data.forEach(item => {
         price += item[1].price;
         weight += item[1].weight;
+        tax += item[1].taxSum;
       });
     }
     setCheckTotal({
       count: data.length,
       price,
       weight,
+      tax,
     });
   }, [checkedData]);
   // 部分从表数据选择
@@ -323,6 +338,7 @@ const Billing = props => {
         weight: res.result.arrivalGoodsWeight,
         price: res.result.price,
         invoice_price: res.result.invoice_price,
+        taxAmount: res.result.taxAmount,
       });
       setInvoiceTotal({
         ...res.result.askInvoiceData,
@@ -440,6 +456,7 @@ const Billing = props => {
       price: 0,
       weight: 0,
       count: 0,
+      tax: 0,
     });
   };
 
@@ -494,13 +511,15 @@ const Billing = props => {
             <span className="total-num">{Format.weight(checkedAll ? total.weight : checkTotal.weight)}</span>吨
             <span style={{ marginLeft: 32 }}>运费总额</span>
             <span className="total-num">{Format.price(checkedAll ? total.price : checkTotal.price)}</span>元
-            <span style={{ marginLeft: 32 }}>含税总额</span>
+            <span style={{ marginLeft: 32 }}>{`${whiteList.heShun ? '补差运费' : '含税总额'}`}</span>
             <span className="total-num">
               {Format.price(
                 checkedAll
-                  ? total.invoice_price
+                  ? total.taxAmount
                   : whiteList.heShun
-                  ? checkTotal.price * 1.1
+                  ? // ? checkTotal.price * 1.1
+                    // 仅对和顺用户含税总额显示逻辑进行修改
+                    checkTotal.tax
                   : parseInt(checkTotal.price + (checkTotal.price * dataList.taxPoint) / (1 - dataList.taxPoint))
               )}
             </span>
@@ -515,8 +534,8 @@ const Billing = props => {
             <span className="total-num">{Format.weight(total.weight)}</span>吨
             <span style={{ marginLeft: 32 }}>运费总额</span>
             <span className="total-num">{Format.price(total.price)}</span>元
-            <span style={{ marginLeft: 32 }}>含税总额</span>
-            <span className="total-num">{Format.price(total.invoice_price)}</span>元
+            <span style={{ marginLeft: 32 }}>补差运费</span>
+            <span className="total-num">{Format.price(total.taxAmount)}</span>元
           </>
         )}
       </Msg>

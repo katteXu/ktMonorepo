@@ -7,6 +7,7 @@ import { transportStatistics, getUserInfo, getCommon } from '@api';
 import PayDetailConfirm from '@components/Transport/flowPay/PayDetailConfirm.js';
 import SettlementPay from '@components/Transport/flowPay/SettlementPay.js';
 import router from 'next/router';
+import { WhiteList } from '@store';
 
 // 取消按钮
 const showCancelBtn = ['PROCESS', 'CHECKING', 'APPLY_CANCEL', 'REJECT'];
@@ -53,6 +54,7 @@ const BottomBtn = props => {
     tag,
   } = props.dataInfo;
   console.log(props.dataInfo);
+  const { whiteList } = WhiteList.useContainer();
   // 获取用户信息
   const getUser = async () => {
     const { userId } = localStorage;
@@ -98,6 +100,7 @@ const BottomBtn = props => {
   const [result, setResult] = useState();
   const [totalPrice, setTotalPrice] = useState();
   const [confirmaPay, setConfirmaPay] = useState({});
+  const [taxSum, setTaxSum] = useState();
 
   const [isModal, setIsModal] = useState(false);
   // 取消运单
@@ -478,6 +481,7 @@ const BottomBtn = props => {
 
     if (res.status === 0) {
       setTotalPrice(res.result.realPrice);
+      setTaxSum(res.result.taxSum);
       setShowModal(true);
       setNowTime(res.result.nowTime);
     } else {
@@ -505,6 +509,7 @@ const BottomBtn = props => {
     const res = await transportStatistics.calculateWaitPayInfo({ params });
     if (res.status === 0) {
       setTotalPrice(res.result.realPrice);
+      setTaxSum(res.result.taxSum);
       setShowModal(true);
       setNowTime(res.result.nowTime);
     } else {
@@ -627,6 +632,11 @@ const BottomBtn = props => {
         <SettlementPay
           payInfo={{
             price: props.dataInfo.price,
+            taxes: whiteList.heShun
+              ? realPrice
+                ? Math.ceil(realPrice * 10 + totalInfoFee / 10)
+                : props.dataInfo.taxCharge
+              : props.dataInfo.taxCharge,
             realPrice: realPrice,
             goodsWeight: goodsWeight,
             arrivalGoodsWeight: arrivalGoodsWeight,
@@ -652,7 +662,7 @@ const BottomBtn = props => {
 
       {/* 支付密码 */}
       <Modal
-        title="运单支付1"
+        title="运单支付"
         destroyOnClose
         maskClosable={false}
         footer={null}
@@ -665,7 +675,7 @@ const BottomBtn = props => {
           DetailComponent={() =>
             ConfirmDetail({ fromWeight: goodsWeight, toWeight: arrivalGoodsWeight, unitName: unitName })
           }
-          price={Format.price(totalPrice)}
+          price={Format.addPrice(totalPrice + taxSum)}
         />
       </Modal>
     </>

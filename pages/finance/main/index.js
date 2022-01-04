@@ -8,6 +8,7 @@ import { Format, getQuery } from '@utils/common';
 import PayPasswordInput from '@components/common/PayPasswordInput';
 import styles from '../styles.less';
 import moment from 'moment';
+import { WhiteList } from '@store';
 
 const { TabPane } = Tabs;
 const routeView = {
@@ -53,7 +54,7 @@ const InvoiceList = () => {
       render: Format.price,
     },
     {
-      title: '补充运费(元)',
+      title: '补差运费(元)',
       dataIndex: 'difference',
       key: 'difference',
       align: 'right',
@@ -155,6 +156,9 @@ const InvoiceList = () => {
     INVOICED: 0,
   });
 
+  // whiteList 用于判断用户是否属于和顺
+  const { whiteList } = WhiteList.useContainer();
+
   const handleSearch = () => {
     setQuery({ ...query, page: 1 });
     getRemoteData({ ...query, page: 1 });
@@ -208,10 +212,11 @@ const InvoiceList = () => {
   const getTotalData = async () => {
     const res = await finance.getTotalInvoiceData();
     if (res.status === 0) {
-      const { waitApproveInvoicePrice, waitPayInvoicePrice } = res.result;
+      const { waitApproveInvoicePrice, waitPayInvoicePrice, payedTaxSum } = res.result;
       setTotalData({
         waitApproveInvoicePrice,
         waitPayInvoicePrice,
+        payedTaxSum,
       });
     }
   };
@@ -347,10 +352,12 @@ const InvoiceList = () => {
           </div>
           <div className={styles.item}>
             <div className={styles.title}>
-              <span className={styles.txt}>待支付补充运费</span>
+              <span className={styles.txt}>{`${whiteList.heShun ? '已' : '未'}支付补差运费`}</span>
             </div>
-            <div className={styles.price}>￥{Format.price(totalData.waitPayInvoicePrice)}</div>
-            <Button onClick={() => handleChangeTabs('UN_PAY')}>查看明细</Button>
+            <div className={styles.price}>
+              ￥{whiteList.heShun ? Format.price(totalData.payedTaxSum) : Format.price(totalData.waitPayInvoicePrice)}
+            </div>
+            {!whiteList.heShun && <Button onClick={() => handleChangeTabs('UN_PAY')}>查看明细</Button>}
           </div>
         </div>
         <div className={styles.right}>
@@ -398,7 +405,7 @@ const InvoiceList = () => {
           <Tabs onChange={handleChangeTabs} type="card" activeKey={query.status} style={{ marginTop: 16 }}>
             <TabPane tab={`全部(${tabCount.ALL || 0})`} key="All"></TabPane>
             <TabPane tab={`待审核(${tabCount.UN_APPROVE})`} key="UN_APPROVE"></TabPane>
-            <TabPane tab={`待支付(${tabCount.UN_PAY})`} key="UN_PAY"></TabPane>
+            {!whiteList.heShun && <TabPane tab={`待支付(${tabCount.UN_PAY})`} key="UN_PAY"></TabPane>}
             <TabPane tab={`待开票(${tabCount.UN_INVOICE})`} key="UN_INVOICE"></TabPane>
             <TabPane
               tab={`已完成(${tabCount.INVOICED_PAYED * 1 + tabCount.INVOICED * 1})`}
@@ -414,7 +421,7 @@ const InvoiceList = () => {
             <span className={'total-num'}>{Format.price(total.price)}</span>元
             <span style={{ marginLeft: 32 }}>含税总额</span>
             <span className={'total-num'}>{Format.price(total.invoicePrice)}</span>元
-            <span style={{ marginLeft: 32 }}>补充运费</span>
+            <span style={{ marginLeft: 32 }}>补差运费</span>
             <span className={'total-num'}>{Format.price(total.difference)}</span>元
           </Msg>
           <Table

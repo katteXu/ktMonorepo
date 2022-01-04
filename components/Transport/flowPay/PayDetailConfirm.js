@@ -1,9 +1,16 @@
 // 详情结算弹窗
-import { CloseCircleTwoTone, CheckCircleFilled, CloseCircleFilled, InfoCircleFilled } from '@ant-design/icons';
+import {
+  CloseCircleTwoTone,
+  CheckCircleFilled,
+  CloseCircleFilled,
+  InfoCircleFilled,
+  ExclamationCircleFilled,
+} from '@ant-design/icons';
 import { Button, Tooltip, message } from 'antd';
 import PayPasswordInput from '@components/common/PayPasswordInput';
 import { useState, useEffect, useRef } from 'react';
 import styles from './styles.less';
+import { Format } from '@utils/common';
 
 // 结果组件
 const Result = ({ icon, title, content }) => {
@@ -82,6 +89,19 @@ const PayDetailConfirm = ({ onSubmit, onFinish, result, price, DetailComponent }
         setStep(0);
         clear();
         setErrMsg(result.detail);
+      } else if (result.status === 17) {
+        // 余额不足
+        setResultInfo({
+          status: 'fail',
+          title: '暂时无法支付',
+          icon: <ExclamationCircleFilled style={{ color: '#FFB741', fontSize: 47 }} />,
+          content: (
+            <div style={{ textAlign: 'center' }}>
+              本次支付还需再充值<span style={{ color: '#477AEF' }}>{Format.price(result.detail.amount)}</span>元
+            </div>
+          ),
+        });
+        setStep(1);
       } else if (result.status === 18) {
         setResultInfo({
           status: 'loading',

@@ -1,7 +1,7 @@
 // 车队批量结算
 import { useState, useEffect } from 'react';
 import { Steps, Button, Tooltip, message, Modal } from 'antd';
-import { CloseCircleFilled, InfoCircleFilled, CheckCircleFilled } from '@ant-design/icons';
+import { CloseCircleFilled, InfoCircleFilled, CheckCircleFilled, ExclamationCircleFilled } from '@ant-design/icons';
 import { Format } from '@utils/common';
 import styles from './styles.less';
 import PayPasswordInput from '@components/common/PayPasswordInput';
@@ -13,7 +13,7 @@ const FinishType = {
 };
 
 // 第一步
-const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, realPrice, unitName, payPath, totalInfoFee }) => {
+const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, taxes, realPrice, unitName, payPath, totalInfoFee }) => {
   return (
     <div>
       <div className={styles.totalPay}>
@@ -36,32 +36,40 @@ const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, realPrice, unitNam
 
       <div className={styles.payFooter}>
         <div className={styles.orderTotalNum}>
-          结算费用: ￥
-          <span style={{ fontWeight: 600 }}>{realPrice ? (realPrice * 1).toFixed(2) : Format.price(price)}</span> 元
-        </div>
-      </div>
-      {payPath === 1 && (
-        <div className={styles.payFooter}>
-          <div className={styles.orderTotalNum}>
-            合计: ￥
-            <span style={{ fontWeight: 600 }}>
-              {realPrice ? Format.addPrice(realPrice * 100 + totalInfoFee) : Format.addPrice(price + totalInfoFee)}
-            </span>{' '}
-            元
+          <div style={{ display: 'flex' }}>
+            <div>
+              结算运费: ￥
+              <span style={{ fontWeight: 600 }}>{realPrice ? (realPrice * 1).toFixed(2) : Format.price(price)}</span> 元
+            </div>
+            <div style={{ marginLeft: 20 }}>
+              补差运费: ￥<span style={{ fontWeight: 600 }}>{Format.price(taxes)}</span> 元
+            </div>
           </div>
         </div>
-      )}
+      </div>
+
+      <div className={styles.payFooter}>
+        <div className={styles.orderTotalNum}>
+          合计: ￥
+          <span style={{ fontWeight: 600 }}>
+            {realPrice
+              ? Format.addPrice(realPrice * 100 + totalInfoFee + taxes)
+              : Format.addPrice(price + totalInfoFee + taxes)}
+          </span>{' '}
+          元
+        </div>
+      </div>
     </div>
   );
 };
 
 // 第二步
-const PayStep = ({ onChange, price, totalInfoFee }) => {
+const PayStep = ({ onChange, price, totalInfoFee, taxes }) => {
   return (
     <div className={styles['pay-step']}>
       <div className={styles.title}>支付总额</div>
       <div className={styles.price}>
-        ￥<span className={styles.number}>{Format.price(totalInfoFee + price)}</span>元
+        ￥<span className={styles.number}>{Format.price(taxes + totalInfoFee + price)}</span>元
         <Tooltip
           overlayStyle={{ maxWidth: 'max-content', padding: '0 12px' }}
           title={<div>常见费用问题请联系客服核对并修改</div>}>
@@ -145,6 +153,20 @@ const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSet
     } else if (result.status === 16) {
       // 密码输入错误展示
       setErrMsg(result.detail);
+    } else if (result.status === 17) {
+      // 余额不足
+      setResultInfo({
+        status: 'fail',
+        title: '暂时无法支付',
+        icon: <ExclamationCircleFilled style={{ color: '#FFB741', fontSize: 47 }} />,
+        content: (
+          <div style={{ textAlign: 'center' }}>
+            本次支付还需再充值<span style={{ color: '#477AEF' }}>{Format.price(result.detail.amount)}</span>元
+          </div>
+        ),
+      });
+      // 支付完成去下一步
+      toNext();
     } else if (result.status === 18) {
       // 支付中
       setResultInfo({
@@ -316,7 +338,7 @@ const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSet
       </Steps>
       {/* 详细信息 */}
       {step === 0 && (
-        <div className={styles['step-block']} style={{ height: payInfo.payPath !== 1 && 110 }}>
+        <div className={styles['step-block']} style={{ height: payInfo.payPath !== 1 && 145 }}>
           <DetailStep {...payInfo} />
           <div className={styles.bottom}>
             <Button onClick={() => settlement('pay')}>结算并支付</Button>
@@ -333,6 +355,7 @@ const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSet
             onChange={setPassword}
             price={payInfo.realPrice ? payInfo.realPrice * 100 : payInfo.price}
             totalInfoFee={payInfo.totalInfoFee}
+            taxes={payInfo.taxes}
           />
           <div className={styles['error-message']}>{errMsg}</div>
           <div className={styles.bottom}>
