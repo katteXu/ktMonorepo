@@ -56,7 +56,6 @@ const Index = props => {
       onSearch={handleChange}
       value={value}
       optionFilterProp="children"
-      notFoundContent={false}
       filterOption={() => true}>
       {options.map((val, item) => (
         <Select.Option key={item} value={val.key} item={val}>
