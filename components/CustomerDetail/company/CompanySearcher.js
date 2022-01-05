@@ -11,7 +11,7 @@ const Index = props => {
   const getData = useCallback(
     async (page, v) => {
       const params = {
-        size: 5,
+        size: 10,
         page,
         [keyWord]: v,
       };
@@ -56,7 +56,6 @@ const Index = props => {
       onSearch={handleChange}
       value={value}
       optionFilterProp="children"
-      allowClear={true}
       notFoundContent={false}
       filterOption={() => true}>
       {options.map((val, item) => (

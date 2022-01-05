@@ -1,6 +1,7 @@
 import { Input, Button, Form, Select, message } from 'antd';
 import { useState } from 'react';
 import { Status, ChildTitle } from '@components';
+import CompanySearcher from './CompanySearcher';
 import { customer } from '@api';
 import router from 'next/router';
 import styles from './styles.less';
@@ -74,16 +75,16 @@ const addCustomerForm = () => {
               required: true,
               message: '请输入客户名称',
             },
-            {
-              pattern: /^[\u4e00-\u9fa5（）\(\)]+$/,
-              message: '客户名称只能是汉字、()',
-            },
-            {
-              max: 30,
-              message: '客户名称长度不能超过30',
-            },
+            // {
+            //   pattern: /^[\u4e00-\u9fa5（）\(\)]+$/,
+            //   message: '客户名称只能是汉字、()',
+            // },
+            // {
+            //   max: 30,
+            //   message: '客户名称长度不能超过30',
+            // },
           ]}>
-          <Input placeholder="请输入客户名称" />
+          <CompanySearcher placeholder="请输入企业名称" keyWord="kw" getRemoteData={customer.getCompanyByName} />
         </Form.Item>
 
         <Form.Item label="客户姓名" name="companyContactName" rules={name_rules} validateFirst={true}>

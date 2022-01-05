@@ -37,7 +37,7 @@ const CompanyForm = ({ formData, onSubmit, onClose }) => {
 
   useEffect(() => {
     form.setFieldsValue({
-      companyName: '',
+      companyName: undefined,
       companySimpleName: '',
       companyContactName: '',
       companyContactMobile: '',
