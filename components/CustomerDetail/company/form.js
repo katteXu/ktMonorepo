@@ -62,7 +62,7 @@ const CompanyForm = ({ formData, onSubmit, onClose }) => {
               rules={[
                 {
                   required: true,
-                  message: '请输入企业名称',
+                  message: '请选择规范的企业名称',
                 },
               ]}>
               <CompanySearcher

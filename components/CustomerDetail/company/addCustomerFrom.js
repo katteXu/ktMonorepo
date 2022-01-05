@@ -73,7 +73,7 @@ const addCustomerForm = () => {
           rules={[
             {
               required: true,
-              message: '请输入客户名称',
+              message: '请选择规范的客户名称',
             },
             // {
             //   pattern: /^[\u4e00-\u9fa5（）\(\)]+$/,
