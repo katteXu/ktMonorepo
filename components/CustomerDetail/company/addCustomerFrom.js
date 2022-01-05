@@ -84,7 +84,7 @@ const addCustomerForm = () => {
             //   message: '客户名称长度不能超过30',
             // },
           ]}>
-          <CompanySearcher placeholder="请输入企业名称" keyWord="kw" getRemoteData={customer.getCompanyByName} />
+          <CompanySearcher placeholder="请输入客户名称" keyWord="kw" getRemoteData={customer.getCompanyByName} />
         </Form.Item>
 
         <Form.Item label="客户姓名" name="companyContactName" rules={name_rules} validateFirst={true}>
