@@ -281,7 +281,7 @@ const SelectBtn = ({ onChange, type, mode, value, onInit, title, filter, style }
       <Modal
         visible={createVisible}
         destroyOnClose
-        width={480}
+        width={640}
         footer={null}
         title="添加企业"
         maskClosable={false}
