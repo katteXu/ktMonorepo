@@ -30,7 +30,7 @@ const CompanyForm = ({ formData, onSubmit, onClose }) => {
   const Help = () => {
     return (
       <div style={{ fontSize: 12, lineHeight: '12px', marginTop: 8, color: '#a3a3a3' }}>
-        <span>企业名称将用于发票等场景，请确保其正确</span>
+        <span>企业名称将用于发票等场景，请在下拉框中选择规范的企业名称</span>
       </div>
     );
   };
