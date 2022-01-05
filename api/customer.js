@@ -273,6 +273,15 @@ const del_customer = ({ params } = {}) => {
   });
 };
 
+// 公司名称模糊查询
+const getCompanyByName = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v_sass/user/companySearch',
+    params,
+  });
+};
+
 export default {
   getDataList,
   getDetail,
@@ -307,4 +316,6 @@ export default {
   get_customer_detail,
   modify_customer,
   del_customer,
+
+  getCompanyByName,
 };

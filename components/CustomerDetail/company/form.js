@@ -1,5 +1,7 @@
 import { Input, Button, Form } from 'antd';
 import { useState, useEffect } from 'react';
+import { customer } from '@api';
+import CompanySearcher from './CompanySearcher';
 import styles from './styles.less';
 // 表单布局
 const formItemLayout = {
@@ -62,12 +64,13 @@ const CompanyForm = ({ formData, onSubmit, onClose }) => {
                   required: true,
                   message: '请输入企业名称',
                 },
-                {
-                  max: 25,
-                  message: '企业名称最多不超过25个字符',
-                },
               ]}>
-              <Input placeholder="请输入企业名称" style={{ width: 200 }} />
+              <CompanySearcher
+                placeholder="请输入企业名称"
+                style={{ width: 200 }}
+                keyWord="kw"
+                getRemoteData={customer.getCompanyByName}
+              />
             </Form.Item>
             <Help />
           </Form.Item>
