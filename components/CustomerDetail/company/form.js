@@ -67,7 +67,7 @@ const CompanyForm = ({ formData, onSubmit, onClose }) => {
               ]}>
               <CompanySearcher
                 placeholder="请输入企业名称"
-                style={{ width: 200 }}
+                style={{ width: 400 }}
                 keyWord="kw"
                 getRemoteData={customer.getCompanyByName}
               />
