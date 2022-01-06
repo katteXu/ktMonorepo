@@ -372,7 +372,7 @@ class customerManagement extends PureComponent {
                   <div style={{ textAlign: 'left' }}>
                     <h4>上传失败的原因：</h4>
                     <p>1. 是否已经导入相同的文件内容；</p>
-                    <p>2. 请确保车牌号共七位；</p>
+                    <p>2. 请确保车牌号正确；</p>
                     <p>3. 请确保所属车队填写与已添加车队的信息一致；</p>
                     <p>4. 请确保必填信息完成填写；</p>
                   </div>
