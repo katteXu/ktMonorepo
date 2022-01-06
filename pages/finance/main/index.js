@@ -86,7 +86,7 @@ const InvoiceList = () => {
               }}>
               查看对账单
             </Button>
-            {status === 'UN_PAY' && (
+            {/* {status === 'UN_PAY' && (
               <Button
                 size="small"
                 type="link"
@@ -95,7 +95,7 @@ const InvoiceList = () => {
                 }}>
                 支付
               </Button>
-            )}
+            )} */}
           </>
         );
       },
