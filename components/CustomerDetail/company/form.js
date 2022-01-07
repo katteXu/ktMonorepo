@@ -14,7 +14,7 @@ const CompanyForm = ({ formData, onSubmit, onClose }) => {
   const [form] = Form.useForm();
   // 提交数据
   const onFinish = values => {
-    console.log('success' + values);
+    console.log('success', values);
     setLoading(true);
     if (typeof onSubmit === 'function') {
       onSubmit(values);

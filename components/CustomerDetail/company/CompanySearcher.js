@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Select } from 'antd';
+import { AutoComplete } from 'antd';
 import { useDebounceFn } from 'ahooks';
 
 const Index = props => {
@@ -31,7 +31,7 @@ const Index = props => {
         if (res.status === 0) {
           const _options = res.result.data.ENTERPRISES.map(item => ({
             value: item.ENTNAME,
-            key: item.ENTNAME,
+            key: item.ID,
           }));
           setOptions(_options);
         } else {
@@ -46,7 +46,7 @@ const Index = props => {
   const handleChange = useCallback(onSearchCompany, []);
 
   return (
-    <Select
+    <AutoComplete
       loading={loading}
       placeholder={placeholder}
       disabled={disContent}
@@ -56,13 +56,9 @@ const Index = props => {
       onSearch={handleChange}
       value={value}
       optionFilterProp="children"
-      filterOption={() => true}>
-      {options.map((val, item) => (
-        <Select.Option key={item} value={val.key} item={val}>
-          {val.value}
-        </Select.Option>
-      ))}
-    </Select>
+      filterOption={() => true}
+      options={options}
+    />
   );
 };
 
