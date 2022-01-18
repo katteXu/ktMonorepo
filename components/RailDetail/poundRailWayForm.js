@@ -902,7 +902,8 @@ const RailWayForm = ({ onSubmit }) => {
         }}
         visible={companyModal}
         destroyOnClose
-        footer={null}>
+        footer={null}
+        width={640}>
         <CompanyForm
           onSubmit={submitCompany}
           formData={{}}

@@ -1,5 +1,7 @@
 import { Input, Button, Form } from 'antd';
 import { useState, useEffect } from 'react';
+import { customer } from '@api';
+import CompanySearcher from './CompanySearcher';
 import styles from './styles.less';
 // 表单布局
 const formItemLayout = {
@@ -12,7 +14,7 @@ const CompanyForm = ({ formData, onSubmit, onClose }) => {
   const [form] = Form.useForm();
   // 提交数据
   const onFinish = values => {
-    console.log('success' + values);
+    console.log('success', values);
     setLoading(true);
     if (typeof onSubmit === 'function') {
       onSubmit(values);
@@ -28,14 +30,14 @@ const CompanyForm = ({ formData, onSubmit, onClose }) => {
   const Help = () => {
     return (
       <div style={{ fontSize: 12, lineHeight: '12px', marginTop: 8, color: '#a3a3a3' }}>
-        <span>企业名称将用于发票等场景，请确保其正确</span>
+        <span>企业名称将用于发票等场景，请在下拉框中选择规范的企业名称</span>
       </div>
     );
   };
 
   useEffect(() => {
     form.setFieldsValue({
-      companyName: '',
+      companyName: undefined,
       companySimpleName: '',
       companyContactName: '',
       companyContactMobile: '',
@@ -60,14 +62,15 @@ const CompanyForm = ({ formData, onSubmit, onClose }) => {
               rules={[
                 {
                   required: true,
-                  message: '请输入企业名称',
-                },
-                {
-                  max: 25,
-                  message: '企业名称最多不超过25个字符',
+                  message: '请选择规范的企业名称',
                 },
               ]}>
-              <Input placeholder="请输入企业名称" style={{ width: 200 }} />
+              <CompanySearcher
+                placeholder="请输入企业名称"
+                style={{ width: 400 }}
+                keyWord="kw"
+                getRemoteData={customer.getCompanyByName}
+              />
             </Form.Item>
             <Help />
           </Form.Item>
