@@ -1,0 +1,130 @@
+import { useState, useEffect } from 'react';
+import { Input, InputNumber, Button, Form, Radio, Space } from 'antd';
+import styles from './styles.less';
+// 表单布局z
+const formItemLayout = {
+  labelAlign: 'left',
+  wrapperCol: { span: 14 },
+};
+
+const number_rules = [
+  {
+    pattern: /^\d+(\.\d{1,2})?$/,
+    message: '只能是数字，且不可超过2位小数',
+  },
+  {
+    validator: (rule, value) => {
+      if (+value) {
+        if (+value > 0) {
+          return Promise.resolve();
+        } else {
+          return Promise.reject('内容必须大于0');
+        }
+      } else {
+        return Promise.resolve();
+      }
+    },
+  },
+];
+
+const UpdateForm = ({ onSubmit, onClose, unitPrice, infoFeeUnitName, unitInfoFee, unitName }) => {
+  const [form] = Form.useForm();
+  const [newInfoFeeUnitName, setNewInfoFeeUnitName] = useState(infoFeeUnitName);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      unitPrice,
+      infoFeeUnitName,
+      unitInfoFee,
+    });
+  }, []);
+
+  const handleSubmit = values => {
+    onSubmit && onSubmit(values);
+  };
+
+  const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo);
+  };
+
+  const handleInfoFeeUnitNameChange = e => {
+    setNewInfoFeeUnitName(e.target.value);
+  };
+
+  return (
+    <div className={styles.formSendInfoFeeData}>
+      <Form {...formItemLayout} form={form} onFinish={handleSubmit} onFinishFailed={onFinishFailed} autoComplete="off">
+        <Form.Item
+          label={
+            <div>
+              <span className={styles.redStar}>*</span>运费单价
+            </div>
+          }>
+          <Space>
+            <Form.Item
+              name="unitPrice"
+              validateFirst={true}
+              noStyle
+              rules={[{ required: true, message: '内容不能为空' }, ...number_rules]}>
+              <InputNumber placeholder="请输入运费单价" step={0.01} min={0} style={{ width: 88, lineHeight: '30px' }} />
+            </Form.Item>
+            <span>{`元/${unitName}`}</span>
+          </Space>
+        </Form.Item>
+
+        <Form.Item
+          label={
+            <div>
+              <span className={styles.noStar}>*</span>信息费收取方式
+            </div>
+          }
+          name="infoFeeUnitName">
+          <Radio.Group onChange={handleInfoFeeUnitNameChange}>
+            <Radio value={0}>按车收</Radio>
+            <Radio value={1} style={{ marginLeft: 16 }}>
+              按吨收
+            </Radio>
+          </Radio.Group>
+        </Form.Item>
+
+        <Form.Item
+          label={
+            <div>
+              <span className={styles.redStar}>*</span>信息费单价
+            </div>
+          }>
+          <Space>
+            <Form.Item
+              name="unitInfoFee"
+              validateFirst={true}
+              noStyle
+              rules={[
+                {
+                  required: true,
+                  message: '内容不可为空',
+                },
+                ...number_rules,
+              ]}>
+              <InputNumber
+                placeholder="请输入信息费单价"
+                step={0.01}
+                min={0}
+                style={{ width: 88, lineHeight: '30px' }}
+              />
+            </Form.Item>
+            <span>{`元/${newInfoFeeUnitName === 0 ? '车' : '吨'}`}</span>
+          </Space>
+        </Form.Item>
+
+        <div style={{ textAlign: 'right' }}>
+          <Button onClick={onClose}>取消</Button>
+          <Button style={{ marginLeft: 8 }} htmlType="submit" type="primary">
+            确定
+          </Button>
+        </div>
+      </Form>
+    </div>
+  );
+};
+
+export default UpdateForm;

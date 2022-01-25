@@ -1008,6 +1008,7 @@ const TransportList = props => {
 
       {/* 结算全部 */}
       <Modal
+        className={styles.modal}
         maskClosable={false}
         title="全部支付"
         visible={showAllModal}
@@ -1032,6 +1033,7 @@ const TransportList = props => {
 
       {/* 批量支付  */}
       <Modal
+        className={styles.modal}
         maskClosable={false}
         title="批量支付"
         visible={showModalOwner}

@@ -464,7 +464,7 @@ const RailWaySettlement = props => {
             }}>
             {dataList.transportFleetId ? '车队单' : '个人单'}
           </Tag>
-          {dataList.transportFleetId && (
+          {dataList.transportFleetId && dataList.payPath !== 2 && (
             <Tag
               color={dataList.payPath === 0 ? '#FFFBF4' : '#F5FFF8'}
               style={{

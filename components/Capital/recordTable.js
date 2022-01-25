@@ -24,6 +24,7 @@ const tradingType = {
   PRE_FARE_REFUND: '预付退还',
   PAY_TAX_CHARGE: '税费',
   SERVICE_CHARGE: '服务费',
+  FLEET_FARE_INFO_FEE: '信息费',
   WITHDRAWAL: '提现',
   ZX_CHANGE: '充值',
   OFFICIAL_CHARGE: '官方充值',
