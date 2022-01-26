@@ -185,7 +185,7 @@ const Pay = props => {
               min={0}
               onChange={handleChangePrice}
               size="small"
-              style={{ width: 120, marginRight: 10 }}
+              style={{ width: 180, marginRight: 10 }}
               addonAfter={<span>元</span>}
               placeholder="结算费用"
             />

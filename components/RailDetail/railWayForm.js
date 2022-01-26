@@ -926,7 +926,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
               <Input placeholder="请输入运费单价" addonAfter={<span>元</span>} style={{ width: 264 }} />
             </Form.Item>
           </Col>
-          <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 390 }}>
+          <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 400 }}>
             <Form.Item name="unitName" style={{ position: 'relative', left: 32 }}>
               <Select
                 style={{ width: 96 }}
