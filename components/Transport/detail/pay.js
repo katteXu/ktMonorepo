@@ -191,7 +191,7 @@ const Pay = props => {
             />
           ) : (
             <span style={{ display: 'inline-block' }}>
-              {realPrice === 0 ? Format.addPrice(price + totalInfoFee) : Format.addPrice(realPrice + totalInfoFee)} 元
+              {realPrice === 0 ? Format.price(price) : Format.price(realPrice)} 元
             </span>
           )}
         </div>
