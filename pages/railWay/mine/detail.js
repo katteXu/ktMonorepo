@@ -81,7 +81,7 @@ const RailWayDetail = props => {
       setDataInfo(res.result);
       setUnitPrice(res.result.unitPrice && (res.result.unitPrice / 100).toFixed(2));
       setUnitInfoFee(res.result.unitInfoFee && (res.result.unitInfoFee / 100).toFixed(2));
-      setInfoFeeUnitName(res.result.infoFeeUnitName && (res.result.infoFeeUnitName / 100).toFixed(2));
+      setInfoFeeUnitName(res.result.infoFeeUnitName);
       setTotalAmount(res.result.totalAmount);
       setIsLeavingAmount(res.result.isLeavingAmount);
       setStatus(res.result.status);
