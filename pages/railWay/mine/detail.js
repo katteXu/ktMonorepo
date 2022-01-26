@@ -594,8 +594,8 @@ const RailWayDetail = props => {
                     {dataInfo ? `${unitInfoFee} 元/${infoFeeUnitName === 0 ? '车' : '吨'}` : '-'}
                   </div>
                   <div className={styles.item}>
-                    <span className={styles.label}>结算单价：</span>
-                    {Format.price(unitInfoFee * 100 + unitPrice * 100)} 元/{dataInfo.unitName}
+                    {/* <span className={styles.label}>结算单价：</span>
+                    {Format.price(unitInfoFee * 100 + unitPrice * 100)} 元/{dataInfo.unitName} */}
                   </div>
                   <div className={styles.item}></div>
                 </div>
