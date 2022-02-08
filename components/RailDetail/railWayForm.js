@@ -1012,10 +1012,19 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
         </Form.Item>
         {/* 货物总量 */}
         <Form.Item
+          // label={
+          //   <div>
+          //     <span className={styles.noStar}>*</span>货物总量
+          //   </div>
+          // }
           label={
-            <div>
-              <span className={styles.noStar}>*</span>货物总量
-            </div>
+            isLeavingAmount ? (
+              '货物总量'
+            ) : (
+              <div>
+                <span className={styles.noStar}>*</span>货物总量
+              </div>
+            )
           }
           name="totalAmount"
           style={{ marginLeft: 32 }}

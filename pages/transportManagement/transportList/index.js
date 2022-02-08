@@ -166,7 +166,9 @@ const TransportList = props => {
       dataIndex: 'payPath',
       key: 'payPath',
       width: 120,
-      render: (value, record, index) => <span>{record.transportFleetId ? (value ? '延时付' : '即时付') : '-'}</span>,
+      render: (value, record, index) => (
+        <span>{record.transportFleetId && value !== 2 ? (value ? '延时付' : '即时付') : '-'}</span>
+      ),
     },
     {
       title: '发货企业',
