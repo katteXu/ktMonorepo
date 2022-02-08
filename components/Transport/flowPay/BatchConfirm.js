@@ -51,7 +51,7 @@ const DetailStep = ({ t_num, t_price, f_num, f_price, realPrice, taxSum }) => {
       <div style={{ display: 'flex', paddingLeft: '16px' }}>
         <div className={styles.payFooter}>
           <div className={styles.orderTotalNum}>
-            待支付金额合计: <span style={{ fontWeight: 600 }}>{Format.addPrice(realPrice + taxSum)}</span> 元
+            金额合计: <span style={{ fontWeight: 600 }}>{Format.addPrice(realPrice + taxSum)}</span> 元
           </div>
         </div>
       </div>
@@ -243,7 +243,7 @@ const BatchConfirm = ({ payInfo, payId, onFinish }) => {
 
   return (
     <div className={styles['flow-pay']} style={{ padding: 0 }}>
-      <Steps size="small" current={step} style={{ marginBottom: 32, padding: '0 8px' }}>
+      <Steps size="small" current={step} style={{ marginBottom: 24, padding: '0 8px' }}>
         <Steps.Step title="运单确认" />
         <Steps.Step title="运单支付" />
         <Steps.Step title={FinishType[finish].title} />

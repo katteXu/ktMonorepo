@@ -464,7 +464,7 @@ const RailWaySettlement = props => {
             }}>
             {dataList.transportFleetId ? '车队单' : '个人单'}
           </Tag>
-          {dataList.transportFleetId && dataList.payPath !== 2 && (
+          {dataList.transportFleetId && dataList.routeInfo.payPath !== 2 && (
             <Tag
               color={dataList.payPath === 0 ? '#FFFBF4' : '#F5FFF8'}
               style={{
@@ -743,6 +743,7 @@ const RailWaySettlement = props => {
         </section>
       </Content>
       <Modal
+        className={styles.modal}
         title="批量结算"
         visible={visible}
         onCancel={() => setVisible(false)}
@@ -754,57 +755,65 @@ const RailWaySettlement = props => {
             </Button>
           </div>
         }>
-        <div style={{ paddingLeft: 72 }}>
-          <ExclamationCircleFilled
-            style={{
-              color: '#FFB741FF',
-              fontSize: 20,
-              height: 20,
-              width: 20,
-              position: 'absolute',
-              left: 64,
-              top: 75,
-            }}
-          />
-          <div style={{ color: '#333333', fontSize: 16, fontWeight: 600 }}>
-            批量结算无法修改运费，如需修改请单笔结算
-          </div>
-          <div
-            style={{
-              marginBottom: 6,
-              marginTop: 24,
-              color: '#333333',
-              fontSize: 14,
-            }}>
-            运输车次：<span>{settlementInfo.transportCount}</span>次
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              marginTop: 16,
-              color: '#333333',
-              fontSize: 14,
-            }}>
-            <div style={{ marginRight: 24 }}>
-              发货净重：
-              <span>{Format.weight(settlementInfo.totalGoodsWeight)}</span>吨
-            </div>
-            <div>
-              收货净重：
-              <span>{Format.weight(settlementInfo.totalArrivalGoodsWeight)}</span>吨
+        <div>
+          <div style={{ paddingLeft: 36, marginBottom: 24 }}>
+            <ExclamationCircleFilled
+              style={{
+                color: '#FFB741FF',
+                fontSize: 20,
+                height: 20,
+                width: 20,
+                position: 'absolute',
+                left: 32,
+                top: 75,
+              }}
+            />
+            <div style={{ color: '#333333', fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+              批量结算无法修改运费，如需修改请单笔结算
             </div>
           </div>
-          <div style={{ marginTop: 16, color: '#333333', display: 'flex' }}>
-            <div style={{ marginRight: 24 }}>
-              结算运费：
-              <span style={{ color: '#477AEF', fontSize: 16 }}>
-                {Format.price(settlementInfo.realPrice + settlementInfo.totalInfoFee)}
-              </span>
-              元
+          <div className={styles.totalPay} style={{ backgroundColor: '#F6F7F9', padding: '16px 0 16px 16px' }}>
+            <div style={{ width: 240 }}>
+              <div className={styles.truckNum} style={{ marginTop: 0, marginBottom: '12px' }}>
+                运输车次: <span>{settlementInfo.transportCount || 0} 车</span>
+              </div>
+              <div className={styles.truckWeight}>
+                发货净重: <span>{Format.weight(settlementInfo.totalGoodsWeight)} 吨</span>
+              </div>
             </div>
-            <div>
-              补差运费：
-              <span style={{ color: '#477AEF', fontSize: 16 }}>{Format.price(settlementInfo.taxSum)}</span>元
+            <div style={{ width: 240 }}>
+              <div className={styles.truckNum} style={{ marginTop: 0, marginBottom: '12px', height: '22px' }}></div>
+              <div className={styles.truckWeight}>
+                收货净重: <span>{Format.weight(settlementInfo.totalArrivalGoodsWeight)} 吨</span>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', paddingLeft: '16px' }}>
+            <div className={styles.payFooter} style={{ width: 240 }}>
+              <div className={styles.orderTotalNum}>
+                实际结算费用:{' '}
+                <span style={{ fontWeight: 600 }}>
+                  {Format.addPrice(settlementInfo.realPrice + settlementInfo.totalInfoFee)}
+                </span>{' '}
+                元
+              </div>
+            </div>
+            <div className={styles.payFooter} style={{ width: 240 }}>
+              <div className={styles.orderTotalNum}>
+                补差运费: <span style={{ fontWeight: 600 }}>{Format.price(settlementInfo.taxSum)}</span> 元
+              </div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', paddingLeft: '16px' }}>
+            <div className={styles.payFooter}>
+              <div className={styles.orderTotalNum}>
+                金额合计:{' '}
+                <span style={{ fontWeight: 600 }}>
+                  {Format.addPrice(settlementInfo.realPrice + settlementInfo.totalInfoFee + settlementInfo.taxSum)}
+                </span>{' '}
+                元
+              </div>
             </div>
           </div>
         </div>
