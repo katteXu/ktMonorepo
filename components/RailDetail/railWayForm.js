@@ -1017,21 +1017,13 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           //     <span className={styles.noStar}>*</span>货物总量
           //   </div>
           // }
-          label={
-            isLeavingAmount ? (
-              '货物总量'
-            ) : (
-              <div>
-                <span className={styles.noStar}>*</span>货物总量
-              </div>
-            )
-          }
+          label="货物总量"
           name="totalAmount"
           style={{ marginLeft: 32 }}
           validateFirst={true}
           rules={[
             {
-              required: isLeavingAmount,
+              required: true,
               message: '内容不可为空',
             },
             {
