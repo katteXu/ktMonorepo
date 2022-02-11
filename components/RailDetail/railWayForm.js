@@ -409,6 +409,10 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       };
       dataView.routeContactMobile = { label: '专线负责人：', value: values.routeContactMobile };
     }
+    if (data.unitName === '吨' && data.infoFeeUnitName === 1 && data.unitInfoFee * 2 > data.unitPrice) {
+      message.warn('信息费单价不可超过运费单价的50%，请重新输入');
+      return;
+    }
     onSubmit(data, dataView);
   };
 
