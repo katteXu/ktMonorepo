@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Input, InputNumber, Button, Form, Radio, Space } from 'antd';
+import { Input, InputNumber, Button, Form, Radio, Space, message } from 'antd';
 import styles from './styles.less';
 // 表单布局z
 const formItemLayout = {
@@ -40,6 +40,10 @@ const UpdateForm = ({ onSubmit, onClose, unitPrice, infoFeeUnitName, unitInfoFee
   }, []);
 
   const handleSubmit = values => {
+    if (unitName === '吨' && values.infoFeeUnitName === 1 && values.unitInfoFee * 2 > values.unitPrice * 1) {
+      message.warn('信息费单价不可超过运费单价的50%，请重新输入');
+      return;
+    }
     onSubmit && onSubmit(values);
   };
 
