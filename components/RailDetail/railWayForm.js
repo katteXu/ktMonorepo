@@ -1009,7 +1009,20 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
               whitespace: allowLoss,
               message: '内容不可为空',
             },
-            ...number_rules,
+            // ...number_rules,
+            {
+              pattern: /^\d+(\.\d{1,2})?$/,
+              message: '只能是数字，且不可超过2位小数',
+            },
+            {
+              validator: (rule, value) => {
+                if (+value > 0 || !allowLoss) {
+                  return Promise.resolve();
+                } else {
+                  return Promise.reject('内容必须大于0');
+                }
+              },
+            },
           ]}>
           <Input
             placeholder="请输入货物单价"
