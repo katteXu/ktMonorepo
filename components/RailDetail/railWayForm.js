@@ -57,14 +57,10 @@ const number_rules = [
   },
   {
     validator: (rule, value) => {
-      if (+value) {
-        if (+value > 0) {
-          return Promise.resolve();
-        } else {
-          return Promise.reject('内容必须大于0');
-        }
-      } else {
+      if (+value > 0) {
         return Promise.resolve();
+      } else {
+        return Promise.reject('内容必须大于0');
       }
     },
   },
@@ -310,9 +306,17 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       //业务类型
       businessType: values.businessType || '1',
       // 信息费单价
-      unitInfoFee: isFleet ? values.unitInfoFee && (values.unitInfoFee * 100).toFixed(0) * 1 : undefined,
+      unitInfoFee:
+        isFleet && values.infoFeeUnitName === 1
+          ? values.unitInfoFee && (values.unitInfoFee * 100).toFixed(0) * 1
+          : undefined,
+      // 服务费
+      serviceFee:
+        isFleet && values.infoFeeUnitName === 0
+          ? values.unitInfoFee && (values.unitInfoFee * 100).toFixed(0) * 1
+          : undefined,
       // 信息费单位
-      infoFeeUnitName: isFleet ? values.infoFeeUnitName : undefined,
+      // infoFeeUnitName: isFleet ? values.infoFeeUnitName : undefined,
       //隐藏信息
       ...hiddenInfo,
     };

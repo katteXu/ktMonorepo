@@ -29,8 +29,10 @@ const Pay = props => {
     totalInfoFee,
     taxCharge,
     transportFleetId,
+    serviceFee,
   } = props.dataInfo;
-  const { id: rid, payPath, infoFeeUnitName } = routeInfo;
+  const infoFeeUnitName = unitInfoFee !== 0 ? 1 : 0;
+  const { id: rid, payPath } = routeInfo;
   console.log(props.dataInfo);
   const [btnLoading, setBtnLoading] = useState(false);
   const [editUnitPrice, setEditUnitPrice] = useState(false);
@@ -203,14 +205,14 @@ const Pay = props => {
               信息费单价：
             </div>
             <div className={styles.data}>
-              {Format.price(unitInfoFee)} 元/{infoFeeUnitName === 0 ? '车' : '吨'}
+              {Format.price(unitInfoFee || serviceFee)} 元/{infoFeeUnitName === 0 ? '车' : '吨'}
             </div>
           </div>
           <div className={styles.row}>
             <div className={styles.label} style={{ minWidth: 100 }}>
               信息费金额：
             </div>
-            <div className={styles.data}>{Format.price(totalInfoFee)} 元</div>
+            <div className={styles.data}>{Format.price(totalInfoFee || serviceFee)} 元</div>
           </div>
         </div>
       )}

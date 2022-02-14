@@ -43,6 +43,7 @@ const RailWayDetail = props => {
 
   const [unitPrice, setUnitPrice] = useState(0);
   const [unitInfoFee, setUnitInfoFee] = useState(0);
+  const [serviceFee, setServiceFee] = useState(0);
   const [infoFeeUnitName, setInfoFeeUnitName] = useState(0);
   const [showUnitPrice, setShowUnitPrice] = useState(false);
   const [showUnitPriceModal, setShowUnitPriceModal] = useState(false);
@@ -81,7 +82,8 @@ const RailWayDetail = props => {
       setDataInfo(res.result);
       setUnitPrice(res.result.unitPrice && (res.result.unitPrice / 100).toFixed(2));
       setUnitInfoFee(res.result.unitInfoFee && (res.result.unitInfoFee / 100).toFixed(2));
-      setInfoFeeUnitName(res.result.infoFeeUnitName);
+      setServiceFee(res.result.serviceFee && (res.result.serviceFee / 100).toFixed(2));
+      setInfoFeeUnitName(res.result.unitInfoFee !== 0 ? 1 : 0);
       setTotalAmount(res.result.totalAmount);
       setIsLeavingAmount(res.result.isLeavingAmount);
       setStatus(res.result.status);
@@ -198,8 +200,8 @@ const RailWayDetail = props => {
       unitPrice: value
         ? (value.unitPrice * 100).toFixed()
         : ((newUnitPrice ? newUnitPrice : unitPrice) * 100).toFixed(),
-      infoFeeUnitName: value ? value.infoFeeUnitName : undefined,
-      unitInfoFee: value ? (value.unitInfoFee * 100).toFixed() : undefined,
+      unitInfoFee: value && value.infoFeeUnitName === 1 ? (value.unitInfoFee * 100).toFixed() : undefined,
+      serviceFee: value && value.infoFeeUnitName === 0 ? (value.unitInfoFee * 100).toFixed() : undefined,
     };
 
     const res = await railWay.modifyUnitPrice({ params });
@@ -208,7 +210,8 @@ const RailWayDetail = props => {
       message.success('单价编辑成功');
       if (value) {
         setUnitPrice((value.unitPrice * 1).toFixed(2));
-        setUnitInfoFee((value.unitInfoFee * 1).toFixed(2));
+        setUnitInfoFee(value.infoFeeUnitName === 1 ? (value.unitInfoFee * 1).toFixed(2) : 0);
+        setServiceFee(value.infoFeeUnitName === 0 ? (value.unitInfoFee * 1).toFixed(2) : 0);
         setInfoFeeUnitName(value.infoFeeUnitName);
         setShowUnitPriceModal(false);
       } else {
@@ -591,7 +594,7 @@ const RailWayDetail = props => {
                 <div className={styles.row}>
                   <div className={styles.item}>
                     <span className={styles.label}>信息费单价：</span>
-                    {dataInfo ? `${unitInfoFee} 元/${infoFeeUnitName === 0 ? '车' : '吨'}` : '-'}
+                    {dataInfo ? `${serviceFee || unitInfoFee} 元/${infoFeeUnitName === 0 ? '车' : '吨'}` : '-'}
                   </div>
                   <div className={styles.item}>
                     {/* <span className={styles.label}>结算单价：</span>
