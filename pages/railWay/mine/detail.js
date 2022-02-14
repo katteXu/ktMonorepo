@@ -768,7 +768,7 @@ const RailWayDetail = props => {
           unitPrice={unitPrice}
           unitName={dataInfo.unitName}
           infoFeeUnitName={infoFeeUnitName}
-          unitInfoFee={unitInfoFee}
+          unitInfoFee={unitInfoFee || serviceFee}
           onSubmit={modifyUnitPrice}
           onClose={() => setShowUnitPriceModal(false)}
         />
