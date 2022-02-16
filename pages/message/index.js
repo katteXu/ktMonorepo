@@ -8,6 +8,7 @@ import Content from '@components/Content';
 import styles from './styles.less';
 import moment from 'moment';
 import { getState, clearState } from '@utils/common';
+import { Message as Msg } from '@store';
 
 const Message = props => {
   const routeView = {
@@ -26,6 +27,8 @@ const Message = props => {
 
   const [list, setList] = useState([]);
   const [count, setCount] = useState('');
+
+  const { reloadMessages } = Msg.useContainer();
 
   useEffect(() => {
     const { isServer } = props;
@@ -72,6 +75,7 @@ const Message = props => {
   const setAllReaded = () => {
     setMsgReaded().then(res => {
       getMessageList(query);
+      reloadMessages();
     });
   };
 
