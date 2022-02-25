@@ -185,7 +185,6 @@ const RailWayForm = ({ onSubmit }) => {
       hiddenInfo[item] = values.hiddenInfo && values.hiddenInfo.includes(item) ? 1 : 0;
     });
 
-    console.log(values.hiddenInfo);
     const fromAddress = addressList.find(({ id }) => id === fromAddressId);
     const toAddress = addressList.find(({ id }) => id === toAddressId);
     let data = {
@@ -286,7 +285,6 @@ const RailWayForm = ({ onSubmit }) => {
       };
       dataView.routeContactMobile = { label: '专线负责人：', value: values.routeContactMobile };
     }
-    console.log(data);
     onSubmit(data, dataView);
   };
 
@@ -411,7 +409,7 @@ const RailWayForm = ({ onSubmit }) => {
   Object.keys(options).forEach(item => {
     selectChildren.push(<Option key={item}>{options[item]}</Option>);
   });
-  console.log(contract);
+
   return (
     <div className={styles.fromInfo}>
       <Form

@@ -25,6 +25,10 @@ const MENU_LIST = [
         name: '过磅专线',
         key: 'pound',
       },
+      {
+        name: '撮合专线',
+        key: 'match',
+      },
     ],
   },
   {
