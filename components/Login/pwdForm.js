@@ -6,7 +6,7 @@ import { login } from '@api';
 import { User } from '@store';
 import router from 'next/router';
 import Store from './store';
-import { Permission, WhiteList } from '@store';
+import { Permission, WhiteList, Message } from '@store';
 const PwdForm = () => {
   const { reload, generateIndex } = User.useContainer();
   const [form] = Form.useForm();
@@ -14,6 +14,8 @@ const PwdForm = () => {
   const { account, changeMode } = Store.useContainer();
   const { reloadPermissions } = Permission.useContainer();
   const { reloadWhiteList } = WhiteList.useContainer();
+  const { reloadMessages } = Message.useContainer();
+
   const handleSubmit = async values => {
     setLoading(true);
     // 登录接口
@@ -29,6 +31,7 @@ const PwdForm = () => {
         reload(id);
         reloadPermissions();
         reloadWhiteList();
+        reloadMessages();
       });
     } else {
       message.error(res.detail || res.description);
