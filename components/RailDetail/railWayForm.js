@@ -9,7 +9,7 @@ import { AutoInputRoute, WareHouseSelect } from '@components';
 import AddressForm from '@components/CustomerDetail/address/form';
 import CompanyForm from '@components/CustomerDetail/company/form';
 import router from 'next/router';
-import { User } from '@store';
+import { User, WhiteList } from '@store';
 import WarehouseFrom from './warehouseFrom';
 const { Option } = Select;
 const { TextArea } = Input;
@@ -141,6 +141,9 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   const [isHiddenDate, setIsHiddenDate] = useState(false);
   //业务类型白名单
   const [whiteList, setWhiteList] = useState(false);
+
+  // 用户类型白名单
+  const { whiteList: userType } = WhiteList.useContainer();
 
   // 信息费收取方式
   const [infoFeeUnitName, setInfoFeeUnitName] = useState(0);
@@ -951,7 +954,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           </Col>
         </Row>
         {/* 车队单时显示信息费收取方式及信息费单价两项 */}
-        {isFleet === '1' && (
+        {isFleet === '1' && !userType.luQiao && (
           <>
             <Form.Item
               label={

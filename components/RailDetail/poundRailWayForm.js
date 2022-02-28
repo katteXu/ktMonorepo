@@ -35,10 +35,14 @@ const number_rules = [
   },
   {
     validator: (rule, value) => {
-      if (+value > 0) {
-        return Promise.resolve();
+      if (+value) {
+        if (+value > 0) {
+          return Promise.resolve();
+        } else {
+          return Promise.reject('内容必须大于0');
+        }
       } else {
-        return Promise.reject('内容必须大于0');
+        return Promise.resolve();
       }
     },
   },

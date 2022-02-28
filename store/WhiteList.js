@@ -27,6 +27,13 @@ const useWhiteList = () => {
           heShun: true,
         });
       }
+
+      if (LU_QIAO_ID && LU_QIAO_ID.includes(userId)) {
+        setWhiteList({
+          ...whiteList,
+          luQiao: true,
+        });
+      }
     }
   };
   const reloadWhiteList = () => {
