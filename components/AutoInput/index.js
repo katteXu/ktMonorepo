@@ -138,6 +138,7 @@ const Index = props => {
       style={{ width: '200px' }}
       onChange={onChange}
       onSearch={handleChange}
+      showSearch={true}
       placeholder={placeholder}
       allowClear={allowClear}
       value={value}

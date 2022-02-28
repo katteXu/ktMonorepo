@@ -7,6 +7,7 @@ import { keepState, getState, clearState, Format } from '@utils/common';
 import { railWay, downLoadFile } from '@api';
 import LoadingBtn from '@components/LoadingBtn';
 import { DateRangePicker } from '@components';
+import { WhiteList } from '@store';
 
 const { Option } = Select;
 const RailWay = props => {
@@ -17,6 +18,27 @@ const RailWay = props => {
     breadNav: '专线管理.开票专线',
     pageTitle: '开票专线',
   };
+
+  // 查询条件
+  const [query, setQuery] = useState({
+    page: 1,
+    pageSize: 10,
+    begin: null,
+    end: null,
+    fromCompany: '',
+    toCompany: '',
+    goodsType: '',
+    payPath: undefined,
+    isFleet: undefined,
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [exportLoading, setExportLoading] = useState(false);
+  const [dataList, setDataList] = useState({});
+  const [disShowType, setDisShowType] = useState(false);
+  const [disShowPay, setDisShowPay] = useState(false);
+
+  const { whiteList } = WhiteList.useContainer();
 
   // 列数据
   const columns = [
@@ -49,7 +71,7 @@ const RailWay = props => {
       render: value => <Ellipsis value={value} width={100} />,
     },
     {
-      title: '结算单价(元/吨)',
+      title: `结算单价${whiteList.luQiao ? '' : '(元/吨)'}`,
       dataIndex: 'unitPrice',
       key: 'unitPriceid',
       align: 'right',
@@ -165,25 +187,6 @@ const RailWay = props => {
       ),
     },
   ];
-
-  // 查询条件
-  const [query, setQuery] = useState({
-    page: 1,
-    pageSize: 10,
-    begin: null,
-    end: null,
-    fromCompany: '',
-    toCompany: '',
-    goodsType: '',
-    payPath: undefined,
-    isFleet: undefined,
-  });
-
-  const [loading, setLoading] = useState(false);
-  const [exportLoading, setExportLoading] = useState(false);
-  const [dataList, setDataList] = useState({});
-  const [disShowType, setDisShowType] = useState(false);
-  const [disShowPay, setDisShowPay] = useState(false);
 
   // 初始化
   useEffect(() => {

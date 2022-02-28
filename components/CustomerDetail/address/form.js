@@ -186,6 +186,7 @@ const AddressForm = ({ formData = {}, onSubmit, onClose }) => {
             loading={loading}
             style={{ width: 264 }}
             onSearch={handleSearch}
+            showSearch={true}
             onChange={handleChange}
             placeholder="如:方向洗煤厂"
             onSelect={handleOnSelect}

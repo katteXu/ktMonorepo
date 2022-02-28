@@ -5,11 +5,12 @@ import moment from 'moment';
 import { railWay, customer, getCommon } from '@api';
 import CreateGoods from './createGoods';
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { AutoInputRoute, WareHouseSelect } from '@components';
+import { AutoInputRoute, WareHouseSelect, DrawerInfo } from '@components';
 import AddressForm from '@components/CustomerDetail/address/form';
 import CompanyForm from '@components/CustomerDetail/company/form';
+import SpecifyForm from '@components/CustomerDetail/specify/form';
 import router from 'next/router';
-import { User } from '@store';
+import { User, WhiteList } from '@store';
 import WarehouseFrom from './warehouseFrom';
 const { Option } = Select;
 const { TextArea } = Input;
@@ -99,6 +100,12 @@ const getGoodsUnitName = async () => {
   return res.result;
 };
 
+// 运输距离单位
+const DistanceNameList = [
+  { id: 'km', name: '公里' },
+  { id: 'hkm', name: '里' },
+];
+
 // 表单组件
 const RailWayForm = ({ serverTime, onSubmit }) => {
   const { userInfo, loading } = User.useContainer();
@@ -145,6 +152,33 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   const [isHiddenDate, setIsHiddenDate] = useState(false);
   //业务类型白名单
   const [whiteList, setWhiteList] = useState(false);
+
+  // 用户类型白名单
+  const { whiteList: userType } = WhiteList.useContainer();
+
+  // 结算方式
+  const [payMethod, setPayMethod] = useState(0);
+
+  // 起步价
+  const [startPrice, setStartPrice] = useState(0);
+
+  // 运费单价
+  const [unitPrice, setUnitPrice] = useState(0);
+
+  // 运输方式
+  const [transportType, setTransportType] = useState('FTL');
+
+  // 运输距离
+  const [transportDistance, setTransportDistance] = useState(0);
+
+  // 货物总量
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  // 预估运费
+  const [estimatedPrice, setEstimatedPrice] = useState(0);
+
+  // 指定发布弹窗
+  const [specifyModal, setSpecifyModal] = useState(false);
 
   const [isFleet, setIsFleet] = useState(0);
   const wareHouseRef = useRef(null);
@@ -258,8 +292,32 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
     }
   }, [fromAddressId]);
 
+  // 监听收发货地址
+  useEffect(() => {
+    if (fromAddressId && toAddressId) {
+      console.log(fromAddressId, toAddressId);
+    }
+  }, [fromAddressId, toAddressId]);
+
+  // 监听起步价、运费单价、运输距离
+  useEffect(() => {
+    let price = 0;
+    switch (payMethod) {
+      case 3:
+        price = startPrice * 1 + unitPrice * transportDistance * 1;
+        break;
+      case 4:
+        price = unitPrice * 1;
+        break;
+      default:
+        price = unitPrice * totalAmount * 1;
+    }
+    setEstimatedPrice(isNaN(price) ? 0 : price.toFixed(2));
+  }, [startPrice, unitPrice, transportDistance, payMethod, totalAmount]);
+
   // 提交
-  const handleSubmit = values => {
+  const handleSubmit = async params => {
+    const values = await form.validateFields();
     const [startLoadTime, lastLoadTime] = [moment().add(diffTime), values.loadTime];
     const hiddenInfo = {};
     Object.keys(options).forEach(item => {
@@ -270,6 +328,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
     const toAddress = addressList.find(({ id }) => id === toAddressId);
 
     let data = {
+      ...params,
       consignor: values.consignor || consignor,
       fromAddressCompanyId: fromCompany.id,
       toAddressCompanyId: toCompany.id,
@@ -533,7 +592,13 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   Object.keys(options).forEach(item => {
     selectChildren.push(<Option key={item}>{options[item]}</Option>);
   });
-  console.log(goodList);
+
+  // 指定发布
+  const handleSpecifySubmit = async () => {
+    await form.validateFields();
+    setSpecifyModal(true);
+  };
+
   return (
     <div className={styles.fromInfoRailWay}>
       <Form
@@ -546,6 +611,8 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           transportType: 'FTL',
           isLeavingAmount: 0,
           unitName: '吨',
+          startPrice: 0,
+          distanceName: '公里',
           payMethod: '0',
           businessType: '1',
           fleet: '0',
@@ -878,6 +945,36 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           </Form.Item>
         )}
 
+        {/* 结算方式 */}
+        {userType.luQiao && (
+          <Form.Item
+            label={
+              <div>
+                <span className={styles.noStar}>*</span>结算方式
+              </div>
+            }
+            wrapperCol={{ span: 20 }}
+            name="payMethod"
+            style={{ marginLeft: 32, width: 850 }}
+            onChange={e => setPayMethod(e.target.value * 1)}>
+            <Radio.Group>
+              <Radio value="1">按发货净重结算</Radio>
+              <Radio value="0" style={{ marginLeft: 16 }}>
+                按收货净重结算
+              </Radio>
+              <Radio value="2" style={{ marginLeft: 16 }}>
+                按较小净重结算
+              </Radio>
+              <Radio value="3" style={{ marginLeft: 16 }}>
+                按运距结算
+              </Radio>
+              <Radio value="4" style={{ marginLeft: 16 }}>
+                固定价结算
+              </Radio>
+            </Radio.Group>
+          </Form.Item>
+        )}
+
         {/* 货品方式 */}
         <Form.Item
           label={
@@ -886,7 +983,8 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
             </div>
           }
           name="transportType"
-          style={{ marginLeft: 32 }}>
+          style={{ marginLeft: 32 }}
+          onChange={e => setTransportType(e.target.value)}>
           <Radio.Group>
             <Radio value="FTL">整车运输</Radio>
             <Radio value="LTL" style={{ marginLeft: 16 }}>
@@ -894,6 +992,28 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
             </Radio>
           </Radio.Group>
         </Form.Item>
+
+        {/* 起步价 */}
+        {transportType === 'LTL' && userType.luQiao && (
+          <Form.Item
+            label={
+              <div>
+                <span className={styles.noStar}>*</span>起步价
+              </div>
+            }
+            name="startPrice"
+            style={{ marginLeft: 32 }}
+            validateFirst={true}
+            rules={[...number_rules]}>
+            <Input
+              placeholder="请输入起步价"
+              style={{ width: 264 }}
+              addonAfter={<span>元</span>}
+              onChange={e => setStartPrice(e.target.value)}
+            />
+          </Form.Item>
+        )}
+
         {/* 运费单价 */}
         <Row className={styles.unitPriceRailWay}>
           <Col span={10}>
@@ -904,7 +1024,14 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
               style={{ marginLeft: 32 }}
               validateFirst={true}
               rules={[{ required: onlyPound === 0, whitespace: true, message: '内容不能为空' }, ...number_rules]}>
-              <Input placeholder="请输入运费单价" addonAfter={<span>元</span>} style={{ width: 264 }} />
+              <Input
+                placeholder="请输入运费单价"
+                addonAfter={<span>元</span>}
+                style={{ width: 264 }}
+                onChange={e => {
+                  setUnitPrice(e.target.value);
+                }}
+              />
             </Form.Item>
           </Col>
           <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 390 }}>
@@ -923,6 +1050,52 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
             </Form.Item>
           </Col>
         </Row>
+
+        {transportType === 'LTL' && userType.luQiao && (
+          <>
+            <Row className={styles.unitPriceRailWay}>
+              <Col span={10}>
+                <Form.Item
+                  {...oneformItemLayout}
+                  label={
+                    payMethod === 3 ? (
+                      '运输距离'
+                    ) : (
+                      <div>
+                        <span className={styles.noStar}>*</span>运输距离
+                      </div>
+                    )
+                  }
+                  name="transportDistance"
+                  style={{ marginLeft: 32 }}
+                  validateFirst={true}
+                  rules={[{ required: payMethod === 3, whitespace: true, message: '内容不能为空' }, ...number_rules]}>
+                  <Input
+                    placeholder="请输入运输距离"
+                    style={{ width: 264 }}
+                    onChange={e => setTransportDistance(e.target.value)}
+                  />
+                </Form.Item>
+              </Col>
+              <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 390 }}>
+                <Form.Item name="distanceName" style={{ position: 'relative', left: 32 }}>
+                  <Select
+                    style={{ width: 96 }}
+                    onChange={value => {
+                      // setUnitName(value);
+                    }}>
+                    {DistanceNameList.map(item => (
+                      <Option key={item.id} value={item.name}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+          </>
+        )}
+
         {/* 货物单价 */}
         <Form.Item
           label={
@@ -954,17 +1127,13 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
         </Form.Item>
         {/* 货物总量 */}
         <Form.Item
-          label={
-            <div>
-              <span className={styles.noStar}>*</span>货物总量
-            </div>
-          }
+          label="货物总量"
           name="totalAmount"
           style={{ marginLeft: 32 }}
           validateFirst={true}
           rules={[
             {
-              required: isLeavingAmount,
+              required: true,
               message: '内容不可为空',
             },
             {
@@ -972,8 +1141,25 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
               message: '货物总量只能是数字，最多两位小数',
             },
           ]}>
-          <Input placeholder="请输入货物总量" style={{ width: 264 }} addonAfter={<span>{unitName}</span>} />
+          <Input
+            placeholder="请输入货物总量"
+            style={{ width: 264 }}
+            addonAfter={<span>{unitName}</span>}
+            onChange={e => setTotalAmount(e.target.value)}
+          />
         </Form.Item>
+
+        {transportType === 'LTL' && userType.luQiao && (
+          <Form.Item
+            label={
+              <div>
+                <span className={styles.noStar}>*</span>预估运费
+              </div>
+            }
+            style={{ marginLeft: 32 }}>
+            <span>{estimatedPrice}元</span>
+          </Form.Item>
+        )}
 
         <div className={styles.title}>
           <span className={styles.line}></span>结算设置
@@ -1038,26 +1224,30 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
             <Input placeholder="请输入路损" addonAfter={<span>{unitName}</span>} style={{ width: 264 }} />
           </Form.Item>
         )}
+
         {/* 结算方式 */}
-        <Form.Item
-          label={
-            <div>
-              <span className={styles.noStar}>*</span>结算方式
-            </div>
-          }
-          wrapperCol={{ span: 20 }}
-          name="payMethod"
-          style={{ marginLeft: 32, width: 700 }}>
-          <Radio.Group>
-            <Radio value="1">按发货净重结算</Radio>
-            <Radio value="0" style={{ marginLeft: 16 }}>
-              按收货净重结算
-            </Radio>
-            <Radio value="2" style={{ marginLeft: 16 }}>
-              按原发与实收较小的结算
-            </Radio>
-          </Radio.Group>
-        </Form.Item>
+        {!userType.luQiao && (
+          <Form.Item
+            label={
+              <div>
+                <span className={styles.noStar}>*</span>结算方式
+              </div>
+            }
+            wrapperCol={{ span: 20 }}
+            name="payMethod"
+            style={{ marginLeft: 32, width: 700 }}>
+            <Radio.Group>
+              <Radio value="1">按发货净重结算</Radio>
+              <Radio value="0" style={{ marginLeft: 16 }}>
+                按收货净重结算
+              </Radio>
+              <Radio value="2" style={{ marginLeft: 16 }}>
+                按原发与实收较小的结算
+              </Radio>
+            </Radio.Group>
+          </Form.Item>
+        )}
+
         <div className={styles.title}>
           <span className={styles.line}></span>其他设置
         </div>
@@ -1166,9 +1356,14 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           </Form.Item>
         </div>
 
-        <Form.Item {...tailFormItemLayout} style={{ margin: '24px 0 32px 32px', position: 'relative', left: 118 }}>
+        <Form.Item
+          {...tailFormItemLayout}
+          style={{ margin: '24px 0 32px 32px', position: 'relative', left: 118, width: 250 }}>
           <Button type="primary" htmlType="submit">
             发布专线
+          </Button>
+          <Button type="default" style={{ marginLeft: 15 }} onClick={handleSpecifySubmit}>
+            指定发布
           </Button>
         </Form.Item>
       </Form>
@@ -1230,6 +1425,10 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           }}
         />
       </Modal>
+      {/* 指定发布 */}
+      <DrawerInfo title="指定发布" onClose={() => setSpecifyModal(false)} showDrawer={specifyModal} width="705">
+        <SpecifyForm onSubmit={handleSubmit} onClose={() => setSpecifyModal(false)} />
+      </DrawerInfo>
     </div>
   );
 };

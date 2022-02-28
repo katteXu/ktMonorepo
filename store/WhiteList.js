@@ -6,6 +6,7 @@ import { User } from '@store';
 const useWhiteList = () => {
   const [whiteList, setWhiteList] = useState({
     heShun: false,
+    luQiao: false,
   }); //税率白名单
   const { userInfo, loading } = User.useContainer();
   useEffect(() => {
@@ -19,10 +20,19 @@ const useWhiteList = () => {
       const { userId } = localStorage;
 
       const HE_SHUN_ID = res.result.find(item => item.key === 'HE_SHUN_GOODSOWNER_ID_WHITE').url;
-      if (HE_SHUN_ID && HE_SHUN_ID.includes(userId)) {
+      const LU_QIAO_ID = res.result.find(item => item.key === 'LU_QIAO_GOODSOWNER_ID_WHITE').url;
+
+      if ((HE_SHUN_ID && HE_SHUN_ID.includes(userId)) || (LU_QIAO_ID && LU_QIAO_ID.includes(userId))) {
         setWhiteList({
           ...whiteList,
           heShun: true,
+        });
+      }
+
+      if (LU_QIAO_ID && LU_QIAO_ID.includes(userId)) {
+        setWhiteList({
+          ...whiteList,
+          luQiao: true,
         });
       }
     }
