@@ -254,7 +254,27 @@ const getTotalInvoiceData = () => {
   });
 };
 
+// 返税列表
+const getReturnTaxList = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v1/invoice/resetPriceList',
+    params,
+  });
+};
+
+// 返税确认
+const returnTaxConfirm = ({ params } = {}) => {
+  return request({
+    method: 'post',
+    url: 'api/v1/invoice/setResetPrice',
+    data: params,
+  });
+};
+
 export default {
+  getReturnTaxList,
+  returnTaxConfirm,
   getApplyInvoiceList,
   getApplyInvoiceListByRoute,
   saveAskInvoice,
