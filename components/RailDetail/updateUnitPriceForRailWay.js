@@ -58,7 +58,7 @@ const UpdateForm = ({ onSubmit, onClose, unitPrice, infoFeeUnitName, unitInfoFee
           label="运输中、待结算的运单是否修改"
           name="status"
           rules={[{ required: true, message: '内容不能为空' }]}>
-          <Radio.Group onChange={handleInfoFeeUnitNameChange}>
+          <Radio.Group>
             <Radio value={true}>是</Radio>
             <Radio value={false} style={{ marginLeft: 16 }}>
               否
