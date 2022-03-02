@@ -55,6 +55,18 @@ const UpdateForm = ({ onSubmit, onClose, unitPrice, infoFeeUnitName, unitInfoFee
     <div className={styles.formSendInfoFeeData}>
       <Form {...formItemLayout} form={form} onFinish={handleSubmit} onFinishFailed={onFinishFailed} autoComplete="off">
         <Form.Item
+          label="运输中、待结算的运单是否修改"
+          name="status"
+          rules={[{ required: true, message: '内容不能为空' }]}>
+          <Radio.Group onChange={handleInfoFeeUnitNameChange}>
+            <Radio value={true}>是</Radio>
+            <Radio value={false} style={{ marginLeft: 16 }}>
+              否
+            </Radio>
+          </Radio.Group>
+        </Form.Item>
+
+        <Form.Item
           label={
             <div>
               <span className={styles.redStar}>*</span>运费单价

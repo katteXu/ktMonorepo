@@ -197,6 +197,7 @@ const RailWayDetail = props => {
 
     const params = {
       rid: getQuery().id,
+      status: value && value.status,
       unitPrice: value
         ? (value.unitPrice * 100).toFixed()
         : ((newUnitPrice ? newUnitPrice : unitPrice) * 100).toFixed(),
