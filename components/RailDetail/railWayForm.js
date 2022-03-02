@@ -142,9 +142,6 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   //业务类型白名单
   const [whiteList, setWhiteList] = useState(false);
 
-  // 用户类型白名单
-  const { whiteList: userType } = WhiteList.useContainer();
-
   // 信息费收取方式
   const [infoFeeUnitName, setInfoFeeUnitName] = useState(0);
 
@@ -954,7 +951,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           </Col>
         </Row>
         {/* 车队单时显示信息费收取方式及信息费单价两项 */}
-        {isFleet === '1' && !userType.luQiao && (
+        {isFleet === '1' && (
           <>
             <Form.Item
               label={
@@ -1036,11 +1033,6 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
         </Form.Item>
         {/* 货物总量 */}
         <Form.Item
-          // label={
-          //   <div>
-          //     <span className={styles.noStar}>*</span>货物总量
-          //   </div>
-          // }
           label="货物总量"
           name="totalAmount"
           style={{ marginLeft: 32 }}
