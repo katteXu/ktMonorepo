@@ -97,7 +97,7 @@ const RailWayDetail = () => {
   const [newRemarkInfo, setNewRemarkInfo] = useState('');
   useEffect(() => {
     setRailWayDetail();
-    getDataList(query);
+    // getDataList(query);
   }, []);
 
   // 专线详情 && 运单详情
@@ -690,7 +690,7 @@ const RailWayDetail = () => {
 
           <Table
             loading={table_loading}
-            dataSource={orderData.data}
+            dataSource={orderData.dataList}
             columns={columns}
             scroll={{ x: 1360 }}
             pagination={{
