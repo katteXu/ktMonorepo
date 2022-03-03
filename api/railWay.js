@@ -365,6 +365,15 @@ const getRoutePoundOrderList = ({ params } = {}) => {
   });
 };
 
+// 撮合专线订单
+const getRouteMatchOrderList = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v1/pay/getMessageFeePayRecord',
+    params,
+  });
+};
+
 // 收发货联系人
 const modifyRouteContactInfo = ({ params } = {}) => {
   return request({
@@ -423,6 +432,7 @@ export default {
   modifyUnitPrice,
   modifyLeavingAmount,
   getRoutePoundOrderList,
+  getRouteMatchOrderList,
   userSettings,
   modifyRouteContactInfo,
   modifyRouteRemark,

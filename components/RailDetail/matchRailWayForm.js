@@ -194,6 +194,7 @@ const RailWayForm = ({ onSubmit }) => {
       toAddressId,
       goodsType: values.goodsType,
       onlyPound: '1',
+      routeType: '1',
       printPoundBill: values.printPoundBill,
       totalAmount: (values.totalAmount && values.totalAmount * 1000) || undefined,
       unitName: values.unitName,
@@ -768,7 +769,7 @@ const RailWayForm = ({ onSubmit }) => {
               </Tooltip>
             </div>
           }
-          name="isLeavingAmount"
+          valuePropName="isLeavingAmount"
           style={{ marginLeft: 32 }}>
           <Switch size="small" onChange={v => setLeavingAmount(v ? 1 : 0)} />
         </Form.Item>

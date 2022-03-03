@@ -199,7 +199,7 @@ const PoundRailWay = props => {
       createBegin: begin,
       createEnd: end,
       userId,
-      onlyPound: 1,
+      routeType: 1,
     };
 
     const res = await railWay.getDataList({ params });

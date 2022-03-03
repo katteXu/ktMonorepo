@@ -36,32 +36,27 @@ const RailWayDetail = () => {
   const columns = [
     {
       title: '车牌号',
-      dataIndex: 'trailerPlateNumber',
-      key: 'trailerPlateNumber',
+      dataIndex: 'plateNumber',
       width: 100,
     },
     {
       title: '姓名',
       dataIndex: 'driverName',
-      key: 'driverName',
       width: 100,
     },
     {
       title: '手机号',
-      dataIndex: 'unitPrice',
-      key: 'unitPrice',
+      dataIndex: 'phoneNumber',
       width: 100,
     },
     {
       title: '支付时间',
-      dataIndex: 'totalWeight',
-      key: 'totalWeight',
+      dataIndex: 'payTime',
       width: 100,
     },
     {
       title: '平台信息费',
-      dataIndex: 'transportPrice',
-      key: 'transportPrice',
+      dataIndex: 'totalFee',
       width: 100,
       align: 'right',
       render: Format.price,
@@ -69,10 +64,9 @@ const RailWayDetail = () => {
   ];
 
   const [query, setQuery] = useState({
-    plateNum: '',
-    begin: '',
-    end: '',
-    name: '',
+    payStartTime: '',
+    payEndTime: '',
+    driverName: '',
     page: 1,
     pageSize: 10,
   });
@@ -132,20 +126,20 @@ const RailWayDetail = () => {
   };
 
   // 运单列表查询
-  const getDataList = async ({ plateNum, begin, end, name, page, pageSize }) => {
+  const getDataList = async ({ plateNumber, payStartTime, payEndTime, driverName, page, pageSize }) => {
     const { id } = getQuery();
     setTable_loading(true);
 
     const params = {
       rid: id,
-      plateNum: plateNum || undefined,
-      begin: begin || undefined,
-      end: end || undefined,
-      name: name || undefined,
+      plateNumber: plateNumber || undefined,
+      payStartTime: payStartTime || undefined,
+      payEndTime: payEndTime || undefined,
+      driverName: driverName || undefined,
       page,
       limit: pageSize,
     };
-    const res = await railWay.getRoutePoundOrderList({ params });
+    const res = await railWay.getRouteMatchOrderList({ params });
 
     if (res.status === 0) {
       setOrderData(res.result);
@@ -240,10 +234,9 @@ const RailWayDetail = () => {
   // 重置
   const handleReset = useCallback(() => {
     const query = {
-      plateNum: '',
-      begin: '',
-      end: '',
-      name: '',
+      payStartTime: '',
+      payEndTime: '',
+      driverName: '',
       page: 1,
       pageSize: 10,
     };
@@ -253,21 +246,21 @@ const RailWayDetail = () => {
 
   // 日期输入
   const handleChangeDate = useCallback((value, string) => {
-    const begin = value && value[0] && moment(value[0]).format('YYYY-MM-DD HH:mm:ss');
-    const end = value && value[1] && moment(value[1]).format('YYYY-MM-DD HH:mm:ss');
-    setQuery(() => ({ ...query, begin, end }));
+    const payStartTime = value && value[0] && moment(value[0]).format('YYYY-MM-DD HH:mm:ss');
+    const payEndTime = value && value[1] && moment(value[1]).format('YYYY-MM-DD HH:mm:ss');
+    setQuery(() => ({ ...query, payStartTime, payEndTime }));
   });
 
   // 车牌号
   const handleChangeplateNum = useCallback(e => {
-    const plateNum = e.target.value;
-    setQuery(() => ({ ...query, plateNum }));
+    const plateNumber = e.target.value;
+    setQuery(() => ({ ...query, plateNumber }));
   });
 
   // 姓名
   const handleChangeName = useCallback(e => {
-    const name = e.target.value;
-    setQuery(() => ({ ...query, name }));
+    const driverName = e.target.value;
+    setQuery(() => ({ ...query, driverName }));
   });
 
   const handleModifyFrom = () => {
@@ -669,7 +662,11 @@ const RailWayDetail = () => {
               <Search.Item label="支付时间" br>
                 <RangePicker
                   style={{ width: 376 }}
-                  value={query.begin && query.end ? [moment(query.begin), moment(query.end)] : null}
+                  value={
+                    query.payStartTime && query.payEndTime
+                      ? [moment(query.payStartTime), moment(query.payEndTime)]
+                      : null
+                  }
                   format="YYYY-MM-DD HH:mm:ss"
                   showTime={{
                     defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')],
@@ -678,10 +675,15 @@ const RailWayDetail = () => {
                 />
               </Search.Item>
               <Search.Item label="车牌号">
-                <Input allowClear placeholder="请输入车牌号" value={query.plateNum} onChange={handleChangeplateNum} />
+                <Input
+                  allowClear
+                  placeholder="请输入车牌号"
+                  value={query.plateNumber}
+                  onChange={handleChangeplateNum}
+                />
               </Search.Item>
               <Search.Item label="姓名">
-                <Input allowClear placeholder="请输入姓名" value={query.name} onChange={handleChangeName} />
+                <Input allowClear placeholder="请输入姓名" value={query.driverName} onChange={handleChangeName} />
               </Search.Item>
             </Search>
           </div>
