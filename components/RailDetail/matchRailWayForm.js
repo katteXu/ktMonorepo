@@ -194,7 +194,7 @@ const RailWayForm = ({ onSubmit }) => {
       toAddressId,
       goodsType: values.goodsType,
       onlyPound: '1',
-      routeType: '1',
+      routeKind: '1',
       printPoundBill: values.printPoundBill,
       totalAmount: (values.totalAmount && values.totalAmount * 1000) || undefined,
       unitName: values.unitName,
