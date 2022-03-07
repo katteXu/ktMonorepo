@@ -383,6 +383,24 @@ const modifyRouteRemark = ({ params } = {}) => {
   });
 };
 
+// 距离
+const getDistance = params => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/route/getDrivingDistanceByLocation',
+    data: params,
+  });
+};
+
+// 指定发布司机列表
+const getTruckerList = params => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/user/conformDriverList',
+    params,
+  });
+};
+
 export default {
   creatRailWay,
   creatRailWayCyg,
@@ -426,4 +444,6 @@ export default {
   userSettings,
   modifyRouteContactInfo,
   modifyRouteRemark,
+  getDistance,
+  getTruckerList,
 };

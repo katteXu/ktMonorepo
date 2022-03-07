@@ -239,7 +239,19 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
 
   // 监听发货id
   useEffect(() => {
+    const fromAddress = addressList.find(({ id }) => id === fromAddressId);
     const toAddress = addressList.find(({ id }) => id === toAddressId);
+
+    // 计算收发货地直线距离
+    if (fromAddressId && toAddressId) {
+      const params = {
+        fromLat: fromAddress.latitude,
+        fromLon: fromAddress.longitude,
+        toLat: toAddress.latitude,
+        toLon: toAddress.longitude,
+      };
+      getDistance(params);
+    }
 
     // 绑定联系人
     if (toAddressId) {
@@ -292,13 +304,6 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
     }
   }, [fromAddressId]);
 
-  // 监听收发货地址
-  useEffect(() => {
-    if (fromAddressId && toAddressId) {
-      console.log(fromAddressId, toAddressId);
-    }
-  }, [fromAddressId, toAddressId]);
-
   // 监听起步价、运费单价、运输距离
   useEffect(() => {
     let price = 0;
@@ -328,7 +333,9 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
     const toAddress = addressList.find(({ id }) => id === toAddressId);
 
     let data = {
-      ...params,
+      truckerIds: params.truckerIds ? params.truckerIds : undefined,
+      transportDistance: transportType === 'LTL' && userType.luQiao ? transportDistance * 1 : undefined,
+      startPrice: transportType === 'LTL' && userType.luQiao ? startPrice * 1000 : undefined,
       consignor: values.consignor || consignor,
       fromAddressCompanyId: fromCompany.id,
       toAddressCompanyId: toCompany.id,
@@ -455,8 +462,8 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       };
       dataView.routeContactMobile = { label: '专线负责人：', value: values.routeContactMobile };
     }
-
-    onSubmit(data, dataView);
+    console.log(data);
+    // onSubmit(data, dataView);
   };
 
   const onFinishFailed = errorInfo => {
@@ -591,6 +598,19 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
 
   Object.keys(options).forEach(item => {
     selectChildren.push(<Option key={item}>{options[item]}</Option>);
+  });
+
+  // 获取收发货距离
+  const getDistance = useCallback(async params => {
+    const res = await railWay.getDistance(params);
+    if (res.status === 0) {
+      setTransportDistance(res.result.distance);
+      form.setFieldsValue({
+        transportDistance: res.result.distance,
+      });
+    } else {
+      message.error(`${res.detail || res.description}`);
+    }
   });
 
   // 指定发布
@@ -1069,15 +1089,16 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
                   name="transportDistance"
                   style={{ marginLeft: 32 }}
                   validateFirst={true}
-                  rules={[{ required: payMethod === 3, whitespace: true, message: '内容不能为空' }, ...number_rules]}>
+                  rules={[{ required: payMethod === 3, message: '内容不能为空' }, ...number_rules]}>
                   <Input
                     placeholder="请输入运输距离"
                     style={{ width: 264 }}
+                    addonAfter={<span>公里</span>}
                     onChange={e => setTransportDistance(e.target.value)}
                   />
                 </Form.Item>
               </Col>
-              <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 390 }}>
+              {/* <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 390 }}>
                 <Form.Item name="distanceName" style={{ position: 'relative', left: 32 }}>
                   <Select
                     style={{ width: 96 }}
@@ -1091,7 +1112,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
                     ))}
                   </Select>
                 </Form.Item>
-              </Col>
+              </Col> */}
             </Row>
           </>
         )}

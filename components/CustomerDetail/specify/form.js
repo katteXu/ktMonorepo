@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { customer } from '@api';
+import { railWay } from '@api';
 import { message, Button, Tag, Input, Table } from 'antd';
 import { ChildTitle, Search } from '@components';
 import styles from './styles.less';
@@ -12,7 +12,7 @@ const SpecifyForm = props => {
     name: undefined,
     phone: undefined,
   });
-  const [dataList, setDataList] = useState({});
+  const [dataList, setDataList] = useState();
 
   // 选择
   const [selectedTruckers, setSelectedTruckers] = useState([]);
@@ -20,7 +20,7 @@ const SpecifyForm = props => {
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'id',
+      dataIndex: 'truckerId',
       width: '70px',
       ellipsis: true,
       render: value => {
@@ -29,7 +29,7 @@ const SpecifyForm = props => {
     },
     {
       title: '姓名',
-      dataIndex: 'companyName',
+      dataIndex: 'name',
       width: '100px',
       ellipsis: true,
       render: value => {
@@ -47,8 +47,8 @@ const SpecifyForm = props => {
     },
     {
       title: '车牌号',
-      dataIndex: 'plate',
-      width: '100px',
+      dataIndex: 'truckPlate',
+      width: '120px',
       ellipsis: true,
       render: value => {
         return value || '-';
@@ -56,7 +56,7 @@ const SpecifyForm = props => {
     },
     {
       title: '车长',
-      dataIndex: 'length',
+      dataIndex: 'truckLength',
       width: '80px',
       ellipsis: true,
       render: value => {
@@ -65,7 +65,7 @@ const SpecifyForm = props => {
     },
     {
       title: '车型',
-      dataIndex: 'type',
+      dataIndex: 'truckType',
       width: '120px',
       ellipsis: true,
       render: value => {
@@ -88,7 +88,7 @@ const SpecifyForm = props => {
       name,
       phone,
     };
-    const res = await customer.customer_list({ params });
+    const res = await railWay.getTruckerList({ params });
 
     if (res.status === 0) {
       setDataList(res.result);
@@ -111,27 +111,27 @@ const SpecifyForm = props => {
     getData({ page: 1 });
   };
 
-  // 刷新
-  const reload = () => {
-    getData(query);
-  };
+  // // 刷新
+  // const reload = () => {
+  //   getData(query);
+  // };
 
-  // 换页
-  const onChangePage = useCallback(
-    (page, pageSize) => {
-      setQuery({ ...query, page, pageSize });
-      getData({ ...query, page, pageSize });
-    },
-    [dataList]
-  );
+  // // 换页
+  // const onChangePage = useCallback(
+  //   (page, pageSize) => {
+  //     setQuery({ ...query, page, pageSize });
+  //     getData({ ...query, page, pageSize });
+  //   },
+  //   [dataList]
+  // );
 
   // 选中
   const onSelectRow = (record, selected) => {
-    const key = record.id;
+    const key = record.truckerId;
     if (selected) {
       setSelectedTruckers([...selectedTruckers, record]);
     } else {
-      const i = selectedTruckers.findIndex(item => item.id === key);
+      const i = selectedTruckers.findIndex(item => item.truckerId === key);
       selectedTruckers.splice(i, 1);
       setSelectedTruckers([...selectedTruckers]);
     }
@@ -140,8 +140,8 @@ const SpecifyForm = props => {
   // 全选
   const onSelectAll = (selected, selectedRows, changeRows) => {
     changeRows.forEach(record => {
-      const key = record.id;
-      const i = selectedTruckers.findIndex(item => item.id === key);
+      const key = record.truckerId;
+      const i = selectedTruckers.findIndex(item => item.truckerId === key);
       if (selected) {
         if (i === -1) {
           selectedTruckers.push(record);
@@ -155,15 +155,15 @@ const SpecifyForm = props => {
   };
 
   const handleCloseTag = record => {
-    const key = record.id;
-    const i = selectedTruckers.findIndex(item => item.id === key);
+    const key = record.truckerId;
+    const i = selectedTruckers.findIndex(item => item.truckerId === key);
     selectedTruckers.splice(i, 1);
     setSelectedTruckers([...selectedTruckers]);
   };
 
   const handleSubmit = () => {
     if (selectedTruckers.length) {
-      props.onSubmit && props.onSubmit({ selectedTruckers: selectedTruckers.map(item => item.id) });
+      props.onSubmit && props.onSubmit({ truckerIds: selectedTruckers.map(item => item.truckerId).join(',') });
     } else {
       message.warn('请选择司机进行发布');
     }
@@ -186,8 +186,8 @@ const SpecifyForm = props => {
           <div style={{ paddingTop: 8 }}>司机姓名：</div>
           <div className={styles.truckerList}>
             {selectedTruckers.map(tag => (
-              <Tag key={tag.id} closable onClose={() => handleCloseTag(tag)}>
-                {tag.companyName}
+              <Tag key={tag.truckerId} closable onClose={() => handleCloseTag(tag)}>
+                {tag.name}
               </Tag>
             ))}
           </div>
@@ -227,23 +227,15 @@ const SpecifyForm = props => {
 
         <Table
           columns={columns}
-          dataSource={dataList.data}
+          dataSource={dataList}
           loading={loading}
           size="middle"
-          rowKey="id"
+          rowKey="truckerId"
           scroll={{ x: '100%' }}
           style={{ marginTop: 16 }}
-          pagination={{
-            size: 'default',
-            onChange: onChangePage,
-            pageSize: query.pageSize,
-            current: query.page,
-            total: dataList.count,
-            showSizeChanger: true,
-            showTotal: total => <span>共 {total} 条</span>,
-          }}
+          pagination={false}
           rowSelection={{
-            selectedRowKeys: selectedTruckers.map(item => item.id),
+            selectedRowKeys: selectedTruckers.map(item => item.truckerId),
             onSelect: onSelectRow,
             onSelectAll: onSelectAll,
             columnWidth: '37px',
