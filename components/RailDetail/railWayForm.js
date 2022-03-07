@@ -9,7 +9,7 @@ import { AutoInputRoute, WareHouseSelect } from '@components';
 import AddressForm from '@components/CustomerDetail/address/form';
 import CompanyForm from '@components/CustomerDetail/company/form';
 import router from 'next/router';
-import { User } from '@store';
+import { User, WhiteList } from '@store';
 import WarehouseFrom from './warehouseFrom';
 const { Option } = Select;
 const { TextArea } = Input;
@@ -57,14 +57,10 @@ const number_rules = [
   },
   {
     validator: (rule, value) => {
-      if (+value) {
-        if (+value > 0) {
-          return Promise.resolve();
-        } else {
-          return Promise.reject('内容必须大于0');
-        }
-      } else {
+      if (+value > 0) {
         return Promise.resolve();
+      } else {
+        return Promise.reject('内容必须大于0');
       }
     },
   },
@@ -146,6 +142,9 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   //业务类型白名单
   const [whiteList, setWhiteList] = useState(false);
 
+  // 信息费收取方式
+  const [infoFeeUnitName, setInfoFeeUnitName] = useState(0);
+
   const [isFleet, setIsFleet] = useState(0);
   const wareHouseRef = useRef(null);
   const setHiddenDate = async () => {
@@ -153,7 +152,8 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
     if (res.status === 0) {
       const currentUserName = userInfo.username;
       const hiddenUserName = res.result.find(item => item.key === 'noValidTimeForRoute').url;
-
+      console.log('hiddenUserName: ', hiddenUserName);
+      console.log('currentUserName: ', currentUserName);
       if (hiddenUserName.includes(currentUserName)) {
         setIsHiddenDate(true);
       }
@@ -185,11 +185,16 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       setAddressList(data);
       // setFromAddressList({ data, page });
       // setToAddressList({ data, page });
-
-      setHiddenDate();
+      // setHiddenDate();
       isShowBusinessType();
     })();
   }, []);
+
+  useEffect(() => {
+    if (userInfo?.username) {
+      setHiddenDate();
+    }
+  }, [userInfo]);
 
   const isShowBusinessType = async () => {
     const res = await railWay.userSettings();
@@ -276,20 +281,20 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       fromAddressId,
       toAddressId,
       goodsType: values.goodsType,
-      goodsUnitPrice: values.goodsUnitPrice ? values.goodsUnitPrice * 100 : undefined,
+      goodsUnitPrice: values.goodsUnitPrice ? (values.goodsUnitPrice * 100).toFixed(0) * 1 : undefined,
       onlyPound: '0',
       // 车队单默认即时付
-      payPath: values.fleet === '1' ? '0' : undefined,
+      // payPath: values.fleet === '1' ? '0' : undefined,
       lossMark: values.lossMark ? '1' : '0',
-      lossAmount: values.lossAmount ? values.lossAmount * 1000 : undefined,
+      lossAmount: values.lossAmount ? (values.lossAmount * 1000).toFixed(0) * 1 : undefined,
       receiverName: values.receiverName,
       receiverMobilePhone: values.receiverMobilePhone,
       fromName: values.fromName,
       fromMobilePhone: values.fromMobilePhone,
-      totalAmount: values.totalAmount ? values.totalAmount * 1000 : undefined,
+      totalAmount: values.totalAmount ? (values.totalAmount * 1000).toFixed(0) * 1 : undefined,
       transportType: values.transportType,
       unitName: values.unitName,
-      unitPrice: values.unitPrice && values.unitPrice * 100,
+      unitPrice: values.unitPrice && (values.unitPrice * 100).toFixed(0) * 1,
       startLoadTime: startLoadTime && startLoadTime.format('YYYY-MM-DD HH:mm:ss'),
       lastLoadTime: lastLoadTime && lastLoadTime.format('YYYY-MM-DD HH:mm:ss'),
       fleetCaptionPhone: values.fleetCaptionPhone || undefined,
@@ -300,6 +305,18 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       wareHouseId: values.wareHouseId > 0 ? values.wareHouseId : undefined,
       //业务类型
       businessType: values.businessType || '1',
+      // 信息费单价
+      unitInfoFee:
+        isFleet && values.infoFeeUnitName === 1
+          ? values.unitInfoFee && (values.unitInfoFee * 100).toFixed(0) * 1
+          : undefined,
+      // 服务费
+      serviceFee:
+        isFleet && values.infoFeeUnitName === 0
+          ? values.unitInfoFee && (values.unitInfoFee * 100).toFixed(0) * 1
+          : undefined,
+      // 信息费单位
+      // infoFeeUnitName: isFleet ? values.infoFeeUnitName : undefined,
       //隐藏信息
       ...hiddenInfo,
     };
@@ -396,7 +413,10 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       };
       dataView.routeContactMobile = { label: '专线负责人：', value: values.routeContactMobile };
     }
-
+    if (data.unitName === '吨' && values.infoFeeUnitName === 1 && data.unitInfoFee * 2 > data.unitPrice) {
+      message.warn('信息费单价不可超过运费单价的50%，请重新输入');
+      return;
+    }
     onSubmit(data, dataView);
   };
 
@@ -534,6 +554,12 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
     selectChildren.push(<Option key={item}>{options[item]}</Option>);
   });
   console.log(goodList);
+
+  // 信息费收取方式变化
+  const handleInfoFeeUnitNameChange = e => {
+    setInfoFeeUnitName(e.target.value);
+  };
+
   return (
     <div className={styles.fromInfoRailWay}>
       <Form
@@ -550,6 +576,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           businessType: '1',
           fleet: '0',
           wareHouseId: -1,
+          infoFeeUnitName: 0,
         }}>
         <Form.Item label="专线类型" name="fleet" style={{ marginLeft: 32 }} rules={rules}>
           <Radio.Group onChange={e => setIsFleet(e.target.value)}>
@@ -907,7 +934,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
               <Input placeholder="请输入运费单价" addonAfter={<span>元</span>} style={{ width: 264 }} />
             </Form.Item>
           </Col>
-          <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 390 }}>
+          <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 400 }}>
             <Form.Item name="unitName" style={{ position: 'relative', left: 32 }}>
               <Select
                 style={{ width: 96 }}
@@ -923,6 +950,45 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
             </Form.Item>
           </Col>
         </Row>
+        {/* 车队单时显示信息费收取方式及信息费单价两项 */}
+        {isFleet === '1' && (
+          <>
+            <Form.Item
+              label={
+                <div>
+                  <span className={styles.noStar}>*</span>信息费收取方式
+                </div>
+              }
+              name="infoFeeUnitName"
+              style={{ marginLeft: 32 }}>
+              <Radio.Group onChange={handleInfoFeeUnitNameChange}>
+                <Radio value={0}>按车收</Radio>
+                <Radio value={1} style={{ marginLeft: 16 }}>
+                  按吨收
+                </Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item
+              label="信息费单价"
+              name="unitInfoFee"
+              style={{ marginLeft: 32 }}
+              validateFirst={true}
+              rules={[
+                {
+                  required: isFleet === '1',
+                  whitespace: isFleet === '1',
+                  message: '内容不可为空',
+                },
+                ...number_rules,
+              ]}>
+              <Input
+                placeholder="请输入信息费单价"
+                style={{ width: 264 }}
+                addonAfter={<span>元/{infoFeeUnitName === 0 ? '车' : '吨'}</span>}
+              />
+            </Form.Item>
+          </>
+        )}
         {/* 货物单价 */}
         <Form.Item
           label={
@@ -943,7 +1009,20 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
               whitespace: allowLoss,
               message: '内容不可为空',
             },
-            ...number_rules,
+            // ...number_rules,
+            {
+              pattern: /^\d+(\.\d{1,2})?$/,
+              message: '只能是数字，且不可超过2位小数',
+            },
+            {
+              validator: (rule, value) => {
+                if (+value > 0 || !allowLoss) {
+                  return Promise.resolve();
+                } else {
+                  return Promise.reject('内容必须大于0');
+                }
+              },
+            },
           ]}>
           <Input
             placeholder="请输入货物单价"
@@ -954,17 +1033,13 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
         </Form.Item>
         {/* 货物总量 */}
         <Form.Item
-          label={
-            <div>
-              <span className={styles.noStar}>*</span>货物总量
-            </div>
-          }
+          label="货物总量"
           name="totalAmount"
           style={{ marginLeft: 32 }}
           validateFirst={true}
           rules={[
             {
-              required: isLeavingAmount,
+              required: true,
               message: '内容不可为空',
             },
             {
@@ -1166,7 +1241,9 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           </Form.Item>
         </div>
 
-        <Form.Item {...tailFormItemLayout} style={{ margin: '24px 0 32px 32px', position: 'relative', left: 118 }}>
+        <Form.Item
+          {...tailFormItemLayout}
+          style={{ margin: '24px 0 32px 32px', position: 'relative', left: 128, width: '88px' }}>
           <Button type="primary" htmlType="submit">
             发布专线
           </Button>

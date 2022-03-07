@@ -134,8 +134,8 @@ const BottomBtn = props => {
       onOk: async () => {
         const params = {
           tid: id,
-          longitude: props.userInfo.longitude,
-          latitude: props.userInfo.latitude,
+          longitude: props.userInfo?.longitude,
+          latitude: props.userInfo?.latitude,
         };
         const res = await transportStatistics.goodsOwnerCancelTransport({ params });
         if (res.status === 0) {

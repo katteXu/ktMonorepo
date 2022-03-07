@@ -12,6 +12,7 @@ import { Button, Modal, message, Skeleton, Tooltip, Tag, Input } from 'antd';
 import UpdateSendDate from '@components/RailDetail/updateSendDate';
 import UpdateTotalWeight from '@components/RailDetail/updateTotalWeight';
 import UpdateLeavingAmount from '@components/RailDetail/updateLeavingAmount';
+import UpdateUnitPriceForRailWay from '@components/RailDetail/updateUnitPriceForRailWay';
 import { Permission } from '@store';
 import { getQuery, Format } from '@utils/common';
 import moment from 'moment';
@@ -41,7 +42,11 @@ const RailWayDetail = props => {
   const [loading, setLoading] = useState(false);
 
   const [unitPrice, setUnitPrice] = useState(0);
+  const [unitInfoFee, setUnitInfoFee] = useState(0);
+  const [serviceFee, setServiceFee] = useState(0);
+  const [infoFeeUnitName, setInfoFeeUnitName] = useState(0);
   const [showUnitPrice, setShowUnitPrice] = useState(false);
+  const [showUnitPriceModal, setShowUnitPriceModal] = useState(false);
   const [showTotalWeight, setShowTotalWeight] = useState(false);
   const [dataInfo, setDataInfo] = useState({});
   const [totalAmount, setTotalAmount] = useState(0);
@@ -76,6 +81,9 @@ const RailWayDetail = props => {
     if (res.status === 0) {
       setDataInfo(res.result);
       setUnitPrice(res.result.unitPrice && (res.result.unitPrice / 100).toFixed(2));
+      setUnitInfoFee(res.result.unitInfoFee && (res.result.unitInfoFee / 100).toFixed(2));
+      setServiceFee(res.result.serviceFee && (res.result.serviceFee / 100).toFixed(2));
+      setInfoFeeUnitName(res.result.unitInfoFee !== 0 ? 1 : 0);
       setTotalAmount(res.result.totalAmount);
       setIsLeavingAmount(res.result.isLeavingAmount);
       setStatus(res.result.status);
@@ -181,7 +189,7 @@ const RailWayDetail = props => {
   };
 
   // 修改运费单价
-  const modifyUnitPrice = async () => {
+  const modifyUnitPrice = async value => {
     if (!/^[0-9]+(.?[0-9]{1,2})?$/.test(newUnitPrice)) {
       message.error('最多输入两位小数');
       return;
@@ -189,17 +197,30 @@ const RailWayDetail = props => {
 
     const params = {
       rid: getQuery().id,
-      unitPrice: ((newUnitPrice ? newUnitPrice : unitPrice) * 100).toFixed(),
+      status: value && value.status,
+      unitPrice: value
+        ? (value.unitPrice * 100).toFixed()
+        : ((newUnitPrice ? newUnitPrice : unitPrice) * 100).toFixed(),
+      unitInfoFee: value && value.infoFeeUnitName === 1 ? (value.unitInfoFee * 100).toFixed() : undefined,
+      serviceFee: value && value.infoFeeUnitName === 0 ? (value.unitInfoFee * 100).toFixed() : undefined,
     };
 
     const res = await railWay.modifyUnitPrice({ params });
 
     if (res.status === 0) {
-      message.success('运费单价编辑成功');
-      setUnitPrice((newUnitPrice * 1).toFixed(2));
-      setShowUnitPrice(false);
+      message.success('单价编辑成功');
+      if (value) {
+        setUnitPrice((value.unitPrice * 1).toFixed(2));
+        setUnitInfoFee(value.infoFeeUnitName === 1 ? (value.unitInfoFee * 1).toFixed(2) : 0);
+        setServiceFee(value.infoFeeUnitName === 0 ? (value.unitInfoFee * 1).toFixed(2) : 0);
+        setInfoFeeUnitName(value.infoFeeUnitName);
+        setShowUnitPriceModal(false);
+      } else {
+        setUnitPrice((newUnitPrice * 1).toFixed(2));
+        setShowUnitPrice(false);
+      }
     } else {
-      message.error(`运费单价编辑失败，原因：${res.detail ? res.detail : res.description}`);
+      message.error(`单价编辑失败，原因：${res.detail ? res.detail : res.description}`);
     }
   };
 
@@ -278,7 +299,7 @@ const RailWayDetail = props => {
             }}>
             {dataInfo.fleetCaptionId ? '车队单' : '个人单'}
           </Tag>
-          {dataInfo.fleetCaptionId && (
+          {dataInfo.fleetCaptionId && dataInfo.payPath !== 2 && (
             <Tag
               color={dataInfo.payPath === 0 ? '#FFFBF4' : '#f5fff8'}
               style={{
@@ -468,51 +489,70 @@ const RailWayDetail = props => {
                     </Tooltip>
                     ：
                   </span>
-                  {!showUnitPrice ? (
-                    <span>{unitPrice ? `${unitPrice} 元/${dataInfo.unitName}` : '-'}</span>
-                  ) : (
-                    <Input
-                      style={{ width: 120 }}
-                      addonAfter={<span style={{ color: '#BFBFBF' }}>元/吨</span>}
-                      value={newUnitPrice ? newUnitPrice : unitPrice}
-                      onChange={e => {
-                        setNewUnitPrice(e.target.value);
-                      }}
-                    />
-                  )}
-
-                  {canEdit &&
-                    (!showUnitPrice ? (
-                      <span
-                        style={{
-                          color: '#477AEF',
-                          marginLeft: 9,
-                          cursor: 'pointer',
-                        }}
-                        onClick={() => setShowUnitPrice(true)}>
-                        编辑
-                      </span>
-                    ) : (
-                      <div style={{ display: 'inline' }}>
+                  {dataInfo.fleetCaptionId ? (
+                    <>
+                      <span>{unitPrice ? `${unitPrice} 元/${dataInfo.unitName}` : '-'}</span>
+                      {canEdit && (
                         <span
                           style={{
                             color: '#477AEF',
                             marginLeft: 9,
                             cursor: 'pointer',
                           }}
-                          onClick={modifyUnitPrice}>
-                          保存
+                          onClick={() => setShowUnitPriceModal(true)}>
+                          编辑
                         </span>
-                        <span
-                          style={{ marginLeft: 9, cursor: 'pointer', color: '#477AEF' }}
-                          onClick={() => {
-                            setShowUnitPrice(false);
-                            setNewUnitPrice(0);
-                          }}>
-                          取消
-                        </span>
-                      </div>
-                    ))}
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {!showUnitPrice ? (
+                        <span>{unitPrice ? `${unitPrice} 元/${dataInfo.unitName}` : '-'}</span>
+                      ) : (
+                        <Input
+                          style={{ width: 120 }}
+                          addonAfter={<span style={{ color: '#BFBFBF' }}>元/吨</span>}
+                          value={newUnitPrice ? newUnitPrice : unitPrice}
+                          onChange={e => {
+                            setNewUnitPrice(e.target.value);
+                          }}
+                        />
+                      )}
+
+                      {canEdit &&
+                        (!showUnitPrice ? (
+                          <span
+                            style={{
+                              color: '#477AEF',
+                              marginLeft: 9,
+                              cursor: 'pointer',
+                            }}
+                            onClick={() => setShowUnitPrice(true)}>
+                            编辑
+                          </span>
+                        ) : (
+                          <div style={{ display: 'inline' }}>
+                            <span
+                              style={{
+                                color: '#477AEF',
+                                marginLeft: 9,
+                                cursor: 'pointer',
+                              }}
+                              onClick={() => modifyUnitPrice()}>
+                              保存
+                            </span>
+                            <span
+                              style={{ marginLeft: 9, cursor: 'pointer', color: '#477AEF' }}
+                              onClick={() => {
+                                setShowUnitPrice(false);
+                                setNewUnitPrice(0);
+                              }}>
+                              取消
+                            </span>
+                          </div>
+                        ))}
+                    </>
+                  )}
                 </div>
 
                 <div className={styles.item}>
@@ -551,15 +591,15 @@ const RailWayDetail = props => {
                   {dataInfo.wareHouseName}
                 </div>
               </div>
-              {dataInfo.payPath === 1 && (
+              {dataInfo.fleetCaptionId && (
                 <div className={styles.row}>
                   <div className={styles.item}>
                     <span className={styles.label}>信息费单价：</span>
-                    {dataInfo ? `${(dataInfo.unitInfoFee / 100).toFixed(2)} 元/${dataInfo.unitName}` : '-'}
+                    {dataInfo ? `${serviceFee || unitInfoFee} 元/${infoFeeUnitName === 0 ? '车' : '吨'}` : '-'}
                   </div>
                   <div className={styles.item}>
-                    <span className={styles.label}>结算单价：</span>
-                    {Format.price(dataInfo.unitInfoFee + unitPrice * 100)} 元/{dataInfo.unitName}
+                    {/* <span className={styles.label}>结算单价：</span>
+                    {Format.price(unitInfoFee * 100 + unitPrice * 100)} 元/{dataInfo.unitName} */}
                   </div>
                   <div className={styles.item}></div>
                 </div>
@@ -715,6 +755,23 @@ const RailWayDetail = props => {
           }}
           onSubmit={modifyLeavingAmount}
           onClose={() => setShowLeavingAmount(false)}
+        />
+      </Modal>
+
+      {/* 修改运费单价 */}
+      <Modal
+        title="修改单价"
+        visible={showUnitPriceModal}
+        destroyOnClose
+        onCancel={() => setShowUnitPriceModal(false)}
+        footer={null}>
+        <UpdateUnitPriceForRailWay
+          unitPrice={unitPrice}
+          unitName={dataInfo.unitName}
+          infoFeeUnitName={infoFeeUnitName}
+          unitInfoFee={unitInfoFee || serviceFee}
+          onSubmit={modifyUnitPrice}
+          onClose={() => setShowUnitPriceModal(false)}
         />
       </Modal>
     </Layout>

@@ -67,7 +67,7 @@ const TopBar = () => {
             style={{
               display: 'flex',
               alignItems: 'center',
-              padding: '5px 16px',
+              padding: '5px 4px',
               color: '#333333',
             }}>
             <SwapOutlined className={styles['opt-icon']} style={{ fontSize: 16 }} />
@@ -89,13 +89,16 @@ const TopBar = () => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            padding: '5px 16px',
+            padding: '5px 4px',
+            justifyContent: 'space-between',
             color: '#333333',
           }}>
-          <UserOutlined className={styles['opt-icon']} style={{ fontSize: 16 }} />
-          个人中心
+          <div>
+            <UserOutlined className={styles['opt-icon']} style={{ fontSize: 16 }} />
+            个人中心
+          </div>
+          <RightOutlined style={{ fontSize: 14, color: '#848485' }} />
         </a>
-        <RightOutlined style={{ fontSize: 14, color: '#848485' }} />
       </Menu.Item>
       <div style={{ borderBottom: '1px solid #F0F0F0', margin: '0 16px' }}></div>
       <Menu.Item style={{ height: 50, lineHeight: '38px' }}>
@@ -104,7 +107,7 @@ const TopBar = () => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            padding: '5px 16px',
+            padding: '5px 4px',
             color: '#333333',
           }}>
           <LockOutlined className={styles['opt-icon']} style={{ fontSize: 16 }} />
@@ -118,7 +121,7 @@ const TopBar = () => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            padding: '5px 16px',
+            padding: '5px 4px',
             color: '#333333',
           }}>
           <LogoutOutlined className={styles['opt-icon']} rotate={270} style={{ fontSize: 16 }} />
