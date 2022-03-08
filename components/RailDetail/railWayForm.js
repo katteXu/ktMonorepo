@@ -1024,7 +1024,12 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
             name="startPrice"
             style={{ marginLeft: 32 }}
             validateFirst={true}
-            rules={[...number_rules]}>
+            rules={[
+              {
+                pattern: /^\d+(\.\d{1,2})?$/,
+                message: '只能是数字，且不可超过2位小数',
+              },
+            ]}>
             <Input
               placeholder="请输入起步价"
               style={{ width: 264 }}
