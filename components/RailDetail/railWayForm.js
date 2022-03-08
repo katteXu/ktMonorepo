@@ -462,8 +462,8 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       };
       dataView.routeContactMobile = { label: '专线负责人：', value: values.routeContactMobile };
     }
-    console.log(data);
-    // onSubmit(data, dataView);
+
+    onSubmit(data, dataView);
   };
 
   const onFinishFailed = errorInfo => {
@@ -1383,9 +1383,11 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           <Button type="primary" htmlType="submit">
             发布专线
           </Button>
-          <Button type="default" style={{ marginLeft: 15 }} onClick={handleSpecifySubmit}>
-            指定发布
-          </Button>
+          {userType.luQiao && (
+            <Button type="default" style={{ marginLeft: 15 }} onClick={handleSpecifySubmit}>
+              指定发布
+            </Button>
+          )}
         </Form.Item>
       </Form>
       {/* 新增仓库 */}

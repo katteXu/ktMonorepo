@@ -7,10 +7,8 @@ import styles from './styles.less';
 const SpecifyForm = props => {
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState({
-    page: 1,
-    limit: 10,
     name: undefined,
-    phone: undefined,
+    username: undefined,
   });
   const [dataList, setDataList] = useState();
 
@@ -38,8 +36,8 @@ const SpecifyForm = props => {
     },
     {
       title: '手机号',
-      dataIndex: 'companyContactMobile',
-      width: '120px',
+      dataIndex: 'username',
+      width: '140px',
       ellipsis: true,
       render: value => {
         return value || '-';
@@ -80,15 +78,13 @@ const SpecifyForm = props => {
   }, []);
 
   // 获取详情
-  const getData = async ({ page, pageSize, name, phone }) => {
+  const getData = async ({ name, username }) => {
     setLoading(true);
     const params = {
-      page,
-      limit: pageSize,
-      name,
-      phone,
+      name: name ? name : undefined,
+      username: username ? username : undefined,
     };
-    const res = await railWay.getTruckerList({ params });
+    const res = await railWay.getTruckerList(params);
 
     if (res.status === 0) {
       setDataList(res.result);
@@ -106,24 +102,10 @@ const SpecifyForm = props => {
 
   // 重置
   const handleReset = () => {
-    setQuery({ page: 1 });
+    setQuery({});
     setSelectedTruckers([]);
-    getData({ page: 1 });
+    getData({});
   };
-
-  // // 刷新
-  // const reload = () => {
-  //   getData(query);
-  // };
-
-  // // 换页
-  // const onChangePage = useCallback(
-  //   (page, pageSize) => {
-  //     setQuery({ ...query, page, pageSize });
-  //     getData({ ...query, page, pageSize });
-  //   },
-  //   [dataList]
-  // );
 
   // 选中
   const onSelectRow = (record, selected) => {
@@ -218,8 +200,8 @@ const SpecifyForm = props => {
               <Input
                 allowClear
                 placeholder="请输入手机号"
-                value={query.phone}
-                onChange={e => setQuery(() => ({ ...query, phone: e.target.value }))}
+                value={query.username}
+                onChange={e => setQuery(() => ({ ...query, username: e.target.value }))}
               />
             </Search.Item>
           </Search>
