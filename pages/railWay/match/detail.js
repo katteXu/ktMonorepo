@@ -693,12 +693,7 @@ const RailWayDetail = () => {
             dataSource={orderData.dataList}
             columns={columns}
             scroll={{ x: 500 }}
-            pagination={{
-              onChange: onChangePage,
-              pageSize: query.pageSize,
-              current: query.page,
-              total: orderData.count,
-            }}
+            pagination={false}
           />
         </section>
       </Content>
