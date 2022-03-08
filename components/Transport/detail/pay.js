@@ -255,6 +255,7 @@ const Pay = props => {
                   ? Format.addPrice(totalInfoFee + changedPrice + taxes)
                   : Format.addPrice(totalInfoFee + changedPrice)
                 : Format.addPrice(totalInfoFee + price + taxCharge)}
+              {} 元
             </>
           ) : (
             <>
