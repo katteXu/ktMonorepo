@@ -486,7 +486,7 @@ const RailWayPay = () => {
             }}>
             {transportFleetId ? '车队单' : '个人单'}
           </Tag>
-          {transportFleetId && (
+          {transportFleetId && dataList.payPath !== 2 && (
             <Tag
               color={dataList.payPath === 0 ? '#FFFBF4' : '#F5FFF8'}
               style={{
@@ -731,6 +731,7 @@ const RailWayPay = () => {
 
       {/* 批量结算 */}
       <Modal
+        className={styles.modal}
         maskClosable={false}
         title="批量支付"
         visible={showModal}
@@ -750,6 +751,7 @@ const RailWayPay = () => {
 
       {/* 结算全部 */}
       <Modal
+        className={styles.modal}
         maskClosable={false}
         title="全部支付"
         visible={showAllModal}

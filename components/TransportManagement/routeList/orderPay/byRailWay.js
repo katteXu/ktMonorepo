@@ -64,7 +64,9 @@ const RailWayList = props => {
       dataIndex: 'payPath',
       key: 'payPath',
       width: 120,
-      render: (value, record, index) => <span>{record.fleetCaptionId ? (value ? '延时付' : '即时付') : '-'}</span>,
+      render: (value, record, index) => (
+        <span>{record.fleetCaptionId && value !== 2 ? (value ? '延时付' : '即时付') : '-'}</span>
+      ),
     },
     {
       title: '车队长',

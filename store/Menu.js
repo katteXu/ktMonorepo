@@ -205,6 +205,7 @@ const MENU_LIST = [
     children: [
       { name: '账户资金', key: 'fund' },
       { name: '开票信息', key: 'main' },
+      { name: '返税确认', key: 'taxConfirm', permission: ['FINANCE_TAX_CONFIRM'] },
     ],
   },
   {

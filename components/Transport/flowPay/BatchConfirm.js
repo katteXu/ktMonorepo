@@ -16,14 +16,14 @@ const FinishType = {
 const DetailStep = ({ t_num, t_price, f_num, f_price, realPrice, taxSum }) => {
   return (
     <div>
-      <div className={styles.totalPay}>
+      <div className={styles.totalPay} style={{ backgroundColor: '#F6F7F9', padding: '16px 0 16px 16px' }}>
         <div style={{ width: 240 }}>
           <div className={styles.titlePay}>个人单</div>
           <div className={styles.truckNum}>
             运输车次: <span>{t_num}</span> 车
           </div>
           <div className={styles.truckWeight}>
-            运输小计: <span>{Format.price(t_price)}</span> 元
+            待支付金额小计: <span>{Format.price(t_price)}</span> 元
           </div>
         </div>
         <div style={{ width: 240 }}>
@@ -32,19 +32,26 @@ const DetailStep = ({ t_num, t_price, f_num, f_price, realPrice, taxSum }) => {
             运输车次: <span>{f_num}</span> 车
           </div>
           <div className={styles.truckWeight}>
-            运输小计: <span>{Format.price(f_price)}</span> 元
+            待支付金额小计: <span>{Format.price(f_price)}</span> 元
           </div>
         </div>
       </div>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', paddingLeft: '16px' }}>
         <div className={styles.payFooter} style={{ width: 240 }}>
           <div className={styles.orderTotalNum}>
-            结算运费: ￥ <span style={{ fontWeight: 600 }}>{Format.price(realPrice)}</span> 元
+            实际结算费用: <span style={{ fontWeight: 600 }}>{Format.price(realPrice)}</span> 元
           </div>
         </div>
         <div className={styles.payFooter} style={{ width: 240 }}>
           <div className={styles.orderTotalNum}>
-            补差运费: ￥ <span style={{ fontWeight: 600 }}>{Format.price(taxSum)}</span> 元
+            补差运费: <span style={{ fontWeight: 600 }}>{Format.price(taxSum)}</span> 元
+          </div>
+        </div>
+      </div>
+      <div style={{ display: 'flex', paddingLeft: '16px' }}>
+        <div className={styles.payFooter}>
+          <div className={styles.orderTotalNum}>
+            金额合计: <span style={{ fontWeight: 600 }}>{Format.addPrice(realPrice + taxSum)}</span> 元
           </div>
         </div>
       </div>
@@ -235,15 +242,15 @@ const BatchConfirm = ({ payInfo, payId, onFinish }) => {
   };
 
   return (
-    <div className={styles['flow-pay']}>
-      <Steps size="small" current={step} style={{ marginBottom: 32 }}>
+    <div className={styles['flow-pay']} style={{ padding: 0 }}>
+      <Steps size="small" current={step} style={{ marginBottom: 24, padding: '0 8px' }}>
         <Steps.Step title="运单确认" />
         <Steps.Step title="运单支付" />
         <Steps.Step title={FinishType[finish].title} />
       </Steps>
       {/* 详细信息 */}
       {step === 0 && (
-        <div className={styles['step-block']}>
+        <div className={styles['step-block']} style={{ height: 246 }}>
           <DetailStep {...payInfo} />
           <div className={styles.bottom}>
             <Button type="primary" onClick={toNext}>
