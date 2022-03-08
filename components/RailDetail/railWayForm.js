@@ -969,16 +969,21 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
               </Radio.Group>
             </Form.Item>
             <Form.Item
-              label="信息费单价"
+              // label="信息费单价"
+              label={
+                <div>
+                  <span className={styles.noStar}>*</span>信息费单价
+                </div>
+              }
               name="unitInfoFee"
               style={{ marginLeft: 32 }}
               validateFirst={true}
               rules={[
-                {
-                  required: isFleet === '1',
-                  whitespace: isFleet === '1',
-                  message: '内容不可为空',
-                },
+                // {
+                //   required: isFleet === '1',
+                //   whitespace: isFleet === '1',
+                //   message: '内容不可为空',
+                // },
                 {
                   pattern: /^\d+(\.\d{1,2})?$/,
                   message: '只能是数字，且不可超过2位小数',

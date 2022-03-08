@@ -102,7 +102,7 @@ const UpdateForm = ({ onSubmit, onClose, unitPrice, infoFeeUnitName, unitInfoFee
         <Form.Item
           label={
             <div>
-              <span className={styles.redStar}>*</span>信息费单价
+              <span className={styles.noStar}>*</span>信息费单价
             </div>
           }>
           <Space>
@@ -111,10 +111,10 @@ const UpdateForm = ({ onSubmit, onClose, unitPrice, infoFeeUnitName, unitInfoFee
               validateFirst={true}
               noStyle
               rules={[
-                {
-                  required: true,
-                  message: '内容不可为空',
-                },
+                // {
+                //   required: true,
+                //   message: '内容不可为空',
+                // },
                 {
                   pattern: /^\d+(\.\d{1,2})?$/,
                   message: '只能是数字，且不可超过2位小数',
