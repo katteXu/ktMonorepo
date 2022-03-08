@@ -115,7 +115,10 @@ const UpdateForm = ({ onSubmit, onClose, unitPrice, infoFeeUnitName, unitInfoFee
                   required: true,
                   message: '内容不可为空',
                 },
-                ...number_rules,
+                {
+                  pattern: /^\d+(\.\d{1,2})?$/,
+                  message: '只能是数字，且不可超过2位小数',
+                },
               ]}>
               <InputNumber
                 placeholder="请输入信息费单价"

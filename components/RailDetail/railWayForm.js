@@ -979,7 +979,10 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
                   whitespace: isFleet === '1',
                   message: '内容不可为空',
                 },
-                ...number_rules,
+                {
+                  pattern: /^\d+(\.\d{1,2})?$/,
+                  message: '只能是数字，且不可超过2位小数',
+                },
               ]}>
               <Input
                 placeholder="请输入信息费单价"
