@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './styles.less';
-import { Button, Select, message, Input } from 'antd';
+import { Button, Select, message, Input, InputNumber } from 'antd';
 import { Format } from '@utils/common';
 import { transportStatistics } from '@api';
 import ValidateTruckrBack from './validateTruckerBack';
@@ -28,7 +28,10 @@ const Pay = props => {
     unitInfoFee,
     totalInfoFee,
     taxCharge,
+    transportFleetId,
+    serviceFee,
   } = props.dataInfo;
+  const infoFeeUnitName = unitInfoFee !== 0 ? 1 : 0;
   const { id: rid, payPath } = routeInfo;
   console.log(props.dataInfo);
   const [btnLoading, setBtnLoading] = useState(false);
@@ -44,7 +47,11 @@ const Pay = props => {
   // 输入结算运费时显示的补差运费
   const [taxes, setTaxes] = useState();
 
+  // 输入结算运费时显示的合计运费
+  const [changedPrice, setChangedPrice] = useState();
+
   useEffect(() => {
+    setPayRemark(props.dataInfo.payRemark);
     setHistoryUnitPrice();
   }, []);
 
@@ -90,12 +97,14 @@ const Pay = props => {
 
   // 结算运费变更
   const handleChangePrice = e => {
-    props.onChangePrice && props.onChangePrice(e.target.value);
+    props.onChangePrice && props.onChangePrice(e);
     // 验证结算运费格式，通过验证则按结算运费显示 10% 补差运费
-    if (/^(\d+)(\.\d{1,2})?$/.test(e.target.value)) {
-      setTaxes(Math.ceil(e.target.value * 10 + totalInfoFee / 10));
+    if (/^(\d+)(\.\d{1,2})?$/.test(e)) {
+      setTaxes(Math.ceil(e * 10 + totalInfoFee / 10));
+      setChangedPrice(e * 100);
     } else {
       setTaxes();
+      setChangedPrice();
     }
   };
   // 结算时备注
@@ -107,16 +116,8 @@ const Pay = props => {
     <div className={styles.floor}>
       <div className={styles.title}>支付信息</div>
       <div className={styles.row}>
-        <div
-          className={styles.label}
-          style={{
-            minWidth:
-              (status === 'WAIT_PAY' || status === 'CHECKING' || status === 'DONE' || status === 'REJECT') && 84,
-          }}>
-          {(status === 'WAIT_PAY' || status === 'CHECKING' || status === 'DONE' || status === 'REJECT') && payPath === 1
-            ? '运费'
-            : '结算'}
-          单价：
+        <div className={styles.label} style={{ minWidth: 100 }}>
+          运费单价：
         </div>
         <div className={styles.data} style={{ overflow: 'unset' }}>
           {editUnitPrice ? (
@@ -165,69 +166,30 @@ const Pay = props => {
           )}
         </div>
       </div>
-      {(status === 'WAIT_PAY' || status === 'CHECKING' || status === 'DONE' || status === 'REJECT') && payPath === 1 && (
-        <div>
-          <div className={styles.row}>
-            <div className={styles.label} style={{ minWidth: 84 }}>
-              信息费单价：
-            </div>
-            <div className={styles.data}>{Format.price(unitInfoFee)} 元/吨</div>
-          </div>
-          <div className={styles.row}>
-            <div className={styles.label} style={{ minWidth: 84 }}>
-              结算单价：
-            </div>
-            <div className={styles.data}>{Format.addPrice(unitPrice * 100 + unitInfoFee)} 元/吨</div>
-          </div>
-          <div className={styles.row}>
-            <div className={styles.label} style={{ minWidth: 84 }}>
-              信息费：
-            </div>
-            <div className={styles.data}>{Format.price(totalInfoFee)} 元</div>
-          </div>
+      <div className={styles.row}>
+        <div className={styles.label} style={{ minWidth: 100 }}>
+          运费金额：
         </div>
-      )}
-      {status === 'WAIT_PAY' && payPath === 1 ? (
-        ''
-      ) : (
-        <div className={styles.row}>
-          <div
-            className={styles.label}
-            style={{
-              minWidth:
-                (status === 'WAIT_PAY' || status === 'CHECKING' || status === 'DONE' || status === 'REJECT') && 84,
-            }}>
-            预计运费：
-          </div>
-          <div className={styles.data}>{Format.price(price)} 元</div>
-        </div>
-      )}
-
-      {/* {(status === 'WAIT_PAY' || status === 'DONE' || status === 'CHECKING' || status === 'REJECT') && (
-        <div className={styles.row}>
-          <div className={styles.label} style={{ minWidth: 84 }}>
-            费用合计：
-          </div>
-          <div className={styles.data}>{Format.addPrice(price + totalInfoFee)} 元</div>
-        </div>
-      )} */}
+        <div className={styles.data}>{Format.price(price)} 元</div>
+      </div>
       <div className={styles.row}>
         <div
           className={styles.label}
           style={{
-            minWidth:
-              (status === 'WAIT_PAY' || status === 'CHECKING' || status === 'DONE' || status === 'REJECT') && 84,
+            minWidth: 100,
           }}>
-          结算运费：
+          实际结算运费：
         </div>
         <div className={styles.data}>
           {status === 'CHECKING' ? (
-            <Input
+            <InputNumber
+              step={0.01}
+              min={0}
               onChange={handleChangePrice}
               size="small"
-              style={{ width: 120, marginRight: 10 }}
+              style={{ width: 180, marginRight: 10 }}
               addonAfter={<span>元</span>}
-              placeholder="结算运费"
+              placeholder="结算费用"
             />
           ) : (
             <span style={{ display: 'inline-block' }}>
@@ -236,9 +198,35 @@ const Pay = props => {
           )}
         </div>
       </div>
+      {transportFleetId && (
+        <div>
+          <div className={styles.row}>
+            <div className={styles.label} style={{ minWidth: 100 }}>
+              信息费单价：
+            </div>
+            <div className={styles.data}>
+              {Format.price(unitInfoFee || serviceFee)} 元/{infoFeeUnitName === 0 ? '车' : '吨'}
+            </div>
+          </div>
+          <div className={styles.row}>
+            <div className={styles.label} style={{ minWidth: 100 }}>
+              信息费金额：
+            </div>
+            <div className={styles.data}>{Format.price(totalInfoFee || serviceFee)} 元</div>
+          </div>
+        </div>
+      )}
+
+      {/* <div className={styles.row}>
+        <div className={styles.label} style={{ minWidth: 100 }}>
+          预计结算费用：
+        </div>
+        <div className={styles.data}>{Format.addPrice(totalInfoFee + price)} 元</div>
+      </div> */}
+
       {status === 'CHECKING' && (
         <div className={styles.row}>
-          <div className={styles.label} style={{ minWidth: 84 }}>
+          <div className={styles.label} style={{ minWidth: 100 }}>
             补差运费：
           </div>
           <div className={styles.data}>
@@ -246,43 +234,59 @@ const Pay = props => {
           </div>
         </div>
       )}
-      {status === 'CHECKING' && (
-        <div className={styles.row}>
-          <div className={styles.label} style={{ minWidth: 84 }}>
-            备注：
-          </div>
-          <div className={styles.data}>
-            <TextArea maxLength={20} onChange={handleChangeRemark} />
-          </div>
-        </div>
-      )}
       {status !== 'WAIT_CONFIRMED' && status !== 'PROCESS' && status !== 'CHECKING' && (
         <div className={styles.row}>
-          <div className={styles.label} style={{ minWidth: 84 }}>
+          <div className={styles.label} style={{ minWidth: 100 }}>
             补差运费：
           </div>
           <div className={styles.data}>{Format.price(taxCharge)} 元</div>
         </div>
       )}
-      {(status === 'WAIT_PAY' || status === 'DONE' || status === 'REJECT') && payPath === 1 && (
-        <div className={styles.row}>
-          <div
-            className={styles.label}
-            style={{ minWidth: (status === 'WAIT_PAY' || status === 'DONE' || status === 'REJECT') && 84 }}>
-            合计：
-          </div>
-          <div className={styles.data}>
-            {realPrice === 0
-              ? Format.addPrice(totalInfoFee + price + taxCharge)
-              : Format.addPrice(realPrice + totalInfoFee + taxCharge)}
-            {} 元
-          </div>
+
+      <div className={styles.row}>
+        <div className={styles.label} style={{ minWidth: 100 }}>
+          金额合计：
         </div>
-      )}
+        <div className={styles.data}>
+          {status === 'CHECKING' ? (
+            <>
+              {changedPrice
+                ? taxes && whiteList.heShun
+                  ? Format.addPrice(totalInfoFee + changedPrice + taxes)
+                  : Format.addPrice(totalInfoFee + changedPrice)
+                : Format.addPrice(totalInfoFee + price + taxCharge)}
+              {} 元
+            </>
+          ) : (
+            <>
+              {realPrice === 0
+                ? Format.addPrice(totalInfoFee + price + taxCharge)
+                : Format.addPrice(realPrice + totalInfoFee + taxCharge)}
+              {} 元
+            </>
+          )}
+        </div>
+      </div>
+
+      <div className={styles.row}>
+        <div className={styles.label} style={{ minWidth: 100 }}>
+          备注：
+        </div>
+        {status === 'CHECKING' ? (
+          <div className={styles.data}>
+            <TextArea maxLength={20} onChange={handleChangeRemark} placeholder="请输入20字以内备注" />
+          </div>
+        ) : (
+          <div className={styles.data}>{payRemark || '-'}</div>
+        )}
+      </div>
+
       {/* 支付方式  */}
       {status !== 'WAIT_PAY' && status !== 'CHECKING' && (
         <div className={styles.row}>
-          <div className={styles.label}>支付方式：</div>
+          <div className={styles.label} style={{ minWidth: 100 }}>
+            支付方式：
+          </div>
           <div className={styles.data}>{PAY_STATUS[payStatus] || '-'}</div>
         </div>
       )}

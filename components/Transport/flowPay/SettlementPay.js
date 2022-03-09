@@ -19,30 +19,26 @@ const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, taxes, realPrice, 
       <div className={styles.totalPay}>
         <div style={{ display: 'flex' }}>
           <div className={styles.settlementtruckNum}>
-            发货净重: <span>{Format.weight(goodsWeight)}</span> {unitName || '吨'}
+            发货净重：<span>{Format.weight(goodsWeight)}</span> {unitName || '吨'}
           </div>
           <div className={styles.SettlementtruckNum}>
-            收货净重: <span>{Format.weight(arrivalGoodsWeight)}</span> {unitName || '吨'}
+            收货净重：<span>{Format.weight(arrivalGoodsWeight)}</span> {unitName || '吨'}
           </div>
         </div>
       </div>
-      {payPath === 1 && (
-        <div className={styles.payFooter}>
-          <div className={styles.orderTotalNum}>
-            信息费: ￥<span style={{ fontWeight: 600 }}>{Format.price(totalInfoFee)}</span> 元
-          </div>
-        </div>
-      )}
 
       <div className={styles.payFooter}>
         <div className={styles.orderTotalNum}>
           <div style={{ display: 'flex' }}>
             <div>
-              结算运费: ￥
-              <span style={{ fontWeight: 600 }}>{realPrice ? (realPrice * 1).toFixed(2) : Format.price(price)}</span> 元
+              实际结算费用：
+              <span style={{ fontWeight: 600 }}>
+                {realPrice ? Format.addPrice(realPrice * 100 + totalInfoFee) : Format.addPrice(price + totalInfoFee)}
+              </span>{' '}
+              元
             </div>
             <div style={{ marginLeft: 20 }}>
-              补差运费: ￥<span style={{ fontWeight: 600 }}>{Format.price(taxes)}</span> 元
+              补差运费：<span style={{ fontWeight: 600 }}>{Format.price(taxes)}</span> 元
             </div>
           </div>
         </div>
@@ -50,7 +46,7 @@ const DetailStep = ({ arrivalGoodsWeight, goodsWeight, price, taxes, realPrice, 
 
       <div className={styles.payFooter}>
         <div className={styles.orderTotalNum}>
-          合计: ￥
+          金额合计：
           <span style={{ fontWeight: 600 }}>
             {realPrice
               ? Format.addPrice(realPrice * 100 + totalInfoFee + taxes)
@@ -330,7 +326,7 @@ const SettlementPay = ({ payInfo, payId, onFinish, onSettlementPay, onConfirmSet
   };
 
   return (
-    <div className={styles['flow-pay']}>
+    <div className={styles['flow-pay']} style={{ padding: 0 }}>
       <Steps size="small" current={step} style={{ marginBottom: 32 }}>
         <Steps.Step title="结算" />
         <Steps.Step title="支付" />

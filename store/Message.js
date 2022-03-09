@@ -19,9 +19,6 @@ const useMessage = (initialState = []) => {
     }
   };
 
-  const reloadPermissions = () => {
-    setMessageList([]);
-  };
-  return { messageList, reloadPermissions };
+  return { messageList, reloadMessages: () => getData() };
 };
 export default createContainer(useMessage);

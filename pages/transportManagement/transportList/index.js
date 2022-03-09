@@ -166,7 +166,9 @@ const TransportList = props => {
       dataIndex: 'payPath',
       key: 'payPath',
       width: 120,
-      render: (value, record, index) => <span>{record.transportFleetId ? (value ? '延时付' : '即时付') : '-'}</span>,
+      render: (value, record, index) => (
+        <span>{record.transportFleetId && value !== 2 ? (value ? '延时付' : '即时付') : '-'}</span>
+      ),
     },
     {
       title: '发货企业',
@@ -1008,6 +1010,7 @@ const TransportList = props => {
 
       {/* 结算全部 */}
       <Modal
+        className={styles.modal}
         maskClosable={false}
         title="全部支付"
         visible={showAllModal}
@@ -1032,6 +1035,7 @@ const TransportList = props => {
 
       {/* 批量支付  */}
       <Modal
+        className={styles.modal}
         maskClosable={false}
         title="批量支付"
         visible={showModalOwner}

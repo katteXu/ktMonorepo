@@ -32,7 +32,7 @@ const Header = props => {
           }}>
           {transportFleetId ? '车队单' : '个人单'}
         </Tag>
-        {transportFleetId && (
+        {transportFleetId && routeInfo.payPath !== 2 && (
           <Tag
             color={routeInfo.payPath === 0 ? '#FFFBF4' : '#F5FFF8'}
             style={{
