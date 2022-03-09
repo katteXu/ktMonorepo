@@ -185,6 +185,7 @@ const AddressForm = ({ formData = {}, onSubmit, onClose }) => {
           <AutoComplete
             loading={loading}
             style={{ width: 264 }}
+            allowSearch={true}
             onSearch={handleSearch}
             onChange={handleChange}
             placeholder="如:方向洗煤厂"

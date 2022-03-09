@@ -93,7 +93,7 @@ const SettlmentSet = props => {
           }
           style={{ marginLeft: 32 }}
           wrapperCol={{ span: 20 }}
-          name="eraseZero">
+          valuePropName="eraseZero">
           <Switch
             size="small"
             onChange={checked => {
@@ -154,7 +154,7 @@ const SettlmentSet = props => {
           }
           style={{ marginLeft: 32 }}
           wrapperCol={{ span: 20 }}
-          name="isSumLossWeight">
+          valuePropName="isSumLossWeight">
           <Switch
             size="small"
             onChange={checked => {
