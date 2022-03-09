@@ -1531,7 +1531,12 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
         />
       </Modal>
       {/* 指定发布 */}
-      <DrawerInfo title="指定发布" onClose={() => setSpecifyModal(false)} showDrawer={specifyModal} width="705">
+      <DrawerInfo
+        className={styles.drawer}
+        title="指定发布"
+        onClose={() => setSpecifyModal(false)}
+        showDrawer={specifyModal}
+        width="705">
         <SpecifyForm onSubmit={handleSubmit} onClose={() => setSpecifyModal(false)} />
       </DrawerInfo>
     </div>

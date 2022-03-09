@@ -13,6 +13,7 @@ const Index = props => {
   return (
     <>
       <Drawer
+        className={props.className}
         title={props.title}
         placement="right"
         width={props.width || '1280'}

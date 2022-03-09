@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { railWay } from '@api';
 import { message, Button, Tag, Input, Table } from 'antd';
 import { ChildTitle, Search } from '@components';
@@ -152,7 +152,7 @@ const SpecifyForm = props => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', marginBottom: 40 }}>
+    <div className={styles.container} style={{ display: 'flex', flexDirection: 'column', marginBottom: 40 }}>
       <div>
         <ChildTitle
           className="hei14"
