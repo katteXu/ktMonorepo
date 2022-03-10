@@ -1016,9 +1016,9 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
                 按收货净重结算
               </Radio>
               <Radio value="2" style={{ marginLeft: 16 }}>
-                按较小净重结算
+                {userType.luQiao ? '按较小净重结算' : '按原发与实收较小的结算'}
               </Radio>
-              {transportType === 'LTL' && (
+              {transportType === 'LTL' && userType.luQiao && (
                 <>
                   <Radio value="3" style={{ marginLeft: 16 }}>
                     按运距结算
@@ -1239,7 +1239,6 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
               whitespace: allowLoss,
               message: '内容不可为空',
             },
-            // ...number_rules,
             {
               pattern: /^\d+(\.\d{1,2})?$/,
               message: '只能是数字，且不可超过2位小数',
