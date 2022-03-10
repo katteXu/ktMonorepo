@@ -327,6 +327,10 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
     setEstimatedPrice(isNaN(price) ? 0 : price.toFixed(2));
   }, [startPrice, unitPrice, transportDistance, payMethod, totalAmount]);
 
+  useEffect(() => {
+    form.validateFields(['transportDistance']);
+  }, [payMethod]);
+
   // 提交
   const handleSubmit = async params => {
     const values = await form.validateFields();
@@ -1133,7 +1137,22 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
                   name="transportDistance"
                   style={{ marginLeft: 32 }}
                   validateFirst={true}
-                  rules={[{ required: payMethod === '3', message: '内容不能为空' }, ...number_rules]}>
+                  rules={[
+                    { required: payMethod === '3', message: '内容不能为空' },
+                    {
+                      pattern: /^\d+(\.\d{1,2})?$/,
+                      message: '只能是数字，且不可超过2位小数',
+                    },
+                    {
+                      validator: (_, value) => {
+                        if (+value > 0 || value === '') {
+                          return Promise.resolve();
+                        } else {
+                          return Promise.reject('内容必须大于0');
+                        }
+                      },
+                    },
+                  ]}>
                   <Input
                     placeholder="请输入运输距离"
                     style={{ width: 264 }}
