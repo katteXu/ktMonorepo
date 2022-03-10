@@ -1016,9 +1016,9 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
                 按收货净重结算
               </Radio>
               <Radio value="2" style={{ marginLeft: 16 }}>
-                {userType.luQiao ? '按较小净重结算' : '按原发与实收较小的结算'}
+                按较小净重结算
               </Radio>
-              {transportType === 'LTL' && userType.luQiao && (
+              {transportType === 'LTL' && (
                 <>
                   <Radio value="3" style={{ marginLeft: 16 }}>
                     按运距结算
