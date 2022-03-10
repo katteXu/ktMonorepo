@@ -167,6 +167,9 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   // 运输距离
   const [transportDistance, setTransportDistance] = useState(0);
 
+  // 运距单位
+  const [distanceName, setDistanceName] = useState('km');
+
   // 货物总量
   const [totalAmount, setTotalAmount] = useState(0);
 
@@ -312,10 +315,10 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   useEffect(() => {
     let price = 0;
     switch (payMethod) {
-      case 3:
+      case '3':
         price = startPrice * 1 + unitPrice * transportDistance * 1;
         break;
-      case 4:
+      case '4':
         price = unitPrice * 1;
         break;
       default:
@@ -339,6 +342,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
     let data = {
       truckerIds: params.truckerIds ? params.truckerIds : undefined,
       transportDistance: transportType === 'LTL' && userType.luQiao ? transportDistance * 1 : undefined,
+      distanceName: transportType === 'LTL' && userType.luQiao ? distanceName : undefined,
       startPrice: transportType === 'LTL' && userType.luQiao ? startPrice * 1000 : undefined,
       consignor: values.consignor || consignor,
       fromAddressCompanyId: fromCompany.id,
@@ -1001,7 +1005,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
             wrapperCol={{ span: 20 }}
             name="payMethod"
             style={{ marginLeft: 32, width: 850 }}
-            onChange={e => setPayMethod(e.target.value * 1)}>
+            onChange={e => setPayMethod(e.target.value)}>
             <Radio.Group>
               <Radio value="1">按发货净重结算</Radio>
               <Radio value="0" style={{ marginLeft: 16 }}>
@@ -1010,12 +1014,16 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
               <Radio value="2" style={{ marginLeft: 16 }}>
                 按较小净重结算
               </Radio>
-              <Radio value="3" style={{ marginLeft: 16 }}>
-                按运距结算
-              </Radio>
-              <Radio value="4" style={{ marginLeft: 16 }}>
-                固定价结算
-              </Radio>
+              {transportType === 'LTL' && (
+                <>
+                  <Radio value="3" style={{ marginLeft: 16 }}>
+                    按运距结算
+                  </Radio>
+                  <Radio value="4" style={{ marginLeft: 16 }}>
+                    固定价结算
+                  </Radio>
+                </>
+              )}
             </Radio.Group>
           </Form.Item>
         )}
@@ -1029,7 +1037,13 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           }
           name="transportType"
           style={{ marginLeft: 32 }}
-          onChange={e => setTransportType(e.target.value)}>
+          onChange={e => {
+            setTransportType(e.target.value);
+            if (payMethod === '3' || payMethod === '4') {
+              setPayMethod('0');
+              form.setFieldsValue({ payMethod: '0' });
+            }
+          }}>
           <Radio.Group>
             <Radio value="FTL">整车运输</Radio>
             <Radio value="LTL" style={{ marginLeft: 16 }}>
@@ -1108,7 +1122,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
                 <Form.Item
                   {...oneformItemLayout}
                   label={
-                    payMethod === 3 ? (
+                    payMethod === '3' ? (
                       '运输距离'
                     ) : (
                       <div>
@@ -1119,7 +1133,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
                   name="transportDistance"
                   style={{ marginLeft: 32 }}
                   validateFirst={true}
-                  rules={[{ required: payMethod === 3, message: '内容不能为空' }, ...number_rules]}>
+                  rules={[{ required: payMethod === '3', message: '内容不能为空' }, ...number_rules]}>
                   <Input
                     placeholder="请输入运输距离"
                     style={{ width: 264 }}
@@ -1128,12 +1142,12 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
                   />
                 </Form.Item>
               </Col>
-              {/* <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 390 }}>
+              <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 400 }}>
                 <Form.Item name="distanceName" style={{ position: 'relative', left: 32 }}>
                   <Select
                     style={{ width: 96 }}
                     onChange={value => {
-                      // setUnitName(value);
+                      setDistanceName(value);
                     }}>
                     {DistanceNameList.map(item => (
                       <Option key={item.id} value={item.name}>
@@ -1142,7 +1156,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
                     ))}
                   </Select>
                 </Form.Item>
-              </Col> */}
+              </Col>
             </Row>
           </>
         )}
