@@ -324,6 +324,14 @@ const createRoute = data =>
     data,
   });
 
+// normal 新的创建专线的接口-指定发布
+const createSpecifyRoute = data =>
+  request({
+    method: 'post',
+    url: 'api/v_saas/route/specifyCreateRoute',
+    data,
+  });
+
 // cyg 修改车辆
 const modifyFleetTruck = data =>
   request({
@@ -436,6 +444,7 @@ export default {
   modifyDeliverGoodsTime,
   modifyTotalGoodsWeight,
   createRoute,
+  createSpecifyRoute,
   modifyFleetTruck,
   modifyTransportRoute,
   modifyUnitPrice,

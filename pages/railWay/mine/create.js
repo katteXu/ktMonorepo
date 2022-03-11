@@ -33,7 +33,12 @@ const CreateRailWay = props => {
     // setShowConfirm(true);
     // setConfirmData(viewData);
     // setSaveData(data);
-    const res = await railWay.createRoute(data);
+    let res;
+    if (data.truckerIds) {
+      res = await railWay.createSpecifyRoute(data);
+    } else {
+      res = await railWay.createRoute(data);
+    }
     if (res.status === 0) {
       message.success('创建专线成功');
       clearState();

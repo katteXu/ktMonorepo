@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { railWay } from '@api';
 import { message, Button, Tag, Input, Table } from 'antd';
-import { ChildTitle, Search } from '@components';
+import { ChildTitle, Search, Ellipsis } from '@components';
 import styles from './styles.less';
 
 const SpecifyForm = props => {
@@ -66,9 +66,7 @@ const SpecifyForm = props => {
       dataIndex: 'truckType',
       width: '120px',
       ellipsis: true,
-      render: value => {
-        return value || '-';
-      },
+      render: value => <Ellipsis value={value} width={120} />,
     },
   ];
 
