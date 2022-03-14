@@ -168,7 +168,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
   const [transportDistance, setTransportDistance] = useState(0);
 
   // 运距单位
-  const [distanceName, setDistanceName] = useState('km');
+  // const [distanceName, setDistanceName] = useState('km');
 
   // 货物总量
   const [totalAmount, setTotalAmount] = useState(0);
@@ -345,9 +345,9 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
 
     let data = {
       truckerIds: params.truckerIds ? params.truckerIds : undefined,
-      transportDistance: transportType === 'LTL' && userType.luQiao ? transportDistance * 1 : undefined,
-      distanceName: transportType === 'LTL' && userType.luQiao ? distanceName : undefined,
-      startPrice: transportType === 'LTL' && userType.luQiao ? startPrice * 1000 : undefined,
+      transportDistance: transportType === 'LTL' && userType.luQiao ? (transportDistance * 1000).toFixed(0) * 1 : undefined,
+      // distanceName: transportType === 'LTL' && userType.luQiao ? distanceName : undefined,
+      startPrice: transportType === 'LTL' && userType.luQiao ? (startPrice * 1000).toFixed(0) * 1 : undefined,
       consignor: values.consignor || consignor,
       fromAddressCompanyId: fromCompany.id,
       toAddressCompanyId: toCompany.id,
@@ -664,7 +664,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           isLeavingAmount: 0,
           unitName: '吨',
           startPrice: 0,
-          distanceName: '公里',
+          // distanceName: '公里',
           payMethod: '0',
           businessType: '1',
           fleet: '0',
