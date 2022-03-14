@@ -97,10 +97,10 @@ const getGoodsUnitName = async () => {
 };
 
 // 运输距离单位
-const DistanceNameList = [
-  { id: 'km', name: '公里' },
-  { id: 'hkm', name: '里' },
-];
+// const DistanceNameList = [
+//   { id: 'km', name: '公里' },
+//   { id: 'hkm', name: '里' },
+// ];
 
 // 表单组件
 const RailWayForm = ({ serverTime, onSubmit }) => {
@@ -1161,7 +1161,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
                   />
                 </Form.Item>
               </Col>
-              <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 400 }}>
+              {/* <Col className={styles.unitName_yan} span={3} style={{ position: 'absolute', left: 400 }}>
                 <Form.Item name="distanceName" style={{ position: 'relative', left: 32 }}>
                   <Select
                     style={{ width: 96 }}
@@ -1175,7 +1175,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
                     ))}
                   </Select>
                 </Form.Item>
-              </Col>
+              </Col> */}
             </Row>
           </>
         )}
