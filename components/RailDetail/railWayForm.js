@@ -345,9 +345,10 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
 
     let data = {
       truckerIds: params.truckerIds ? params.truckerIds : undefined,
-      transportDistance: transportType === 'LTL' && userType.luQiao ? (transportDistance * 1000).toFixed(0) * 1 : undefined,
+      transportDistance:
+        transportType === 'LTL' && userType.luQiao ? (transportDistance * 1000).toFixed(0) * 1 : undefined,
       // distanceName: transportType === 'LTL' && userType.luQiao ? distanceName : undefined,
-      startPrice: transportType === 'LTL' && userType.luQiao ? (startPrice * 1000).toFixed(0) * 1 : undefined,
+      startPrice: transportType === 'LTL' && userType.luQiao ? (startPrice * 100).toFixed(0) * 1 : undefined,
       consignor: values.consignor || consignor,
       fromAddressCompanyId: fromCompany.id,
       toAddressCompanyId: toCompany.id,
