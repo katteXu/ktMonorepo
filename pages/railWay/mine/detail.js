@@ -369,6 +369,12 @@ const RailWayDetail = props => {
                 )}
                 {dataInfo.businessType !== 2 && <div className={styles.item} style={{ flex: 0.5 }}></div>}
               </div>
+              <div className={styles.row}>
+                <div className={styles.item}>
+                  <span className={styles.label}>运费支付给：</span>
+                  {dataInfo.payInto ? (dataInfo.payInto === 1 ? '车队长' : '司机') : '-'}
+                </div>
+              </div>
             </div>
           </Skeleton>
           <Skeleton loading={!loading} paragraph={{ rows: 3 }}>

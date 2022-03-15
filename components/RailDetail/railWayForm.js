@@ -285,6 +285,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       onlyPound: '0',
       // 车队单默认即时付
       // payPath: values.fleet === '1' ? '0' : undefined,
+      payInto: values.payInto,
       lossMark: values.lossMark ? '1' : '0',
       lossAmount: values.lossAmount ? (values.lossAmount * 1000).toFixed(0) * 1 : undefined,
       receiverName: values.receiverName,
@@ -635,6 +636,17 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
               }}
               format="YYYY-MM-DD HH:mm:ss"
             />
+          </Form.Item>
+        )}
+        {/* 支付对象 */}
+        {isFleet === '1' && (
+          <Form.Item label="运费支付给" name="payInto" style={{ marginLeft: 32 }} rules={rules}>
+            <Radio.Group>
+              <Radio value="1">车队长</Radio>
+              <Radio value="2" style={{ marginLeft: 16 }}>
+                司机
+              </Radio>
+            </Radio.Group>
           </Form.Item>
         )}
         <div className={styles.title}>
