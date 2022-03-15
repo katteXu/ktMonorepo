@@ -285,7 +285,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       onlyPound: '0',
       // 车队单默认即时付
       // payPath: values.fleet === '1' ? '0' : undefined,
-      payInto: values.payInto,
+      payInto: values.payInto * 1,
       lossMark: values.lossMark ? '1' : '0',
       lossAmount: values.lossAmount ? (values.lossAmount * 1000).toFixed(0) * 1 : undefined,
       receiverName: values.receiverName,
