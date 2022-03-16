@@ -576,6 +576,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           payMethod: '0',
           businessType: '1',
           fleet: '0',
+          payInto: '1',
           wareHouseId: -1,
           infoFeeUnitName: 0,
         }}>
