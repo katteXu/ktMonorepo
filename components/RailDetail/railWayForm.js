@@ -491,7 +491,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
       message.warn('信息费单价不可超过运费单价的50%，请重新输入');
       return;
     }
-    // onSubmit(data, dataView);
+    onSubmit(data, dataView);
   };
 
   const onFinishFailed = errorInfo => {
