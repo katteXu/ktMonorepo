@@ -769,7 +769,7 @@ const RailWayForm = ({ onSubmit }) => {
               </Tooltip>
             </div>
           }
-          valuePropName="isLeavingAmount"
+          name="isLeavingAmount"
           style={{ marginLeft: 32 }}>
           <Switch size="small" onChange={v => setLeavingAmount(v ? 1 : 0)} />
         </Form.Item>

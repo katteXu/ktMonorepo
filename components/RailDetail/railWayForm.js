@@ -1070,7 +1070,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
           }
           style={{ marginLeft: 32 }}
           wrapperCol={{ span: 20 }}
-          valuePropName="eraseZero">
+          name="eraseZero">
           <Switch size="small" />
         </Form.Item>
         {/* 路损计算 */}
@@ -1082,7 +1082,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
                   <span className={styles.noStar}>*</span>路损计算
                 </div>
               }
-              valuePropName="lossMark"
+              name="lossMark"
               style={{ marginLeft: 32 }}>
               <Switch size="small" defaultChecked={allowLoss} onChange={v => setAllowLoss(v)} />
             </Form.Item>
@@ -1166,7 +1166,7 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
             </div>
           }
           wrapperCol={{ span: 20 }}
-          valuePropName="isLeavingAmount"
+          name="isLeavingAmount"
           style={{ marginLeft: 32 }}>
           <Switch size="small" onChange={v => setLeavingAmount(v ? 1 : 0)} />
         </Form.Item>
