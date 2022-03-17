@@ -43,6 +43,17 @@ const Header = props => {
             {routeInfo.payPathZn}
           </Tag>
         )}
+        {transportFleetId && routeInfo.payInto && (
+          <Tag
+            color={'#FFFBF4'}
+            style={{
+              color: '#FFB741',
+              borderColor: '#FFB741',
+              borderWidth: 1,
+            }}>
+            {routeInfo.payInto === 1 ? '车队长收运费' : '司机收运费'}
+          </Tag>
+        )}
       </div>
     </div>
   );
