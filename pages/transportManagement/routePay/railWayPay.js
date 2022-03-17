@@ -486,17 +486,28 @@ const RailWayPay = () => {
             }}>
             {transportFleetId ? '车队单' : '个人单'}
           </Tag>
-          {transportFleetId && dataList.payPath !== 2 && (
+          {transportFleetId && routeInfo.payPath !== 2 && (
             <Tag
-              color={dataList.payPath === 0 ? '#FFFBF4' : '#F5FFF8'}
+              color={routeInfo.payPath === 0 ? '#FFFBF4' : '#F5FFF8'}
               style={{
-                color: dataList.payPath === 0 ? '#FFB741' : '#66BD7E',
-                borderColor: dataList.payPath === 0 ? '#FFB741' : '#66BD7E',
+                color: routeInfo.payPath === 0 ? '#FFB741' : '#66BD7E',
+                borderColor: routeInfo.payPath === 0 ? '#FFB741' : '#66BD7E',
                 borderWidth: 1,
                 position: 'relative',
                 top: -1,
               }}>
               {routeInfo.payPathZn}
+            </Tag>
+          )}
+          {transportFleetId && routeInfo.payInto && (
+            <Tag
+              color={'#FFFBF4'}
+              style={{
+                color: '#FFB741',
+                borderColor: '#FFB741',
+                borderWidth: 1,
+              }}>
+              {routeInfo.payInto === 1 ? '车队长收运费' : '司机收运费'}
             </Tag>
           )}
         </header>

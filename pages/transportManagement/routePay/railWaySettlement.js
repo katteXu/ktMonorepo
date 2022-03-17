@@ -477,6 +477,17 @@ const RailWaySettlement = props => {
               {dataList.routeInfo.payPathZn}
             </Tag>
           )}
+          {dataList.transportFleetId && dataList.routeInfo.payInto && (
+            <Tag
+              color={'#FFFBF4'}
+              style={{
+                color: '#FFB741',
+                borderColor: '#FFB741',
+                borderWidth: 1,
+              }}>
+              {dataList.routeInfo.payInto === 1 ? '车队长收运费' : '司机收运费'}
+            </Tag>
+          )}
         </header>
         <section className={styles['pay-fleetDetail-info']}>
           <div className="info-row" style={{ display: 'flex' }}>
