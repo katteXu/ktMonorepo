@@ -6,6 +6,7 @@ import { User } from '@store';
 const useWhiteList = () => {
   const [whiteList, setWhiteList] = useState({
     heShun: false,
+    luQiao: false,
   }); //税率白名单
   const { userInfo, loading } = User.useContainer();
   useEffect(() => {

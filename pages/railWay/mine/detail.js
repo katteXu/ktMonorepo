@@ -19,7 +19,9 @@ import moment from 'moment';
 const payMethodStatus = {
   1: '按发货净重结算',
   0: '按收货净重结算',
-  2: '按原发与实收较小的结算',
+  2: '按较小净重结算',
+  3: '按运距结算',
+  4: '固定价结算',
 };
 
 const RailWayDetail = props => {
