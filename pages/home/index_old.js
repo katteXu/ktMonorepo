@@ -33,7 +33,7 @@ const Home = () => {
   useEffect(() => {
     const { id, companyName } = userInfo;
     setDataList();
-    _czc.push(['_trackEvent', `概览`, `${companyName}${id}`, `${router.router.pathname}`]);
+    // _czc.push(['_trackEvent', `概览`, `${companyName}${id}`, `${router.router.pathname}`]);
   }, []);
 
   const setDataList = async () => {

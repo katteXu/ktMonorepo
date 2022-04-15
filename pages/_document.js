@@ -24,9 +24,9 @@ class MyDocument extends Document {
             />
           )}
         </Head>
-        <head>
+        {/* <head>
           <script type="text/javascript" src="https://s9.cnzz.com/z_stat.php?id=1279757257&web_id=1279757257"></script>
-        </head>
+        </head> */}
         <body>
           <Main />
           <NextScript />

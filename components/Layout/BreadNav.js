@@ -26,7 +26,7 @@ const Index = ({ breadNav, useBack, backUrl, rightArea }) => {
   useEffect(() => {
     const { id, companyName } = userInfo;
     if (TypeOf(breadNav, 'String')) {
-      _czc.push(['_trackEvent', `${breadNav}`, `${companyName}${id}`, `${router.router.pathname}`]);
+      // _czc.push(['_trackEvent', `${breadNav}`, `${companyName}${id}`, `${router.router.pathname}`]);
     } else if (TypeOf(breadNav, 'Array')) {
       let info = [];
       breadNav.map((item, index) => {
@@ -37,7 +37,7 @@ const Index = ({ breadNav, useBack, backUrl, rightArea }) => {
           info.push(item);
         }
       });
-      _czc.push(['_trackEvent', `${info}`, `${companyName}${id}`, `${router.router.pathname}`]);
+      // _czc.push(['_trackEvent', `${info}`, `${companyName}${id}`, `${router.router.pathname}`]);
     }
   }, []);
   const back = url => {
