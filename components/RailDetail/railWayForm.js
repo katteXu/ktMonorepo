@@ -993,23 +993,24 @@ const RailWayForm = ({ serverTime, onSubmit }) => {
         </div>
 
         {isShowWarehouse && (
-          <Form.Item
-            label="预计仓库"
-            name="wareHouseId"
-            validateFirst={true}
-            style={{ marginLeft: 32 }}
-            rules={[
-              {
-                required: true,
-                message: '请选择预计仓库',
-              },
-            ]}>
-            <WareHouseSelect allowClear placeholder="请选择仓库" style={{ width: 264 }} ref={wareHouseRef} />
-
+          <div style={{ display: 'flex' }}>
+            <Form.Item
+              label="预计仓库"
+              name="wareHouseId"
+              validateFirst={true}
+              style={{ marginLeft: 32 }}
+              rules={[
+                {
+                  required: true,
+                  message: '请选择预计仓库',
+                },
+              ]}>
+              <WareHouseSelect allowClear placeholder="请选择仓库" style={{ width: 264 }} ref={wareHouseRef} />
+            </Form.Item>
             <Button type="link" onClick={() => setIsWarehouse(true)} className={styles['btn-new']}>
               新增
             </Button>
-          </Form.Item>
+          </div>
         )}
 
         {/* 结算方式 */}
