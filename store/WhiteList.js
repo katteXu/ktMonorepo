@@ -21,6 +21,7 @@ const useWhiteList = () => {
 
       const HE_SHUN_ID = res.result.find(item => item.key === 'HE_SHUN_GOODSOWNER_ID_WHITE').url.split(',');
       const LU_QIAO_ID = res.result.find(item => item.key === 'LU_QIAO_GOODSOWNER_ID_WHITE').url.split(',');
+      const LING_SHI_ID = res.result.find(item => item.key === 'LING_SHI_GOODSOWNER_ID_WHITE').url.split(',');
 
       if (HE_SHUN_ID && HE_SHUN_ID.includes(userId)) {
         setWhiteList({
@@ -34,6 +35,13 @@ const useWhiteList = () => {
           ...whiteList,
           heShun: true,
           luQiao: true,
+        });
+      }
+
+      if (LING_SHI_ID && LING_SHI_ID.includes(userId)) {
+        setWhiteList({
+          ...whiteList,
+          heShun: true,
         });
       }
     }
