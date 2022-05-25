@@ -131,7 +131,7 @@ const SelectBtn = ({ onChange, type, mode, value, onInit, title, filter, style }
     const res = await getList({
       url: URL[type],
     });
-    if (res.status === 0 && type === 'address') {
+    if (res.status === 0 && (type === 'address' || type === 'contractAddress')) {
       setList(res.result.data);
       setTotal(res.result.count);
     }
