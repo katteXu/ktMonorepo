@@ -10,9 +10,8 @@ const { Option } = Select;
 // 合同状态
 const OrderStatus = {
   1: { name: '待审核', color: '#FFB741' },
-  2: { name: '审批驳回', color: '#E44040' },
-  3: { name: '审批通过', color: '#477AEF' },
-  4: { name: '审批通过', color: '#477AEF' },
+  2: { name: '审批通过', color: '#E44040' },
+  3: { name: '审批驳回', color: '#477AEF' },
 };
 
 // 状态颜色样式
