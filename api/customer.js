@@ -282,6 +282,15 @@ const getCompanyByName = ({ params } = {}) => {
   });
 };
 
+// 承运企业列表
+const getOwnerByCompany = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v_saas/user/getOwnerByCompany',
+    params: { companyName: '' },
+  });
+};
+
 export default {
   getDataList,
   getDetail,
@@ -318,4 +327,6 @@ export default {
   del_customer,
 
   getCompanyByName,
+
+  getOwnerByCompany,
 };

@@ -1,5 +1,8 @@
 import request from './request';
 
+// 订单管理
+export { default as order } from './order';
+
 // 专线管理
 export { default as railWay } from './railWay';
 

@@ -11,6 +11,12 @@ const MENU_LIST = [
     key: 'home',
   },
   {
+    module: 'orderManagement',
+    icon: 'book',
+    name: '订单管理',
+    key: 'orderManagement',
+  },
+  {
     module: 'railWay',
     icon: 'interactionOutlined',
     name: '专线管理',
