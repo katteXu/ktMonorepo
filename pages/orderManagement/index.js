@@ -143,7 +143,7 @@ const Index = props => {
           <Button
             type="link"
             size="small"
-            disabled={record.status !== 2}
+            disabled={record.status !== 3}
             onClick={() => router.push(`/orderManagement/recommit?id=${value}`)}>
             重新提交
           </Button>
