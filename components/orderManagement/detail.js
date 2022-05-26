@@ -88,7 +88,7 @@ const Index = props => {
             </div>
             <div className={styles.item}>
               <span className={styles.label}>货物总量：</span>
-              {Format.weight(dataInfo.contract?.totalWeight) || '-'}
+              {Format.weight(dataInfo.contract?.totalWeight) || '-'}吨
             </div>
           </div>
           <div className={styles.row}>
@@ -119,6 +119,7 @@ const Index = props => {
             <div className={styles.item}>
               <span className={styles.label}>订单总量：</span>
               {Format.weight(dataInfo?.totalAmount) || '-'}
+              {dataInfo?.unitName}
             </div>
             <div className={styles.item}>
               <span className={styles.label}>运输单价：</span>
@@ -175,7 +176,7 @@ const Index = props => {
             <div className={styles.item}>
               <span className={styles.label}>信息费单价：</span>
               {dataInfo?.route
-                ? `${dataInfo?.route?.serviceFee || dataInfo?.route?.unitInfoFee} 元/${
+                ? `${Format.price(dataInfo?.route?.serviceFee || dataInfo?.route?.unitInfoFee)} 元/${
                     infoFeeUnitName === 0 ? '车' : '吨'
                   }`
                 : '-'}
