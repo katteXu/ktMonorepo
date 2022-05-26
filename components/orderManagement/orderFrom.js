@@ -170,14 +170,14 @@ const Index = ({ onSubmit, data = {} }) => {
           ? values.unitInfoFee && (values.unitInfoFee * 100).toFixed(0) * 1
           : undefined,
       payInto: isFleet ? values.payInto : undefined,
-      payMethod: values.lossMark ? '1' : '0',
-      lossMark: values.lossMark,
+      payMethod: values.payMethod,
+      lossMark: values.lossMark ? '1' : '0',
       lossAmount: values.lossAmount ? (values.lossAmount * 1000).toFixed(0) * 1 : undefined,
       eraseZero: values.eraseZero,
       validDate: values.validDate * 1,
     };
-
-    onSubmit(params);
+    console.log(params);
+    // onSubmit(params);
   };
 
   const onFinishFailed = errorInfo => {

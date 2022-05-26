@@ -276,7 +276,13 @@ const SelectBtn = ({ onChange, type, mode, value, onInit, title, filter, style }
   return (
     <>
       {mode === 'input' ? (
-        <Input style={{ ...style }} readOnly value={value} placeholder="点击选择企业" onClick={openModal} />
+        <Input
+          style={{ ...style }}
+          readOnly
+          value={value}
+          placeholder={type === 'contractAddress' ? '点击选择地址' : '点击选择企业'}
+          onClick={openModal}
+        />
       ) : (
         <Button style={{ width: '100%', ...style }} onClick={openModal}>
           选择{TEXT[type]}
