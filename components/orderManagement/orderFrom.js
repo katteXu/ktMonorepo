@@ -176,8 +176,8 @@ const Index = ({ onSubmit, data = {} }) => {
       eraseZero: values.eraseZero,
       validDate: values.validDate * 1,
     };
-    console.log(params);
-    // onSubmit(params);
+
+    onSubmit(params);
   };
 
   const onFinishFailed = errorInfo => {
