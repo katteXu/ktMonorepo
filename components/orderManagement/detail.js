@@ -122,7 +122,7 @@ const Index = props => {
             </div>
             <div className={styles.item}>
               <span className={styles.label}>运输单价：</span>
-              {Format.price(dataInfo?.unitPrice) || '-'} {dataInfo?.unitName}
+              {Format.price(dataInfo?.unitPrice) || '-'} 元/{dataInfo?.unitName}
             </div>
           </div>
           <div className={styles.row}>

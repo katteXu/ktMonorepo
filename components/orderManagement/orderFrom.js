@@ -104,7 +104,7 @@ const Index = ({ onSubmit, data = {} }) => {
         remainWeight: Format.weight(data?.contract?.remainWeight),
 
         validateTransportCompany: data?.carrierCompany,
-        unitPrice: data?.unitPrice,
+        unitPrice: Format.price(data?.unitPrice),
         unitName: data?.unitName,
         totalAmount: Format.weight(data?.totalAmount),
         files: file,
@@ -142,7 +142,6 @@ const Index = ({ onSubmit, data = {} }) => {
 
   // 表单提交
   const handleSubmit = async values => {
-    console.log(values.files);
     const file = values.files.map(item => {
       const { response = {} } = item;
       return { name: response.fileName, url: response.fileUrl };
