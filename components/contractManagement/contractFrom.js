@@ -196,8 +196,8 @@ const Index = () => {
 
         <Form.Item
           label="收货地址"
-          required
           name="validateToAddressName"
+          validateFirst={true}
           rules={[{ required: true, whitespace: true, message: '内容不可为空' }]}>
           <SelectBtn
             style={{ width: 480 }}
@@ -208,6 +208,9 @@ const Index = () => {
             title="收货地址"
             onChange={address => {
               setToAddress(address);
+              form.setFieldsValue({
+                validateToAddressName: address.loadAddressName,
+              });
             }}
           />
         </Form.Item>
@@ -260,6 +263,9 @@ const Index = () => {
             title="发货地址"
             onChange={address => {
               setFromAddress(address);
+              form.setFieldsValue({
+                validateFromAddressName: address.loadAddressName,
+              });
             }}
           />
         </Form.Item>
