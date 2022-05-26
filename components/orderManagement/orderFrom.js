@@ -301,17 +301,17 @@ const Index = ({ onSubmit, data = {} }) => {
               <span className={styles.noStar}>*</span>出卖人
             </div>
           }
-          name="toAddress">
+          name="fromAddress">
           <Input placeholder="选择合同后自动填充" disabled style={{ width: 264 }} />
         </Form.Item>
 
         <Form.Item
           label={
             <div>
-              <span className={styles.noStar}>*</span>出卖人地址
+              <span className={styles.noStar}>*</span>发货地址
             </div>
           }
-          name="toAddressName">
+          name="fromAddressName">
           <Input placeholder="选择合同后自动填充" disabled style={{ width: 264 }} />
         </Form.Item>
 
@@ -321,17 +321,17 @@ const Index = ({ onSubmit, data = {} }) => {
               <span className={styles.noStar}>*</span>买受人
             </div>
           }
-          name="fromAddress">
+          name="toAddress">
           <Input placeholder="选择合同后自动填充" disabled style={{ width: 264 }} />
         </Form.Item>
 
         <Form.Item
           label={
             <div>
-              <span className={styles.noStar}>*</span>买受人地址
+              <span className={styles.noStar}>*</span>收货地址
             </div>
           }
-          name="fromAddressName">
+          name="toAddressName">
           <Input placeholder="选择合同后自动填充" disabled style={{ width: 264 }} />
         </Form.Item>
 
