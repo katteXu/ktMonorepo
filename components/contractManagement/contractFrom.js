@@ -194,7 +194,11 @@ const Index = () => {
           </Form.Item>
         )}
 
-        <Form.Item label="收货地址" required>
+        <Form.Item
+          label="收货地址"
+          required
+          name="validateToAddressName"
+          rules={[{ required: true, whitespace: true, message: '内容不可为空' }]}>
           <SelectBtn
             style={{ width: 480 }}
             value={toAddress.loadAddressName}
@@ -242,7 +246,11 @@ const Index = () => {
           </Form.Item>
         )}
 
-        <Form.Item label="发货地址" required>
+        <Form.Item
+          label="发货地址"
+          required
+          name="validateFromAddressName"
+          rules={[{ required: true, whitespace: true, message: '内容不可为空' }]}>
           <SelectBtn
             style={{ width: 480 }}
             value={fromAddress.loadAddressName}
