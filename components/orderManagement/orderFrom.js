@@ -146,7 +146,6 @@ const Index = ({ onSubmit, data = {} }) => {
       const { response = {} } = item;
       return { name: response.fileName, url: response.fileUrl };
     });
-    console.log(file);
 
     const params = {
       contractId: contractId || undefined,
@@ -175,6 +174,11 @@ const Index = ({ onSubmit, data = {} }) => {
       eraseZero: values.eraseZero,
       validDate: values.validDate * 1,
     };
+
+    if (params.unitName === '吨' && values.infoFeeUnitName === 1 && params.unitInfoFee * 2 > params.unitPrice) {
+      message.warn('信息费单价不可超过运费单价的50%，请重新输入');
+      return;
+    }
 
     onSubmit(params);
   };
