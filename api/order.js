@@ -44,7 +44,7 @@ const transportOrderDetail = params =>
 const examineLog = params =>
   request({
     method: 'get',
-    url: 'api/v1/route/examineLog',
+    url: 'api/v_saas/route/get_examine_order_log',
     params,
   });
 

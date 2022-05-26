@@ -51,7 +51,7 @@ const Index = props => {
     setLoading(true);
     const { id } = getQuery();
 
-    const res = await order.examineLog({ id });
+    const res = await order.examineLog({ orderId: id });
 
     if (res.status === 0) {
       setDataInfo(res.result);
