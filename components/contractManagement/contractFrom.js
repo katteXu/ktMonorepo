@@ -76,9 +76,9 @@ const Index = () => {
       title: values.title,
       contractType: values.contractType,
       fromAddressCompanyId: saleCompany.id,
-      from_address_id: toAddress.id, // 发货地址 id
+      from_address_id: fromAddress.id, // 发货地址 id
       toAddressCompanyId: purchaseCompany.id,
-      to_address_id: fromAddress.id, // 收货地址 id
+      to_address_id: toAddress.id, // 收货地址 id
       goodsNameId: values.goodsNameId.value,
       totalWeight: (values.totalWeight * 1000).toFixed(0),
       unitePrice: Math.ceil(values.unitePrice * 100),
