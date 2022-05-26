@@ -88,7 +88,7 @@ const Index = props => {
             </div>
             <div className={styles.item}>
               <span className={styles.label}>货物总量：</span>
-              {Format.weight(dataInfo.deliveryWeight) || '-'}
+              {Format.weight(dataInfo.contract?.totalWeight) || '-'}
             </div>
           </div>
           <div className={styles.row}>
