@@ -542,7 +542,7 @@ const PoundList = props => {
 
         if (r.status === 0) {
           message.success('磅单作废成功');
-          getTableData({ ...query });
+          getRemoteData({ ...query });
         } else {
           message.error(r.detail || r.description);
         }
