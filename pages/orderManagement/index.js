@@ -68,14 +68,14 @@ const Index = props => {
       dataIndex: 'contract',
       key: 'fromCompany',
       width: 200,
-      render: value => <Ellipsis value={value?.fromCompany} width={150} />,
+      render: value => <Ellipsis value={value?.toCompany} width={150} />,
     },
     {
       title: '卖方/发货单位',
       dataIndex: 'contract',
       key: 'toCompany',
       width: 200,
-      render: value => <Ellipsis value={value?.toCompany} width={150} />,
+      render: value => <Ellipsis value={value?.fromCompany} width={150} />,
     },
     {
       title: '货品名称',
