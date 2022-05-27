@@ -22,6 +22,8 @@ const PoundList = props => {
    * 5. 监听选中表头：更新表头ref
    */
   const defaultColumns = [
+    'status',
+    'poundId',
     'trailerPlateNumber',
     'toCompany',
     'goodsType',
@@ -46,6 +48,19 @@ const PoundList = props => {
       title: '出站时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
+      width: 200,
+    },
+    {
+      title: '磅单状态',
+      dataIndex: 'status',
+      key: 'status',
+      width: 200,
+      render: value => (value === 1 ? '正常' : '作废'),
+    },
+    {
+      title: '单号',
+      dataIndex: 'poundId',
+      key: 'poundId',
       width: 200,
     },
     {
@@ -194,6 +209,8 @@ const PoundList = props => {
     isDelete: undefined,
     dateStatus: props.dateTime.dateStatus,
     goodsType: '',
+    status: 0,
+    poundId: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -247,10 +264,22 @@ const PoundList = props => {
     setQuery(() => ({ ...query, plate }));
   });
 
+  // 单号
+  const handleChangePoundId = useCallback(e => {
+    const poundId = e.target.value;
+    setQuery(() => ({ ...query, poundId }));
+  });
+
   // 是否修改
   const handleChangeIsModify = useCallback(value => {
     const isModify = value;
     setQuery(() => ({ ...query, isModify }));
+  });
+
+  // 磅单状态
+  const handleStatus = useCallback(value => {
+    const status = value;
+    setQuery(() => ({ ...query, status }));
   });
 
   // 是否删除
@@ -291,6 +320,8 @@ const PoundList = props => {
       isModify: undefined,
       isDelete: undefined,
       goodsType: '',
+      status: 0,
+      poundId: '',
     };
     setTimeout(() => {
       setQuery(query);
@@ -319,6 +350,7 @@ const PoundList = props => {
 
       const params = {
         ...query,
+        status: query.status || undefined,
         type: 0,
         keyList: keyList.join(' '),
         titleList: titleList.join(' '),
@@ -398,6 +430,8 @@ const PoundList = props => {
     isDelete,
     goodsType,
     dateStatus,
+    status,
+    poundId,
   }) => {
     setLoading(true);
 
@@ -413,6 +447,8 @@ const PoundList = props => {
       isDelete,
       goodsType,
       dateStatus,
+      status: status || undefined,
+      poundId: poundId || undefined,
     };
 
     const res = await pound.getBillReport({ params });
@@ -444,6 +480,8 @@ const PoundList = props => {
           isDelete,
           goodsType,
           dateStatus,
+          status,
+          poundId,
         },
       });
 
@@ -559,6 +597,23 @@ const PoundList = props => {
             <Option value={true}>是</Option>
             <Option value={false}>否</Option>
           </Select>
+        </Search.Item>
+
+        <Search.Item label="磅单状况">
+          <Select
+            value={query.status}
+            allowClear
+            placeholder="请选择"
+            style={{ width: '100%' }}
+            onChange={handleStatus}>
+            <Option value={0}>全部</Option>
+            <Option value={1}>正常</Option>
+            <Option value={2}>作废</Option>
+          </Select>
+        </Search.Item>
+
+        <Search.Item label="单号">
+          <Input allowClear value={query.poundId} placeholder="请输入单号" onChange={handleChangePoundId} />
         </Search.Item>
       </Search>
       <div style={{ margin: '16px 0' }}>

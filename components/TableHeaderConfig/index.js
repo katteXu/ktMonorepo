@@ -64,8 +64,10 @@ const HeaderConfig = ({ onChange, columns = [], showColumns, onRestore, type, he
           .map(col => {
             return (
               <Item className={styles['col-item']} key={col.key}>
-                <Checkbox defaultChecked={true} checked={selectedColumns.includes(col.key)} />
-                <span className={styles['col-name']}>{col.title}</span>
+                <Checkbox defaultChecked={true} checked={selectedColumns.includes(col.key)}>
+                  {col.title}
+                </Checkbox>
+                {/* <span className={styles['col-name']}>{col.title}</span> */}
               </Item>
             );
           })}
