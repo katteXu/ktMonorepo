@@ -88,7 +88,6 @@ const Index = props => {
       title: '订单量',
       dataIndex: 'totalAmount',
       width: 150,
-      align: 'right',
       render: (value, record) => `${Format.weight(value)}${record.unitName || ''}`,
     },
     {
@@ -101,7 +100,6 @@ const Index = props => {
       title: '订单剩余量',
       dataIndex: 'remainAmount',
       width: 150,
-      align: 'right',
       render: (value, record) => `${Format.weight(value)}${record.unitName || ''}`,
     },
     {

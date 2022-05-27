@@ -112,7 +112,7 @@ const Index = ({ onSubmit, data = {} }) => {
         fleet: data?.route?.fleetCaptionPhone ? '1' : '0',
         fleetCaptionPhone: data?.route?.fleetCaptionPhone,
         fleetCaptionName: data?.route?.fleetCaptionName,
-        payInto: data?.route?.payInto?.toString(),
+        payInto: data?.route?.payInto?.toString() || '1',
         infoFeeUnitName: data?.route?.unitInfoFee !== 0 ? 1 : 0,
         unitInfoFee: Format.price(data?.route?.unitInfoFee),
         serviceFee: Format.price(data?.route?.serviceFee),
@@ -168,7 +168,7 @@ const Index = ({ onSubmit, data = {} }) => {
         isFleet && values.infoFeeUnitName === 0
           ? values.unitInfoFee && (values.unitInfoFee * 100).toFixed(0) * 1
           : undefined,
-      payInto: isFleet ? values.payInto : '1',
+      payInto: isFleet === '1' ? values.payInto : '1',
       payMethod: values.payMethod,
       lossMark: values.lossMark ? '1' : '0',
       lossAmount: values.lossAmount ? (values.lossAmount * 1000).toFixed(0) * 1 : undefined,
