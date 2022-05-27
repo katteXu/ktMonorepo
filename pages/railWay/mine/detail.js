@@ -327,7 +327,7 @@ const RailWayDetail = props => {
                 onClick={setRailWayStatus}>
                 {status === 'CLOSE' ? '开启' : '关闭'}专线
               </Button>
-              {routeKind !== 1 && (
+              {routeKind !== 2 && (
                 <Button
                   style={{
                     marginLeft: 12,
@@ -357,7 +357,7 @@ const RailWayDetail = props => {
                 <div className={styles.item} style={{ flex: dataInfo.businessType === 2 ? 1 : 1.5 }}>
                   <span className={styles.label}>有效时间：</span>
                   <span style={{ marginRight: 9 }}>{loadTime}</span>
-                  {canEdit && startLoadTime && routeKind !== 1 && (
+                  {canEdit && startLoadTime && routeKind !== 2 && (
                     <span
                       style={{
                         color: '#477AEF',
@@ -506,7 +506,7 @@ const RailWayDetail = props => {
                   {dataInfo.fleetCaptionId ? (
                     <>
                       <span>{unitPrice ? `${unitPrice} 元/${dataInfo.unitName}` : '-'}</span>
-                      {canEdit && routeKind !== 1 && (
+                      {canEdit && routeKind !== 2 && (
                         <span
                           style={{
                             color: '#477AEF',
@@ -583,7 +583,7 @@ const RailWayDetail = props => {
                   {totalAmount
                     ? `${(totalAmount / 1000).toFixed(dataInfo.unitName === '吨' ? 2 : 0)} ${dataInfo.unitName}`
                     : '-'}
-                  {canEdit && routeKind !== 1 && (
+                  {canEdit && routeKind !== 2 && (
                     <span
                       style={{
                         color: '#477AEF',

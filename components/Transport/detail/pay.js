@@ -153,7 +153,7 @@ const Pay = props => {
               <span style={{ display: 'inline-block' }}>
                 {unitPrice} 元/{unitName || '吨'}
               </span>
-              {status === 'CHECKING' && routeKind !== 1 ? (
+              {status === 'CHECKING' && routeKind !== 2 ? (
                 <span
                   style={{ color: '#477AEF', marginLeft: 9, cursor: 'pointer' }}
                   onClick={() => setEditUnitPrice(true)}>
