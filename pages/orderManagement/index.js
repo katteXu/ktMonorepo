@@ -102,13 +102,13 @@ const Index = props => {
       dataIndex: 'remainAmount',
       width: 150,
       align: 'right',
-      render: Format.weight,
+      render: (value, record) => `${Format.weight(value)}${record.unitName || ''}`,
     },
     {
       title: '剩余单号量',
       dataIndex: 'remainNumber',
       width: 150,
-      render: (value, record) => `${Format.weight(value)}${record.unitName || ''}`,
+      render: value => value || '-',
     },
     {
       title: '已使用单号量',
