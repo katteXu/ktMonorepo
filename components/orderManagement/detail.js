@@ -170,17 +170,21 @@ const Index = props => {
             </div>
           </div>
           <div className={styles.row}>
-            <div className={styles.item}>
-              <span className={styles.label}>信息费收取：</span>按{infoFeeUnitName === 0 ? '车' : '吨'}收
-            </div>
-            <div className={styles.item}>
-              <span className={styles.label}>信息费单价：</span>
-              {dataInfo?.route
-                ? `${Format.price(dataInfo?.route?.serviceFee || dataInfo?.route?.unitInfoFee)} 元/${
-                    infoFeeUnitName === 0 ? '车' : '吨'
-                  }`
-                : '-'}
-            </div>
+            {dataInfo?.route?.fleetCaptionPhone && (
+              <div className={styles.item}>
+                <span className={styles.label}>信息费收取：</span>按{infoFeeUnitName === 0 ? '车' : '吨'}收
+              </div>
+            )}
+            {dataInfo?.route?.fleetCaptionPhone && (
+              <div className={styles.item}>
+                <span className={styles.label}>信息费单价：</span>
+                {dataInfo?.route
+                  ? `${Format.price(dataInfo?.route?.serviceFee || dataInfo?.route?.unitInfoFee)} 元/${
+                      infoFeeUnitName === 0 ? '车' : '吨'
+                    }`
+                  : '-'}
+              </div>
+            )}
             <div className={styles.item}>
               <span className={styles.label}>结算方式：</span>
               {payMethodStatus[dataInfo?.route?.payMethod] || '-'}

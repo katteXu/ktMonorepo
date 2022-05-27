@@ -476,31 +476,33 @@ const RailWayDetail = props => {
                 <div className={styles.item} style={{ display: 'flex', alignItems: 'center' }}>
                   <span className={styles.label}>
                     运费单价
-                    <Tooltip
-                      placement="right"
-                      overlayStyle={{
-                        maxWidth: 'max-content',
-                        padding: '0 10px',
-                      }}
-                      title={
-                        <div>
-                          <p style={{ marginBottom: 0 }}>单价编辑说明：</p>
-                          <p style={{ marginTop: 8 }}>
-                            编辑后不会影响已抢单的司机运费单价
-                            <br />
-                            若司机抢错单价，可在结算时跟司机协商更改结算单价。
-                          </p>
-                        </div>
-                      }>
-                      <QuestionCircleFilled
-                        style={{
-                          cursor: 'pointer',
-                          color: '#D0D4DB',
-                          marginRight: 4,
-                          marginLeft: 4,
+                    {routeKind !== 2 && (
+                      <Tooltip
+                        placement="right"
+                        overlayStyle={{
+                          maxWidth: 'max-content',
+                          padding: '0 10px',
                         }}
-                      />
-                    </Tooltip>
+                        title={
+                          <div>
+                            <p style={{ marginBottom: 0 }}>单价编辑说明：</p>
+                            <p style={{ marginTop: 8 }}>
+                              编辑后不会影响已抢单的司机运费单价
+                              <br />
+                              若司机抢错单价，可在结算时跟司机协商更改结算单价。
+                            </p>
+                          </div>
+                        }>
+                        <QuestionCircleFilled
+                          style={{
+                            cursor: 'pointer',
+                            color: '#D0D4DB',
+                            marginRight: 4,
+                            marginLeft: 4,
+                          }}
+                        />
+                      </Tooltip>
+                    )}
                     ：
                   </span>
                   {dataInfo.fleetCaptionId ? (
@@ -534,6 +536,7 @@ const RailWayDetail = props => {
                       )}
 
                       {canEdit &&
+                        routeKind !== 2 &&
                         (!showUnitPrice ? (
                           <span
                             style={{

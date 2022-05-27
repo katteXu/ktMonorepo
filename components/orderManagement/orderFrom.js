@@ -114,10 +114,11 @@ const Index = ({ onSubmit, data = {} }) => {
         fleetCaptionName: data?.route?.fleetCaptionName,
         payInto: data?.route?.payInto?.toString(),
         infoFeeUnitName: data?.route?.unitInfoFee !== 0 ? 1 : 0,
-        unitInfoFee: data?.route?.unitInfoFee,
+        unitInfoFee: Format.price(data?.route?.unitInfoFee),
+        serviceFee: Format.price(data?.route?.serviceFee),
         payMethod: data?.route?.payMethod?.toString(),
         lossMark: data?.route?.lossMark,
-        lossAmount: data?.route?.lossAmount,
+        lossAmount: Format.price(data?.route?.lossAmount),
         eraseZero: data?.route?.eraseZero,
         validDate: data?.route?.validDate?.toString(),
       });
@@ -167,7 +168,7 @@ const Index = ({ onSubmit, data = {} }) => {
         isFleet && values.infoFeeUnitName === 0
           ? values.unitInfoFee && (values.unitInfoFee * 100).toFixed(0) * 1
           : undefined,
-      payInto: isFleet ? values.payInto : undefined,
+      payInto: isFleet ? values.payInto : '1',
       payMethod: values.payMethod,
       lossMark: values.lossMark ? '1' : '0',
       lossAmount: values.lossAmount ? (values.lossAmount * 1000).toFixed(0) * 1 : undefined,
