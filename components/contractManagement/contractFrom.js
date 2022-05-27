@@ -62,12 +62,24 @@ const Index = () => {
     });
   }, [totalWeight, unitePrice]);
 
+  const beforeUpload = (file) => {
+    const isLt10M = file.size / (1024 * 10) < 10;
+    if (!isLt10M) {
+      message.error('上传文件单个大小限制10M内!');
+    }
+    return isLt10M;
+  };
+
   // 表单提交
   const handleSubmit = async values => {
     const isTime = moment().format('YYYY-MM-DD') === moment(values.effectiveDateFrom).format('YYYY-MM-DD');
 
+    let fileflag=false;
     const file = values.files.map(item => {
       const { response = {} } = item;
+      if ( !response.fileName || !response.fileUrl) {
+        fileflag=true
+      }
       return { name: response.fileName, url: response.fileUrl };
     });
 
@@ -94,6 +106,11 @@ const Index = () => {
       annex_url: JSON.stringify(file),
       relation_contracts: selectedRowKeysItem.join(','),
     };
+
+    if ( fileflag ) {
+      message.error('上传附件有错误或正在上传中!');
+      return;
+    }
 
     const res = await contract.create_contract({ params });
     if (res.status === 0) {
@@ -506,13 +523,17 @@ const Index = () => {
         <Form.Item
           label="上传附件"
           name="files"
+          valuePropName="fileList"
           rules={[
             {
               required: true,
               message: '附件不可为空',
             },
           ]}>
-          <UploadToOSS accept=".jpg,.png,.doc,.docx,.pdf,.xlsx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+          <UploadToOSS
+            beforeUpload={beforeUpload}
+            maxCount={9}
+            accept=".jpg,.png,.doc,.docx,.pdf,.xlsx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
             <Button>
               <UploadOutlined />
               点击上传
