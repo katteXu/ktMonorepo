@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import router from 'next/router';
 import { QuestionCircleFilled } from '@ant-design/icons';
-import { Table, Button, Input, message, Popconfirm, Select } from 'antd';
+import { Table, Button, Input, message, Popconfirm, Select, Modal } from 'antd';
 import { Search, Msg, Ellipsis, TableHeaderConfig, AutoInput, DrawerInfo } from '@components';
 import { Permission } from '@store';
 import moment from 'moment';
@@ -210,6 +210,9 @@ const PoundList = props => {
                 </Button>
               </Popconfirm>
             )}
+            <Button size="small" type="link" onClick={() => handleDropPound(record.id)}>
+              作废
+            </Button>
           </div>
         );
       },
@@ -551,6 +554,25 @@ const PoundList = props => {
     } else {
       message.error(`${res.detail || res.description}`);
     }
+  };
+
+  const handleDropPound = id => {
+    Modal.confirm({
+      title: '确定作废该订单？',
+      icon: <QuestionCircleFilled />,
+      autoFocusButton: null,
+      centered: true,
+      onOk: async () => {
+        const r = await pound.setPoundBillStatus({ id, status: 2 });
+
+        if (r.status === 0) {
+          message.success('磅单作废成功');
+          getTableData({ ...query });
+        } else {
+          message.error(r.detail || r.description);
+        }
+      },
+    });
   };
 
   return (
