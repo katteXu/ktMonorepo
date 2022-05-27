@@ -118,7 +118,7 @@ const Index = ({ onSubmit, data = {} }) => {
         serviceFee: Format.price(data?.route?.serviceFee),
         payMethod: data?.route?.payMethod?.toString(),
         lossMark: data?.route?.lossMark,
-        lossAmount: Format.price(data?.route?.lossAmount),
+        lossAmount: Format.weight(data?.route?.lossAmount),
         eraseZero: data?.route?.eraseZero,
         validDate: data?.route?.validDate?.toString(),
       });
