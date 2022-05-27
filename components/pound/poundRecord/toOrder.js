@@ -3,7 +3,7 @@ import router from 'next/router';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { Table, Button, Input, message, Popconfirm, Select, Modal } from 'antd';
 import { Search, Msg, Ellipsis, TableHeaderConfig, AutoInput, DrawerInfo } from '@components';
-import { Permission } from '@store';
+import { Permission, WhiteList } from '@store';
 import moment from 'moment';
 import { keepState, getState, clearState, Format } from '@utils/common';
 import { pound, vehicleRegister, downLoadFile, getColumnsByTable, setColumnsByTable } from '@api';
@@ -12,6 +12,7 @@ import DatePicker from '@components/pound/DatePicker/static';
 
 const Option = Select.Option;
 const PoundList = props => {
+  const { whiteList } = WhiteList.useContainer();
   const { permissions, isSuperUser } = Permission.useContainer();
   /**
    * 表头设置
@@ -210,9 +211,11 @@ const PoundList = props => {
                 </Button>
               </Popconfirm>
             )}
-            <Button size="small" type="link" onClick={() => handleDropPound(record.id)}>
-              作废
-            </Button>
+            {whiteList.lingShi && (
+              <Button size="small" type="link" onClick={() => handleDropPound(record.id)}>
+                作废
+              </Button>
+            )}
           </div>
         );
       },

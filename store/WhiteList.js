@@ -42,6 +42,7 @@ const useWhiteList = () => {
         setWhiteList({
           ...whiteList,
           heShun: true,
+          lingShi: true,
         });
       }
     }
