@@ -141,10 +141,21 @@ const Index = ({ onSubmit, data = {} }) => {
     }
   };
 
+  const beforeUpload = file => {
+    const isLt10M = file.size / 1024 / 1024 < 10;
+    if (!isLt10M) {
+      message.error('上传文件单个大小限制10M内!');
+    }
+    return isLt10M;
+  };
+
   // 表单提交
   const handleSubmit = async values => {
     const file = values.files.map(item => {
       const { response = {} } = item;
+      if (!response.fileName || !response.fileUrl) {
+        fileflag = true;
+      }
       return { name: response.fileName, url: response.fileUrl };
     });
 
@@ -178,6 +189,11 @@ const Index = ({ onSubmit, data = {} }) => {
 
     if (params.unitName === '吨' && values.infoFeeUnitName === 1 && params.unitInfoFee * 2 > params.unitPrice) {
       message.warn('信息费单价不可超过运费单价的50%，请重新输入');
+      return;
+    }
+
+    if (fileflag) {
+      message.error('上传附件有错误或正在上传中!');
       return;
     }
 
@@ -466,7 +482,10 @@ const Index = ({ onSubmit, data = {} }) => {
               message: '附件不可为空',
             },
           ]}>
-          <UploadToOSS accept=".jpg,.png,.doc,.docx,.pdf,.xlsx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+          <UploadToOSS
+            beforeUpload={beforeUpload}
+            maxCount={9}
+            accept=".jpg,.png,.doc,.docx,.pdf,.xlsx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
             <Button>
               <UploadOutlined />
               点击上传
