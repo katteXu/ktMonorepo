@@ -37,6 +37,11 @@ const Index = () => {
   const [showAssociatedContract, setShowAssociatedContract] = useState(false);
   const [selectedRowKeysItem, setSelectedRowKeysItem] = useState([]);
 
+  // 收货地址
+  const [toAddress, setToAddress] = useState({});
+  // 发货地址
+  const [fromAddress, setFromAddress] = useState({});
+
   // 签订时间
   const [signDate, setSignDate] = useState();
 
@@ -58,7 +63,8 @@ const Index = () => {
   }, [totalWeight, unitePrice]);
 
   const beforeUpload = (file) => {
-    const isLt10M = file.size / (1024 * 10) < 10;
+    console.log(file.size)
+    const isLt10M = file.size / 1024 / 1024 < 10 ;
     if (!isLt10M) {
       message.error('上传文件单个大小限制10M内!');
     }
@@ -79,10 +85,13 @@ const Index = () => {
     });
 
     const params = {
+      contract_no: values.contractNo,
       title: values.title,
       contractType: values.contractType,
       fromAddressCompanyId: saleCompany.id,
+      from_address_id: fromAddress.id, // 发货地址 id
       toAddressCompanyId: purchaseCompany.id,
+      to_address_id: toAddress.id, // 收货地址 id
       goodsNameId: values.goodsNameId.value,
       totalWeight: (values.totalWeight * 1000).toFixed(0),
       unitePrice: Math.ceil(values.unitePrice * 100),
@@ -141,6 +150,13 @@ const Index = () => {
           deliveryType: 'DAY',
         }}>
         <Form.Item
+          label="合同编号"
+          name="contractNo"
+          rules={[{ required: true, whitespace: true, message: '内容不可为空' }]}>
+          <Input placeholder="请输入合同编号" style={{ width: 264 }} />
+        </Form.Item>
+
+        <Form.Item
           label="合同名称"
           name="title"
           rules={[
@@ -195,6 +211,28 @@ const Index = () => {
             />
           </Form.Item>
         )}
+
+        <Form.Item
+          label="收货地址"
+          name="validateToAddressName"
+          validateFirst={true}
+          rules={[{ required: true, whitespace: true, message: '内容不可为空' }]}>
+          <SelectBtn
+            style={{ width: 480 }}
+            value={toAddress.loadAddressName}
+            filter={fromAddress}
+            mode="input"
+            type="contractAddress"
+            title="收货地址"
+            onChange={address => {
+              setToAddress(address);
+              form.setFieldsValue({
+                validateToAddressName: address.loadAddressName,
+              });
+            }}
+          />
+        </Form.Item>
+
         {Object.keys(saleCompany).length > 0 ? (
           <Form.Item label="发货企业" required>
             <SelectBtn
@@ -228,6 +266,28 @@ const Index = () => {
             />
           </Form.Item>
         )}
+
+        <Form.Item
+          label="发货地址"
+          required
+          name="validateFromAddressName"
+          rules={[{ required: true, whitespace: true, message: '内容不可为空' }]}>
+          <SelectBtn
+            style={{ width: 480 }}
+            value={fromAddress.loadAddressName}
+            filter={toAddress}
+            mode="input"
+            type="contractAddress"
+            title="发货地址"
+            onChange={address => {
+              setFromAddress(address);
+              form.setFieldsValue({
+                validateFromAddressName: address.loadAddressName,
+              });
+            }}
+          />
+        </Form.Item>
+
         <Form.Item
           label="货品名称"
           name="goodsNameId"
@@ -342,7 +402,7 @@ const Index = () => {
                 },
               },
             ]}>
-            <Input placeholder="请输入提货量" style={{ width: 264 }} addonAfter={'元'} />
+            <Input placeholder="请输入提货量" style={{ width: 264 }} />
             {/* <Form.Item name="deliveryType" validateFirst={true} style={{ position: 'absolute', right: 312, top: 0 }}>
             <Select style={{ width: 85, position: 'relative', left: 18, top: -1 }} className={styles.deliveryType}>
               <Select.Option value="DAY">吨/天</Select.Option>
