@@ -63,7 +63,8 @@ const Index = () => {
   }, [totalWeight, unitePrice]);
 
   const beforeUpload = (file) => {
-    const isLt10M = file.size / (1024 * 10) < 10;
+    console.log(file.size)
+    const isLt10M = file.size / 1024 / 1024 < 10 ;
     if (!isLt10M) {
       message.error('上传文件单个大小限制10M内!');
     }
