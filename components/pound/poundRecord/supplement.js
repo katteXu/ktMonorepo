@@ -43,7 +43,7 @@ const Supplement = ({ poundType, onClose, onSubmit }) => {
           (
             obj,
             {
-              orderNo,
+              poundId,
               time,
               carWeight,
               trailerPlateNumber,
@@ -57,7 +57,7 @@ const Supplement = ({ poundType, onClose, onSubmit }) => {
           ) => {
             let numReg = /^-?(\d+|\d+\.\d{1,2})$/;
             let record = {
-              orderNo,
+              poundId,
               time,
               trailerPlateNumber: trailerPlateNumber.toUpperCase(),
               mobilePhoneNumber,

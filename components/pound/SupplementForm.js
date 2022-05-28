@@ -17,7 +17,7 @@ const EditableTable = (props, ref) => {
     {
       key: 0,
       time: '',
-      orderNo: '',
+      poundId: '',
       trailerPlateNumber: '',
       mobilePhoneNumber: '',
       totalWeight: '',
@@ -40,7 +40,7 @@ const EditableTable = (props, ref) => {
     },
     {
       title: '单号',
-      dataIndex: 'orderNo',
+      dataIndex: 'poundId',
       width: '152px',
       editable: true,
     },
@@ -177,7 +177,7 @@ const EditableTable = (props, ref) => {
       loss,
       totalWeight,
       mobilePhoneNumber,
-      orderNo,
+      poundId,
       time,
     } = values;
 
@@ -196,7 +196,7 @@ const EditableTable = (props, ref) => {
       loss,
       totalWeight,
       mobilePhoneNumber,
-      orderNo,
+      poundId,
       time: time.format('YYYY-MM-DD HH:mm:ss'),
     };
   };
@@ -290,7 +290,7 @@ const EditableTable = (props, ref) => {
     const newData = {
       key: data.length,
       time: '',
-      orderNo: '',
+      poundId: '',
       trailerPlateNumber: '',
       mobilePhoneNumber: '',
       totalWeight: '',
@@ -331,9 +331,9 @@ const EditableTable = (props, ref) => {
     if (!data.length) {
       message.warning('至少添加一条磅单');
     } else {
-      let { orderNo, trailerPlateNumber, mobilePhoneNumber, totalWeight, carWeight, goodsWeight } = data.slice(-1)[0];
+      let { poundId, trailerPlateNumber, mobilePhoneNumber, totalWeight, carWeight, goodsWeight } = data.slice(-1)[0];
       if (
-        (orderNo || !whiteList.lingShi) &&
+        (poundId || !whiteList.lingShi) &&
         trailerPlateNumber &&
         mobilePhoneNumber &&
         totalWeight &&
@@ -357,7 +357,7 @@ const EditableTable = (props, ref) => {
             const newData = {
               key: 0,
               time: '',
-              orderNo: '',
+              poundId: '',
               trailerPlateNumber: '',
               mobilePhoneNumber: '',
               totalWeight: '',
@@ -391,7 +391,7 @@ const EditableTable = (props, ref) => {
       if (props.poundType === 'from' && (c.dataIndex === 'fromGoodsWeight' || c.dataIndex === 'loss')) {
         return false;
       }
-      if (c.dataIndex === 'orderNo' && !whiteList.lingShi) {
+      if (c.dataIndex === 'poundId' && !whiteList.lingShi) {
         return false;
       }
       return true;
@@ -431,7 +431,7 @@ const EditableTable = (props, ref) => {
 
     const getFormItem = () => {
       switch (dataIndex) {
-        case 'orderNo':
+        case 'poundId':
           return (
             <Form.Item
               name={dataIndex}
