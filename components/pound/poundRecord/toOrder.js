@@ -641,7 +641,7 @@ const PoundList = props => {
           </Select>
         </Search.Item>
 
-        <Search.Item label="磅单状况">
+        <Search.Item label="磅单状态">
           <Select
             value={query.status}
             allowClear
