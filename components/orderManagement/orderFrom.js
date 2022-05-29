@@ -151,6 +151,7 @@ const Index = ({ onSubmit, data = {} }) => {
 
   // 表单提交
   const handleSubmit = async values => {
+    let fileflag = false;
     const file = values.files.map(item => {
       const { response = {} } = item;
       if (!response.fileName || !response.fileUrl) {
