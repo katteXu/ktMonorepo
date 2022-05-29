@@ -188,7 +188,11 @@ const PoundList = props => {
               </Popconfirm>
             )}
             {whiteList.lingShi && (
-              <Button size="small" type="link" onClick={() => handleDropPound(record.id)}>
+              <Button
+                disabled={record.status === 2}
+                size="small"
+                type="link"
+                onClick={() => handleDropPound(record.id)}>
                 作废
               </Button>
             )}
