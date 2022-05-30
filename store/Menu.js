@@ -12,7 +12,7 @@ const MENU_LIST = [
   },
   {
     module: 'orderManagement',
-    icon: 'book',
+    icon: 'fileText',
     name: '订单管理',
     key: 'orderManagement',
   },
