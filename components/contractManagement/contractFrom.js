@@ -543,9 +543,8 @@ const Index = () => {
         </Form.Item>
         <div
           style={{ width: '620px', paddingLeft: '10px', marginBottom: '24px', color: '#808080FF', fontSize: '14px' }}>
-          <div>
-            支持word、pdf、png、jpg格式，最多支持上传9个文件，文件大小需小于10mb附件内容中需清晰展示以下内容，如信息不全可能会影响到煤炭运输:
-          </div>
+          <div>支持word、pdf、png、jpg格式，最多支持上传9个文件，文件大小需小于10mb</div>
+          <div>附件内容中需清晰展示以下内容，如信息不全可能会影响到煤炭运输:</div>
           <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
             <div style={{ marginRight: '4px' }}>1.合同有效期</div>
             <div style={{ marginRight: '4px' }}>2.运输、交(提货方式)及时间</div>

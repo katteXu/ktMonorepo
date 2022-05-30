@@ -494,6 +494,12 @@ const Index = ({ onSubmit, data = {} }) => {
           </UploadToOSS>
         </Form.Item>
 
+        <div
+          style={{ width: '620px', paddingLeft: '40px', marginBottom: '24px', color: '#808080FF', fontSize: '14px' }}>
+          <div>支持word、pdf、png、jpg格式，最多支持上传9个文件，文件大小需小于10mb</div>
+          <div>附件内容中需清晰展示承运关键信息，如信息不全可能会影响到煤炭运输。</div>
+        </div>
+
         <div className={styles.title}>
           <span className={styles.line}></span>专线信息
         </div>
