@@ -6,15 +6,18 @@ import moment from 'moment';
 import styles from './supplement.less';
 import { ChildTitle } from '@components';
 import { QuestionCircleFilled, PlusOutlined } from '@ant-design/icons';
+import { WhiteList } from '@store';
 const EditableContext = React.createContext();
 
 // class EditableTable extends React.Component {
 const EditableTable = (props, ref) => {
+  const { whiteList } = WhiteList.useContainer();
   const [form] = Form.useForm();
   const [data, setData] = useState([
     {
       key: 0,
       time: '',
+      poundId: '',
       trailerPlateNumber: '',
       mobilePhoneNumber: '',
       totalWeight: '',
@@ -33,6 +36,12 @@ const EditableTable = (props, ref) => {
       title: '日期',
       dataIndex: 'time',
       width: '232px',
+      editable: true,
+    },
+    {
+      title: '单号',
+      dataIndex: 'poundId',
+      width: '152px',
       editable: true,
     },
     {
@@ -119,7 +128,7 @@ const EditableTable = (props, ref) => {
               placement="topRight"
               icon={<QuestionCircleFilled />}
               onConfirm={() => handleRemove(record.key)}>
-              <Button type="link" danger style={{ padding: 0, border: 'none', margin: 0 }} danger>
+              <Button type="link" danger style={{ padding: 0, border: 'none', margin: 0 }}>
                 删除
               </Button>
             </Popconfirm>
@@ -168,6 +177,7 @@ const EditableTable = (props, ref) => {
       loss,
       totalWeight,
       mobilePhoneNumber,
+      poundId,
       time,
     } = values;
 
@@ -186,6 +196,7 @@ const EditableTable = (props, ref) => {
       loss,
       totalWeight,
       mobilePhoneNumber,
+      poundId,
       time: time.format('YYYY-MM-DD HH:mm:ss'),
     };
   };
@@ -279,6 +290,7 @@ const EditableTable = (props, ref) => {
     const newData = {
       key: data.length,
       time: '',
+      poundId: '',
       trailerPlateNumber: '',
       mobilePhoneNumber: '',
       totalWeight: '',
@@ -319,8 +331,15 @@ const EditableTable = (props, ref) => {
     if (!data.length) {
       message.warning('至少添加一条磅单');
     } else {
-      let { trailerPlateNumber, mobilePhoneNumber, totalWeight, carWeight, goodsWeight } = data.slice(-1)[0];
-      if (trailerPlateNumber && mobilePhoneNumber && totalWeight && carWeight && goodsWeight) {
+      let { poundId, trailerPlateNumber, mobilePhoneNumber, totalWeight, carWeight, goodsWeight } = data.slice(-1)[0];
+      if (
+        (poundId || !whiteList.lingShi) &&
+        trailerPlateNumber &&
+        mobilePhoneNumber &&
+        totalWeight &&
+        carWeight &&
+        goodsWeight
+      ) {
         let selectedRowKeysTemp = [];
 
         if (!selectedRowKeys.length) {
@@ -338,6 +357,7 @@ const EditableTable = (props, ref) => {
             const newData = {
               key: 0,
               time: '',
+              poundId: '',
               trailerPlateNumber: '',
               mobilePhoneNumber: '',
               totalWeight: '',
@@ -369,6 +389,9 @@ const EditableTable = (props, ref) => {
   const _columns = columns
     .filter(c => {
       if (props.poundType === 'from' && (c.dataIndex === 'fromGoodsWeight' || c.dataIndex === 'loss')) {
+        return false;
+      }
+      if (c.dataIndex === 'poundId' && !whiteList.lingShi) {
         return false;
       }
       return true;
@@ -408,6 +431,21 @@ const EditableTable = (props, ref) => {
 
     const getFormItem = () => {
       switch (dataIndex) {
+        case 'poundId':
+          return (
+            <Form.Item
+              name={dataIndex}
+              style={{ margin: 0 }}
+              rules={[
+                {
+                  required: whiteList.lingShi,
+                  message: '请输入单号',
+                },
+              ]}>
+              <Input placeholder="请输入单号" />
+            </Form.Item>
+          );
+
         case 'trailerPlateNumber':
           return (
             <Form.Item

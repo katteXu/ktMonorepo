@@ -42,11 +42,22 @@ const Supplement = ({ poundType, onClose, onSubmit }) => {
         .reduce(
           (
             obj,
-            { time, carWeight, trailerPlateNumber, goodsWeight, fromGoodsWeight, loss, totalWeight, mobilePhoneNumber },
+            {
+              poundId,
+              time,
+              carWeight,
+              trailerPlateNumber,
+              goodsWeight,
+              fromGoodsWeight,
+              loss,
+              totalWeight,
+              mobilePhoneNumber,
+            },
             idx
           ) => {
             let numReg = /^-?(\d+|\d+\.\d{1,2})$/;
             let record = {
+              poundId,
               time,
               trailerPlateNumber: trailerPlateNumber.toUpperCase(),
               mobilePhoneNumber,

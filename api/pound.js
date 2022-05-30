@@ -444,6 +444,15 @@ const updateManPayGoodsUnitPrice = ({ params } = {}) => {
   });
 };
 
+// 作废磅单(修改磅单状态)
+const setPoundBillStatus = params => {
+  return request({
+    method: 'post',
+    url: 'api/v_saas/poundReport/setPoundBillStatus',
+    data: params,
+  });
+};
+
 export default {
   getBillReport,
   getBillMonthReport,
@@ -498,4 +507,6 @@ export default {
   manPaySetInfo,
   manPaySet,
   updateManPayGoodsUnitPrice,
+
+  setPoundBillStatus,
 };

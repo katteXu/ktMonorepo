@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import router from 'next/router';
 import { QuestionCircleFilled } from '@ant-design/icons';
-import { Table, Button, Input, message, Popconfirm, Select } from 'antd';
+import { Table, Button, Input, message, Popconfirm, Select, Modal } from 'antd';
 import { Search, Msg, Ellipsis, TableHeaderConfig, AutoInput, DrawerInfo } from '@components';
-import { Permission } from '@store';
+import { Permission, WhiteList } from '@store';
 import moment from 'moment';
 import { keepState, getState, clearState, Format } from '@utils/common';
 import { pound, vehicleRegister, downLoadFile, getColumnsByTable, setColumnsByTable } from '@api';
@@ -11,6 +11,7 @@ import Supplement from '@components/pound/poundRecord/supplement';
 import DatePicker from '@components/pound/DatePicker/static';
 const Option = Select.Option;
 const PoundList = props => {
+  const { whiteList } = WhiteList.useContainer();
   const { permissions, isSuperUser } = Permission.useContainer();
   /**
    * 表头设置
@@ -22,6 +23,8 @@ const PoundList = props => {
    * 5. 监听选中表头：更新表头ref
    */
   const defaultColumns = [
+    'status',
+    'poundId',
     'trailerPlateNumber',
     'toCompany',
     'goodsType',
@@ -46,6 +49,19 @@ const PoundList = props => {
       title: '出站时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
+      width: 200,
+    },
+    {
+      title: '磅单状态',
+      dataIndex: 'status',
+      key: 'status',
+      width: 200,
+      render: value => (value === 1 ? '正常' : '作废'),
+    },
+    {
+      title: '单号',
+      dataIndex: 'poundId',
+      key: 'poundId',
       width: 200,
     },
     {
@@ -171,6 +187,15 @@ const PoundList = props => {
                 </Button>
               </Popconfirm>
             )}
+            {whiteList.lingShi && (
+              <Button
+                disabled={record.status === 2}
+                size="small"
+                type="link"
+                onClick={() => handleDropPound(record.id)}>
+                作废
+              </Button>
+            )}
           </div>
         );
       },
@@ -194,6 +219,8 @@ const PoundList = props => {
     isDelete: undefined,
     dateStatus: props.dateTime.dateStatus,
     goodsType: '',
+    status: 0,
+    poundId: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -247,10 +274,22 @@ const PoundList = props => {
     setQuery(() => ({ ...query, plate }));
   });
 
+  // 单号
+  const handleChangePoundId = useCallback(e => {
+    const poundId = e.target.value;
+    setQuery(() => ({ ...query, poundId }));
+  });
+
   // 是否修改
   const handleChangeIsModify = useCallback(value => {
     const isModify = value;
     setQuery(() => ({ ...query, isModify }));
+  });
+
+  // 磅单状态
+  const handleStatus = useCallback(value => {
+    const status = value;
+    setQuery(() => ({ ...query, status }));
   });
 
   // 是否删除
@@ -291,6 +330,8 @@ const PoundList = props => {
       isModify: undefined,
       isDelete: undefined,
       goodsType: '',
+      status: 0,
+      poundId: '',
     };
     setTimeout(() => {
       setQuery(query);
@@ -319,6 +360,7 @@ const PoundList = props => {
 
       const params = {
         ...query,
+        status: query.status || undefined,
         type: 0,
         keyList: keyList.join(' '),
         titleList: titleList.join(' '),
@@ -398,6 +440,8 @@ const PoundList = props => {
     isDelete,
     goodsType,
     dateStatus,
+    status,
+    poundId,
   }) => {
     setLoading(true);
 
@@ -413,6 +457,8 @@ const PoundList = props => {
       isDelete,
       goodsType,
       dateStatus,
+      status: status || undefined,
+      poundId: poundId || undefined,
     };
 
     const res = await pound.getBillReport({ params });
@@ -444,6 +490,8 @@ const PoundList = props => {
           isDelete,
           goodsType,
           dateStatus,
+          status,
+          poundId,
         },
       });
 
@@ -489,6 +537,26 @@ const PoundList = props => {
       message.error(`${res.detail || res.description}`);
     }
   };
+
+  const handleDropPound = id => {
+    Modal.confirm({
+      title: '确定作废该订单？',
+      icon: <QuestionCircleFilled />,
+      autoFocusButton: null,
+      centered: true,
+      onOk: async () => {
+        const r = await pound.setPoundBillStatus({ id, status: 2 });
+
+        if (r.status === 0) {
+          message.success('磅单作废成功');
+          getRemoteData({ ...query });
+        } else {
+          message.error(r.detail || r.description);
+        }
+      },
+    });
+  };
+
   return (
     <>
       <Search
@@ -559,6 +627,23 @@ const PoundList = props => {
             <Option value={true}>是</Option>
             <Option value={false}>否</Option>
           </Select>
+        </Search.Item>
+
+        <Search.Item label="磅单状态">
+          <Select
+            value={query.status}
+            allowClear
+            placeholder="请选择"
+            style={{ width: '100%' }}
+            onChange={handleStatus}>
+            <Option value={0}>全部</Option>
+            <Option value={1}>正常</Option>
+            <Option value={2}>作废</Option>
+          </Select>
+        </Search.Item>
+
+        <Search.Item label="单号">
+          <Input allowClear value={query.poundId} placeholder="请输入单号" onChange={handleChangePoundId} />
         </Search.Item>
       </Search>
       <div style={{ margin: '16px 0' }}>
