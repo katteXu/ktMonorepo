@@ -2,6 +2,7 @@ import { useState, useEffect, forwardRef } from 'react';
 import { Button, Modal, List, Input, message } from 'antd';
 import { getList, customer } from '@api';
 import CompanyForm from '@components/CustomerDetail/company/form';
+import AddressForm from '@components/CustomerDetail/address/form';
 import styles from './styles.less';
 import router from 'next/router';
 import { QuestionCircleFilled, SearchOutlined, PlusOutlined } from '@ant-design/icons';
@@ -9,11 +10,13 @@ import { QuestionCircleFilled, SearchOutlined, PlusOutlined } from '@ant-design/
 const URL = {
   address: 'v1/user/customerAddressList',
   contract: 'v_sass/user/contract_list_exclude_used',
+  contractAddress: 'v1/user/getAddrData', // 收发货地址
 };
 
 const TEXT = {
   address: '企业',
   contract: '合同',
+  contractAddress: '地址',
 };
 const SelectBtn = ({ onChange, type, mode, value, onInit, title, filter, style }, ref) => {
   // 数据列表
@@ -28,8 +31,14 @@ const SelectBtn = ({ onChange, type, mode, value, onInit, title, filter, style }
   // 弹窗状态
   const [createVisible, setCreateVisible] = useState(false);
 
+  // 添加地址弹窗
+  const [createAddressVisible, setCreateAddressVisible] = useState(false);
+
   // 企业名称
   const [companyName, setCompanyName] = useState('');
+
+  // 地址简称
+  const [addressName, setAddressName] = useState('');
 
   // 过滤数据
   const [filterList, setFilterList] = useState([]);
@@ -53,6 +62,9 @@ const SelectBtn = ({ onChange, type, mode, value, onInit, title, filter, style }
         ),
         onOk: () => router.push('/contractManagement/addContract'),
       });
+    } else if (type === 'contractAddress') {
+      setCreateAddressVisible(true);
+      setVisible(false);
     }
   };
 
@@ -82,6 +94,9 @@ const SelectBtn = ({ onChange, type, mode, value, onInit, title, filter, style }
           setList(res.result.data);
           setTotal(res.result.count);
         } else if (type === 'contract') {
+          setList(res.result.data);
+          setTotal(res.result.count);
+        } else if (type === 'contractAddress') {
           setList(res.result.data);
           setTotal(res.result.count);
         } else {
@@ -116,7 +131,7 @@ const SelectBtn = ({ onChange, type, mode, value, onInit, title, filter, style }
     const res = await getList({
       url: URL[type],
     });
-    if (res.status === 0 && type === 'address') {
+    if (res.status === 0 && (type === 'address' || type === 'contractAddress')) {
       setList(res.result.data);
       setTotal(res.result.count);
     }
@@ -139,14 +154,27 @@ const SelectBtn = ({ onChange, type, mode, value, onInit, title, filter, style }
     }
   };
 
+  // 新增地址
+  const addContractAddress = async params => {
+    const res = await customer.createCustomerLoadAddr({ params });
+    if (res.status === 0) {
+      message.success('地址新增成功');
+      setVisible(true);
+      setCreateAddressVisible(false);
+      reload();
+    } else {
+      message.error(`地址新增失败，原因：${res.detail || res.description}`);
+    }
+  };
+
   // 加载数据
-  const loadData = async companyName => {
+  const loadData = async (keyWord, value) => {
     setLoading(true);
     const res = await getList({
       url: URL[type],
-      params: { companyName },
+      params: { [keyWord]: value },
     });
-    if (res.status === 0 && type === 'address') {
+    if (res.status === 0 && (type === 'address' || type === 'contractAddress')) {
       setList(res.result.data);
       setTotal(res.result.count);
     }
@@ -184,12 +212,17 @@ const SelectBtn = ({ onChange, type, mode, value, onInit, title, filter, style }
   }, [page]);
   // 搜索
   const query = () => {
-    loadData(companyName);
+    if (type === 'contractAddress') {
+      loadData('addressName', addressName);
+    } else {
+      loadData('companyName', companyName);
+    }
   };
 
   // 重置
   const reset = () => {
     setCompanyName('');
+    setAddressName('');
     loadData('');
   };
 
@@ -202,9 +235,19 @@ const SelectBtn = ({ onChange, type, mode, value, onInit, title, filter, style }
     );
   };
 
+  // 地址item
+  const contractAddressItem = (item, key) => {
+    return (
+      <List.Item key={key} className={styles['list-item']} onClick={() => setItem(item)}>
+        <List.Item.Meta title={`地址：${item.loadAddressName}`} />
+      </List.Item>
+    );
+  };
+
   const ListItem = {
     address: addressItem,
     contract: contractItem,
+    contractAddress: contractAddressItem,
   };
 
   // 分页对象
@@ -224,10 +267,22 @@ const SelectBtn = ({ onChange, type, mode, value, onInit, title, filter, style }
     pagination.total = total;
     pagination.onChange = onChangePage;
   }
+
+  if (type === 'contractAddress') {
+    pagination.total = total;
+    pagination.onChange = onChangePage;
+  }
+
   return (
     <>
       {mode === 'input' ? (
-        <Input style={{ ...style }} readOnly value={value} placeholder="点击选择企业" onClick={openModal} />
+        <Input
+          style={{ ...style }}
+          readOnly
+          value={value}
+          placeholder={type === 'contractAddress' ? '点击选择地址' : '点击选择企业'}
+          onClick={openModal}
+        />
       ) : (
         <Button style={{ width: '100%', ...style }} onClick={openModal}>
           选择{TEXT[type]}
@@ -253,6 +308,28 @@ const SelectBtn = ({ onChange, type, mode, value, onInit, title, filter, style }
                 onChange={e => setCompanyName(e.target.value)}
                 onPressEnter={query}
                 placeholder="输入企业名称"
+              />
+            </div>
+            <div style={{ textAlign: 'right', marginLeft: 22 }}>
+              <Button type="primary" onClick={query}>
+                查询
+              </Button>
+              <Button style={{ marginLeft: 8 }} onClick={reset}>
+                重置
+              </Button>
+            </div>
+          </div>
+        )}
+        {type === 'contractAddress' && (
+          <div style={{ marginBottom: 10, display: 'flex' }}>
+            <div style={{ width: 272 }}>
+              <Input
+                allowClear
+                prefix={<SearchOutlined style={{ color: '#BFBFBF' }} />}
+                value={addressName}
+                onChange={e => setAddressName(e.target.value)}
+                onPressEnter={query}
+                placeholder="输入地址简称"
               />
             </div>
             <div style={{ textAlign: 'right', marginLeft: 22 }}>
@@ -293,6 +370,26 @@ const SelectBtn = ({ onChange, type, mode, value, onInit, title, filter, style }
           formData={{}}
           onClose={() => {
             setCreateVisible(false), setVisible(true);
+          }}
+        />
+      </Modal>
+
+      {/* 新增地址表单弹窗 */}
+      <Modal
+        visible={createAddressVisible}
+        destroyOnClose
+        width={640}
+        footer={null}
+        title="新增地址"
+        maskClosable={false}
+        onCancel={() => {
+          setVisible(true), setCreateAddressVisible(false);
+        }}>
+        <AddressForm
+          onSubmit={addContractAddress}
+          formData={{}}
+          onClose={() => {
+            setCreateAddressVisible(false), setVisible(true);
           }}
         />
       </Modal>

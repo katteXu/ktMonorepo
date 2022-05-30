@@ -32,7 +32,7 @@ const Pay = props => {
     serviceFee,
   } = props.dataInfo;
   const infoFeeUnitName = unitInfoFee !== 0 ? 1 : 0;
-  const { id: rid, payPath } = routeInfo;
+  const { id: rid, payPath, routeKind } = routeInfo;
   console.log(props.dataInfo);
   const [btnLoading, setBtnLoading] = useState(false);
   const [editUnitPrice, setEditUnitPrice] = useState(false);
@@ -153,7 +153,7 @@ const Pay = props => {
               <span style={{ display: 'inline-block' }}>
                 {unitPrice} 元/{unitName || '吨'}
               </span>
-              {status === 'CHECKING' ? (
+              {status === 'CHECKING' && routeKind !== 2 ? (
                 <span
                   style={{ color: '#477AEF', marginLeft: 9, cursor: 'pointer' }}
                   onClick={() => setEditUnitPrice(true)}>

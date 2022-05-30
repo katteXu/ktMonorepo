@@ -67,6 +67,8 @@ const RailWayDetail = props => {
   // 专线标识，tag为1时为二码融合后新加入专线
   const [tag, setTag] = useState();
 
+  const [routeKind, setRouteKind] = useState(0);
+
   useEffect(() => {
     setRailWayDetail();
   }, []);
@@ -98,6 +100,8 @@ const RailWayDetail = props => {
       setRouteContactMobile(res.result.routeContactMobile);
 
       setTag(res.result.tag);
+
+      setRouteKind(res.result.routeKind);
     } else {
       message.error(`${res.detail || res.description}`);
     }
@@ -323,17 +327,19 @@ const RailWayDetail = props => {
                 onClick={setRailWayStatus}>
                 {status === 'CLOSE' ? '开启' : '关闭'}专线
               </Button>
-              <Button
-                style={{
-                  marginLeft: 12,
-                  padding: '4px 0',
-                  color: '#477AEF',
-                  border: 'none',
-                  boxShadow: 'none',
-                }}
-                onClick={deleteLine}>
-                删除专线
-              </Button>
+              {routeKind !== 2 && (
+                <Button
+                  style={{
+                    marginLeft: 12,
+                    padding: '4px 0',
+                    color: '#477AEF',
+                    border: 'none',
+                    boxShadow: 'none',
+                  }}
+                  onClick={deleteLine}>
+                  删除专线
+                </Button>
+              )}
             </div>
           )}
         </header>
@@ -351,7 +357,7 @@ const RailWayDetail = props => {
                 <div className={styles.item} style={{ flex: dataInfo.businessType === 2 ? 1 : 1.5 }}>
                   <span className={styles.label}>有效时间：</span>
                   <span style={{ marginRight: 9 }}>{loadTime}</span>
-                  {canEdit && startLoadTime && (
+                  {canEdit && startLoadTime && routeKind !== 2 && (
                     <span
                       style={{
                         color: '#477AEF',
@@ -470,37 +476,39 @@ const RailWayDetail = props => {
                 <div className={styles.item} style={{ display: 'flex', alignItems: 'center' }}>
                   <span className={styles.label}>
                     运费单价
-                    <Tooltip
-                      placement="right"
-                      overlayStyle={{
-                        maxWidth: 'max-content',
-                        padding: '0 10px',
-                      }}
-                      title={
-                        <div>
-                          <p style={{ marginBottom: 0 }}>单价编辑说明：</p>
-                          <p style={{ marginTop: 8 }}>
-                            编辑后不会影响已抢单的司机运费单价
-                            <br />
-                            若司机抢错单价，可在结算时跟司机协商更改结算单价。
-                          </p>
-                        </div>
-                      }>
-                      <QuestionCircleFilled
-                        style={{
-                          cursor: 'pointer',
-                          color: '#D0D4DB',
-                          marginRight: 4,
-                          marginLeft: 4,
+                    {routeKind !== 2 && (
+                      <Tooltip
+                        placement="right"
+                        overlayStyle={{
+                          maxWidth: 'max-content',
+                          padding: '0 10px',
                         }}
-                      />
-                    </Tooltip>
+                        title={
+                          <div>
+                            <p style={{ marginBottom: 0 }}>单价编辑说明：</p>
+                            <p style={{ marginTop: 8 }}>
+                              编辑后不会影响已抢单的司机运费单价
+                              <br />
+                              若司机抢错单价，可在结算时跟司机协商更改结算单价。
+                            </p>
+                          </div>
+                        }>
+                        <QuestionCircleFilled
+                          style={{
+                            cursor: 'pointer',
+                            color: '#D0D4DB',
+                            marginRight: 4,
+                            marginLeft: 4,
+                          }}
+                        />
+                      </Tooltip>
+                    )}
                     ：
                   </span>
                   {dataInfo.fleetCaptionId ? (
                     <>
                       <span>{unitPrice ? `${unitPrice} 元/${dataInfo.unitName}` : '-'}</span>
-                      {canEdit && (
+                      {canEdit && routeKind !== 2 && (
                         <span
                           style={{
                             color: '#477AEF',
@@ -528,6 +536,7 @@ const RailWayDetail = props => {
                       )}
 
                       {canEdit &&
+                        routeKind !== 2 &&
                         (!showUnitPrice ? (
                           <span
                             style={{
@@ -577,7 +586,7 @@ const RailWayDetail = props => {
                   {totalAmount
                     ? `${(totalAmount / 1000).toFixed(dataInfo.unitName === '吨' ? 2 : 0)} ${dataInfo.unitName}`
                     : '-'}
-                  {canEdit && (
+                  {canEdit && routeKind !== 2 && (
                     <span
                       style={{
                         color: '#477AEF',

@@ -201,16 +201,30 @@ const Index = props => {
           </hearder>
           <div className={styles.row}>
             <div className={styles.item}>
+              <span className={styles.label}>合同编号：</span>
+              {dataInfo.contractNo || '-'}
+            </div>
+            <div className={styles.item}>
               <span className={styles.label}>发货企业：</span>
               {dataInfo.fromAddress || '-'}
+            </div>
+            <div className={styles.item}>
+              <span className={styles.label}>发货地址：</span>
+              {dataInfo.fromAddressName || '-'}
+            </div>
+          </div>
+          <div className={styles.row}>
+            <div className={styles.item}>
+              <span className={styles.label}>负责人：</span>
+              {dataInfo.principal || '-'}
             </div>
             <div className={styles.item}>
               <span className={styles.label}>收货企业：</span>
               {dataInfo.toAddress || '-'}
             </div>
             <div className={styles.item}>
-              <span className={styles.label}>负责人：</span>
-              {dataInfo.principal || '-'}
+              <span className={styles.label}>收货地址：</span>
+              {dataInfo.toAddressName || '-'}
             </div>
           </div>
           <div className={styles.row}>

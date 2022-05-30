@@ -124,7 +124,7 @@ const Index = props => {
       title: '操作',
       dataIndex: 'id',
       key: 'id',
-      width: '120px',
+      width: '60px',
       fixed: 'right',
       align: 'right',
       render: (value, record, index) => (
@@ -135,7 +135,7 @@ const Index = props => {
             onClick={() => router.push(`/contractManagement/contractDetail?id=${value}`)}>
             详情
           </Button>
-          {(isSuperUser || permissions.includes('CONTRACT_MANAGEMENT_OPERATE')) && (
+          {/* {(isSuperUser || permissions.includes('CONTRACT_MANAGEMENT_OPERATE')) && (
             <Popconfirm
               title={
                 <div>
@@ -149,7 +149,7 @@ const Index = props => {
                 删除
               </Button>
             </Popconfirm>
-          )}
+          )} */}
         </>
       ),
     },
