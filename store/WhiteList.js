@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { createContainer } from 'unstated-next';
 import { getCommon } from '@api';
-import { User } from '@store';
+// import { User } from '@store';
 
 const useWhiteList = () => {
   const [whiteList, setWhiteList] = useState({
     heShun: false,
     luQiao: false,
+    lingShi: false,
   }); //税率白名单
-  const { userInfo, loading } = User.useContainer();
+  // const { userInfo, loading } = User.useContainer();
   useEffect(() => {
     setHiddenDate();
   }, []);
@@ -23,28 +24,13 @@ const useWhiteList = () => {
       const LU_QIAO_ID = res.result.find(item => item.key === 'LU_QIAO_GOODSOWNER_ID_WHITE').url.split(',');
       const LING_SHI_ID = res.result.find(item => item.key === 'LING_SHI_GOODSOWNER_ID_WHITE').url.split(',');
 
-      if (HE_SHUN_ID && HE_SHUN_ID.includes(userId)) {
-        setWhiteList({
-          ...whiteList,
-          heShun: true,
-        });
-      }
+      const _whiteList = {
+        heShun: [...HE_SHUN_ID, ...LU_QIAO_ID, ...LING_SHI_ID]?.includes(userId),
+        luQiao: LU_QIAO_ID?.includes(userId),
+        lingShi: LING_SHI_ID?.includes(userId),
+      };
 
-      if (LU_QIAO_ID && LU_QIAO_ID.includes(userId)) {
-        setWhiteList({
-          ...whiteList,
-          heShun: true,
-          luQiao: true,
-        });
-      }
-
-      if (LING_SHI_ID && LING_SHI_ID.includes(userId)) {
-        setWhiteList({
-          ...whiteList,
-          heShun: true,
-          lingShi: true,
-        });
-      }
+      setWhiteList(_whiteList);
     }
   };
   const reloadWhiteList = () => {
