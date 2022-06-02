@@ -50,25 +50,25 @@ function MyApp({ Component, pageProps }) {
   });
 
   return (
-    // 用户数据
-    <User.Provider>
-      {/* 菜单数据 */}
-      <Menu.Provider>
-        {/* 消息数据 */}
-        <Message.Provider>
-          {/* 权限数据 */}
-          <Permission.Provider>
-            {/* 白名单 */}
-            <WhiteList.Provider>
+    // 白名单
+    <WhiteList.Provider>
+      {/* 用户数据 */}
+      <User.Provider>
+        {/* 菜单数据 */}
+        <Menu.Provider>
+          {/* 消息数据 */}
+          <Message.Provider>
+            {/* 权限数据 */}
+            <Permission.Provider>
               {/* antd配置 */}
               <ConfigProvider locale={zh_cn}>
                 <Component {...pageProps} />
               </ConfigProvider>
-            </WhiteList.Provider>
-          </Permission.Provider>
-        </Message.Provider>
-      </Menu.Provider>
-    </User.Provider>
+            </Permission.Provider>
+          </Message.Provider>
+        </Menu.Provider>
+      </User.Provider>
+    </WhiteList.Provider>
   );
 }
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createContainer } from 'unstated-next';
 import { getUserPermission } from '@api';
-import { User } from '@store';
+import { User, WhiteList } from '@store';
 const MENU_LIST = [
   {
     module: 'home',
@@ -287,11 +287,12 @@ const useMenu = () => {
     }
   });
   const { userInfo, personalizeMenu } = User.useContainer();
+  const { whiteList } = WhiteList.useContainer();
   useEffect(() => {
     if (userInfo.id) {
       getData();
     }
-  }, [userInfo]);
+  }, [userInfo, whiteList]);
 
   const getData = async () => {
     const res = await getUserPermission();
@@ -317,8 +318,18 @@ const useMenu = () => {
       let menu = is_boss
         ? isAgentMode
           ? AGENT_MENU_LIST
-          : MENU_LIST
+          : MENU_LIST.filter(item => {
+              // 灵石-订单管理
+              if (item.module === 'orderManagement') {
+                return whiteList.lingShi;
+              }
+              return true;
+            })
         : MENU_LIST.filter(item => {
+            // 灵石-订单管理
+            if (item.module === 'orderManagement') {
+              return whiteList.lingShi;
+            }
             // 权限配置
             if (item.permission) {
               return permissions.find(value => item.permission.includes(value));
