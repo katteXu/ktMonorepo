@@ -88,10 +88,12 @@ const Index = () => {
       contract_no: values.contractNo,
       title: values.title,
       contractType: values.contractType,
-      fromAddressCompanyId: saleCompany.id,
-      from_address_id: fromAddress.id, // 发货地址 id
-      toAddressCompanyId: purchaseCompany.id,
-      to_address_id: toAddress.id, // 收货地址 id
+      fromName: values.fromName,
+      toName: values.toName,
+      // fromAddressCompanyId: saleCompany.id,
+      // from_address_id: fromAddress.id, // 发货地址 id
+      // toAddressCompanyId: purchaseCompany.id,
+      // to_address_id: toAddress.id, // 收货地址 id
       goodsNameId: values.goodsNameId.value,
       totalWeight: (values.totalWeight * 1000).toFixed(0),
       unitePrice: Math.ceil(values.unitePrice * 100),
@@ -148,6 +150,7 @@ const Index = () => {
         style={{ paddingLeft: 32 }}
         initialValues={{
           deliveryType: 'DAY',
+          contractType: '2',
         }}>
         <Form.Item
           label="合同编号"
@@ -173,12 +176,38 @@ const Index = () => {
           label="合同类型"
           name="contractType"
           rules={[{ required: true, whitespace: true, message: '内容不可为空' }]}>
-          <Select placeholder="请选择合同类型" style={{ width: 264 }}>
+          <Select disabled placeholder="请选择合同类型" style={{ width: 264 }}>
             <Select.Option value="1">购买合同</Select.Option>
             <Select.Option value="2">销售合同</Select.Option>
           </Select>
         </Form.Item>
-        {Object.keys(purchaseCompany).length > 0 ? (
+        <Form.Item
+          label="买受人"
+          name="toName"
+          rules={[
+            {
+              required: true,
+              whitespace: true,
+              message: '内容不可为空',
+            },
+          ]}
+          validateFirst={true}>
+          <Input placeholder="请输入买受人" style={{ width: 200 }} maxLength={10} />
+        </Form.Item>
+        <Form.Item
+          label="出卖人"
+          name="fromName"
+          rules={[
+            {
+              required: true,
+              whitespace: true,
+              message: '内容不可为空',
+            },
+          ]}
+          validateFirst={true}>
+          <Input placeholder="请输入出卖人" style={{ width: 200 }} maxLength={10} />
+        </Form.Item>
+        {/* {Object.keys(purchaseCompany).length > 0 ? (
           <Form.Item label="收货企业" required>
             <SelectBtn
               style={{ width: 480 }}
@@ -286,7 +315,7 @@ const Index = () => {
               });
             }}
           />
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item
           label="货品名称"
@@ -382,11 +411,23 @@ const Index = () => {
             </Select>
           </Form.Item>
           <Form.Item
-            label="提货量"
+            label={
+              <div>
+                <span
+                  style={{
+                    display: 'inline-block',
+                    marginRight: 4,
+                    visibility: 'hidden',
+                  }}>
+                  *
+                </span>
+                提货量
+              </div>
+            }
             name="deliveryWeight"
             validateFirst={true}
             rules={[
-              { required: true, whitespace: true, message: '内容不可为空' },
+              // { required: true, whitespace: true, message: '内容不可为空' },
               { type: 'number', message: '请输入有效的数字', transform: value => Number(value) },
               {
                 pattern: /^\d+(\.\d{1,2})?$/,
@@ -413,11 +454,23 @@ const Index = () => {
           </Form.Item>
         </div>
         <Form.Item
-          label="货物单价"
+          label={
+            <div>
+              <span
+                style={{
+                  display: 'inline-block',
+                  marginRight: 4,
+                  visibility: 'hidden',
+                }}>
+                *
+              </span>
+              货物单价
+            </div>
+          }
           name="uniteTaxPrice"
           validateFirst={true}
           rules={[
-            { required: true, whitespace: true, message: '内容不可为空' },
+            // { required: true, whitespace: true, message: '内容不可为空' },
             {
               type: 'number',
               message: '请输入有效的数字',
@@ -457,22 +510,34 @@ const Index = () => {
           <DatePicker
             // style={{ width: '100%' }}
             style={{ width: 264 }}
-            disabledDate={date => date < moment().add(-1, 'day')}
+            // disabledDate={date => date < moment().add(-1, 'day')}
             placeholder="请选择生效时间"
             format="YYYY-MM-DD"
             onChange={e => changeSignDate(e)}
           />
         </Form.Item>
         <Form.Item
-          label="有效期至"
+          label={
+            <div>
+              <span
+                style={{
+                  display: 'inline-block',
+                  marginRight: 4,
+                  visibility: 'hidden',
+                }}>
+                *
+              </span>
+              有效期至
+            </div>
+          }
           name="effectiveDateTo"
           rules={[
-            {
-              type: 'object',
-              required: true,
-              whitespace: true,
-              message: '内容不可为空',
-            },
+            // {
+            //   type: 'object',
+            //   required: true,
+            //   whitespace: true,
+            //   message: '内容不可为空',
+            // },
             {
               transform: value => (value ? moment(value).format('YYYY-MM:DD') : ''),
             },
