@@ -5,6 +5,7 @@ import { railWay, contract as contractApi, order, customer } from '../../api';
 import router from 'next/router';
 import { UploadToOSS, AutoInputRoute } from '@components';
 import ContractSearcher from './ContractSearcher';
+import SelectBtn from '../RailDetail/selectBtn_new';
 import { Format } from '@utils/common';
 import styles from './styles.less';
 
@@ -67,6 +68,16 @@ const Index = ({ onSubmit, data = {} }) => {
   // 承运企业列表
   const [transportCompanyList, setTransportCompanyList] = useState([]);
 
+   // 收货地址
+   const [toAddress, setToAddress] = useState({});
+   // 发货地址
+   const [fromAddress, setFromAddress] = useState({});
+   //发货企业
+   const [saleCompany, setSaleCompany] = useState({});
+   //收货企业
+   const [purchaseCompany, setPurchaseCompany] = useState({});
+
+
   useEffect(() => {
     (async () => {
       // 绑定货品单位
@@ -79,6 +90,7 @@ const Index = ({ onSubmit, data = {} }) => {
   useEffect(() => {
     if (Object.keys(data).length > 0) {
       setTransportCompany({ id: data?.carrierId, companyName: data?.carrierCompany });
+      setSaleCompany({ id: data?.fromUserId});
       setPayMethod(data?.route?.payMethod.toString());
       setAllowLoss(data?.route?.lossMark);
       setUnitName(data?.unitName);
@@ -95,10 +107,10 @@ const Index = ({ onSubmit, data = {} }) => {
       form.setFieldsValue({
         contractNo: data?.contract?.contractNo,
         title: data?.contract?.title,
-        fromAddress: data?.contract?.fromCompany,
-        fromAddressName: data?.contract?.fromAddressName,
-        toAddress: data?.contract?.toCompany,
-        toAddressName: data?.contract?.toAddressName,
+        // fromAddress: data?.contract?.fromCompany,
+        // fromAddressName: data?.contract?.fromAddressName,
+        // toAddress: data?.contract?.toCompany,
+        // toAddressName: data?.contract?.toAddressName,
         goodsName: data?.contract?.goodsName,
         totalWeight: Format.weight(data?.contract?.totalWeight),
         remainWeight: Format.weight(data?.contract?.remainWeight),
@@ -186,6 +198,10 @@ const Index = ({ onSubmit, data = {} }) => {
       lossAmount: values.lossAmount ? (values.lossAmount * 1000).toFixed(0) * 1 : undefined,
       eraseZero: values.eraseZero,
       validDate: values.validDate * 1,
+      fromUserId: saleCompany.id,
+      fromAddressId: fromAddress.id,
+      toAddressCompanyId: purchaseCompany.id,
+      toAddressId:toAddress.id
     };
 
     if (params.unitName === '吨' && values.infoFeeUnitName === 1 && params.unitInfoFee * 2 > params.unitPrice) {
@@ -236,10 +252,10 @@ const Index = ({ onSubmit, data = {} }) => {
       id,
       contractNo,
       title,
-      fromAddress,
-      fromAddressName,
-      toAddress,
-      toAddressName,
+      // fromAddress,
+      // fromAddressName,
+      // toAddress,
+      // toAddressName,
       goodsName,
       totalWeight,
       remainWeight,
@@ -248,10 +264,10 @@ const Index = ({ onSubmit, data = {} }) => {
     form.setFieldsValue({
       contractNo,
       title,
-      fromAddress,
-      fromAddressName,
-      toAddress,
-      toAddressName,
+      // fromAddress,
+      // fromAddressName,
+      // toAddress,
+      // toAddressName,
       goodsName,
       totalWeight: Format.weight(totalWeight),
       remainWeight: Format.weight(remainWeight),
@@ -322,11 +338,13 @@ const Index = ({ onSubmit, data = {} }) => {
               <span className={styles.noStar}>*</span>出卖人
             </div>
           }
-          name="fromAddress">
+          name="sellUserName"
+          // name="fromAddress"
+          >
           <Input placeholder="选择合同后自动填充" disabled style={{ width: 264 }} />
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
           label={
             <div>
               <span className={styles.noStar}>*</span>发货地址
@@ -334,7 +352,7 @@ const Index = ({ onSubmit, data = {} }) => {
           }
           name="fromAddressName">
           <Input placeholder="选择合同后自动填充" disabled style={{ width: 264 }} />
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item
           label={
@@ -342,11 +360,13 @@ const Index = ({ onSubmit, data = {} }) => {
               <span className={styles.noStar}>*</span>买受人
             </div>
           }
-          name="toAddress">
+          // name="toAddress"
+          name="buyUserName"
+          >
           <Input placeholder="选择合同后自动填充" disabled style={{ width: 264 }} />
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
           label={
             <div>
               <span className={styles.noStar}>*</span>收货地址
@@ -354,7 +374,7 @@ const Index = ({ onSubmit, data = {} }) => {
           }
           name="toAddressName">
           <Input placeholder="选择合同后自动填充" disabled style={{ width: 264 }} />
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item
           label={
@@ -425,6 +445,119 @@ const Index = ({ onSubmit, data = {} }) => {
               </Option>
             ))}
           </Select>
+        </Form.Item>
+
+        <Form.Item
+          label="发货企业"
+          name="fromUserId"
+          style={{ marginLeft: 32 }}
+          rules={[{ required: true, whitespace: true, message: '企业不可为空' }]}>
+          {/* <AutoInputRoute
+            style={{ width: 480 }}
+            mode="company"
+            type="transport"
+            value={transportCompany.companyName}
+            allowClear
+            placeholder="请选择承运企业"
+            newCompany={newCompany}
+            onChange={(e, val) => {
+              onChangeTransportCompany(e, val), console.log(val);
+            }}
+            disContent={contract && Object.keys(contract).length > 0 ? true : false}
+          />
+          <Button type="link" style={{ display: 'none' }}>
+            新增
+          </Button> */}
+          <Select
+            style={{ width: 480 }}
+            allowClear
+            placeholder="请选择发货企业"
+            showSearch
+            onChange={(_, option) => {
+              setSaleCompany(option?.item);
+            }}>
+            {transportCompanyList.map(item => (
+              <Option key={item.id} value={item.companyName} item={item}>
+                {item.companyName}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          label="发货地址"
+          required
+          name="validateFromAddressName"
+          rules={[{ required: true, whitespace: true, message: '内容不可为空' }]}>
+          <SelectBtn
+            style={{ width: 480 }}
+            value={fromAddress.loadAddressName}
+            filter={toAddress}
+            mode="input"
+            type="contractAddress"
+            title="发货地址"
+            onChange={address => {
+              setFromAddress(address);
+              form.setFieldsValue({
+                validateFromAddressName: address.loadAddressName,
+              });
+            }}
+          />
+        </Form.Item>
+
+        {Object.keys(purchaseCompany).length > 0 ? (
+          <Form.Item label="收货企业" required>
+            <SelectBtn
+              style={{ width: 480 }}
+              value={purchaseCompany.companyName}
+              filter={saleCompany}
+              mode="input"
+              type="address"
+              title="收货企业"
+              onChange={address => {
+                setPurchaseCompany(address);
+              }}
+            />
+          </Form.Item>
+        ) : (
+          <Form.Item
+            label="收货企业"
+            name="validateToAddress"
+            rules={[{ required: true, whitespace: true, message: '内容不可为空' }]}
+            required>
+            <SelectBtn
+              value={purchaseCompany.companyName}
+              filter={saleCompany}
+              mode="input"
+              type="address"
+              title="收货企业"
+              onChange={address => {
+                setPurchaseCompany(address);
+              }}
+              style={{ width: 480 }}
+            />
+          </Form.Item>
+        )}
+
+        <Form.Item
+          label="收货地址"
+          name="validateToAddressName"
+          validateFirst={true}
+          rules={[{ required: true, whitespace: true, message: '内容不可为空' }]}>
+          <SelectBtn
+            style={{ width: 480 }}
+            value={toAddress.loadAddressName}
+            filter={fromAddress}
+            mode="input"
+            type="contractAddress"
+            title="收货地址"
+            onChange={address => {
+              setToAddress(address);
+              form.setFieldsValue({
+                validateToAddressName: address.loadAddressName,
+              });
+            }}
+          />
         </Form.Item>
 
         {/* 运费单价 */}
