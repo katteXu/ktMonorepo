@@ -80,12 +80,12 @@ const Index = props => {
           <div className={styles.row}>
             <div className={styles.item}>
               <span className={styles.label}>出卖人：</span>
-              {dataInfo?.contract?.fromCompany || '-'}
+              {dataInfo?.contract?.sellUserName || '-'}
             </div>
-            <div className={styles.item}>
+            {/* <div className={styles.item}>
               <span className={styles.label}>出卖人地址：</span>
               {dataInfo.contract?.fromAddressName || '-'}
-            </div>
+            </div> */}
             <div className={styles.item}>
               <span className={styles.label}>货物总量：</span>
               {Format.weight(dataInfo.contract?.totalWeight) || '-'}吨
@@ -94,13 +94,13 @@ const Index = props => {
           <div className={styles.row}>
             <div className={styles.item}>
               <span className={styles.label}>买受人：</span>
-              {dataInfo?.contract?.toCompany || '-'}
+              {dataInfo?.contract?.buyUserName || '-'}
             </div>
-            <div className={styles.item}>
+            {/* <div className={styles.item}>
               <span className={styles.label}>买受人地址：</span>
               {dataInfo.contract?.toAddressName || '-'}
-            </div>
-            <div className={styles.item}></div>
+            </div> */}
+            {/* <div className={styles.item}></div> */}
           </div>
         </div>
       </div>
@@ -124,6 +124,26 @@ const Index = props => {
             <div className={styles.item}>
               <span className={styles.label}>运输单价：</span>
               {Format.price(dataInfo?.unitPrice) || '-'} 元/{dataInfo?.unitName}
+            </div>
+          </div>
+          <div className={styles.row}>
+            <div className={styles.item}>
+              <span className={styles.label}>发货企业：</span>
+              {dataInfo?.fromCompany || '-'}
+            </div>
+            <div className={styles.item}>
+              <span className={styles.label}>发货地址：</span>
+              {dataInfo?.fromAddressName || '-'}
+            </div>
+            <div className={styles.item}>
+              <span className={styles.label}>收货企业：</span>
+              {dataInfo?.toCompany || '-'}
+            </div>
+          </div>
+          <div className={styles.row}>
+          <div className={styles.item}>
+              <span className={styles.label}>收货地址：</span>
+              {dataInfo?.toAddressName || '-'}
             </div>
           </div>
           <div className={styles.row}>
