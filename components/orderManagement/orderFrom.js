@@ -252,6 +252,8 @@ const Index = ({ onSubmit, data = {} }) => {
       id,
       contractNo,
       title,
+      sellUserName,
+      buyUserName,
       // fromAddress,
       // fromAddressName,
       // toAddress,
@@ -264,6 +266,8 @@ const Index = ({ onSubmit, data = {} }) => {
     form.setFieldsValue({
       contractNo,
       title,
+      sellUserName,
+      buyUserName,
       // fromAddress,
       // fromAddressName,
       // toAddress,
