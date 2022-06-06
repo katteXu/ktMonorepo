@@ -97,7 +97,7 @@ const Index = () => {
       goodsNameId: values.goodsNameId.value,
       totalWeight: (values.totalWeight * 1000).toFixed(0),
       unitePrice: Math.ceil(values.unitePrice * 100),
-      uniteTaxPrice: Math.ceil(values.uniteTaxPrice * 100),
+      uniteTaxPrice: values.uniteTaxPrice ? Math.ceil(values.uniteTaxPrice * 100) : undefined,
       deliveryWeight: values.deliveryWeight ? (values.deliveryWeight * 1000).toFixed(0) : undefined,
       deliveryType: values.deliveryType,
       totalValue: (values.totalValue * 100).toFixed(0),
