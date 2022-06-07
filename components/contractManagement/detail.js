@@ -205,27 +205,35 @@ const Index = props => {
               {dataInfo.contractNo || '-'}
             </div>
             <div className={styles.item}>
-              <span className={styles.label}>发货企业：</span>
-              {dataInfo.fromAddress || '-'}
+              <span className={styles.label}>出卖人：</span>
+              {dataInfo.sellUserName || '-'}
             </div>
             <div className={styles.item}>
+              <span className={styles.label}>买受人：</span>
+              {dataInfo.buyUserName || '-'}
+            </div>
+            {/* <div className={styles.item}>
+              <span className={styles.label}>发货企业：</span>
+              {dataInfo.fromAddress || '-'}
+            </div> */}
+            {/* <div className={styles.item}>
               <span className={styles.label}>发货地址：</span>
               {dataInfo.fromAddressName || '-'}
-            </div>
+            </div> */}
           </div>
           <div className={styles.row}>
             <div className={styles.item}>
               <span className={styles.label}>负责人：</span>
               {dataInfo.principal || '-'}
             </div>
-            <div className={styles.item}>
+            {/* <div className={styles.item}>
               <span className={styles.label}>收货企业：</span>
               {dataInfo.toAddress || '-'}
             </div>
             <div className={styles.item}>
               <span className={styles.label}>收货地址：</span>
               {dataInfo.toAddressName || '-'}
-            </div>
+            </div> */}
           </div>
           <div className={styles.row}>
             <div className={styles.item}>
@@ -294,7 +302,7 @@ const Index = props => {
               {showSendDate ? (
                 <DatePicker
                   style={{ width: 150 }}
-                  disabledDate={date => date < moment().add(-1, 'day')}
+                  // disabledDate={date => date < moment().add(-1, 'day')}
                   placeholder="请选择生效时间"
                   format="YYYY-MM-DD"
                   allowClear={false}
@@ -332,8 +340,8 @@ const Index = props => {
               {showEndDate ? (
                 <DatePicker
                   style={{ width: 150 }}
-                  disabledDate={date => date < moment().add(-1, 'day')}
-                  placeholder="请选择生效时间"
+                  // disabledDate={date => date < moment().add(-1, 'day')}
+                  disabledDate={date => date < moment(newSendDate ? newSendDate : sendDate)}
                   format="YYYY-MM-DD"
                   allowClear={false}
                   value={newEndDate ? moment(newEndDate) : moment(endDate)}
