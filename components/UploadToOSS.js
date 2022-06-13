@@ -2,18 +2,18 @@ import { Upload } from 'antd';
 import { uploadToCDN } from './BatchImport/upload';
 
 const Index = ({ onChange, value, children, ...props }) => {
-  const onChangeFile = ({ file,fileList }) => {
-    if ( !file.status ) {
+  const onChangeFile = ({ file, fileList }) => {
+    if (!file.status) {
       let newFileList = [...fileList];
       newFileList = fileList.map(file => {
         if (!file.response) {
-          file.status='error'
+          file.status = 'error';
         }
         return file;
       });
-  
+
       onChange([...newFileList]);
-    }else {
+    } else {
       onChange([...fileList]);
     }
   };
@@ -39,9 +39,19 @@ const Index = ({ onChange, value, children, ...props }) => {
 
     onSuccess(fileObj);
   };
-  console.log(value)
+
+  const handlePreview = e => {
+    window.open(URL.createObjectURL(e?.originFileObj));
+  };
+
   return (
-    <Upload {...props} fileList={value} onChange={onChangeFile} onRemove={onRemove} customRequest={customRequest}>
+    <Upload
+      {...props}
+      fileList={value}
+      onChange={onChangeFile}
+      onRemove={onRemove}
+      customRequest={customRequest}
+      onPreview={handlePreview}>
       {children}
     </Upload>
   );
