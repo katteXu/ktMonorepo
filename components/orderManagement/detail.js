@@ -54,7 +54,7 @@ const Index = props => {
     await downLoadFileNoSuffix(res.result[url], name);
   };
 
-  const previewFile = async ({ url }) => {
+  const previewFile = async ({ url, name }) => {
     const params = {
       url: [url],
     };
