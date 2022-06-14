@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import styles from './styles.less';
-import { message, Spin } from 'antd';
+import { message, Spin, Button } from 'antd';
 import { order, getPrivateUrl, downLoadFileNoSuffix } from '@api';
 
 import { Format, getQuery } from '@utils/common';
-import { ChildTitle } from '@components';
+import { ChildTitle, Ellipsis } from '@components';
 
 const payMethodStatus = {
   1: '按发货净重结算',
@@ -54,6 +54,18 @@ const Index = props => {
     await downLoadFileNoSuffix(res.result[url], name);
   };
 
+  const previewFile = async ({ url, name }) => {
+    const params = {
+      url: [url],
+    };
+    const res = await getPrivateUrl({ params });
+    if (name.endsWith('png') || name.endsWith('jpg') || name.endsWith('jpeg') || name.endsWith('pdf')) {
+      window.open(res.result[url]);
+    } else {
+      await downLoadFileNoSuffix(res.result[url], name);
+    }
+  };
+
   return (
     <Spin spinning={loading}>
       <div className={styles.topContent}>
@@ -82,25 +94,14 @@ const Index = props => {
               <span className={styles.label}>出卖人：</span>
               {dataInfo?.contract?.sellUserName || '-'}
             </div>
-            {/* <div className={styles.item}>
-              <span className={styles.label}>出卖人地址：</span>
-              {dataInfo.contract?.fromAddressName || '-'}
-            </div> */}
-            <div className={styles.item}>
-              <span className={styles.label}>货物总量：</span>
-              {Format.weight(dataInfo.contract?.totalWeight) || '-'}吨
-            </div>
-          </div>
-          <div className={styles.row}>
             <div className={styles.item}>
               <span className={styles.label}>买受人：</span>
               {dataInfo?.contract?.buyUserName || '-'}
             </div>
-            {/* <div className={styles.item}>
-              <span className={styles.label}>买受人地址：</span>
-              {dataInfo.contract?.toAddressName || '-'}
-            </div> */}
-            {/* <div className={styles.item}></div> */}
+            <div className={styles.item}>
+              <span className={styles.label}>货物总量：</span>
+              {Format.weight(dataInfo.contract?.totalWeight) || '-'}吨
+            </div>
           </div>
         </div>
       </div>
@@ -141,29 +142,32 @@ const Index = props => {
             </div>
           </div>
           <div className={styles.row}>
-          <div className={styles.item}>
+            <div className={styles.item}>
               <span className={styles.label}>收货地址：</span>
               {dataInfo?.toAddressName || '-'}
             </div>
           </div>
           <div className={styles.row}>
-            <div className={styles.item}>
+            <div className={styles.item} style={{ display: 'flex' }}>
               <span className={styles.label}>附件：</span>
-              {annexUrl
-                ? annexUrl.map((item, key) => {
+              <div>
+                {annexUrl &&
+                  annexUrl.map(item => {
                     return (
-                      <a
-                        className={styles.file}
-                        key={key}
-                        // href={item.url}
-                        href="javascript:;"
-                        // onClick={() => onClickdownLoadFile(item.url, item.name)}
-                        onClick={() => downloadFile({ ...item })}>
-                        {item.name || '-'}
-                      </a>
+                      <div style={{ display: 'flex', width: '300px', justifyContent: 'space-between' }}>
+                        <Ellipsis value={item.name || '-'} width={200} />
+                        <div>
+                          <Button type="link" size="small" onClick={() => previewFile({ ...item })}>
+                            预览
+                          </Button>
+                          <Button type="link" size="small" onClick={() => downloadFile({ ...item })}>
+                            下载
+                          </Button>
+                        </div>
+                      </div>
                     );
-                  })
-                : '-'}
+                  })}
+              </div>
             </div>
           </div>
         </div>

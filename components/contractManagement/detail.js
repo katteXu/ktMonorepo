@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import router from 'next/router';
 import Line from '@components/contractManagement/Line';
 import styles from './styles.less';
-import { Progress, Modal, message, Spin, DatePicker, Input } from 'antd';
+import { Progress, Modal, message, Spin, DatePicker, Input, Button } from 'antd';
 import { contract, getPrivateUrl, downLoadFileNoSuffix } from '@api';
 import moment from 'moment';
 import UpdateTotalWeight from '@components/contractManagement/updateTotalWeight';
 import UpdateSendDate from '@components/contractManagement/updateSendDate';
 import UpdateEndDate from '@components/contractManagement/updateEndDate';
 import { Format, getQuery } from '@utils/common';
-import { ChildTitle } from '@components';
+import { ChildTitle, Ellipsis } from '@components';
 import { Permission } from '@store';
 const deliveryType = {
   DAY: '吨/天',
@@ -83,8 +83,19 @@ const Index = props => {
       url: [url],
     };
     const res = await getPrivateUrl({ params });
-
     await downLoadFileNoSuffix(res.result[url], name);
+  };
+
+  const previewFile = async ({ url, name }) => {
+    const params = {
+      url: [url],
+    };
+    const res = await getPrivateUrl({ params });
+    if (name.endsWith('png') || name.endsWith('jpg') || name.endsWith('jpeg') || name.endsWith('pdf')) {
+      window.open(res.result[url]);
+    } else {
+      await downLoadFileNoSuffix(res.result[url], name);
+    }
   };
 
   // 获取折线图数据
@@ -373,22 +384,29 @@ const Index = props => {
                   </div>
                 ))}
             </div>
-            <div className={styles.item}>
+            <div className={styles.item}></div>
+          </div>
+          <div className={styles.row}>
+            <div className={styles.item} style={{ display: 'flex' }}>
               <span className={styles.label}>附件：</span>
-              {annexUrl &&
-                annexUrl.map((item, key) => {
-                  return (
-                    <a
-                      className={styles.file}
-                      key={key}
-                      // href={item.url}
-                      href="javascript:;"
-                      // onClick={() => onClickdownLoadFile(item.url, item.name)}
-                      onClick={() => downloadFile({ ...item })}>
-                      {item.name || '-'}
-                    </a>
-                  );
-                })}
+              <div>
+                {annexUrl &&
+                  annexUrl.map(item => {
+                    return (
+                      <div style={{ display: 'flex', width: '300px', justifyContent: 'space-between' }}>
+                        <Ellipsis value={item.name || '-'} width={200} />
+                        <div>
+                          <Button type="link" size="small" onClick={() => previewFile({ ...item })}>
+                            预览
+                          </Button>
+                          <Button type="link" size="small" onClick={() => downloadFile({ ...item })}>
+                            下载
+                          </Button>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
             </div>
           </div>
         </div>
