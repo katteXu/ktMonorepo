@@ -86,12 +86,16 @@ const Index = props => {
     await downLoadFileNoSuffix(res.result[url], name);
   };
 
-  const previewFile = async ({ url }) => {
+  const previewFile = async ({ url, name }) => {
     const params = {
       url: [url],
     };
     const res = await getPrivateUrl({ params });
-    window.open(res.result[url]);
+    if (name.endsWith('png') || name.endsWith('jpg') || name.endsWith('jpeg') || name.endsWith('pdf')) {
+      window.open(res.result[url]);
+    } else {
+      await downLoadFileNoSuffix(res.result[url], name);
+    }
   };
 
   // 获取折线图数据

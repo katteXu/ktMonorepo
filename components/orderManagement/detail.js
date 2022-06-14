@@ -59,7 +59,11 @@ const Index = props => {
       url: [url],
     };
     const res = await getPrivateUrl({ params });
-    window.open(res.result[url]);
+    if (name.endsWith('png') || name.endsWith('jpg') || name.endsWith('jpeg') || name.endsWith('pdf')) {
+      window.open(res.result[url]);
+    } else {
+      await downLoadFileNoSuffix(res.result[url], name);
+    }
   };
 
   return (
