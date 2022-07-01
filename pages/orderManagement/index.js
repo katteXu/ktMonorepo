@@ -12,6 +12,7 @@ const OrderStatus = {
   1: { name: '待审核', color: '#FFB741' },
   2: { name: '审批通过', color: '#66BD7E' },
   3: { name: '审批驳回', color: '#F22930' },
+  4: { name: '自动审核通过', color: '#66BD7E' },
 };
 
 // 状态颜色样式
@@ -55,7 +56,7 @@ const Index = props => {
             <i
               style={{
                 ...status_icon_styles,
-                background: OrderStatus[value].color,
+                background: OrderStatus[value]?.color,
               }}
             />
             {OrderStatus[value].name}
