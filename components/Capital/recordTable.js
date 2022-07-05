@@ -24,7 +24,8 @@ const tradingType = {
   PRE_FARE_REFUND: '预付退还',
   PAY_TAX_CHARGE: '税费',
   SERVICE_CHARGE: '服务费',
-  FLEET_FARE_INFO_FEE: '信息费',
+  // FLEET_FARE_INFO_FEE: '信息费',
+  FLEET_INFO_FEE:'信息费',
   WITHDRAWAL: '提现',
   ZX_CHANGE: '充值',
   OFFICIAL_CHARGE: '官方充值',
@@ -41,6 +42,7 @@ const Index = props => {
   const [showDrawer, setShowDrawer] = useState(false);
   const [retType, setRetType] = useState(0);
   const [walletId, setWalletId] = useState(0);
+  const [exportLoading, setExportLoading] = useState(false)
   const columns = [
     {
       title: '交易时间',
@@ -149,8 +151,9 @@ const Index = props => {
     begin: undefined,
     end: undefined,
     orderNo: '',
+    incomeType:2,
+    type:undefined
   });
-
   const queryRef = useRef(query);
 
   // 获取数据
@@ -161,8 +164,8 @@ const Index = props => {
     }
     // 获取持久化数据
     const state = getState().query;
-    setQuery(state);
-    setData(state);
+    setQuery({ ...query,state});
+    setData({ ...query,state});
 
     const time = setInterval(() => {
       refreshData();
@@ -172,7 +175,7 @@ const Index = props => {
     };
   }, []);
 
-  const setData = async ({ pageSize, page, begin, end, orderNo, type }) => {
+  const setData = async ({ pageSize, page, begin, end, orderNo, type, incomeType }) => {
     setLoading(true);
     const params = {
       limit: pageSize,
@@ -180,7 +183,8 @@ const Index = props => {
       begin: begin || undefined,
       end: end || undefined,
       orderNo: orderNo || undefined,
-      type,
+      type:type,
+      incomeType:incomeType
     };
     const { status, result, detail, description } = await capital.saasWalletList({ params });
     if (!status) {
@@ -202,6 +206,7 @@ const Index = props => {
       end: undefined,
       orderNo: '',
       type: undefined,
+      incomeType:undefined
     };
     setQuery(query);
     setData(query);
@@ -214,6 +219,27 @@ const Index = props => {
     setData({ ...query, page: 1 });
     props.seatchLine();
   }, [query]);
+
+  //导出
+  const derivedData = useCallback(async () => {
+    const params = {
+      limit: query.pageSize,
+      page:query.page,
+      begin: query.begin || undefined,
+      end: query.end || undefined,
+      orderNo: query.orderNo || undefined,
+      type:query.type,
+      incomeType:query.incomeType
+    };
+    setExportLoading(true)
+    let res = await capital.walletListDownload({params});
+    setExportLoading(false)
+    if (!res.status) {
+      message.success(res.result);
+    } else {
+      message.error(res.detail || res.description);
+    }
+  },[JSON.stringify(query)]);
 
   // 翻页
   const onChangePage = useCallback(
@@ -251,6 +277,11 @@ const Index = props => {
     setQuery(() => ({ ...query, type }));
   };
 
+  const handleChangeIncomeType = value => {
+    const incomeType = value;
+    setQuery(() => ({ ...query, incomeType }));
+  };
+
   useEffect(() => {
     queryRef.current = query;
   }, [list]);
@@ -263,7 +294,9 @@ const Index = props => {
 
   return (
     <>
-      <Search onSearch={search} onReset={resetFilter} simple>
+      <Search onSearch={search} onReset={resetFilter} simple 
+        // onExport={derivedData} exportLoading={exportLoading}
+      >
         <Search.Item label="交易时间" br>
           <RangePicker
             style={{ width: 376 }}
@@ -276,6 +309,13 @@ const Index = props => {
         </Search.Item>
         <Search.Item label="交易单号">
           <Input allowClear placeholder="请输入交易单号" value={query.orderNo} onChange={handleChangeOrderNo} />
+        </Search.Item>
+        <Search.Item label="收支类型">
+          <Select placeholder="请选择收支类型" onChange={handleChangeIncomeType} value={query.incomeType} style={{ width: '100%' }}>
+            <Option value={2} key={2}>全部</Option>
+            <Option value={1} key={1}>收入</Option>
+            <Option value={0} key={0}>支出</Option>
+          </Select>
         </Search.Item>
         <Search.Item label="交易类型">
           <Select placeholder="请选择交易类型" onChange={handleChangeType} value={query.type} style={{ width: '100%' }}>

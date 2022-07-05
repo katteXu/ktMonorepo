@@ -218,6 +218,15 @@ const walletDetailList = ({ params } = {}) => {
   });
 };
 
+//账户资金导出
+const walletListDownload = ({ params } = {}) => {
+  return request({
+    method: 'get',
+    url: 'api/v_sass/wallet/walletListDownload',
+    params,
+  });
+};
+
 export default {
   getDataList,
   getBankCard,
@@ -240,4 +249,5 @@ export default {
   saasWalletList,
   walletLineChart,
   walletDetailList,
+  walletListDownload
 };
