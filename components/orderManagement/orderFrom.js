@@ -39,7 +39,7 @@ const number_rules = [
   },
 ];
 
-const Index = ({ onSubmit, data = {} }) => {
+const Index = ({ onSubmit, modalVisible = false, changeModal, data = {} }) => {
   const [form] = Form.useForm();
 
   // 合同id
@@ -68,15 +68,19 @@ const Index = ({ onSubmit, data = {} }) => {
   // 承运企业列表
   const [transportCompanyList, setTransportCompanyList] = useState([]);
 
-   // 收货地址
-   const [toAddress, setToAddress] = useState({});
-   // 发货地址
-   const [fromAddress, setFromAddress] = useState({});
-   //发货企业
-   const [saleCompany, setSaleCompany] = useState({});
-   //收货企业
-   const [purchaseCompany, setPurchaseCompany] = useState({});
+  // 收货地址
+  const [toAddress, setToAddress] = useState({});
+  // 发货地址
+  const [fromAddress, setFromAddress] = useState({});
+  //发货企业
+  const [saleCompany, setSaleCompany] = useState({});
+  //收货企业
+  const [purchaseCompany, setPurchaseCompany] = useState({});
 
+  // 是否有审核驳回的订单
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  // 审批驳回的订单id
+  const [needSubmitId, setNeedSubmitId] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -90,7 +94,7 @@ const Index = ({ onSubmit, data = {} }) => {
   useEffect(() => {
     if (Object.keys(data).length > 0) {
       setTransportCompany({ id: data?.carrierId, companyName: data?.carrierCompany });
-      setSaleCompany({ id: data?.fromUserId});
+      setSaleCompany({ id: data?.fromUserId });
       setPayMethod(data?.route?.payMethod.toString());
       setAllowLoss(data?.route?.lossMark);
       setUnitName(data?.unitName);
@@ -201,7 +205,7 @@ const Index = ({ onSubmit, data = {} }) => {
       fromUserId: saleCompany.id,
       fromAddressId: fromAddress.id,
       toAddressCompanyId: purchaseCompany.id,
-      toAddressId:toAddress.id
+      toAddressId: toAddress.id,
     };
 
     if (params.unitName === '吨' && values.infoFeeUnitName === 1 && params.unitInfoFee * 2 > params.unitPrice) {
@@ -247,7 +251,7 @@ const Index = ({ onSubmit, data = {} }) => {
   };
 
   // 选择合同
-  const handleContractChange = (_, option) => {
+  const handleContractChange = async (_, option) => {
     const {
       id,
       contractNo,
@@ -276,6 +280,11 @@ const Index = ({ onSubmit, data = {} }) => {
       totalWeight: Format.weight(totalWeight),
       remainWeight: Format.weight(remainWeight),
     });
+    const { status, result = [] } = (await order.checkContractOrder({ contractId: id })) || {};
+    if (status === 0 && result.length) {
+      setNeedSubmitId(result[0].id);
+      setIsModalVisible(true);
+    }
   };
 
   const handleCaptainPhone = async e => {
@@ -292,6 +301,17 @@ const Index = ({ onSubmit, data = {} }) => {
       }
     }
   };
+
+  const handleOk = () => router.replace(`/orderManagement/recommit?id=${needSubmitId}`);
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    changeModal(false);
+  };
+
+  useEffect(() => {
+    setIsModalVisible(modalVisible);
+  }, [modalVisible]);
 
   return (
     <div className={styles.content}>
@@ -344,7 +364,7 @@ const Index = ({ onSubmit, data = {} }) => {
           }
           name="sellUserName"
           // name="fromAddress"
-          >
+        >
           <Input placeholder="选择合同后自动填充" disabled style={{ width: 264 }} />
         </Form.Item>
 
@@ -365,8 +385,7 @@ const Index = ({ onSubmit, data = {} }) => {
             </div>
           }
           // name="toAddress"
-          name="buyUserName"
-          >
+          name="buyUserName">
           <Input placeholder="选择合同后自动填充" disabled style={{ width: 264 }} />
         </Form.Item>
 
@@ -849,6 +868,18 @@ const Index = ({ onSubmit, data = {} }) => {
           </Button>
         </div>
       </Form>
+
+      <Modal
+        title="提示"
+        visible={isModalVisible}
+        okText="重新提交"
+        cancelText="关闭"
+        onOk={handleOk}
+        onCancel={handleCancel}>
+        <p>
+          您有该合同下审批驳回的订单，请点击<span style={{ color: '#477aef' }}>重新提交</span>
+        </p>
+      </Modal>
     </div>
   );
 };

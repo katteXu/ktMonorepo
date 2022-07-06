@@ -76,7 +76,6 @@ const createOrder = props => {
             <Spin spinning={loading}>
               {id && (
                 <div className={styles.reason}>
-                  <div className={styles.label}>审批驳回原因：</div>
                   <div className={styles.content}>{data?.reason || '-'}</div>
                 </div>
               )}
