@@ -39,7 +39,7 @@ const number_rules = [
   },
 ];
 
-const Index = ({ onSubmit, modalVisible = false, changeModal, data = {} }) => {
+const Index = ({ onSubmit, modalVisible = false, changeModal, data = {}, orderId = '' }) => {
   const [form] = Form.useForm();
 
   // 合同id
@@ -280,6 +280,7 @@ const Index = ({ onSubmit, modalVisible = false, changeModal, data = {} }) => {
       totalWeight: Format.weight(totalWeight),
       remainWeight: Format.weight(remainWeight),
     });
+    if (orderId) return;
     const { status, result = [] } = (await order.checkContractOrder({ contractId: id })) || {};
     if (status === 0 && result.length) {
       setNeedSubmitId(result[0].id);
@@ -306,7 +307,7 @@ const Index = ({ onSubmit, modalVisible = false, changeModal, data = {} }) => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
-    changeModal(false);
+    changeModal && changeModal(false);
   };
 
   useEffect(() => {
