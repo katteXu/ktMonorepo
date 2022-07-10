@@ -5,7 +5,7 @@ import { message } from 'antd';
 const instance = axios.create({
   baseURL: process.env.BASE_URL || '/',
   withCredentials: true,
-  timeout: 100000,
+  timeout: 600000,
 });
 
 export default function fetch(options) {
