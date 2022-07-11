@@ -286,10 +286,11 @@ const Index = props => {
                 style={{ width: '100%' }}
                 placeholder="请选择订单状态"
                 onChange={e => setQuery(() => ({ ...query, status: e }))}>
-                <Option value={0}>全部</Option>
+                <Option value={''}>全部</Option>
                 <Option value={1}>待审核</Option>
                 <Option value={2}>审批通过</Option>
                 <Option value={3}>审批驳回</Option>
+                <Option value={4}>自动审核通过</Option>
               </Select>
             </Search.Item>
           </Search>

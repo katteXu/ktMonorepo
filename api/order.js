@@ -48,6 +48,13 @@ const examineLog = params =>
     params,
   });
 
+const checkContractOrder = params =>
+  request({
+    method: 'get',
+    url: 'api/v_saas/route/check_contract_failed_order',
+    params,
+  });
+
 export default {
   order_list,
   getFleetCaptainByMobile,
@@ -55,4 +62,5 @@ export default {
   transportOrderDetail,
   resubmitTransportOrder,
   examineLog,
+  checkContractOrder,
 };

@@ -26,16 +26,25 @@ const createOrder = props => {
     useBack: true,
   };
 
+  const [modalVisible, setModalVisible] = useState(false);
   const handleSubmit = async data => {
     const res = await order.createOrder(data);
 
     if (res.status === 0) {
-      message.success('订单提交审核成功');
-      clearState();
-      router.push('/orderManagement');
+      if (res.result?.check_failed_list?.length) {
+        setModalVisible(true);
+      } else {
+        message.success('订单提交审核成功');
+        clearState();
+        router.push('/orderManagement');
+      }
     } else {
       message.error(res.detail || res.description);
     }
+  };
+
+  const changeModal = status => {
+    setModalVisible(status);
   };
 
   return (
@@ -43,7 +52,7 @@ const createOrder = props => {
       <Content>
         <section style={{ paddingTop: 24 }}>
           <div className={styles.root}>
-            <AddOrderFrom onSubmit={handleSubmit} />
+            <AddOrderFrom onSubmit={handleSubmit} modalVisible={modalVisible} changeModal={changeModal} />
           </div>
         </section>
       </Content>
