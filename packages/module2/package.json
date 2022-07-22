@@ -1,9 +1,9 @@
 {
-  "name": "module2",
-  "version": "0.0.5",
+  "name": "@katte/module2",
+  "version": "0.0.0",
   "description": "> TODO: description",
   "author": "katte <417560450@qq.com>",
-  "homepage": "",
+  "homepage": "https://github.com/katteXu/ktMonorepo#readme",
   "license": "ISC",
   "main": "lib/module2.js",
   "directories": {
@@ -14,13 +14,19 @@
     "lib"
   ],
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/katteXu/ktMonorepo.git"
   },
   "scripts": {
     "start": "node ./lib/module2.js"
   },
-  "dependencies": {
-    "module1": "^0.0.5"
+  "bugs": {
+    "url": "https://github.com/katteXu/ktMonorepo/issues"
   },
-  "gitHead": "1f30552bb1b86eac7bb456e0378fe72ee34f73b3"
+  "dependencies": {
+    "module1": "^0.0.0"
+  }
 }
