@@ -3,12 +3,7 @@
     "packages/*"
   ],
   "useNx": false,
-  "version": "0.1.12",
-  "command": {
-    "publish": {
-      "verifyAccess": false,
-      "npmClient": "npm",
-      "ignoreChanges": []
-    }
-  }
+  "version": "0.0.0",
+  "npmClient": "yarn",
+  "useWorkspaces": true
 }
