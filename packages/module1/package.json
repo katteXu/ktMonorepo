@@ -4,7 +4,7 @@
   "description": "> TODO: description",
   "author": "katte <417560450@qq.com>",
   "homepage": "https://github.com/katteXu/ktMonorepo#readme",
-  "license": "ISC",
+  "license": "MIT",
   "main": "lib/module1.js",
   "directories": {
     "lib": "lib",
