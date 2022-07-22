@@ -28,5 +28,6 @@
   },
   "dependencies": {
     "module1": "^0.0.0"
-  }
+  },
+  "gitHead": "aad993919d3dd6b72c75cb92c01fe987b62e8bdf"
 }
