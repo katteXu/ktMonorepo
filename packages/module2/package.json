@@ -1,6 +1,6 @@
 {
   "name": "module2",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "> TODO: description",
   "author": "katte <417560450@qq.com>",
   "homepage": "",
@@ -20,7 +20,7 @@
     "start": "node ./lib/module2.js"
   },
   "dependencies": {
-    "module1": "^0.0.1"
+    "module1": "^0.0.2"
   },
   "gitHead": "61bf92236d3d4ba34d7ffc748869ef9f09d5d5a5"
 }
