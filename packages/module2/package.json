@@ -1,6 +1,6 @@
 {
   "name": "module2",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "> TODO: description",
   "author": "katte <417560450@qq.com>",
   "homepage": "",
@@ -20,6 +20,6 @@
     "start": "node ./lib/module2.js"
   },
   "dependencies": {
-    "module1": "^0.0.0"
+    "module1": "^0.0.1"
   }
 }
