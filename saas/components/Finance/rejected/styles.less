@@ -1,0 +1,96 @@
+.red {
+  >td {
+    color: #d56464 !important;
+  }
+}
+
+.green {
+  >td {
+    color: #63b67a !important;
+  }
+}
+
+.yellow {
+  >td {
+    color: #f3b655 !important;
+  }
+}
+
+.detail {
+  padding-bottom: 64px;
+
+  .content {
+    .company-info {
+      .child-title {
+        padding    : 0 0 16px 0;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+      }
+
+      .row {
+        display: flex;
+        color  : #333333;
+
+        .item {
+          flex: 1;
+
+          .label {
+            color: #848485;
+          }
+        }
+
+        &+.row {
+          margin-top: 16px;
+        }
+      }
+    }
+  }
+
+  .btn-bottom {
+    display         : flex;
+    border-top      : 1px solid #f0f0f0;
+    padding         : 0 16px;
+    position        : fixed;
+    height          : 62px;
+    right           : 0;
+    bottom          : 0;
+    background-color: #fff;
+    width           : 1152px;
+    align-items     : center;
+    justify-content : flex-end;
+    z-index         : 999;
+  }
+}
+
+.bottom {
+  position       : fixed;
+  bottom         : 0;
+  left           : 200px;
+  right          : 0;
+  font-size      : 16px;
+  display        : flex;
+  background     : #fff;
+  padding        : 12px 32px;
+  height         : 56px;
+  box-shadow     : 0px -1px 4px 0px rgba(174, 189, 210, 0.3);
+  justify-content: flex-start;
+  align-items    : center;
+
+  .item {
+    padding: 0 12px;
+
+    &:first-child {
+      padding-left: 24px;
+    }
+
+    .total-num {
+      font-weight: 600;
+      color      : #477AEF;
+    }
+
+    .price-block {
+      display    : inline-block;
+      white-space: nowrap;
+    }
+  }
+}

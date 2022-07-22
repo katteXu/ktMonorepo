@@ -1,0 +1,249 @@
+.amount {
+
+  .green,
+  .orange {
+    width        : 10px;
+    height       : 10px;
+    border-radius: 5px;
+    display      : inline-block;
+    margin-right : 12px;
+  }
+
+  .green {
+    background-color: #46b8af;
+    color           : #46b8af;
+  }
+
+  .orange {
+    background-color: #ffb741;
+    color           : #ffb741;
+  }
+
+  span {
+    font-size: 12px;
+    padding  : 0 5px;
+  }
+}
+
+.map-block {
+  // height:430px;
+}
+
+.transport-row {
+  height     : 40px;
+  line-height: 40px;
+
+  .label {
+    text-align: right;
+    color     : #a3a3a3;
+  }
+
+  .content {
+    font-size: 20px;
+  }
+
+  .ctx {
+    font-size: 16px;
+  }
+
+  .good-type {
+    background-color: rgba(61, 134, 239, 0.15);
+    color           : #477AEF;
+    font-size       : 12px;
+    padding         : 4px 24px;
+    border-radius   : 4px;
+    line-height     : normal;
+  }
+}
+
+.good-type {
+  background-color: rgba(61, 134, 239, 0.15);
+  color           : #477AEF;
+  font-size       : 12px;
+  padding         : 4px 24px;
+  border-radius   : 4px;
+  line-height     : normal;
+}
+
+.progress-div {
+  display        : flex;
+  justify-content: flex-start;
+  padding        : 12px 24px;
+
+  div {
+    font-size   : 16px;
+    color       : #848485;
+    margin-right: 12px;
+  }
+}
+
+.count {
+  font-size  : 20px;
+  color      : #477AEF;
+  line-height: 36px;
+  margin     : 0 10px;
+}
+
+.contentHeader {
+  display        : flex;
+  align-items    : center;
+  justify-content: space-between;
+
+  span:first-child {
+    font-size  : 16px;
+    color      : #333333;
+    font-weight: 600;
+  }
+
+  .name {
+    margin-left: 24px;
+  }
+
+  .name,
+  .username {
+    font-size: 14px;
+  }
+
+  .status {
+    font-size: 12px;
+  }
+}
+
+.rejection {
+  margin-bottom: 24px;
+
+  div {
+    background   : rgba(247, 247, 247, 1);
+    border-radius: 4px;
+    padding      : 24px;
+  }
+}
+
+.title {
+  color        : "#333333";
+  font-size    : 14px;
+  font-weight  : 600;
+  margin-bottom: 8px;
+}
+
+// 磅室专线 转下详情
+section.pound-railWay-detail {
+  display       : flex;
+  flex-direction: row;
+
+  .left {
+    flex: 1;
+  }
+
+  .right {
+    flex: 1.5;
+  }
+}
+
+.railWay-detail {
+  .reject_msg {
+    padding      : 24px;
+    background   : #ffb74126;
+    border       : 1px solid #ffb741;
+    // background: #F7F7F7;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    margin-top   : 16px;
+    color        : #666666;
+  }
+
+  .area {
+    margin-top: 16px;
+
+    .title {
+      margin-bottom: 10px;
+    }
+
+    .row {
+      padding-left: 11px;
+      display     : flex;
+      line-height : 38px;
+
+      .item {
+        .label {
+          color: #848485;
+        }
+
+        padding-right: 20px;
+        flex         : 1;
+        color        : #333333;
+      }
+
+      :global {
+        .ant-input-affix-wrapper {
+          color: #333333;
+        }
+      }
+    }
+  }
+}
+
+.railWay-detail-header {
+  .trucker {}
+
+  .status {}
+}
+
+// 个人单结算按钮样式
+.drop-down-btn {
+  :global(button) {
+    border                    : 1px solid #1890ff;
+    border-top-right-radius   : 0 !important;
+    border-bottom-right-radius: 0 !important;
+
+    &+ :global(button) {
+      border-top-right-radius   : 4px !important;
+      border-bottom-right-radius: 4px !important;
+      border-top-left-radius    : 0 !important;
+      border-bottom-left-radius : 0 !important;
+    }
+  }
+}
+
+//批量支付样式
+
+.topTitle {
+  height         : 54px;
+  display        : flex;
+  justify-content: flex-end;
+  align-items    : center;
+}
+
+.root {
+  overflow     : hidden;
+  border-radius: 4px;
+  border       : 1px solid #f0f0f0;
+  padding      : 12px;
+  margin-bottom: 24px;
+
+  .aFold {
+    font-size  : 14px;
+    font-weight: 600;
+    color      : #477AEF;
+    cursor     : pointer;
+  }
+}
+
+.moreLoad {
+  text-align: center;
+  padding   : 16px 0 50px;
+  background: #fff;
+}
+
+.backTop {
+  width        : 64px;
+  height       : 64px;
+  background   : #ffffff;
+  border-radius: 32px;
+  border       : 1px solid #d8d8d8;
+  text-align   : center;
+
+  div {
+    color: #666666;
+  }
+}

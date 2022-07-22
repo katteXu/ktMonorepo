@@ -1,0 +1,73 @@
+.add-form {
+  :global {
+    .ant-form-item-has-error {
+      margin: 0;
+    }
+    .ant-form-item {
+      margin: 0;
+    }
+    .ant-form-item-explain-error,
+    .ant-form-item-explain {
+      position: absolute;
+      white-space: nowrap;
+    }
+    .ant-form-item-label {
+      width: 143px;
+    }
+
+    .ant-form-item-control {
+      width: 200px;
+    }
+  }
+  .row {
+    margin-top: 24px;
+    padding-right: 120px;
+    width: 100%;
+  }
+
+  .title-name {
+    width: 100%;
+    margin-top: 24px;
+    padding: 12px 20px;
+    background-color: #f6f7f9;
+    color: #333333;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 600;
+
+    .btn-remove {
+      float: right;
+    }
+  }
+
+  .btn-add {
+    width: 100%;
+    margin-top: 32px;
+    line-height: 32px;
+    border-radius: 2px;
+    border: 1px dashed #d8d8d8;
+    text-align: center;
+    color: #333333;
+    cursor: pointer;
+    &:hover {
+      border-color: #477aef;
+      color: #477aef;
+      .anticon {
+        color: #477aef !important;
+      }
+    }
+  }
+
+  .bottom {
+    left: 0;
+    right: 0;
+    margin-top: 24px;
+    position: absolute;
+    bottom: 0;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-align: right;
+    background: #fff;
+    border-top: 1px solid #f0f0f0;
+    padding-right: 16px;
+  }
+}

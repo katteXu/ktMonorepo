@@ -1,0 +1,21 @@
+.message-status{
+  line-height: 60px;
+  height: 8px;
+  width: 8px;
+  border-radius: 4px;
+  display: block;
+  position: absolute;
+  top:5px;
+  left:0;
+}
+
+.main {
+  :global{
+    .ant-list-item{
+      padding:0 0 15px !important;
+      &+.ant-list-item{
+        margin-top:30px;
+      }
+    }
+  }
+}

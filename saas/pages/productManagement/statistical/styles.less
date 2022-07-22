@@ -1,0 +1,139 @@
+.barData {
+  display        : flex;
+  justify-content: space-between;
+
+  .left,
+  .right {
+    width        : 49%;
+    border       : 1px solid #f0f0f0;
+    margin-top   : 25px;
+    border-radius: 4px;
+    // padding: 24px;
+  }
+}
+
+.bottonData {
+  display        : flex;
+  justify-content: space-between;
+
+  // padding: 0 24px;
+  .leftBottom,
+  .rightBottom {
+    width        : 40%;
+    border       : 1px solid #f0f0f0;
+    border-radius: 4px;
+    padding      : 20px 24px 0;
+  }
+
+  .centerBottom {
+    width        : 18%;
+    border       : 1px solid #f0f0f0;
+    border-radius: 4px;
+    padding      : 20px 24px 0;
+  }
+
+  .rightBottom {
+    padding: 20px 18px 0;
+  }
+}
+
+.box {
+  margin-top   : 20px;
+  background   : #fff;
+  padding      : 0 24px 24px;
+  border-radius: 4px;
+
+  .title {
+    height       : 54px;
+    line-height  : 54px;
+    font-weight  : 600;
+    color        : #333333;
+    font-size    : 16px;
+    border-bottom: 1px solid rgba(240, 240, 240, 1);
+    padding      : 0 24px;
+    margin       : 0 -24px;
+  }
+
+  .subTitle {
+    font-size  : 14px;
+    font-weight: 600;
+    color      : #333333;
+    padding    : 0 24px;
+    position   : relative;
+    top        : 17px;
+  }
+}
+
+.leftTable,
+.rightTable {
+  width: 49%;
+}
+
+.subTitleTable {
+  font-size  : 14px;
+  font-weight: 600;
+  color      : #333333;
+
+  margin-bottom: 12px;
+}
+
+.tableStyle {
+  :global {
+
+    .ant-table.ant-table-middle .ant-table-tbody>tr>td,
+    .ant-table.ant-table-middle .ant-table-thead>tr>th,
+    .ant-table.ant-table-middle .ant-table-thead .ant-table-column-sorters {
+      padding: 12px 6px;
+    }
+  }
+}
+
+.aiBox {
+  margin-top: 55px;
+
+  .expect {
+    font-size    : 14px;
+    color        : #333333;
+    margin-bottom: 8px;
+    text-align   : center;
+  }
+
+  .falling {
+    width : 29px;
+    height: 18px;
+  }
+
+  .percentage {
+    font-weight: 600;
+    color      : #46b8af;
+    font-size  : 28px;
+  }
+}
+
+.tab {
+  display    : flex;
+  background : #fff;
+  margin     : -31px -24px 0;
+  height     : 56px;
+  line-height: 56px;
+  padding    : 0 24px;
+}
+
+.tab_item {
+  font-weight: 400;
+  color      : #333333;
+  font-size  : 20px;
+  width      : 64px;
+  text-align : center;
+  cursor     : pointer;
+}
+
+.tab_item:hover {
+  color: #477AEF;
+}
+
+.active {
+  font-weight  : 600;
+  color        : #477AEF;
+  border-bottom: 2px solid #477AEF;
+}

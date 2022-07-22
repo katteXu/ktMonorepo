@@ -1,0 +1,129 @@
+.block {
+  background-color: #fff;
+  // border: 1px solid #ededed;
+  // box-shadow: 0 4px 10px 0 rgba(0,0,0,0.15);
+  // border-radius: 4px;
+  // height: 100%;
+  // overflow: hidden;
+  // margin-bottom: 5px;
+  // min-width: 1180px;
+  display         : flex;
+  flex-direction  : column;
+
+  :global(header) {
+    padding      : 7px 16px;
+    font-size    : 16px;
+    font-weight  : 600;
+    border-bottom: 1px solid #f0f0f0;
+    color        : #333333;
+    line-height  : 2;
+    height       : 48px;
+    position     : relative;
+
+    &:global(.tab-header) {
+      color      : #6a6a6a;
+      display    : flex;
+      user-select: none;
+
+      &:hover {
+        color: #477AEF;
+      }
+
+      :global(.tab-item) {
+        color      : #333333;
+        padding    : 0 5px;
+        font-size  : 14px;
+        font-weight: 400;
+        cursor     : pointer;
+        line-height: 32px;
+        position   : relative;
+
+        &:hover {
+          color: #477AEF;
+        }
+
+        &+ :global(.tab-item) {
+          margin-left: 38px;
+        }
+
+        &:global(.active) {
+          color      : #477AEF;
+          font-weight: 600;
+
+          &:after {
+            content   : '.';
+            font-size : 0;
+            position  : absolute;
+            height    : 2px;
+            bottom    : -8px;
+            left      : -5px;
+            right     : -5px;
+            background: #477AEF;
+          }
+        }
+      }
+    }
+  }
+
+  :global(section) {
+    flex   : 1;
+    padding: 16px 16px;
+
+    :global(.info-row) {
+      height     : 32px;
+      line-height: 32px;
+
+      :global(.info-label) {
+        font-family: PingFangSC-Regular, PingFang SC;
+        padding    : 0 5px 0 0;
+        font-size  : 14px;
+        display    : inline-block;
+        min-width  : 90px;
+        color      : #848485;
+      }
+
+      :global(.info-data) {
+        // padding: 0 5px;
+        font-size: 14px;
+        display  : inline-block;
+        min-width: 220px;
+        color    : #333333;
+      }
+    }
+  }
+}
+
+.tabStyle {
+  margin    : 0;
+  background: #fff;
+
+  // border-radius: 5px;
+  :global(.ant-tabs-nav) {
+    height: 57px;
+  }
+
+  :global(.ant-tabs-nav .ant-tabs-tab-active) {
+    color: #477AEF;
+  }
+
+  :global(.ant-tabs-nav .ant-tabs-tab) {
+    padding: 18px 16px;
+  }
+
+  :global(.ant-tabs-ink-bar) {
+    background-color: #477AEF;
+  }
+
+  // :global()
+  // height:57px;
+  * {
+    transition: 0.3s !important;
+  }
+
+  .block {
+    border-top-left-radius : 0;
+    border-top-right-radius: 0;
+    border                 : 0;
+    box-shadow             : unset;
+  }
+}
