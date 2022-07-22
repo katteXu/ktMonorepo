@@ -1,5 +1,5 @@
 {
-  "name": "@katte/module2",
+  "name": "@katte_xu/module2",
   "version": "0.1.9",
   "description": "> TODO: description",
   "author": "katte <417560450@qq.com>",
@@ -29,5 +29,5 @@
   "dependencies": {
     "module1": "^0.0.0"
   },
-  "gitHead": "ca52eb96af505a42891a4b7adee2046a202aa01f"
+  "gitHead": "473ce8678243b8b90e4348e992e8a2f418a2fb29"
 }
