@@ -3,5 +3,12 @@
     "packages/*"
   ],
   "useNx": false,
-  "version": "0.1.7"
+  "version": "0.1.7",
+  "command": {
+    "publish": {
+      "verifyAccess": false,
+      "npmClient": "npm",
+      "ignoreChanges": []
+    }
+  }
 }
